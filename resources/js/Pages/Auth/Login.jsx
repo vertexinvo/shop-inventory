@@ -32,16 +32,19 @@ export default function Login({ status, canResetPassword }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit}  class="max-w-md md:ml-auto w-full">
+            <h3 class="text-gray-800 text-3xl font-extrabold mb-8">
+              Sign in
+            </h3>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+
 
                     <TextInput
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                       className="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent" placeholder="Email address"
                         autoComplete="username"
                         isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
@@ -51,14 +54,14 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+
 
                     <TextInput
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                         className="bg-gray-100 w-full text-sm text-gray-800 px-4 py-3.5 rounded-md outline-blue-600 focus:bg-transparent" placeholder="Password"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
                     />
@@ -66,8 +69,12 @@ export default function Login({ status, canResetPassword }) {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="block mt-4">
-                    <label className="flex items-center">
+
+
+
+                <div class="flex flex-wrap items-center justify-between gap-4 mt-2">
+                <div class="flex items-center">
+                <label className="flex items-center">
                         <Checkbox
                             name="remember"
                             checked={data.remember}
@@ -76,9 +83,8 @@ export default function Login({ status, canResetPassword }) {
                         <span className="ms-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
-
-                <div className="flex items-center justify-end mt-4">
-                    {canResetPassword && (
+                <div class="text-sm">
+                {canResetPassword && (
                         <Link
                             href={route('password.request')}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -87,11 +93,22 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                </div>
+              </div>
+
+              <div class="!mt-8">
+              <PrimaryButton className="w-full flex items-center justify-center shadow-xl py-2.5 px-4 text-sm font-semibold rounded text-white bg-blue-600 hover:bg-blue-700 focus:outline-none" disabled={processing}>
                         Log in
                     </PrimaryButton>
-                </div>
+              
+            </div>
+
+             
             </form>
+
+
+
+          
         </GuestLayout>
     );
 }
