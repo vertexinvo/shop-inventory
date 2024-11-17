@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     /**
@@ -12,8 +13,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(10);
-
+        //dont show role superadmin
+        $users = User::with('roles') ->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'superadmin');
+        })->latest()->paginate(1);
         return Inertia::render('User/List' , compact('users'));
     }
 
@@ -31,7 +34,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'role' => 'required',
+            'password' => 'required|min:8',
+            'password_confirmation' => 'required|same:password',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+        }
+        $data = $request->except(['password_confirmation', 'role']);
+        $data['password'] = bcrypt($request->password);
+        $user = User::create($data);
+        $user->assignRole($request->role);
+        session()->flash('success', 'User created successfully');
+        return back();
     }
 
     /**
@@ -47,7 +67,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id);
+        $user = User::find($id);   
         return Inertia::render('User/Edit',compact('user'));
     }
 
@@ -56,7 +76,29 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'.$id,
+            'role' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+        }
+        $data = $request->except(['role']);
+        $user = User::find($id);
+        $user->update($data);
+        $user->syncRoles($request->role);
+        session()->flash('success', 'User updated successfully');
+        return back();
+    }
+
+    public function status(Request $request, string $id)
+    {
+        $user = User::find($id);
+        $user->status = !$user->status;
+        $user->save();
     }
 
     /**
@@ -64,6 +106,9 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::find($id);
+        $user->delete();
+        session()->flash('success', 'User deleted successfully');
+        return back();
     }
 }

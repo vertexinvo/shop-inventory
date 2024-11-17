@@ -14,13 +14,13 @@ class UserSeeder extends Seeder
     {  
          //make super admin
          $user = \App\Models\User::firstOrCreate([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@yopmail.com',
+            'name' => 'Admin1',
+            'email' => 'admin1@yopmail.com',
             'email_verified_at' => now(),
-            'password' => bcrypt('superadmin@yopmail.com'),
+            'password' => bcrypt('admin1@yopmail.com'),
             'remember_token' => \Illuminate\Support\Str::random(10),
         ]);
 
-        $user->assignRole('superadmin');
+        $user->assignRole('admin');
     }
 }
