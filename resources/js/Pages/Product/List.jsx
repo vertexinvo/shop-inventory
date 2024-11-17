@@ -9,10 +9,10 @@ import { Head } from '@inertiajs/react';
 export default function List({ auth }) {
   return (
       <AuthenticatedLayout
-          user={auth.user}
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">User</h2>}
+          Product={auth.Product}
+          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>}
       >
-          <Head title="User" />
+          <Head title="Product" />
 
           <div className="flex flex-col px-4  mt-10 mx-auto w-full">
           <div className="w-full ">
@@ -277,7 +277,7 @@ export default function List({ auth }) {
               </div>
             </td>
             <td class="p-4 text-sm text-black">
-              User
+              Product
             </td>
             <td class="p-4 text-sm">
               <label class="relative cursor-pointer">
@@ -333,7 +333,7 @@ export default function List({ auth }) {
               </div>
             </td>
             <td class="p-4 text-sm text-black">
-              User
+              Product
             </td>
             <td class="p-4 text-sm">
               <label class="relative cursor-pointer">
