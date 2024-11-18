@@ -92,7 +92,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+            return back();
         }
         $data = $request->except(['role']);
         $user = User::find($id);

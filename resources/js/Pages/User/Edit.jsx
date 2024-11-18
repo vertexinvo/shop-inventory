@@ -33,7 +33,7 @@ export default function Edit(props) {
             role: Yup.string().required('Role is required'),
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            router.post(route('user.store'), values, { onSuccess: () => resetForm() });
+            router.put(route('user.update', user.id), values, {  onSuccess: () => resetForm() , preserveScroll: true , preserveState: false ,replace: true });
           }}
           >
             <Form>

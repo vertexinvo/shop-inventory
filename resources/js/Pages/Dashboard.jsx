@@ -1,7 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 
-export default function Dashboard( ) {
+export default function Dashboard(props) {
+  const { auth, totalUser,totalProductInStock } = props
 
     return (
         <AuthenticatedLayout
@@ -18,8 +19,8 @@ export default function Dashboard( ) {
                 <div class="pl-1 w-full h-20 bg-green-400 rounded-lg shadow-md">
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
-                    <p class="font-bold">EARNINGS (MONTHLY)</p>
-                    <p class="text-lg">$40,000</p>
+                    <p class="font-bold">TOTAL (USERS)</p>
+                    <p class="text-lg">{totalUser}</p>
                     </div>
                     <div class="my-auto">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -32,8 +33,8 @@ export default function Dashboard( ) {
                 <div class="pl-1 w-full h-20 bg-blue-500 rounded-lg shadow-md">
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
-                    <p class="font-bold">EARNINGS (ANNUAL)</p>
-                    <p class="text-lg">$215,000</p>
+                    <p class="font-bold">TOTAL PRODUCT IN STOCK</p>
+                    <p class="text-lg">{totalProductInStock}</p>
                     </div>
                     <div class="my-auto">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\Product;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -26,7 +28,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    
+    $totalUser = User::with('roles')->whereDoesntHave('roles', function ($query) {
+        $query->where('name', 'superadmin');
+    }) ->count();
+    $totalProductInStock = Product::whereHas('stock', function ($query) {
+        $query->where('quantity', '>', 0);
+    })->count();
+    return Inertia::render('Dashboard',compact('totalUser','totalProductInStock'));
 })->name('dashboard');
 
 
