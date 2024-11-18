@@ -6,17 +6,24 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->search ?? '';
+
         //dont show role superadmin
         $users = User::with('roles') ->whereDoesntHave('roles', function ($query) {
             $query->where('name', 'superadmin');
-        })->latest()->paginate(1);
+        })->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%");
+        })->latest()->paginate(10);
         return Inertia::render('User/List' , compact('users'));
     }
 
@@ -25,7 +32,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/Add');
+        $roles = Role::where('name', '!=', 'superadmin')->get();
+        return Inertia::render('User/Add', compact('roles'));
         
     }
 
@@ -50,7 +58,7 @@ class UserController extends Controller
         $data['password'] = bcrypt($request->password);
         $user = User::create($data);
         $user->assignRole($request->role);
-        session()->flash('success', 'User created successfully');
+        session()->flash('message', 'User created successfully');
         return back();
     }
 
@@ -90,7 +98,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->update($data);
         $user->syncRoles($request->role);
-        session()->flash('success', 'User updated successfully');
+        session()->flash('message', 'User updated successfully');
         return back();
     }
 
@@ -108,7 +116,7 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        session()->flash('success', 'User deleted successfully');
+        session()->flash('message', 'User deleted successfully');
         return back();
     }
 }

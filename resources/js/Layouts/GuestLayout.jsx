@@ -1,8 +1,29 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Guest({ children }) {
+
+  
+  const { flash } = usePage().props;
+  useEffect(() => {
+      if (flash.message) {
+          toast.success(flash.message);
+          console.log(flash.message);
+      }
+      if (flash.error) {
+          toast.error(flash.error);
+          console.log(flash.error);
+      }
+  }, [flash]);
+
+
     return (
+      <>
+          <ToastContainer />
+
         <div class="font-[sans-serif]">
       <div class="min-h-screen flex fle-col items-center justify-center py-6 px-4">
         <div class="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
@@ -28,5 +49,6 @@ export default function Guest({ children }) {
             </div>
       </div>
     </div>
+    </>
     );
 }

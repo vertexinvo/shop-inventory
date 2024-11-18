@@ -3,7 +3,9 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -11,11 +13,23 @@ export default function AuthenticatedLayout({ header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
+        const { flash } = usePage().props;
+        useEffect(() => {
+            if (flash.message) {
+                toast.success(flash.message);
+                console.log(flash.message);
+            }
+            if (flash.error) {
+                toast.error(flash.error);
+                console.log(flash.error);
+            }
+        }, [flash]);
+
     return (
 
         <>
         
-
+        <ToastContainer />
         <div className="min-h-screen bg-gray-100">
             
         

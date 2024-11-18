@@ -1,13 +1,20 @@
 import { Formik, Form, Field } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { FaWallet , FaEdit} from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
+import ConfirmModal from '@/Components/ConfirmModal';
 
 export default function List(props) {
+
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const { auth, users } = props
+
+  const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
+  const [selectId, setSelectId] = useState([]);
+
   return (
       <AuthenticatedLayout
           user={auth.user}
@@ -22,7 +29,7 @@ export default function List(props) {
               <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
                 <button
                 //   onClick={() => setIsModalOpen(true)}
-                 onClick={() => router.put(route('add.create'))}
+                 onClick={() => router.get(route('user.create'))}
                   className="text-white py-2 px-4 rounded-lg bg-blue-500 hover:bg-blue-600"
                 >
                   Create
@@ -31,17 +38,30 @@ export default function List(props) {
                 <Formik
                   enableReinitialize
                   initialValues={{ search: '' }}
+                  onSubmit={(values) => {
+                    router.get(route('user.index'), { search: values.search }, { preserveState: true });
+                  }}
                 
                 >
+                  {( { values ,setFieldValue, handleSubmit, errors, touched }) => (
+                    
                   <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div>
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      />
-                    </div>
+                    <div className="relative">
+                    <Field
+                      name="search"
+                      type="text"
+                      placeholder="Search..."
+                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {setFieldValue('search', ''); router.get(route('user.index'))}}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    >
+                      ✖
+                    </button>
+                  </div>
+
 
                     <button
                       type="submit"
@@ -51,6 +71,7 @@ export default function List(props) {
                     </button>
 
                   </Form>
+                    )}
                 </Formik>
               </div>
             </div>
@@ -61,7 +82,10 @@ export default function List(props) {
         <thead class="whitespace-nowrap">
           <tr>
             <th class="pl-4 w-8">
-              <input id="checkbox" type="checkbox" class="hidden peer" />
+              <input id="checkbox" type="checkbox" class="hidden peer" 
+                onChange={(e) => setSelectId(e.target.checked ? users.data.map((user) => user.id) : [])}
+                checked={selectId.length === users.data.length}
+              />
               <label for="checkbox"
                 class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
@@ -89,10 +113,21 @@ export default function List(props) {
 
         <tbody class="whitespace-nowrap">
 
-          {users.data.map((user) => (
-          <tr class="odd:bg-gray-50">
+          {users.data.map((user, index) => (
+          <tr key={user.id}  class="odd:bg-gray-50">
             <td class="pl-4 w-8">
-              <input id="checkbox1" type="checkbox" class="hidden peer" />
+              <input id="checkbox1" type="checkbox" class="hidden peer"
+               value={user.id}
+               onChange={(e) => {
+                   if (e.target.checked) {
+                       setSelectId([...selectId, user.id]);
+                   } else {
+                       setSelectId(selectId.filter((id) => id !== user.id));
+                   }
+               }}
+               checked={selectId.includes(user.id)}
+              
+              />
               <label for="checkbox1"
                 class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
@@ -134,7 +169,7 @@ export default function List(props) {
                     data-original="#000000" />
                 </svg>
               </button>
-              <button title="Delete">
+              <button onClick={() => setIsDeleteModalOpen(user)} title="Delete">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                   <path
                     d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -242,6 +277,18 @@ export default function List(props) {
            
           </div>
         </div>
+
+
+
+
+        <ConfirmModal   isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={()=>{
+ 
+ router.delete(route('user.destroy',isDeleteModalOpen.id),{
+    preserveScroll: true,
+        preserveState: true,
+})
+setIsDeleteModalOpen(null)
+}}/>
 
          
       </AuthenticatedLayout>

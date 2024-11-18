@@ -1,143 +1,107 @@
-import React from "react";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import React from 'react'
+import { FaWallet , FaEdit} from 'react-icons/fa'
+import { MdDelete } from 'react-icons/md';
+import { GiTwoCoins } from 'react-icons/gi';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { Head, router } from '@inertiajs/react';
+import * as Yup from 'yup';
 
-const Add = () => {
+export default function List(props) {
+  const { auth ,roles} = props
   return (
-    <Formik
-      initialValues={{
-        name: "",
-        email: "",
-        password: "",
-        password_confirmation: "",
-        wallet: "",
-      }}
-      validationSchema={Yup.object({
-        name: Yup.string().required("Name is required"),
-        email: Yup.string().email("Invalid email address").required("Email is required"),
-        password: Yup.string().required("Password is required"),
-        password_confirmation: Yup.string()
-          .oneOf([Yup.ref("password"), null], "Passwords must match")
-          .required("Password confirmation is required"),
-        wallet: Yup.string().required("Wallet is required"),
-      })}
-      onSubmit={(values) => {
-        console.log("Form Submitted", values);
-      }}
-    >
-      {() => (
-        <Form className="bg-white p-6 w-full max-w-lg mx-auto flex flex-col items-center">
-          <h2 className="text-lg font-bold mb-4">Create User</h2>
+      <AuthenticatedLayout
+          user={auth.user}
+          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add User</h2>}
+      >
+          <Head title="User" />
 
-          {/* Name Field */}
-          <div className="relative z-0 w-full mb-5 group">
-            <Field
-              type="text"
-              name="name"
-              id="name"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-            />
-            <label
-              htmlFor="name"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Name
-            </label>
-            <ErrorMessage name="name" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+          <div className="flex flex-col px-4  mt-10 mx-auto w-full">
+          <div className="w-full ">
+            
+          <div class="font-sans antialiased bg-grey-lightest">
 
-          {/* Email Field */}
-          <div className="relative z-0 w-full mb-5 group">
-            <Field
-              type="email"
-              name="email"
-              id="email"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-            />
-            <label
-              htmlFor="email"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Email
-            </label>
-            <ErrorMessage name="email" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
 
-          {/* Password Field */}
-          <div className="relative z-0 w-full mb-5 group">
-            <Field
-              type="password"
-              name="password"
-              id="password"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-            />
-            <label
-              htmlFor="password"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Password
-            </label>
-            <ErrorMessage name="password" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+  <div class="w-full bg-grey-lightest">
+    <div class="container mx-auto py-3 px-5">
+      <div class="w-full lg:w-full mx-auto bg-white rounded shadow">
+          <Formik  enableReinitialize initialValues={{ name: '', email: '', password: '' , password_confirmation: '', role: '' }}
+          validationSchema={Yup.object({
+            name: Yup.string().required('Name is required'),
+            email: Yup.string().email('Email is invalid').required('Email is required'),
+            password: Yup.string().required('Password is required'),
+            password_confirmation: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match'),
+            role: Yup.string().required('Role is required'),
+          })}
+          onSubmit={(values, { setSubmitting, resetForm }) => {
+            router.post(route('user.store'), values, { onSuccess: () => resetForm() });
+          }}
+          >
+            <Form>
 
-          {/* Password Confirmation Field */}
-          <div className="relative z-0 w-full mb-5 group">
-            <Field
-              type="password"
-              name="password_confirmation"
-              id="password_confirmation"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-            />
-            <label
-              htmlFor="password_confirmation"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Confirm Password
-            </label>
-            <ErrorMessage
-              name="password_confirmation"
-              component="div"
-              className="text-red-600 text-sm mt-1"
-            />
-          </div>
+          
+            <div class="py-4 px-8">
+                <div class="flex mb-4">
+                    <div class="w-1/2 mr-1">
+                        <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
+                        <Field name="name" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name"/>
+                        <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+                    <div class="w-1/2 ml-1">
+                    <label class="block text-grey-darker text-sm font-bold mb-2" for="email">Email Address</label>
+                    <Field name="email"  class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" type="email" placeholder="Enter email address"/>
+                    <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+                </div>
+              
+                <div class="mb-4">
+                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Password</label>
+                    <Field name="password"  class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Enter secure password"/>
+                    <ErrorMessage name="password" component="div" className="text-red-500 text-xs mt-1" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Confirm Password</label>
+                    <Field name="password_confirmation" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Enter secure password"/>
+                   <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-xs mt-1" />
+                </div>
+                <div class="mb-4">
+                    <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Role</label>
+                    <Field as="select" name="role" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="select">
+                        <option value="">Select Role</option>
+                        {roles.map((role) => (
+                            <option key={role.id} value={role.name}>
+                                {role.name}
+                            </option>
+                        ))}
+                    </Field>
+                    <ErrorMessage name="role" component="div" className="text-red-500 text-xs mt-1" />
+                   
+                </div>
+                <div class="flex items-center justify-start gap-1 mt-8">
+                    <button class="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
+                        Submit
+                    </button>
+                    <button  onClick={() => router.get(route('user.index'))} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
+                        Close
+                    </button>
+                </div>
+            </div>
+          </Form>
+          </Formik>
+        </div>
+      
+    </div>
+  </div>
 
-          {/* Wallet Field */}
-          <div className="relative z-0 w-full mb-5 group">
-            <Field
-              type="text"
-              name="wallet"
-              id="wallet"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-              placeholder=" "
-            />
-            <label
-              htmlFor="wallet"
-              className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-            >
-              Wallet
-            </label>
-            <ErrorMessage name="wallet" component="div" className="text-red-600 text-sm mt-1" />
-          </div>
+  
+</div>
 
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-600 mt-4"
-            >
-              Create User
-            </button>
+           
           </div>
-        </Form>
-      )}
-    </Formik>
+        </div>
+
+         
+      </AuthenticatedLayout>
   );
-};
+}
 
-export default Add;
-    
