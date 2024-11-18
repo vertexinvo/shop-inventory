@@ -75,10 +75,10 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = User::find($id);   
-        return Inertia::render('User/Edit',compact('user'));
+        $user = User::with('roles')->find($id); 
+        $roles = Role::where('name', '!=', 'superadmin')->get();  
+        return Inertia::render('User/Edit',compact('user', 'roles'));
     }
-
     /**
      * Update the specified resource in storage.
      */
@@ -114,8 +114,21 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        $user = User::find($id);
+        $user = User::with('roles')->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'superadmin');
+        })->find($id);
         $user->delete();
+        session()->flash('message', 'User deleted successfully');
+        return back();
+    }
+
+    //bulkdestroy
+    public function bulkdestroy(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        User::whereIn('id', $ids)->with('roles') ->whereDoesntHave('roles', function ($query) {
+            $query->where('name', 'superadmin');
+        })->delete();
         session()->flash('message', 'User deleted successfully');
         return back();
     }

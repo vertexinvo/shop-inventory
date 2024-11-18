@@ -27,6 +27,16 @@ export default function List(props) {
             <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
             
               <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
+
+              {selectId.length > 0 &&
+                    <button
+                        onClick={() => setIsBulkDeleteModalOpen(true)}
+                        className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600"
+                    >
+                        Bulk Delete
+                    </button>
+                }
+                
                 <button
                 //   onClick={() => setIsModalOpen(true)}
                  onClick={() => router.get(route('user.create'))}
@@ -115,28 +125,36 @@ export default function List(props) {
 
           {users.data.map((user, index) => (
           <tr key={user.id}  class="odd:bg-gray-50">
-            <td class="pl-4 w-8">
-              <input id="checkbox1" type="checkbox" class="hidden peer"
-               value={user.id}
-               onChange={(e) => {
-                   if (e.target.checked) {
-                       setSelectId([...selectId, user.id]);
-                   } else {
-                       setSelectId(selectId.filter((id) => id !== user.id));
-                   }
-               }}
-               checked={selectId.includes(user.id)}
-              
-              />
-              <label for="checkbox1"
-                class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                  <path
-                    d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                    data-name="7-Check" data-original="#000000" />
-                </svg>
-              </label>
-            </td>
+           <td className="pl-4 w-8">
+        <input
+          id={`checkbox-${user.id}`} // Unique id for each checkbox
+          type="checkbox"
+          className="hidden peer"
+          value={user.id}
+          onChange={(e) => {
+            if (e.target.checked) {
+              setSelectId((prev) => [...prev, user.id]); // Add user ID to state
+            } else {
+              setSelectId((prev) => prev.filter((id) => id !== user.id)); // Remove user ID from state
+            }
+          }}
+          checked={selectId.includes(user.id)} // Bind state to checkbox
+        />
+        <label
+          htmlFor={`checkbox-${user.id}`} // Match label with checkbox id
+          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full fill-white"
+            viewBox="0 0 520 520"
+          >
+            <path
+              d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
+            />
+          </svg>
+        </label>
+      </td>
             <td class="p-4 text-sm">
               <div class="flex items-center cursor-pointer w-max">
                 {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
@@ -158,7 +176,7 @@ export default function List(props) {
               </label>
             </td>
             <td class="p-4">
-              <button class="mr-4" title="Edit">
+              <button onClick={() => router.get(route('user.edit', user.id))} class="mr-4" title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
                   viewBox="0 0 348.882 348.882">
                   <path
@@ -289,6 +307,21 @@ export default function List(props) {
 })
 setIsDeleteModalOpen(null)
 }}/>
+
+
+
+
+<ConfirmModal   isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these users?" onConfirm={()=>{
+ 
+ router.post(route('user.bulkdestroy'), { ids: selectId.join(',') }, {
+  onSuccess: () => {
+      setIsBulkDeleteModalOpen(false);
+      setSelectId([]);
+  },
+});
+
+}}/>
+
 
          
       </AuthenticatedLayout>
