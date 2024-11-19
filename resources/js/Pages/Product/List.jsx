@@ -129,6 +129,14 @@ export default function List(props) {
         </thead>
 
         <tbody class="whitespace-nowrap">
+
+          {products.data.length === 0 && (
+            <tr>
+              <td colSpan="12" className="p-4 text-center">
+                No products found.
+              </td>
+            </tr>
+          )}
         {products.data.map((product, index) => (
          
           <tr   class="odd:bg-gray-50">

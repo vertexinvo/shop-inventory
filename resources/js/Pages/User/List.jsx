@@ -123,6 +123,14 @@ export default function List(props) {
 
         <tbody class="whitespace-nowrap">
 
+        {users.data.length === 0 ? (
+          <tr>
+            <td colSpan="5" className="p-4 text-center">
+              No data available
+            </td>
+          </tr>
+        ) : null}
+
           {users.data.map((user, index) => (
           <tr key={user.id}  class="odd:bg-gray-50">
            <td className="pl-4 w-8">

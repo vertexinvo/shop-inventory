@@ -21,6 +21,10 @@ class Product extends Model
         'shop_address',
         'shop_phone',
         'shop_email',
+        'identity_type',
+        'identity_value',
+        'warranty_type',
+        'is_warranty',
     ];
 
     public function categories()

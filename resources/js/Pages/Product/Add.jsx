@@ -25,24 +25,32 @@ export default function List(props) {
   <div className="w-full bg-grey-lightest">
     <div className="container mx-auto py-3 px-5">
       <div className="w-full lg:w-full mx-auto bg-white rounded shadow">
-          <Formik  enableReinitialize initialValues={{ name: '', model: '', specifications: '' , purchase_price: '', selling_price: '', warranty_period: '', is_borrow: '', shop_name: '', shop_address: '', shop_phone: '', shop_email: ''}}
+          <Formik  enableReinitialize initialValues={{ name: '', model: '', specifications: '' , purchase_price: '', selling_price: '', warranty_period: '', is_borrow: '0', shop_name: '', shop_address: '', shop_phone: '', shop_email: ''
+            ,identity_type : 'none',identity_value : '',warranty_type: 'none',is_warranty : '0',
+          }}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
             model: Yup.string().required('Model is required'),
             specifications: Yup.string().required('Specifications is required'),
             purchase_price: Yup.number().required('Purchase price is required'),
             selling_price: Yup.number().required('Selling price is required'),
-            warranty_period: Yup.number().required('Warranty period is required'),
-            is_borrow: Yup.boolean().required('Is borrow is required'),
-            shop_name: Yup.string().required('Shop name is required'),
-            shop_address: Yup.string().required('Shop address is required'),
-            shop_phone: Yup.string().required('Shop phone is required'),
-            shop_email: Yup.string().email('Shop email is invalid').required('Shop email is required'),
-            })}
+            warranty_period: Yup.number(),
+            is_borrow: Yup.string().required('Is borrow is required'),
+            shop_name: Yup.string(),
+            shop_address: Yup.string(),
+            shop_phone: Yup.string(),
+            shop_email: Yup.string().email('Invalid email address'),
+            identity_type: Yup.string().required('Identity type is required'),
+            identity_value: Yup.string().required('Identity value is required'),
+            warranty_type: Yup.string().required('Warranty type is required'),
+            is_warranty: Yup.string().required('Is warranty is required'),
+          })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            router.post(route('product.store'), values, { onSuccess: () => resetForm() });
+            router.post(route('product.store'), values, { onSuccess: () => resetForm() , preserveState: false ,replace: true });
           }}
           >
+
+            {({values, errors, touched, setFieldValue, isSubmitting }) => (
             <Form>
                   <div className="py-4 px-8">
                       <div className="flex mb-4">
@@ -96,7 +104,9 @@ export default function List(props) {
                           <ErrorMessage name="is_borrow" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
-                      <div className="mb-4">
+                      {values.is_borrow === '1' && (
+                          <>
+                            <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="shop_name">Shop Name</label>
                           <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
                           <ErrorMessage name="shop_name" component="div" className="text-red-500 text-xs mt-1" />
@@ -119,6 +129,10 @@ export default function List(props) {
                           <Field name="shop_email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_email" type="email" placeholder="Enter shop email" />
                           <ErrorMessage name="shop_email" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
+                          </>
+                      )}
+
+                    
     
                       <div className="flex items-center justify-start gap-1 mt-8">
                     <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
@@ -130,6 +144,7 @@ export default function List(props) {
                 </div>
                   </div>
                 </Form>
+            )}
                 </Formik>
               </div>
             

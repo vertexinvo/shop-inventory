@@ -24,9 +24,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        // $roles = Role::where('name', '!=', 'superadmin')->get();
         return Inertia::render('Product/Add');
-        
     }
 
     /**
@@ -51,14 +49,13 @@ class ProductController extends Controller
     public function edit(String $id)
     {
         $product = Product::find($id); 
-       
         return Inertia::render('Product/Edit',compact('product'));
     }
 
     public function status(Request $request, string $id)
     {
-     
         // 
+        
     }
 
     /**
