@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -23,7 +24,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        // $roles = Role::where('name', '!=', 'superadmin')->get();
+        return Inertia::render('Product/Add');
+        
     }
 
     /**
@@ -45,9 +48,17 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(String $id)
     {
-        //
+        $product = Product::find($id); 
+       
+        return Inertia::render('Product/Edit',compact('product'));
+    }
+
+    public function status(Request $request, string $id)
+    {
+     
+        // 
     }
 
     /**
@@ -63,6 +74,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+       $product = Product::find($product->id);
+       $product->delete();
+       return redirect()->back()->with('message', 'Product deleted successfully');
     }
 }

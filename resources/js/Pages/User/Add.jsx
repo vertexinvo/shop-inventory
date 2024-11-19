@@ -6,7 +6,7 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import * as Yup from 'yup';
-
+ 
 export default function List(props) {
   const { auth ,roles} = props
   return (
@@ -92,8 +92,6 @@ export default function List(props) {
       
     </div>
   </div>
-
-  
 </div>
 
            

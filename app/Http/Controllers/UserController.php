@@ -36,7 +36,7 @@ class UserController extends Controller
         return Inertia::render('User/Add', compact('roles'));
         
     }
-
+ 
     /**
      * Store a newly created resource in storage.
      */
