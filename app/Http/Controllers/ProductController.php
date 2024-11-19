@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Models\Brand;
+use App\Models\Category;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -24,7 +27,25 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Product/Add');
+        $categorydata = Category::all(['id', 'name'] );
+
+        $categories = $categorydata->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name ,
+            ];
+        });
+
+        $branddata = Brand::all(['id', 'name'] );
+
+        $brands = $branddata->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name ,
+            ];
+        });
+
+        return Inertia::render('Product/Add', compact('categories', 'brands'));
     }
 
     /**
@@ -32,7 +53,14 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'model' => 'nullable',
+            'categories' => 'nullable',
+            'brands' => 'nullable',
+            'specifications' => 'nullable',
+
+        ]);
     }
 
     /**

@@ -6,9 +6,10 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import * as Yup from 'yup';
+import Select from 'react-select';
  
 export default function List(props) {
-  const { auth } = props
+  const { auth , categories , brands } = props
   return (
       <AuthenticatedLayout
           Product={auth.Product}
@@ -26,24 +27,42 @@ export default function List(props) {
     <div className="container mx-auto py-3 px-5">
       <div className="w-full lg:w-full mx-auto bg-white rounded shadow">
           <Formik  enableReinitialize initialValues={{ name: '', model: '', specifications: '' , purchase_price: '', selling_price: '', warranty_period: '', is_borrow: '0', shop_name: '', shop_address: '', shop_phone: '', shop_email: ''
-            ,identity_type : 'none',identity_value : '',warranty_type: 'none',is_warranty : '0',
+            ,identity_type : 'none',identity_value : '',warranty_type: 'month',is_warranty : '0',
+            categories: [],
+            brands: [],
           }}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
-            model: Yup.string().required('Model is required'),
+            model: Yup.string(),
             specifications: Yup.string().required('Specifications is required'),
             purchase_price: Yup.number().required('Purchase price is required'),
             selling_price: Yup.number().required('Selling price is required'),
-            warranty_period: Yup.number(),
+            
+
             is_borrow: Yup.string().required('Is borrow is required'),
             shop_name: Yup.string(),
             shop_address: Yup.string(),
             shop_phone: Yup.string(),
             shop_email: Yup.string().email('Invalid email address'),
+
             identity_type: Yup.string().required('Identity type is required'),
-            identity_value: Yup.string().required('Identity value is required'),
-            warranty_type: Yup.string().required('Warranty type is required'),
+            identity_value: Yup.string().when('identity_type', {
+                is: 'none',
+                then: scheme=>scheme.optional() ,
+                otherwise: scheme=>scheme.required()
+            }),
             is_warranty: Yup.string().required('Is warranty is required'),
+            warranty_type: Yup.string().when('is_warranty', {
+                is: '1',
+                then: scheme=>scheme.required() ,
+                otherwise: scheme=>scheme.optional()
+            }),
+            warranty_period: Yup.number().when('is_warranty', {
+                is: '1',
+                then: scheme=>scheme.required() ,
+                otherwise: scheme=>scheme.optional()
+            }),
+           
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             router.post(route('product.store'), values, { onSuccess: () => resetForm() , preserveState: false ,replace: true });
@@ -86,10 +105,73 @@ export default function List(props) {
                       </div>
 
                       <div className="mb-4">
+                          <label className="block text-grey-darker text-sm font-bold mb-2" for="categories">Select Category</label>
+                          <Select
+                                            onChange={(e) => {
+                                                setFieldValue("categories", e.map((item) => item.value));
+                                            }}
+                                            isMulti
+                                            name="categories"
+                                            options={categories}
+                                            className="basic-multi-select"
+                                            classNamePrefix="select"
+                                        />
+                          <ErrorMessage name="categories" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+                      <div className="mb-4">
+                          <label className="block text-grey-darker text-sm font-bold mb-2" for="brands">Select Brand</label>
+                          <Select
+                                            onChange={(e) => {
+                                                setFieldValue("brands", e.map((item) => item.value));
+                                            }}
+                                            isMulti
+                                            name="brands"
+                                            options={brands}
+                                            className="basic-multi-select"
+                                            classNamePrefix="select"
+                                        />
+                          <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+
+                 
+
+                      <div className="mb-4">
+                          <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
+                          <div className="flex items-center">
+                              <label className="mr-4">
+                                  <Field name="is_warranty" type="radio" value="1" className="mr-2" /> Yes
+                              </label>
+                              <label>
+                                  <Field name="is_warranty" type="radio" value="0" className="mr-2" /> No
+                              </label>
+                          </div>
+                          <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+
+                      {values.is_warranty === '1' && (
+                        <>
+                         <div className="flex mb-4">
+                          <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm font-bold mb-2" for="warranty_period">Warranty Type </label>
+                          <Field name="warranty_type" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_type" as="select" >
+                            <option value="year">Year</option>
+                            <option value="month">Month</option>
+                            <option value="day">Day</option>
+                        </Field>
+                          <ErrorMessage name="warranty_type" component="div" className="text-red-500 text-xs mt-1" />
+                          </div> 
+                          <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="warranty_period">Warranty Period </label>
                           <Field name="warranty_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_period" type="number" step="1" placeholder="Enter warranty period" />
                           <ErrorMessage name="warranty_period" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+                        
                       </div>
+                     
+                      </>
+                      )}
+
+                      
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2">Is Borrow</label>
@@ -106,6 +188,7 @@ export default function List(props) {
 
                       {values.is_borrow === '1' && (
                           <>
+                          <label className="block text-grey-darker text-sm my-2 text-red-500" for="shop_name" >Fill any one</label>
                             <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="shop_name">Shop Name</label>
                           <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
