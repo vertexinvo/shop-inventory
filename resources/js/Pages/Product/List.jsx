@@ -90,10 +90,10 @@ export default function List(props) {
               </label>
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-              Name
+              Product Info
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-            Specifications
+            Specification
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
             Purchase price
@@ -107,20 +107,9 @@ export default function List(props) {
             <th class="p-4 text-left text-sm font-semibold text-black">
             Is Borrow
             </th>
+          
             <th class="p-4 text-left text-sm font-semibold text-black">
-            Shop Name
-            </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
-            Shop Address
-            </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
-            Shop Phone
-            </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
-            Shop Email
-            </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
-              Active
+              Stock Status
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
               Action
@@ -174,40 +163,38 @@ export default function List(props) {
       </td>
             <td class=" text-sm">
               <div class="flex items-center cursor-pointer w-max">
-              <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" />
+              {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
                 <div class="ml-4 ">
                   <p class="text-sm text-black ">{product.name}</p>
-                  <p class="text-xs text-gray-500 mt-0.5">{product.model} </p>
+                  {product.model && <p class="text-xs text-gray-500 mt-0.5">{product.model} </p>}
                 </div>
               </div>
             </td>
             <td class="p-4 text-sm text-black">
-              {product.specifications}
+              {product.specifications || 'N/A'}
             </td>
             <td class="p-4 text-sm text-black">
-              {product.purchase_price}
+              {product.purchase_price || 'N/A'}
             </td>
             <td class="p-4 text-sm text-black">
-              {product.selling_price}
+              {product.selling_price || 'N/A'}
             </td>
             <td class="p-4 text-sm text-black">
-              {product.warranty_period}
+              {product.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+              {product.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.warranty_period} - {product.warranty_type} </p>)}
             </td>
             <td class="p-4 text-sm text-black">
-              {product.is_borrow}
+            {product.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+            {product.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
+              <ul class="list-disc">
+                {product.shop_name && <li>Name: {product.shop_name}</li>}
+                {product.shop_address && <li>Address: {product.shop_address}</li>}
+                {product.shop_phone && <li>Phone: {product.shop_phone}</li>}
+                {product.shop_email && <li>Email: {product.shop_email}</li>}
+              </ul>
+            </p>)}
             </td>
-            <td class="p-4 text-sm text-black">
-              {product.shop_name}
-            </td>
-            <td class="p-4 text-sm text-black">
-              {product.shop_address}
-            </td>
-            <td class="p-4 text-sm text-black">
-              {product.shop_phone}
-            </td>
-            <td class="p-4 text-sm text-black">
-              {product.shop_email}
-            </td>
+           
             <td class="p-4">
               <label class="relative cursor-pointer">
               <input type="checkbox" onClick={() => router.put(route('product.status', product.id))} class="sr-only peer" checked={product.status} />

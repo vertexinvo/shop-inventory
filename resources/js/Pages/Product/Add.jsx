@@ -27,16 +27,17 @@ export default function Add(props) {
     <div className="container mx-auto py-3 px-5">
       <div className="w-full lg:w-full mx-auto bg-white rounded shadow">
           <Formik  enableReinitialize initialValues={{ name: '', model: '', specifications: '' , purchase_price: '', selling_price: '', warranty_period: '', is_borrow: '0', shop_name: '', shop_address: '', shop_phone: '', shop_email: ''
-            ,identity_type : 'none',identity_value : '',warranty_type: 'month',is_warranty : '0',
+            ,identity_type : 'none',identity_value : '',warranty_type: 'none',is_warranty : '0',
             categories: [],
-            brands: [],
+            brands: [],quantity:1
           }}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
             model: Yup.string(),
-            specifications: Yup.string().required('Specifications is required'),
+            specifications: Yup.string(),
             purchase_price: Yup.number().required('Purchase price is required'),
             selling_price: Yup.number().required('Selling price is required'),
+            quantity: Yup.number().required('Quantity is required'),
             
 
             is_borrow: Yup.string().required('Is borrow is required'),
@@ -52,9 +53,10 @@ export default function Add(props) {
                 otherwise: scheme=>scheme.required()
             }),
             is_warranty: Yup.string().required('Is warranty is required'),
+            //check warranty_type not equal to none if is_warranty is 1
             warranty_type: Yup.string().when('is_warranty', {
                 is: '1',
-                then: scheme=>scheme.required() ,
+                then: scheme=>scheme.required().notOneOf(['none'], 'Warranty type cannot be "none"') ,
                 otherwise: scheme=>scheme.optional()
             }),
             warranty_period: Yup.number().when('is_warranty', {
@@ -65,7 +67,8 @@ export default function Add(props) {
            
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            router.post(route('product.store'), values, { onSuccess: () => resetForm() , preserveState: false ,replace: true });
+            
+            router.post(route('product.store'), values, { onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
           }}
           >
 
@@ -102,6 +105,11 @@ export default function Add(props) {
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Selling Price</label>
                           <Field name="selling_price" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="selling_price" type="number" step="0.01" placeholder="Enter selling price" />
                           <ErrorMessage name="selling_price" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+                      <div className="mb-4">
+                          <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Quantity</label>
+                          <Field name="quantity" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="quantity" type="number" min="1" placeholder="Enter quantity" />
+                          <ErrorMessage name="quantity" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
@@ -152,16 +160,17 @@ export default function Add(props) {
                         <>
                          <div className="flex mb-4">
                           <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="warranty_period">Warranty Type </label>
+                          <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Type </label>
                           <Field name="warranty_type" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_type" as="select" >
-                            <option value="year">Year</option>
-                            <option value="month">Month</option>
-                            <option value="day">Day</option>
+                            <option value=''>Select Warranty Type</option>
+                            <option value='years'>Year</option>
+                            <option value="months">Month</option>
+                            <option value="days">Day</option>
                         </Field>
                           <ErrorMessage name="warranty_type" component="div" className="text-red-500 text-xs mt-1" />
                           </div> 
                           <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="warranty_period">Warranty Period </label>
+                          <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Period </label>
                           <Field name="warranty_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_period" type="number" step="1" placeholder="Enter warranty period" />
                           <ErrorMessage name="warranty_period" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
@@ -188,27 +197,27 @@ export default function Add(props) {
 
                       {values.is_borrow === '1' && (
                           <>
-                          <label className="block text-grey-darker text-sm my-2 text-red-500" for="shop_name" >Fill any one</label>
+                          <label className="block text-grey-darker text-sm my-2 text-red-500" for="shop_name" >Fill atleast one</label>
                             <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="shop_name">Shop Name</label>
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Shop Name</label>
                           <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
                           <ErrorMessage name="shop_name" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="shop_address">Shop Address</label>
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Shop Address</label>
                           <Field as="textarea" name="shop_address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_address" rows="3" placeholder="Enter shop address"></Field>
                           <ErrorMessage name="shop_address" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       
                       <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="shop_phone">Shop Phone</label>
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_phone">Shop Phone</label>
                           <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_phone" type="number" placeholder="Enter purchase price" />
                           <ErrorMessage name="shop_phone" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="shop_email">Shop Email</label>
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Shop Email</label>
                           <Field name="shop_email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_email" type="email" placeholder="Enter shop email" />
                           <ErrorMessage name="shop_email" component="div" className="text-red-500 text-xs mt-1" />
                       </div>

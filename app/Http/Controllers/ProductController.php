@@ -53,14 +53,53 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+  
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'model' => 'nullable',
             'categories' => 'nullable',
             'brands' => 'nullable',
             'specifications' => 'nullable',
-
+            'purchase_price' => 'required',
+            'selling_price' => 'required',
+            'warranty_period' => 'nullable',
+            'is_borrow' => 'required',
+            'shop_name' => 'nullable',
+            'shop_address' => 'nullable',
+            'shop_phone' => 'nullable',
+            'shop_email' => 'nullable',
+            'identity_type' => 'nullable',
+            'identity_value' => 'nullable',
+            'warranty_type' => 'nullable',
+            'is_warranty' => 'required',
+            'quantity' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return back();
+        }
+        if($request->is_borrow == 1){
+            if(empty($request->shop_name) && empty($request->shop_address) && empty($request->shop_phone) && empty($request->shop_email)) {
+                session()->flash('error', 'At least one shop detail is required');
+                return back();
+            }
+        }
+        $data = $request->except(['categories', 'brands']);
+        $product = Product::create($data);
+        if ($request->categories) {
+            $product->categories()->sync($request->categories);
+        }
+        if ($request->brands) {
+            $product->brands()->sync($request->brands);
+        }
+        //manage stock
+        $product->stock()->create([
+            'quantity' => $request->quantity,
+        ]);
+
+        session()->flash('message', 'Product created successfully');
+        return back();
     }
 
     /**
@@ -82,7 +121,11 @@ class ProductController extends Controller
 
     public function status(Request $request, string $id)
     {
-        // 
+        $product = Product::with('stock')->find($id);
+        dd($product);
+        $product->stock()->update(['status' => !$product->stock->status]);
+        session()->flash('message', 'Product status updated successfully');
+        return back();
         
     }
 
