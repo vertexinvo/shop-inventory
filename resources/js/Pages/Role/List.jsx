@@ -34,7 +34,6 @@ console.log(roles);
                 <div className="flex flex-col px-4 max-w-7xl mt-10 mx-auto w-full">
                     <div className="w-full">
                         <div className="flex flex-col md:flex-row justify-between items-center mt-6 mb-4 px-4 sm:px-8">
-                            <h3 className="text-lg font-bold">Role</h3>
                             <div className="flex space-x-2 mt-2 md:mt-0">
                                 <button
                                     onClick={() => setIsModalOpen(true)}
