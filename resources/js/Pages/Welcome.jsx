@@ -8,11 +8,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
   <div class="bg-[#f8f9ff] text-black text-[15px]">
     <header class='py-4 px-4 sm:px-10 z-50 min-h-[70px]'>
       <div class='relative flex flex-wrap items-center gap-4'>
-        <a href="javascript:void(0)"><img src="https://readymadeui.com/readymadeui.svg" alt="logo" class='w-36' />
-        </a>
+      <a href="javascript:void(0)"><img  src="images/vertexinvo_full_logo.png" className=" block h-10 w-auto fill-current text-gray-800" />    </a>
 
-        <div id="collapseMenu"
-          class='max-lg:hidden lg:!block max-lg:fixed max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 z-50'>
+        <div id="collapseMenu " 
+          className='items-center mx-auto max-lg:hidden lg:!block max-lg:fixed max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 z-50'>
           <button id="toggleClose" class='lg:hidden fixed top-2 right-4 z-[100] rounded-full bg-white p-3'>
             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 fill-black" viewBox="0 0 320.591 320.591">
               <path
@@ -32,22 +31,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
             </li>
             <li class='max-lg:border-b max-lg:py-3 px-3'>
               <a href='javascript:void(0)'
-                class='hover:text-blue-600 text-blue-600 block font-semibold transition-all'>Home</a>
+                class='hover:text-cyan-800 text-cyan-900 block font-semibold transition-all'>Home</a>
             </li>
             <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#team'
-                class='hover:text-blue-600 block font-semibold transition-all'>Team</a>
+                class='hover:text-cyan-800 block font-semibold transition-all'>Team</a>
             </li>
             <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#features'
-                class='hover:text-blue-600 block font-semibold transition-all'>Feature</a>
+                class='hover:text-cyan-800 block font-semibold transition-all'>Feature</a>
             </li>
            
             <li class='max-lg:border-b max-lg:py-3 px-3'><a href='#plan'
-                class='hover:text-blue-600 block font-semibold transition-all'>Plan</a>
+                class='hover:text-cyan-800 block font-semibold transition-all'>Plan</a>
             </li>
           </ul>
         </div>
 
-        <div class='flex ml-auto'>
+        <div class='flex '>
           <Link href={route('login')} class='px-6 py-3 rounded-xl text-white bg-cyan-900 transition-all hover:bg-cyan-800'>Login</Link>
           <button id="toggleOpen" class='lg:hidden ml-7'>
             <svg class="w-7 h-7" fill="#000" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -60,27 +59,62 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
       </div>
     </header>
 
-    <div class="relative">
-      <div class="px-4 sm:px-10">
-        <div class="mt-16 max-w-4xl mx-auto text-center relative z-10">
-          <h1 class="md:text-6xl text-4xl font-extrabold mb-6 md:!leading-[75px]">Build Landing Pages with Typeform
-            Integration</h1>
-          <p class="text-base">Embark on a gastronomic journey with our curated dishes, delivered promptly to your
-            doorstep. Elevate your dining experience today. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          <div class="mt-10">
-            <button class='px-6 py-3 rounded-xl text-white bg-cyan-900 transition-all hover:bg-cyan-800'>Get started
-              today</button>
+    <div className="relative">
+      <div className="px-4 sm:px-10">
+        <div className="mt-16 max-w-4xl mx-auto text-center relative z-10">
+          {/* Headline and description */}
+          <h1 className="md:text-6xl text-4xl font-extrabold mb-6 md:!leading-[75px] text-gray-900">
+            Build Landing Pages with Typeform Integration
+          </h1>
+          <p className="text-base text-gray-600">
+            Embark on a gastronomic journey with our curated dishes, delivered
+            promptly to your doorstep. Elevate your dining experience today. Lorem
+            ipsum dolor sit amet, consectetur adipiscing elit. Explore new culinary
+            delights with every order!
+          </p>
+
+          {/* Call to action button */}
+          <div className="mt-10">
+            <button className="px-6 py-3 rounded-xl text-white bg-cyan-900 transition-all hover:bg-cyan-800">
+              Get started today
+            </button>
           </div>
         </div>
-        <hr class="my-12 border-gray-300" />
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
-          <img src="https://readymadeui.com/google-logo.svg" class="w-28 mx-auto" alt="google-logo" />
-          <img src="https://readymadeui.com/facebook-logo.svg" class="w-28 mx-auto" alt="facebook-logo" />
-          <img src="https://readymadeui.com/linkedin-logo.svg" class="w-28 mx-auto" alt="linkedin-logo" />
-          <img src="https://readymadeui.com/pinterest-logo.svg" class="w-28 mx-auto" alt="pinterest-logo" />
+
+        {/* Divider */}
+        <hr className="my-12 border-gray-300" />
+
+        {/* Brand Logos (Optional) */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
+          <img
+            src="https://readymadeui.com/google-logo.svg"
+            className="w-28 mx-auto"
+            alt="google-logo"
+          />
+          <img
+            src="https://readymadeui.com/facebook-logo.svg"
+            className="w-28 mx-auto"
+            alt="facebook-logo"
+          />
+          <img
+            src="https://readymadeui.com/linkedin-logo.svg"
+            className="w-28 mx-auto"
+            alt="linkedin-logo"
+          />
+          <img
+            src="https://readymadeui.com/pinterest-logo.svg"
+            className="w-28 mx-auto"
+            alt="pinterest-logo"
+          />
         </div>
       </div>
-      <img src="https://readymadeui.com/bg-effect.svg" class="absolute inset-0 w-full h-full" />
+
+      {/* Background Image (Optional) */}
+      <img
+        src="https://readymadeui.com/bg-effect.svg"
+        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        alt="background"
+      />
     </div>
 
     <div class="px-4 sm:px-10" id="features">
@@ -212,22 +246,22 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
       </div>
 
       <div class="mt-32 bg-white rounded-md px-4 py-12">
-        <div class="grid md:grid-cols-2 justify-center items-center gap-10 max-w-7xl mx-auto">
-          <div class="max-md:text-center">
-            <h2 class="md:text-4xl text-3xl font-extrabold mb-6">Unlock Premium Features</h2>
-            <p>Veniam proident aute magna anim excepteur et ex consectetur velit ullamco veniam minim aute sit. Elit
-              occaecat officia et laboris Lorem minim. Officia do aliqua adipisicing ullamco in.</p>
-            <button type="button"
-              class="px-6 py-3 rounded-xl text-white bg-cyan-900 transition-all hover:bg-cyan-800 mt-10">
-              Try it today
-            </button>
+          <div class="grid md:grid-cols-2 justify-center items-center gap-10 max-w-7xl mx-auto">
+              <div class="max-md:text-center">
+                  <h2 class="md:text-4xl text-3xl font-extrabold mb-6">Unlock Advanced Inventory Management</h2>
+                  <p>Streamline your operations with our robust inventory management system. Effortlessly track stock levels, manage orders, and make data-driven decisions to optimize your business. Say goodbye to stockouts and overstocking, and ensure smooth inventory operations at all times.</p>
+                  <button type="button"
+                      class="px-6 py-3 rounded-xl text-white bg-cyan-900 transition-all hover:bg-cyan-800 mt-10">
+                      Try it today
+                  </button>
+              </div>
+              <div>
+                  <img src="images/Advanced_Inventory_Management_logo.jpg" alt="Inventory Management Features"
+                      class="w-full mx-auto" />
+              </div>
           </div>
-          <div>
-            <img src="https://www.faria.org/wp-content/uploads/2021/03/activity-management.png" alt="Premium Benefits"
-              class="w-full mx-auto" />
-          </div>
-        </div>
       </div>
+
 
       <div class="mt-32">
         <div class="mb-16 text-center">

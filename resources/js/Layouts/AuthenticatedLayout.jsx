@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { CiSettings } from 'react-icons/ci';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BiLogOut } from "react-icons/bi";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -40,9 +41,9 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="flex">
                                 <div className="flex shrink-0 items-center gap-2">
                                     <Link href="/">
-                                        <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
+                                        <img  src="images/logo.png" className="block h-16 w-16 fill-current text-gray-800" />
                                     </Link>
-                                    <p>Admin Dashboard</p>
+                                    <p>Inventory Management</p>
                                 </div>
 
                                 {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -226,6 +227,13 @@ export default function AuthenticatedLayout({ header, children }) {
                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" fill="currentColor" viewBox="0 0 18 20">
                     <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
                     <span class="ms-3">Settings</span>
+                </NavLink>
+        
+        </div>
+        <div>            
+                <NavLink  method="post" href={route('logout')} className="mt-1 flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" fill="currentColor" viewBox="0 0 18 20">
+                    <BiLogOut className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
+                    <span class="ms-3">Log Out</span>
                 </NavLink>
         
         </div>

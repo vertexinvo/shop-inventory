@@ -48,15 +48,16 @@ export default function List(props) {
 
               >
                 <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                  <div>
+                  <div className="relative">
                     <Field
                       name="search"
                       type="text"
                       placeholder="Search..."
                       className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
+                   
+                   />
                   </div>
-
+                  
                   <button
                     type="submit"
                     className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
