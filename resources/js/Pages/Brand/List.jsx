@@ -151,7 +151,7 @@ export default function List(props) {
                 </div>
               </div>
             </td>
-            <td class="p-4 text-sm text-black">
+            <td class="py-2 px-4 border-b text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
               {brand.description}
             </td>
             

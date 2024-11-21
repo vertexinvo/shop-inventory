@@ -29,8 +29,13 @@ export default function Add(props) {
           <Formik  enableReinitialize initialValues={{ name: '', description:'', parent_id: ''}}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
-            description: Yup.string().required('Description is required'),
-           
+            description: Yup.string()
+            .required('Description is required')
+            .test('word-limit', 'Description cannot exceed 50 words', (value) => {
+              if (!value) return true;
+              const wordCount = value.trim().split(/\s+/).length;
+              return wordCount <= 50;
+            }),
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
             router.post(route('category.store'), values, { onSuccess: () => resetForm() , preserveState: false ,replace: true });
@@ -51,7 +56,7 @@ export default function Add(props) {
                       </div>
                       <div className="mb-4">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Description</label>
-                              <Field name="description" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="description" type="text" placeholder="Enter description"/>
+                              <Field as="textarea" rows="4" name="description" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="description" type="text" placeholder="Enter description"/>
                               <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
@@ -66,7 +71,7 @@ export default function Add(props) {
                                       </option>
                                   ))}
                               </Field>
-                              <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
+                              <ErrorMessage name="parent_id" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
                       
 
