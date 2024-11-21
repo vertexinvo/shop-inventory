@@ -130,6 +130,9 @@ export default function List(props) {
               Stock Status
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
+              Supplier Invoice
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
               Action
             </th>
           </tr>
@@ -226,6 +229,13 @@ export default function List(props) {
                 </div>
               </label>
             </td>
+
+            <td class="p-4 text-sm text-black">
+              {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+              {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
+            </td>
+
+
             <td class="p-4">
               <button onClick={() => router.get(route('product.edit', product.id))}  class="mr-4" title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"

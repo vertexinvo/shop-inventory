@@ -79,6 +79,10 @@ class ProductController extends Controller
             'warranty_type' => 'nullable',
             'is_warranty' => 'required',
             'quantity' => 'required',
+            'supplier_invoice_no' => 'nullable',
+            'description' => 'nullable',
+            'weight' => 'nullable',
+            'is_supplier' => 'required',
         ]);
 
         if ($validator->fails()) {

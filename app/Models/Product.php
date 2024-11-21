@@ -25,6 +25,10 @@ class Product extends Model
         'identity_value',
         'warranty_type',
         'is_warranty',
+        'supplier_invoice_no',
+        'description',
+        'weight',
+        'is_supplier',
     ];
 
     public function categories()

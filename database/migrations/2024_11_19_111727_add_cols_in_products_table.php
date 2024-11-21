@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->boolean('is_warranty')->default(false);
-            $table->enum('identity_type', ['sku', 'emi' ,'none'])->default('none');
+            $table->enum('identity_type', ['sku', 'imei' ,'none','serial'])->default('none');
             $table->string('identity_value')->nullable();
             $table->enum('warranty_type', ['days', 'months' ,'years' ,'none'])->default('none');
+            $table->string('supplier_invoice_no')->nullable();
+            $table->longText('description')->nullable();
+            $table->float('weight')->nullable();
+            $table->boolean('is_supplier')->default(false);
         });
     }
 
