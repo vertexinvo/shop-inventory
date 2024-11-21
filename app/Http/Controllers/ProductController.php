@@ -16,9 +16,15 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index( Request $request)
     {
-        $products = Product::with('categories', 'stock', 'brands')->latest()->paginate(10);
+        $search = $request->search ?? '';
+        $products = Product::with('categories', 'stock', 'brands')->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('model', 'like', "%$search%")
+                  ->orWhere('identity_value', 'like', "%$search%");
+        })->latest()->paginate(10);
+
         return Inertia::render('Product/List', compact('products'));
     }
 
@@ -96,6 +102,7 @@ class ProductController extends Controller
         //manage stock
         $product->stock()->create([
             'quantity' => $request->quantity,
+            'status' => 1
         ]);
 
         session()->flash('message', 'Product created successfully');
@@ -122,7 +129,6 @@ class ProductController extends Controller
     public function status(Request $request, string $id)
     {
         $product = Product::with('stock')->find($id);
-        dd($product);
         $product->stock()->update(['status' => !$product->stock->status]);
         session()->flash('message', 'Product status updated successfully');
         return back();

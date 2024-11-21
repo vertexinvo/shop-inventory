@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
+        $categories = Category::with('parent')->latest()->paginate(10);
         return Inertia::render('Category/List', compact('categories'));
     }
 
@@ -26,7 +26,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Category/Add');
+        $categories = Category::all();
+        return Inertia::render('Category/Add', compact('categories'));
     }
 
     /**
@@ -37,6 +38,7 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories,name',
             'description' => 'required',
+            'parent_id' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -61,8 +63,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        $category = Category::find($category->id);
-        return Inertia::render('Category/Edit', compact('category'));
+        $categories = Category::all();
+        $category = Category::with('parent')->find($category->id);
+        return Inertia::render('Category/Edit', compact('category', 'categories'));
     }
 
     /**
@@ -74,6 +77,7 @@ class CategoryController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories,name,'.$category->id,
             'description' => 'required',
+            'parent_id' => 'nullable',
         ]);
 
         if ($validator->fails()) {

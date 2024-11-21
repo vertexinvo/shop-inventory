@@ -92,6 +92,9 @@ export default function List(props) {
               Name
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
+              Parent Category
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
               Description
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
@@ -152,7 +155,10 @@ export default function List(props) {
               </div>
             </td>
             <td class="p-4 text-sm text-black">
-              {category.description}
+              {category?.parent?.name || 'N/A'}
+            </td>
+            <td class="p-4 text-sm text-black">
+              {category.description || 'N/A'}
             </td>
             
            

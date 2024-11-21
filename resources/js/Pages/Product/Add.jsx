@@ -141,6 +141,80 @@ export default function Add(props) {
                           <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
+
+                      <div className="mb-4">
+                        <label className="block text-grey-darker text-sm font-bold mb-2">
+                            Identity Type
+                        </label>
+                        <div className="grid grid-cols-3 gap-2 w-1/2">
+                            {/* Option 1: None */}
+                            <div>
+                                <Field
+                                    className="hidden"
+                                    id="radio_1"
+                                    value="none"
+                                    type="radio"
+                                    name="identity_type"
+                                />
+                                <label
+                                     className={`flex flex-col p-4 border-2 cursor-pointer ${
+                                        values.identity_type === "none" ? "border-blue-500" : "border-gray-400"
+                                    }`}
+                                    htmlFor="radio_1"
+                                >
+                                    <span className="text-xs font-semibold uppercase">None</span>
+                                </label>
+                            </div>
+
+                            {/* Option 2: Emi */}
+                            <div>
+                                <Field
+                                    className="hidden"
+                                    id="radio_2"
+                                    value="emi"
+                                    type="radio"
+                                    name="identity_type"
+                                />
+                                <label
+                                    className={`flex flex-col p-4 border-2 cursor-pointer ${
+                                        values.identity_type === "emi" ? "border-blue-500" : "border-gray-400"
+                                    }`}
+                                    htmlFor="radio_2"
+                                >
+                                    <span className="text-xs font-semibold uppercase">Emi</span>
+                                </label>
+                            </div>
+
+                            {/* Option 3: Sku */}
+                            <div>
+                                <Field
+                                    className="hidden"
+                                    id="radio_3"
+                                    value="sku"
+                                    type="radio"
+                                    name="identity_type"
+                                />
+                                <label
+                                   className={`flex flex-col p-4 border-2 cursor-pointer ${
+                                    values.identity_type === "sku" ? "border-blue-500" : "border-gray-400"
+                                }`}
+                                    htmlFor="radio_3"
+                                >
+                                    <span className="text-xs font-semibold uppercase">Sku</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    {values.identity_type !== 'none' && (
+                         <div className=" mr-1 mb-4 ">
+                         <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">{values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} </label>
+                         <Field name="identity_value" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder={"Enter " + values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} />
+                         <ErrorMessage name="identity_value" component="div" className="text-red-500 text-xs mt-1" />
+                         </div> 
+                      )}
+
+
                  
 
                       <div className="mb-4">
@@ -155,6 +229,15 @@ export default function Add(props) {
                           </div>
                           <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
+
+                 
+
+
+                     
+                    
+
+
+
 
                       {values.is_warranty === '1' && (
                         <>

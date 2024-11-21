@@ -42,21 +42,33 @@ export default function List(props) {
                 >
                   Create
                 </button>
-
                 <Formik
                   enableReinitialize
                   initialValues={{ search: '' }}
+                  onSubmit={(values) => {
+                    router.get(route('product.index'), { search: values.search }, { preserveState: true });
+                  }}
                 
                 >
+                  {( { values ,setFieldValue, handleSubmit, errors, touched }) => (
+                    
                   <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div>
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      />
-                    </div>
+                    <div className="relative">
+                    <Field
+                      name="search"
+                      type="text"
+                      placeholder="Search..."
+                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {setFieldValue('search', ''); router.get(route('product.index'))}}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    >
+                      ✖
+                    </button>
+                  </div>
+
 
                     <button
                       type="submit"
@@ -66,7 +78,9 @@ export default function List(props) {
                     </button>
 
                   </Form>
+                    )}
                 </Formik>
+               
               </div>
             </div>
 
@@ -107,6 +121,10 @@ export default function List(props) {
             <th class="p-4 text-left text-sm font-semibold text-black">
             Is Borrow
             </th>
+
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Quantity
+            </th>
           
             <th class="p-4 text-left text-sm font-semibold text-black">
               Stock Status
@@ -128,7 +146,8 @@ export default function List(props) {
           )}
         {products.data.map((product, index) => (
          
-          <tr   class="odd:bg-gray-50">
+         <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-300' : ''}`}>
+
            <td key={product.id} className="pl-4 w-8">
         <input
           id={`checkbox-${product.id}`}
@@ -165,8 +184,9 @@ export default function List(props) {
               <div class="flex items-center cursor-pointer w-max">
               {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
                 <div class="ml-4 ">
-                  <p class="text-sm text-black ">{product.name}</p>
-                  {product.model && <p class="text-xs text-gray-500 mt-0.5">{product.model} </p>}
+                  <p class="text-sm text-black ">Name : {product.name}</p>
+                  {product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{product.model} </p>}
+                  {product.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
                 </div>
               </div>
             </td>
@@ -194,10 +214,13 @@ export default function List(props) {
               </ul>
             </p>)}
             </td>
+            <td class="p-4 text-sm text-black">
+              {product?.stock?.quantity || 0}
+            </td>
            
             <td class="p-4">
               <label class="relative cursor-pointer">
-              <input type="checkbox" onClick={() => router.put(route('product.status', product.id))} class="sr-only peer" checked={product.status} />
+              <input type="checkbox" onClick={() => router.put(route('product.status', product.id),{},{preserveScroll: true})} class="sr-only peer" checked={product?.stock?.status || false} />
               <div
                   class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]">
                 </div>

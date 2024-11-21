@@ -9,7 +9,7 @@ import * as Yup from 'yup';
 import Select from 'react-select';
  
 export default function Add(props) {
-  const { auth } = props
+  const { auth,categories } = props
   return (
       <AuthenticatedLayout
           category={auth.category}
@@ -26,7 +26,7 @@ export default function Add(props) {
   <div className="w-full bg-grey-lightest">
     <div className="container mx-auto py-3 px-5">
       <div className="w-full lg:w-full mx-auto bg-white rounded shadow">
-          <Formik  enableReinitialize initialValues={{ name: '', description:''}}
+          <Formik  enableReinitialize initialValues={{ name: '', description:'', parent_id: ''}}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
             description: Yup.string().required('Description is required'),
@@ -52,6 +52,20 @@ export default function Add(props) {
                       <div className="mb-4">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Description</label>
                               <Field name="description" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="description" type="text" placeholder="Enter description"/>
+                              <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+
+
+                          <div className="mb-4">
+                              <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Parent Category</label>
+                              <Field name="parent_id" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="description" as="select">
+                                  <option value="">Select Parent Category</option>
+                                  {categories.map((category) => (
+                                      <option key={category.id} value={category.id}>
+                                          {category.name}
+                                      </option>
+                                  ))}
+                              </Field>
                               <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
                       
