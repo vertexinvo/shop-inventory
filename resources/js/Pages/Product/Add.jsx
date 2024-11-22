@@ -19,7 +19,7 @@ export default function Add(props) {
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
 
-  const [suppliercode , setSuppliercode] = useState(code || '');
+
 
   return (
       <AuthenticatedLayout
@@ -115,9 +115,11 @@ export default function Add(props) {
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="specifications">Specifications  (optional)</label>
-                          <Field name="specifications"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="specifications" type="text" placeholder="Enter specifications" />
+                          <ReactQuill theme="snow"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
+
                           <ErrorMessage name="specifications" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
+
                       
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="specifications">Description  (optional)</label>
@@ -491,6 +493,14 @@ export default function Add(props) {
                           <RiAiGenerate onClick={generateCode} size={40} color="blue" />
                           </div>
                           <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
+
+                          {values.code !== '' &&
+                            <button  onClick={()=>{
+                              //copy to clipboard
+                              navigator.clipboard.writeText(values.code);
+                              toast.success('Copied to clipboard');
+                            }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
+                          }
                       </div>
 
                       <div className="flex items-center justify-start gap-1 mt-8">
@@ -589,13 +599,9 @@ export default function Add(props) {
                 <Form>
                     
                       <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2">Supplier Code</label>
-                          <div className="flex gap-2 items-center">
+                          <label className="block text-grey-darker text-sm  mb-2">Supplier Code</label>                     
                           <Field name="supplier_code"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
-                         {suppliercode !== '' && 
-                          <MdContentPaste  onClick={()=>setFieldValue('supplier_code',suppliercode)} size={40} color="blue" />
-                         }
-                          </div>
+
                           <ErrorMessage name="supplier_code" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 

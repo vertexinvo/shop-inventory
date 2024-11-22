@@ -2,12 +2,16 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { CiSettings } from 'react-icons/ci';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiLogOut } from "react-icons/bi";
+import ConfirmModal from '@/Components/ConfirmModal';
+import { HiMiniShoppingCart } from "react-icons/hi2";
+import { TbInvoice } from "react-icons/tb";
+import { GoGraph } from "react-icons/go";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -26,6 +30,8 @@ export default function AuthenticatedLayout({ header, children }) {
             console.log(flash.error);
         }
     }, [flash]);
+
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
     return (
 
@@ -221,9 +227,28 @@ export default function AuthenticatedLayout({ header, children }) {
                     <span class="ms-3">Products</span>
                 </NavLink>
             </li>
+            <li>
+                <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <HiMiniShoppingCart className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
+                    <span class="ms-3">Orders</span>
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <TbInvoice  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
+                    <span class="ms-3">Supplier Invoices</span>
+                </NavLink>
+            </li>
+            <li>
+                <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <GoGraph   className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
+                    <span class="ms-3">Sales</span>
+                </NavLink>
+            </li>
         </ul>
+        
 <hr />
-        <div>            
+        <div className='mt-1'>            
                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" fill="currentColor" viewBox="0 0 18 20">
                     <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
                     <span class="ms-3">Settings</span>
@@ -231,10 +256,10 @@ export default function AuthenticatedLayout({ header, children }) {
         
         </div>
         <div>            
-                <NavLink  method="post" href={route('logout')} className="mt-1 flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group" fill="currentColor" viewBox="0 0 18 20">
+                <button onClick={() =>setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group " fill="currentColor" viewBox="0 0 18 20">
                     <BiLogOut className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white'/>
                     <span class="ms-3">Log Out</span>
-                </NavLink>
+                </button>
         
         </div>
     </div>
@@ -252,11 +277,20 @@ export default function AuthenticatedLayout({ header, children }) {
                             </header>
                         )}
 
-                        <main>{children}</main>
+                        <main>{children}
+                            
+                        </main>
+
+                        
                     </div>
                 </div>
 
             </div>
+
+
+            <ConfirmModal   isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} title="Are you sure you want to logout?" onConfirm={()=>{
+                router.post(route('logout'))
+}}/>
 
         </>
     );
