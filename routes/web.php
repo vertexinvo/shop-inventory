@@ -60,3 +60,5 @@ require __DIR__.'/dashboard/setting.php';
 require __DIR__.'/dashboard/role.php';
 require __DIR__.'/dashboard/category.php';
 require __DIR__.'/dashboard/brand.php';
+require __DIR__.'/dashboard/supplier.php';
+require __DIR__.'/dashboard/supplierinvoice.php';

@@ -41,9 +41,9 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="flex">
                                 <div className="flex shrink-0 items-center gap-2">
                                     <Link href="/">
-                                        <img  src="images/logo.png" className="block h-16 w-16 fill-current text-gray-800" />
+                                        <img  src="/images/logo2.png" className="block h-10 w-30 fill-current text-gray-800" />
                                     </Link>
-                                    <p>Inventory Management</p>
+                                  
                                 </div>
 
                                 {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

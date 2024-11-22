@@ -25,13 +25,15 @@ class ProductController extends Controller
                   ->orWhere('identity_value', 'like', "%$search%");
         })->latest()->paginate(10);
 
-        return Inertia::render('Product/List', compact('products'));
+    
+
+        return Inertia::render('Product/List', compact('products' ));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $categorydata = Category::all(['id', 'name'] );
 
@@ -51,7 +53,11 @@ class ProductController extends Controller
             ];
         });
 
-        return Inertia::render('Product/Add', compact('categories', 'brands'));
+
+        $code = session('code') ?? '';
+        $invoicecode = session('invoiceCode') ?? '';
+
+        return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode'));
     }
 
     /**
@@ -79,7 +85,7 @@ class ProductController extends Controller
             'warranty_type' => 'nullable',
             'is_warranty' => 'required',
             'quantity' => 'required',
-            'supplier_invoice_no' => 'nullable',
+            'supplier_invoice_no' => 'nullable|exists:supplierinvoices,invoice_no',
             'description' => 'nullable',
             'weight' => 'nullable',
             'is_supplier' => 'required',
@@ -95,6 +101,7 @@ class ProductController extends Controller
                 return back();
             }
         }
+        
         $data = $request->except(['categories', 'brands']);
         $product = Product::create($data);
         if ($request->categories) {

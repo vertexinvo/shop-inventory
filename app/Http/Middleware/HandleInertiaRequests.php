@@ -32,6 +32,7 @@ class HandleInertiaRequests extends Middleware
     {
         $message = Session::get('message');
         $error = Session::get('error');
+        
         Session::forget(['message', 'error']); 
 
         return [

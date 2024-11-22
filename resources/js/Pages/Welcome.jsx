@@ -8,7 +8,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
   <div class="bg-[#f8f9ff] text-black text-[15px]">
     <header class='py-4 px-4 sm:px-10 z-50 min-h-[70px]'>
       <div class='relative flex flex-wrap items-center gap-4'>
-      <a href="javascript:void(0)"><img  src="images/vertexinvo_full_logo.png" className=" block h-10 w-auto fill-current text-gray-800" />    </a>
+      <a href="javascript:void(0)"><img  src="/images/logo2.png" className=" block h-10 w-auto fill-current text-gray-800" />    </a>
 
         <div id="collapseMenu " 
           className='items-center mx-auto max-lg:hidden lg:!block max-lg:fixed max-lg:before:fixed max-lg:before:bg-black max-lg:before:opacity-50 max-lg:before:inset-0 max-lg:before:z-50 z-50'>
