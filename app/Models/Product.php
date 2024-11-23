@@ -29,6 +29,7 @@ class Product extends Model
         'description',
         'weight',
         'is_supplier',
+        'customfield',
     ];
 
     public function categories()

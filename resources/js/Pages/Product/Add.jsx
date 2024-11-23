@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
 import React, { useState } from 'react'
 import { FaWallet , FaEdit} from 'react-icons/fa'
 import { MdContentPaste, MdDelete } from 'react-icons/md';
@@ -41,7 +41,7 @@ export default function Add(props) {
             ,identity_type : 'none',identity_value : '',warranty_type: 'none',is_warranty : '0',
             categories: [],
             brands: [],quantity:1,
-            description: '',supplier_invoice_no:'', weight: '',is_supplier: '0'
+            description: '',supplier_invoice_no:'', weight: '',is_supplier: '0',customfield:[]
           }}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
@@ -394,6 +394,73 @@ export default function Add(props) {
 
                       )}
 
+
+
+                  <div className="mb-4">
+                          <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Other Details (optional)</label>
+                          <FieldArray name="customfield">
+                            {({ push, remove }) => (
+                              <div>
+                                {values.customfield && values.customfield.length > 0 ? (
+                                  values.customfield.map((field, index) => (
+                                    <div key={index} className="flex items-center gap-2 mb-2">
+                                      <div className="flex flex-col gap-2">
+                                        <Field
+                                          name={`customfield.${index}.name`}
+                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                          type="text"
+                                          placeholder="Enter field name"
+                                        />
+                                        <ErrorMessage
+                                          name={`customfield.${index}.name`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </div>
+
+                                      <div className="flex flex-col gap-2">
+                                        <Field
+                                          name={`customfield.${index}.value`}
+                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                          type="text"
+                                          placeholder="Enter field value"
+                                        />
+                                        <ErrorMessage
+                                          name={`customfield.${index}.value`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </div>
+
+                                      <div className="flex items-center justify-center gap-2">
+                                        <button
+                                          type="button"
+                                          onClick={() => remove(index)}
+                                          className="text-red-500 text-sm underline hover:text-red-700"
+                                        >
+                                          Remove
+                                        </button>
+                                      </div>
+                                    </div>
+                                  ))
+                                ) : (
+                                  <p className="text-gray-500 text-sm">No custom fields added.</p>
+                                )}
+
+                                <button
+                                  type="button"
+                                  onClick={() => push({ name: '', value: '' })}
+                                  className="mt-2 text-blue-500 text-sm underline hover:text-blue-700"
+                                >
+                                  Add Field
+                                </button>
+                              </div>
+                            )}
+                          </FieldArray>
+
+                          
+                          <ErrorMessage name="customfield" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
 
                     
     

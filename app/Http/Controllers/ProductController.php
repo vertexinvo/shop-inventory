@@ -89,7 +89,9 @@ class ProductController extends Controller
             'description' => 'nullable',
             'weight' => 'nullable',
             'is_supplier' => 'required',
+            'customfield' => 'nullable',
         ]);
+      
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
@@ -103,6 +105,7 @@ class ProductController extends Controller
         }
         
         $data = $request->except(['categories', 'brands']);
+        $data['customfield'] = json_encode($request->customfield);
         $product = Product::create($data);
         if ($request->categories) {
             $product->categories()->sync($request->categories);
