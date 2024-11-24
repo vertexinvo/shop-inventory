@@ -39,7 +39,14 @@ Route::get('/dashboard', function () {
         $query->where('quantity', 0);
     })->count();
 
-    return Inertia::render('Dashboard',compact('totalUser','totalProductInStock','totalProductOutofStock'));
+
+    $outOfStockProductrecord = Product::whereHas('stock', function ($query) {
+        $query->where('quantity', 0);
+    })->with('categories', 'stock', 'brands')->latest()->paginate(6);
+
+
+
+    return Inertia::render('Dashboard',compact('totalUser','totalProductInStock','totalProductOutofStock','outOfStockProductrecord'));
 })->name('dashboard');
 
 

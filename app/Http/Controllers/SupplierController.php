@@ -7,14 +7,21 @@ use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $search = $request->search ?? '';
+
+        $suppliers = Supplier::where('person_name', 'like', "%$search%")->orWhere('code', 'like', "%$search%")
+        ->orWhere('contact', 'like', "%$search%")->latest()->paginate(10);
+
+   
+        return Inertia::render('Supplier/List', compact('suppliers'));
     }
 
     /**
@@ -22,7 +29,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        
+        $code = session('code') ?? '';
+        return Inertia::render('Supplier/Add', compact('code'));
     }
 
     /**
@@ -76,7 +84,8 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //
+        $code = session('code') ?? '';
+        return Inertia::render('Supplier/Edit', compact('supplier', 'code'));
     }
 
     /**
@@ -84,7 +93,21 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'person_name' => 'required',
+            'contact' => 'required',
+            'address' => 'nullable',
+            'email' => 'nullable',
+            'code' => 'required|unique:suppliers,code,' . $supplier->id,
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+        }
+            $data = $request->all();
+            $supplier->update($data);
+            session()->flash('message', 'Supplier updated successfully');
     }
 
     /**
@@ -92,6 +115,17 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        //
+        $supplier->delete();
+        session()->flash('message', 'Supplier deleted successfully');
+        return back();
+    }
+
+    
+    public function bulkdestroy(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        Supplier::whereIn('id', $ids)->delete();
+        session()->flash('message', 'Supplier deleted successfully');
+        return back();
     }
 }

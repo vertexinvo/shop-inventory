@@ -557,12 +557,12 @@ export default function Add(props) {
                           <div className="flex gap-2 items-center">
                           <Field name="code"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
                          
-                          <RiAiGenerate onClick={generateCode} size={40} color="blue" />
+                          <RiAiGenerate onClick={() => generateCode()} size={40} color="blue" />
                           </div>
                           <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
 
                           {values.code !== '' &&
-                            <button  onClick={()=>{
+                            <button  type='button' onClick={()=>{
                               //copy to clipboard
                               navigator.clipboard.writeText(values.code);
                               toast.success('Copied to clipboard');

@@ -8,5 +8,5 @@ use Inertia\Inertia;
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('supplier', SupplierController::class);  
     Route::post('supplier/generatecode', [SupplierController::class, 'generatecode'])->name('supplier.generatecode');
-    // Route::post('brand/bulkdestroy', [SupplierController::class, 'bulkdestroy'])->name('brand.bulkdestroy');
+    Route::post('supplier/bulkdestroy', [SupplierController::class, 'bulkdestroy'])->name('supplier.bulkdestroy');
 });

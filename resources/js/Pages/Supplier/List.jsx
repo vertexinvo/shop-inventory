@@ -6,19 +6,21 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
+import { BiCopy } from 'react-icons/bi';
+import { toast } from 'react-toastify';
+import { LiaFileInvoiceSolid } from "react-icons/lia";
 
 export default function List(props) {
-  const {auth ,  products } = props
+  const {auth ,  suppliers } = props
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
-  console.log(products);
   return (
       <AuthenticatedLayout
           Product={auth.Product}
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>}
+          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier</h2>}
       >
           <Head title="Product" />
 
@@ -37,7 +39,7 @@ export default function List(props) {
                     </button>
                 }
                 <button
-                  onClick={() => router.get(route('product.create'))}
+                  onClick={() => router.get(route('supplier.create'))}
                   className="text-white py-2 px-4 rounded-lg bg-blue-500 hover:bg-blue-600"
                 >
                   Create
@@ -46,7 +48,7 @@ export default function List(props) {
                   enableReinitialize
                   initialValues={{ search: '' }}
                   onSubmit={(values) => {
-                    router.get(route('product.index'), { search: values.search }, { preserveState: true });
+                    router.get(route('supplier.index'), { search: values.search }, { preserveState: true });
                   }}
                 
                 >
@@ -62,7 +64,7 @@ export default function List(props) {
                     />
                     <button
                       type="button"
-                      onClick={() => {setFieldValue('search', ''); router.get(route('product.index'))}}
+                      onClick={() => {setFieldValue('search', ''); router.get(route('supplier.index'))}}
                       className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                     >
                       ✖
@@ -91,8 +93,8 @@ export default function List(props) {
           <tr>
             <th class="pl-4 w-8">
               <input id="checkbox" type="checkbox" class="hidden peer" 
-               onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
-               checked={selectId.length === products.data.length}
+               onChange={(e) => setSelectId(e.target.checked ? suppliers.data.map((item) => item.id) : [])}
+               checked={selectId.length === suppliers.data.length}
               />
               <label for="checkbox"
                 class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
@@ -104,32 +106,32 @@ export default function List(props) {
               </label>
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-              Product Info
-            </th>
-           
-            <th class="p-4 text-left text-sm font-semibold text-black">
-            Purchase price
+              Supplier Info
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-            Selling price
+              Contact
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-            Warranty period
+              Address
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-            Is Borrow
+              Code
             </th>
 
             <th class="p-4 text-left text-sm font-semibold text-black">
-              Quantity
-            </th>
-          
-            <th class="p-4 text-left text-sm font-semibold text-black">
-              Stock Status
+              Total Invoices
             </th>
             <th class="p-4 text-left text-sm font-semibold text-black">
-              Supplier Invoice
+              Total Amount
             </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Total Amount Paid
+            </th>
+
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Total Amount Pending
+            </th>
+       
             <th class="p-4 text-left text-sm font-semibold text-black">
               Action
             </th>
@@ -138,34 +140,34 @@ export default function List(props) {
 
         <tbody class="whitespace-nowrap">
 
-          {products.data.length === 0 && (
+          {suppliers.data.length === 0 && (
             <tr>
               <td colSpan="12" className="p-4 text-center">
-                No products found.
+                No Supplier found.
               </td>
             </tr>
           )}
-        {products.data.map((product, index) => (
+        {suppliers.data.map((item, index) => (
          
-         <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : ''}`}>
+         <tr className={`${item?.total_amount_pending > 0 ? 'bg-red-100' : ''}`}>
 
 <td className="pl-4 w-8">
         <input
-          id={`checkbox-${product.id}`} // Unique id for each checkbox
+          id={`checkbox-${item.id}`} // Unique id for each checkbox
           type="checkbox"
           className="hidden peer"
-          value={product.id}
+          value={item.id}
           onChange={(e) => {
             if (e.target.checked) {
-              setSelectId((prev) => [...prev, product.id]); // Add user ID to state
+              setSelectId((prev) => [...prev, item.id]); // Add user ID to state
             } else {
-              setSelectId((prev) => prev.filter((id) => id !== product.id)); // Remove user ID from state
+              setSelectId((prev) => prev.filter((id) => id !== item.id)); // Remove user ID from state
             }
           }}
-          checked={selectId.includes(product.id)} // Bind state to checkbox
+          checked={selectId.includes(item.id)} // Bind state to checkbox
         />
         <label
-          htmlFor={`checkbox-${product.id}`} // Match label with checkbox id
+          htmlFor={`checkbox-${item.id}`} // Match label with checkbox id
           className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden"
         >
           <svg
@@ -179,59 +181,51 @@ export default function List(props) {
           </svg>
         </label>
       </td>
+
+
             <td class=" text-sm">
               <div class="flex items-center cursor-pointer w-max">
-              {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
                 <div class="ml-4 ">
-                  <p class="text-sm text-black ">Name : {product.name}</p>
-                  {product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{product.model} </p>}
-                  {product.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
+                  <p class="text-sm text-black ">Person Name : {item.person_name}</p>
+                  {item.email && <p class="text-xs text-gray-500 mt-0.5">Email :{item.email} </p>}
+                
                 </div>
               </div>
             </td>
-           
+
             <td class="p-4 text-sm text-black">
-              {product.purchase_price || 'N/A'}
-            </td>
-            <td class="p-4 text-sm text-black">
-              {product.selling_price || 'N/A'}
-            </td>
-            <td class="p-4 text-sm text-black">
-              {product.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-              {product.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.warranty_period} - {product.warranty_type} </p>)}
-            </td>
-            <td class="p-4 text-sm text-black">
-            {product.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-            {product.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
-              <ul class="list-disc">
-                {product.shop_name && <li>Name: {product.shop_name}</li>}
-                {product.shop_address && <li>Address: {product.shop_address}</li>}
-                {product.shop_phone && <li>Phone: {product.shop_phone}</li>}
-                {product.shop_email && <li>Email: {product.shop_email}</li>}
-              </ul>
-            </p>)}
-            </td>
-            <td class="p-4 text-sm text-black">
-              {product?.stock?.quantity || 0}
-            </td>
-           
-            <td class="p-4">
-              <label class="relative cursor-pointer">
-              <input type="checkbox" onClick={() => router.put(route('product.status', product.id),{},{preserveScroll: true})} class="sr-only peer" checked={product?.stock?.status || false} />
-              <div
-                  class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]">
-                </div>
-              </label>
+              {item?.contact || 'N/A'}
             </td>
 
             <td class="p-4 text-sm text-black">
-              {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-              {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
+              {item?.address || 'N/A'}
+            </td>
+            <td class="p-4 text-sm text-black flex items-center">
+              {item?.code || 'N/A'} <BiCopy size={20} onClick={() => {navigator.clipboard.writeText(item.code);toast.success('Copied!');}} className="ml-2 cursor-pointer" />
             </td>
 
+            <td class="p-4 text-sm text-black">
+              {item?.total_supplierinvoices || 'N/A'}
+            </td>
+            <td class="p-4 text-sm text-black">
+              {item?.total_amount || 'N/A'}
+            </td>
+        
+            {/* total_total_amount_paid */}
+            <td class="p-4 text-sm text-black">
+              {item?.total_amount_paid || 'N/A'}
+            </td>
+            <td class="p-4 text-sm text-black">
+              {item?.total_amount_pending || 'N/A'}
+            </td>
 
-            <td class="p-4">
-              <button onClick={() => router.get(route('product.edit', product.id))}  class="mr-4" title="Edit">
+          
+
+            <td class="p-4 flex items-center">
+            <button onClick={() => router.get(route('supplier.edit', item.id))}  class="mr-4" title="Edit">
+            <LiaFileInvoiceSolid className=' fill-blue-500 hover:fill-blue-700' size={25}/>
+            </button>
+              <button onClick={() => router.get(route('supplier.edit', item.id))}  class="mr-4" title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
                   viewBox="0 0 348.882 348.882">
                   <path
@@ -242,7 +236,7 @@ export default function List(props) {
                     data-original="#000000" />
                 </svg>
               </button>
-              <button onClick={() => setIsDeleteModalOpen(product)}  title="Delete">
+              <button onClick={() => setIsDeleteModalOpen(item)}  title="Delete">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                   <path
                     d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -260,7 +254,7 @@ export default function List(props) {
 
     </div>
     <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-              <span class="flex items-center col-span-3"> Showing {products.from} - {products.to} of {products.total} </span>
+              <span class="flex items-center col-span-3"> Showing {suppliers.from} - {suppliers.to} of {suppliers.total} </span>
               <span class="col-span-2"></span>
             
               <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
@@ -268,7 +262,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => suppliers.links[0].url ? router.get(suppliers.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -276,9 +270,9 @@ export default function List(props) {
                     </li>
                     {(() => {
     let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
-    const activeIndex = products.links.findIndex((l) => l.active);
+    const activeIndex = suppliers.links.findIndex((l) => l.active);
 
-    return products.links
+    return suppliers.links
         .slice(1, -1) // Exclude the first and last items
         .filter((link, index, array) => {
             const currentIndex = parseInt(link.label, 10); // Parse label as number
@@ -335,7 +329,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => suppliers.links[suppliers.links.length - 1].url && window.location.assign(suppliers.links[suppliers.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -353,7 +347,7 @@ export default function List(props) {
 
         <ConfirmModal   isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={()=>{
  
- router.delete(route('product.destroy',isDeleteModalOpen.id),{
+ router.delete(route('supplier.destroy',isDeleteModalOpen.id),{
     preserveScroll: true,
         preserveState: true,
 })
@@ -363,9 +357,9 @@ setIsDeleteModalOpen(null)
 
 
 
-<ConfirmModal   isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these products?" onConfirm={()=>{
+<ConfirmModal   isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these supplier?" onConfirm={()=>{
  
- router.post(route('product.bulkdestroy'), { ids: selectId.join(',') }, {
+ router.post(route('supplier.bulkdestroy'), { ids: selectId.join(',') }, {
   onSuccess: () => {
       setIsBulkDeleteModalOpen(false);
       setSelectId([]);
