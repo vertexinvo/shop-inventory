@@ -714,7 +714,8 @@ export default function Edit(props) {
                 
               />
               {values.invoice_no !== '' &&
-               <button  onClick={()=>{
+               <button type='button' onClick={()=>{
+                
                 //copy to clipboard
                 navigator.clipboard.writeText(values.invoice_no);
                 toast.success('Copied to clipboard');

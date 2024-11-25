@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\Supplierinvoice;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -45,8 +47,9 @@ Route::get('/dashboard', function () {
     })->with('categories', 'stock', 'brands')->latest()->paginate(6);
 
 
+    $supplierBalanceRecord = Supplier::withPendingAmount()->paginate(6);
 
-    return Inertia::render('Dashboard',compact('totalUser','totalProductInStock','totalProductOutofStock','outOfStockProductrecord'));
+    return Inertia::render('Dashboard',compact('totalUser','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord'));
 })->name('dashboard');
 
 

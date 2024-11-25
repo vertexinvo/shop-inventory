@@ -25,11 +25,26 @@ class Supplier extends Model
         'total_amount'
     ];
 
+    public function supplierswhospendinginvoices()
+    {
+        return $this->hasMany(Supplierinvoice::class)->where('status', 'pending');
+    }
+
+    // Define a scope for suppliers with pending invoices and non-null pending amounts
+    public function scopeWithPendingAmount($query)
+    {
+        return $query->whereHas('supplierinvoices', function ($query) {
+            $query->where('status', 'pending');
+        });
+    }
+
     public function supplierinvoices()
     {
         return $this->hasMany(Supplierinvoice::class);
     }
 
+
+   
 
     //get total supplierinvoices
     public function getTotalSupplierInvoicesAttribute()

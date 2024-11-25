@@ -7,6 +7,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Supplier;
+use App\Models\Supplierinvoice;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -52,12 +54,18 @@ class ProductController extends Controller
                 'label' => $item->name ,
             ];
         });
+        
+        $suppliers = Supplier::all();
 
+        $supplierinvoices = [];
+        if($request->supplier_id){
+            $supplierinvoices = Supplierinvoice::where('supplier_id', $request->supplier_id)->get();
+        }
 
         $code = session('code') ?? '';
         $invoicecode = session('invoiceCode') ?? '';
 
-        return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode'));
+        return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode','suppliers','supplierinvoices'));
     }
 
     /**

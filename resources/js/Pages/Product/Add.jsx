@@ -15,10 +15,13 @@ import { toast } from 'react-toastify';
 
  
 export default function Add(props) {
-  const { auth , categories , brands,code,invoicecode } = props
+  const { auth , categories , brands,code,invoicecode,suppliers,supplierinvoices } = props
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
 
+  const [notremember, setNotRemember] = useState(false);
+
+  const [supplierId, setSupplierId] = useState('');
 
 
   return (
@@ -379,15 +382,48 @@ export default function Add(props) {
                       </div>
 
 
-                      {values.is_supplier === '1' && (
+                      {values.is_supplier === '1' &&  (
 
                             <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing)</label>
+                        
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {setNotRemember(!notremember);
+                             setFieldValue('supplier_invoice_no', '')
+                          }} className='text-blue-500 text-sm underline hover:text-blue-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
+                          {!notremember ? (
                           <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
+                          ) : (
+                            <>
+                            <select onChange={(e) => {
+                              setFieldValue('supplier_invoice_no', '')
+                              setSupplierId(e.target.value)
+                              router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
+                            )
+                              }}  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
+                            <option value="">Select supplier</option>
+                            {suppliers.map((supplier) => (
+                              <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
+                            ))}
+                            </select>
+
+                           {supplierinvoices.length > 0 && (
+                              <Field as="select"  name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
+                              <option value="">Select supplier invoice no</option>
+                              {supplierinvoices.map((item) => (
+                                <option key={item.id} value={item.invoice_no}>{item.invoice_no }</option>
+                              ))}
+                              </Field>
+                           )} 
+                           
+
+
+                            </>
+                          )
+                        
+                        }
                           <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
                             <div className="flex items-center justify-start gap-2 mt-2">
-                         <button onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new invoice</button>
-                         <button onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
+                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new invoice</button>
+                         <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
                      
                           </div>
                       </div>
@@ -692,7 +728,7 @@ export default function Add(props) {
                 
               />
               {values.invoice_no !== '' &&
-               <button  onClick={()=>{
+               <button type='button'  onClick={()=>{
                 //copy to clipboard
                 navigator.clipboard.writeText(values.invoice_no);
                 toast.success('Copied to clipboard');
