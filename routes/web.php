@@ -72,3 +72,4 @@ require __DIR__.'/dashboard/category.php';
 require __DIR__.'/dashboard/brand.php';
 require __DIR__.'/dashboard/supplier.php';
 require __DIR__.'/dashboard/supplierinvoice.php';
+require __DIR__.'/dashboard/order.php';
