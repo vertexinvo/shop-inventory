@@ -205,18 +205,18 @@ export default function List(props) {
             </td>
 
             <td class="p-4 text-sm text-black">
-              {item?.total_supplierinvoices || 'N/A'}
+              {item?.total_supplierinvoices || 0}
             </td>
             <td class="p-4 text-sm text-black">
-              {item?.total_amount || 'N/A'}
+              {item?.total_amount || 0}
             </td>
         
             {/* total_total_amount_paid */}
             <td class="p-4 text-sm text-black">
-              {item?.total_amount_paid || 'N/A'}
+              {item?.total_amount_paid || 0}
             </td>
             <td class="p-4 text-sm text-black">
-              {item?.total_amount_pending || 'N/A'}
+              {item?.total_amount_pending || 0}
             </td>
 
           
