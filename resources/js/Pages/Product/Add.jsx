@@ -15,11 +15,7 @@ import { toast } from 'react-toastify';
 
 
 export default function Add(props) {
-<<<<<<< Updated upstream
   const { auth , categories , brands,code,invoicecode,suppliers,supplierinvoices } = props
-=======
-  const { auth, categories, brands, code, invoicecode } = props
->>>>>>> Stashed changes
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
 
@@ -375,19 +371,49 @@ export default function Add(props) {
 
                             <div className="mb-4">
 
-                              <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing)</label>
-                              {/* create a button dont remamber */}
-                              <button className='text-blue-500 text-sm underline hover:text-blue-700'>Don't Remamber</button>
-                              <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
-                              <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
-                              <div className="flex items-center justify-start gap-2 mt-2">
-                                <button onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new invoice</button>
-                                <button onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
-
-                              </div>
-                            </div>
+<label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {setNotRemember(!notremember);
+                             setFieldValue('supplier_invoice_no', '')
+                          }} className='text-blue-500 text-sm underline hover:text-blue-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
+                          {!notremember ? (
+                          <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
+                          ) : (
+                            <>
+                            <select onChange={(e) => {
+                              setFieldValue('supplier_invoice_no', '')
+                              setSupplierId(e.target.value)
+                              router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
+                            )
+                              }}  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
+                            <option value="">Select supplier</option>
+                            {suppliers.map((supplier) => (
+                              <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
+                            ))}
+                            </select>
+                           {supplierinvoices.length > 0 && (
+                              <Field as="select"  name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
+                              <option value="">Select supplier invoice no</option>
+                              {supplierinvoices.map((item) => (
+                                <option key={item.id} value={item.invoice_no}>{item.invoice_no }</option>
+                              ))}
+                              </Field>
+                           )} 
+                           
+                            </>
+                          
 
                           )}
+
+<ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
+                            <div className="flex items-center justify-start gap-2 mt-2">
+                       
+                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new invoice</button>
+                         <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
+
+                          </div>
+                          </div>
+                          )}
+
+
 
 
 
@@ -468,6 +494,7 @@ export default function Add(props) {
                             </button>
                           </div>
                         </div>
+                        
                       </Form>
                     )}
                   </Formik>
@@ -529,307 +556,6 @@ export default function Add(props) {
                       <ErrorMessage name="person_name" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
 
-<<<<<<< Updated upstream
-                    {values.identity_type !== 'none' && (
-                         <div className=" mr-1 mb-4 ">
-                         <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">{values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} </label>
-                         <Field name="identity_value" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder={"Enter " + values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} />
-                         <ErrorMessage name="identity_value" component="div" className="text-red-500 text-xs mt-1" />
-                         </div> 
-                      )}
-
-
-                 
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
-                          <div className="flex items-center">
-                              <label className="mr-4">
-                                  <Field name="is_warranty" type="radio" value="1" className="mr-2" /> Yes
-                              </label>
-                              <label>
-                                  <Field name="is_warranty" type="radio" value="0" className="mr-2" /> No
-                              </label>
-                          </div>
-                          <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                 
-
-
-                     
-                    
-
-
-
-
-                      {values.is_warranty === '1' && (
-                        <>
-                         <div className="flex mb-4">
-                          <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Type </label>
-                          <Field name="warranty_type" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_type" as="select" >
-                            <option value=''>Select Warranty Type</option>
-                            <option value='years'>Year</option>
-                            <option value="months">Month</option>
-                            <option value="days">Day</option>
-                        </Field>
-                          <ErrorMessage name="warranty_type" component="div" className="text-red-500 text-xs mt-1" />
-                          </div> 
-                          <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Period </label>
-                          <Field name="warranty_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_period" type="number" step="1" placeholder="Enter warranty period" />
-                          <ErrorMessage name="warranty_period" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
-                        
-                      </div>
-                     
-                      </>
-                      )}
-
-                      
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2">Is Borrow</label>
-                          <div className="flex items-center">
-                              <label className="mr-4">
-                                  <Field name="is_borrow" type="radio" value="1" className="mr-2" /> Yes
-                              </label>
-                              <label>
-                                  <Field name="is_borrow" type="radio" value="0" className="mr-2" /> No
-                              </label>
-                          </div>
-                          <ErrorMessage name="is_borrow" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      {values.is_borrow === '1' && (
-                          <>
-                          <label className="block text-grey-darker text-sm my-2 text-red-500" for="shop_name" >Fill atleast one</label>
-                            <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Shop Name</label>
-                          <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
-                          <ErrorMessage name="shop_name" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Shop Address</label>
-                          <Field as="textarea" name="shop_address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_address" rows="3" placeholder="Enter shop address"></Field>
-                          <ErrorMessage name="shop_address" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-                      
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_phone">Shop Phone</label>
-                          <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_phone" type="number" placeholder="Enter purchase price" />
-                          <ErrorMessage name="shop_phone" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Shop Email</label>
-                          <Field name="shop_email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_email" type="email" placeholder="Enter shop email" />
-                          <ErrorMessage name="shop_email" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-                          </>
-                      )}
-
-
-                <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2">Is Supplier</label>
-                          <div className="flex items-center">
-                              <label className="mr-4">
-                                  <Field name="is_supplier" type="radio" value="1" className="mr-2" /> Yes
-                              </label>
-                              <label>
-                                  <Field name="is_supplier" type="radio" value="0" className="mr-2" /> No
-                              </label>
-                          </div>
-                          <ErrorMessage name="is_supplier" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-
-                      {values.is_supplier === '1' &&  (
-
-                            <div className="mb-4">
-                        
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {setNotRemember(!notremember);
-                             setFieldValue('supplier_invoice_no', '')
-                          }} className='text-blue-500 text-sm underline hover:text-blue-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
-                          {!notremember ? (
-                          <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
-                          ) : (
-                            <>
-                            <select onChange={(e) => {
-                              setFieldValue('supplier_invoice_no', '')
-                              setSupplierId(e.target.value)
-                              router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
-                            )
-                              }}  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
-                            <option value="">Select supplier</option>
-                            {suppliers.map((supplier) => (
-                              <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
-                            ))}
-                            </select>
-
-                           {supplierinvoices.length > 0 && (
-                              <Field as="select"  name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
-                              <option value="">Select supplier invoice no</option>
-                              {supplierinvoices.map((item) => (
-                                <option key={item.id} value={item.invoice_no}>{item.invoice_no }</option>
-                              ))}
-                              </Field>
-                           )} 
-                           
-
-
-                            </>
-                          )
-                        
-                        }
-                          <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
-                            <div className="flex items-center justify-start gap-2 mt-2">
-                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new invoice</button>
-                         <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
-                     
-                          </div>
-                      </div>
-
-                      )}
-
-
-
-                  <div className="mb-4">
-                          <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Other Details (optional)</label>
-                          <FieldArray name="customfield">
-                            {({ push, remove }) => (
-                              <div>
-                                {values.customfield && values.customfield.length > 0 ? (
-                                  values.customfield.map((field, index) => (
-                                    <div key={index} className="flex items-center gap-2 mb-2">
-                                      <div className="flex flex-col gap-2">
-                                        <Field
-                                          name={`customfield.${index}.name`}
-                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          type="text"
-                                          placeholder="Enter field name"
-                                        />
-                                        <ErrorMessage
-                                          name={`customfield.${index}.name`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </div>
-
-                                      <div className="flex flex-col gap-2">
-                                        <Field
-                                          name={`customfield.${index}.value`}
-                                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                                          type="text"
-                                          placeholder="Enter field value"
-                                        />
-                                        <ErrorMessage
-                                          name={`customfield.${index}.value`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </div>
-
-                                      <div className="flex items-center justify-center gap-2">
-                                        <button
-                                          type="button"
-                                          onClick={() => remove(index)}
-                                          className="text-red-500 text-sm underline hover:text-red-700"
-                                        >
-                                          Remove
-                                        </button>
-                                      </div>
-                                    </div>
-                                  ))
-                                ) : (
-                                  <p className="text-gray-500 text-sm">No custom fields added.</p>
-                                )}
-
-                                <button
-                                  type="button"
-                                  onClick={() => push({ name: '', value: '' })}
-                                  className="mt-2 text-blue-500 text-sm underline hover:text-blue-700"
-                                >
-                                  Add Field
-                                </button>
-                              </div>
-                            )}
-                          </FieldArray>
-
-                          
-                          <ErrorMessage name="customfield" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                    
-    
-                      <div className="flex items-center justify-start gap-1 mt-8">
-                    <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                        Submit
-                    </button>
-                    <button  onClick={() => router.get(route('product.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
-                        Close
-                    </button>
-                </div>
-                  </div>
-                </Form>
-            )}
-                </Formik>
-              </div>
-            
-          </div>
-        </div>
-      </div>
-
-           
-    </div>
-  </div>
-
-  <Modal show={isNewSupplierModel} onClose={() => setIsNewSupplierModel(false)}>
-      <div className="overflow-y-auto max-h-[80vh]">
-        <div className="flex justify-center p-10">
-          <div className="text-2xl font-medium text-[#5d596c] ">
-            Create New Supplier
-          </div>
-        </div>
-
-        <div className="px-10 mb-5">
-            <Formik enableReinitialize initialValues={{ person_name: '',email: '', contact: '', address: '',code:'' }}
-            validationSchema={Yup.object({
-              person_name: Yup.string().required('Name is required'),
-              email: Yup.string().email('Invalid email address'),
-              contact: Yup.string().required('Contact is required'),
-              address: Yup.string(),
-              code: Yup.string().required('Code is required'),
-            })}
-            onSubmit={(values, { setSubmitting }) => {
-              router.post(route('supplier.store'), values, {
-                onSuccess: () => {
-                  setIsNewSupplierModel(false);
-                },
-                preserveScroll: true,
-                preserveState: true,
-              });
-
-            } }
-            >
-                {({ isSubmitting, values, errors,setFieldValue, }) => { 
-                    
-                    const generateCode =  () => {
-                        router.post(route('supplier.generatecode'),{}, {
-                           onSuccess: (response) => {
-                               setFieldValue('code', code);
-                           },
-                           preserveScroll: true,
-                           preserveState: true
-                       });
-                    }
-                    
-                    return (
-                <Form>
-=======
->>>>>>> Stashed changes
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Supplier Address</label>
                       <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier address" />
@@ -987,54 +713,9 @@ export default function Add(props) {
                         component="div"
                         className="text-red-500 text-xs mt-1"
 
-<<<<<<< Updated upstream
-                      <div className="mb-4">
-              <label className="block text-grey-darker text-sm mb-2">
-                Invoice No
-              </label>
-              <div className="flex gap-2 items-center">
-              <Field
-                name="invoice_no"
-                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                type="text"
-                placeholder="Enter invoice no"
-              />
-               <RiAiGenerate  onClick={()=>generateInvoiceNo()} size={40} color="blue" />
-              </div>
-              <ErrorMessage
-                name="invoice_no"
-                component="div"
-                className="text-red-500 text-xs mt-1"
-                
-              />
-              {values.invoice_no !== '' &&
-               <button type='button'  onClick={()=>{
-                //copy to clipboard
-                navigator.clipboard.writeText(values.invoice_no);
-                toast.success('Copied to clipboard');
-               }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
-            }
-            </div>
-                      {/* Invoice Date */}
-            <div className="mb-4">
-              <label className="block text-grey-darker text-sm mb-2">
-                Invoice Date
-              </label>
-              <Field
-                name="invoice_date"
-                className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                type="date"
-              />
-              <ErrorMessage
-                name="invoice_date"
-                component="div"
-                className="text-red-500 text-xs mt-1"
-              />
-            </div>
-=======
                       />
                       {values.invoice_no !== '' &&
-                        <button onClick={() => {
+                        <button type="button" onClick={() => {
                           //copy to clipboard
                           navigator.clipboard.writeText(values.invoice_no);
                           toast.success('Copied to clipboard');
@@ -1057,7 +738,6 @@ export default function Add(props) {
                         className="text-red-500 text-xs mt-1"
                       />
                     </div>
->>>>>>> Stashed changes
 
                     {/* Due Date */}
                     <div className="mb-4">
