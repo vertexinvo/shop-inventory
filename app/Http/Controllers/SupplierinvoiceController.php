@@ -115,8 +115,11 @@ class SupplierinvoiceController extends Controller
     {
       
     
+        return Inertia::render('SupplierInvoice', [
+            'invoiceData' => $invoice
+        ]);
     }
-        
+       
 
     /**
      * Show the form for editing the specified resource.
