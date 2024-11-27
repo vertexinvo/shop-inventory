@@ -7,6 +7,6 @@ use Inertia\Inertia;
 
 Route::middleware(['auth'])->prefix('dashboard')->group(function () {
     Route::resource('supplier', SupplierController::class);  
-    Route::post('supplier/generatecode', [SupplierController::class, 'generatecode'])->name('supplier.generatecode');
+    Route::get('supplier/invoices/{id}', [SupplierController::class, 'invoices'])->name('supplier.invoices');
     Route::post('supplier/bulkdestroy', [SupplierController::class, 'bulkdestroy'])->name('supplier.bulkdestroy');
 });

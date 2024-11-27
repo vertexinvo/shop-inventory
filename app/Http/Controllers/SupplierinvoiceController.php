@@ -111,13 +111,9 @@ class SupplierinvoiceController extends Controller
      */
                 // get the supplier id and display the invoice from supplierinvoice table
 
-    public function show(Request $request,Supplierinvoice $supplierinvoice)
+    public function show(Supplierinvoice $supplierinvoice)
     {
-        // find the supplier id
-        dd($request -> supplier_id);
-        $supplier = Supplierinvoice::where('supplier_id', $supplierinvoice->supplier_id)->first();
-        // dd($supplier);
-        return Inertia::render('Supplier/Invoice', compact('supplierinvoice', 'supplier'));
+      
     
     }
         

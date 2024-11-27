@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Supplier;
 use App\Http\Requests\StoreSupplierRequest;
 use App\Http\Requests\UpdateSupplierRequest;
+use App\Models\Supplierinvoice;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -60,6 +61,13 @@ class SupplierController extends Controller
             Supplier::create($data);
             session()->flash('message', 'Supplier created successfully');
         
+    }
+    public function invoices(Request $request,$id){
+          // find the supplier id
+          dd($request->id);
+          $supplier = Supplierinvoice::where('supplier_id', $supplierinvoice->supplier_id)->first();
+          // dd($supplier);
+          return Inertia::render('Supplier/Invoice', compact('supplierinvoice', 'supplier'));
     }
 
     /**
