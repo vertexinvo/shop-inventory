@@ -6,6 +6,8 @@ use App\Models\Supplierinvoice;
 use App\Http\Requests\StoreSupplierinvoiceRequest;
 use App\Http\Requests\UpdateSupplierinvoiceRequest;
 use App\Models\Supplier;
+use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class SupplierinvoiceController extends Controller
@@ -107,10 +109,18 @@ class SupplierinvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Supplierinvoice $supplierinvoice)
+                // get the supplier id and display the invoice from supplierinvoice table
+
+    public function show(Request $request,Supplierinvoice $supplierinvoice)
     {
-        //
+        // find the supplier id
+        dd($request -> supplier_id);
+        $supplier = Supplierinvoice::where('supplier_id', $supplierinvoice->supplier_id)->first();
+        // dd($supplier);
+        return Inertia::render('Supplier/Invoice', compact('supplierinvoice', 'supplier'));
+    
     }
+        
 
     /**
      * Show the form for editing the specified resource.

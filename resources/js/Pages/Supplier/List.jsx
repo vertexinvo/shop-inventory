@@ -222,7 +222,7 @@ export default function List(props) {
           
 
             <td class="p-4 flex items-center">
-            <button onClick={() => router.get(route('supplier.edit', item.id))}  class="mr-4" title="Edit">
+            <button onClick={() => router.get(route('supplier-invoice.show', item.id))}  class="mr-4" title="Edit">
             <LiaFileInvoiceSolid className=' fill-blue-500 hover:fill-blue-700' size={25}/>
             </button>
               <button onClick={() => router.get(route('supplier.edit', item.id))}  class="mr-4" title="Edit">

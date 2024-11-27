@@ -8,6 +8,8 @@ use App\Http\Requests\UpdateSupplierRequest;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+
+
 class SupplierController extends Controller
 {
     /**
@@ -68,7 +70,7 @@ class SupplierController extends Controller
         //
     }
 
-
+   
     public function generateCode()
     {
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';   
