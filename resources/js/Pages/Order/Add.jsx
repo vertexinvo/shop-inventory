@@ -13,12 +13,12 @@ import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 
+
  
 export default function Add(props) {
-  const { auth  } = props
+  const { auth ,users } = props
 
-
-
+  const [loading, setLoading] = useState(false);
 
   return (
       <AuthenticatedLayout
@@ -46,7 +46,7 @@ export default function Add(props) {
               method: '',
               cheque_no: '',
               cheque_date: '',
-              status : 'pending',
+              status : 'completed',
               bank_name: '',
               bank_branch: '',
               bank_account: '',
@@ -61,6 +61,7 @@ export default function Add(props) {
               installment_count: 0,
               installment_start_date: '',
               installment_end_date: '',
+              user_id :'',
       }}
             validationSchema={Yup.object({
                 name: Yup.string().required('Name is required'),
@@ -166,39 +167,88 @@ export default function Add(props) {
                     return (
                 <Form>
                     <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Name</label>
-                          <Field name="person_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter supplier name" />
-                          <ErrorMessage name="person_name" component="div" className="text-red-500 text-xs mt-1" />
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Customer (Existing)</label>
+                          <Select
+                            onChange={(e) => {
+                              setFieldValue('user_id', e.value);
+                              setFieldValue('name', e.label);
+                              setFieldValue('email', e.email);
+                              setFieldValue('phone', e.phone);
+                              setFieldValue('address', e.address);
+                            }}
+                            onInputChange={(e) => {
+                              setLoading(true); // Set loading to true before initiating the search
+                              setTimeout(() => {
+                                router.get(
+                                  route('order.create'),
+                                  { searchuser: e },
+                                  {
+                                    preserveScroll: true,
+                                    preserveState: true,
+                                  }
+                                );
+                                setLoading(false); // Turn off loading after the search is triggered
+                              }, 1000);
+                            }}
+                            isSearchable={true}
+                            isLoading={loading} // Dynamically set the loading state
+                            value={users.find((option) => option.value === values.user_id)}
+                            options={users}
+                            className="basic-single"
+                            classNamePrefix="select"
+                          />
+  
                       </div>
 
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Supplier Address</label>
-                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier address" />
-                          <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
+                      <div className="flex mb-4">
+                    
+                      <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm  mb-2" >Customer Name</label>
+                          <Field name="name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer name" />
+                          <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_contact">Supplier Contact</label>
-                          <Field name="contact" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="number" placeholder="Enter supplier contact" />
-                          <ErrorMessage name="contact" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Supplier Email</label>
-                          <Field name="email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="email" placeholder="Enter supplier email" />
+                      <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm  mb-2" >Customer Email</label>
+                          <Field name="email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer email" />
                           <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
-
-                      <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_code">Supplier Code</label>
-                        
-                          <Field name="code"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
-                         
-                          
-                          <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
-
-                        
                       </div>
+                      <div className="flex mb-4">
+                    
+                    <div className="w-1/2 mr-1">
+                        <label className="block text-grey-darker text-sm  mb-2" >Customer Phone</label>
+                        <Field name="phone" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer phone" />
+                        <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+                    <div className="w-1/2 mr-1">
+                        <label className="block text-grey-darker text-sm  mb-2" >Customer Address</label>
+                        <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer address" />
+                        <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+                    </div>
+
+                    <div className="mb-4">
+                    <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Payment Method</label>
+                    <Field name="method"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                        <option value="">Select Payment Method</option>
+                        <option value="cash">Cash</option>
+                        <option value="bank">Bank Transfer</option>
+                        <option value="cheque">Cheque</option>
+                        <option value="online">Online</option>
+                    </Field>
+                    <ErrorMessage name="method" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+                    <div className="mb-4">
+                    <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
+                    <Field name="status"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                        <option value="">Select Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </Field>
+                    <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+
+                     
 
                       <div className="flex items-center justify-start gap-1 mt-8">
                     <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
