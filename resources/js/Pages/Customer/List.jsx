@@ -108,6 +108,15 @@ export default function List(props) {
             <th class="p-4 text-left text-sm font-semibold text-black">
               Name
             </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Email
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Phone
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Address
+            </th>
             
             <th class="p-4 text-left text-sm font-semibold text-black">
               Active
@@ -164,15 +173,17 @@ export default function List(props) {
               <div class="flex items-center cursor-pointer w-max">
                 {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
                 <div class="ml-4">
-                  <p class="text-sm text-black">{user.name}</p>
-                  <p class="text-xs text-gray-500 mt-0.5">{user.email}</p>
+                  <p class="text-sm text-black">{user.name || 'N/A'}</p>
                 </div>
               </div>
             </td>
+            <td class="p-4 text-sm">{user.email || 'N/A'}</td>
+            <td class="p-4 text-sm">{user.phone || 'N/A' }</td>
+            <td class="p-4 text-sm">{user.address || 'N/A'}</td>
             
             <td class="p-4">
               <label class="relative cursor-pointer">
-                <input type="checkbox" onClick={() => router.put(route('user.status', user.id))} class="sr-only peer" checked={user.status} />
+                <input type="checkbox" onClick={() => router.put(route('customer.status', user.id))} class="sr-only peer" checked={user.status} />
                 <div
                   class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]">
                 </div>
