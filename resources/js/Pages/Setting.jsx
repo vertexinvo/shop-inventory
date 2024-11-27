@@ -18,19 +18,22 @@ export default function Setting(props) {
 
       <div className="flex flex-col px-4 mt-10 mx-auto w-full">
   <div className="w-full scale-100">
-    <div class="font-sans antialiased bg-grey-lightest">
-      <div class="flex justify-between space-x-4 container mx-auto py-3 px-5">
-        <div class="w-full scale-100">
-          <Link href={route('role.index')} class="w-full">
-            <button class="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2  p-4">
-              <div class="items-center">
-                <div class="flex justify-center mt-2">
-                  <img class="w-16 h-16 rounded-full" src="images/role_setting.jpg" alt="Role Setting" />
+    <div className="font-sans antialiased bg-grey-lightest">
+      {/* Container with grid layout */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 container mx-auto py-3 px-5">
+        
+        {/* First column */}
+        <div className="w-full scale-100">
+          <Link href={route('role.index')} className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-16 h-16 rounded-full" src="images/role_setting.jpg" alt="Role Setting" />
                 </div>
               </div>
-              <div class="flex flex-col items-center pb-5">
-                <div class="flex mt-4">
-                  <span class="py-2 px-4 ms-2 text-xl font-medium text-gray-900  rounded-lg border border-gray-200  focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
                     Roles
                   </span>
                 </div>
@@ -38,19 +41,19 @@ export default function Setting(props) {
             </button>
           </Link>
         </div>
-                
-        <div class="w-full scale-100">
-          <Link href={route('category.index')} class="w-full">
-            <button class="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2  p-4">
-         
-              <div class="items-center">
-                <div class="flex justify-center mt-2">
-                  <img class="w-16 h-16 rounded-full" src="images/role_category.jpg" alt="Role Setting" />
+
+        {/* Second column */}
+        <div className="w-full scale-100">
+          <Link href={route('category.index')} className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-16 h-16 rounded-full" src="images/role_category.jpg" alt="Role Setting" />
                 </div>
               </div>
-              <div class="flex flex-col items-center pb-5">
-                <div class="flex mt-4">
-                  <span class="py-2 px-4 ms-2 text-xl font-medium text-gray-900  rounded-lg border border-gray-200  focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
                     Categories
                   </span>
                 </div>
@@ -59,17 +62,18 @@ export default function Setting(props) {
           </Link>
         </div>
 
-        <div class="w-full scale-100">
-          <Link href={route('brand.index')} class="w-full">
-            <button class="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2  p-4">
-              <div class="items-center">
-                <div class="flex justify-center mt-2">
-                  <img class="w-16 h-16 rounded-full" src="images/role_brands.jpg" alt="Role Setting" />
+        {/* Third column */}
+        <div className="w-full scale-100">
+          <Link href={route('brand.index')} className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-16 h-16 rounded-full" src="images/role_brands.jpg" alt="Role Setting" />
                 </div>
               </div>
-              <div class="flex flex-col items-center pb-5">
-                <div class="flex mt-4">
-                  <span class="py-2 px-4 ms-2 text-xl font-medium text-gray-900  rounded-lg border border-gray-200  focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
                     Brands
                   </span>
                 </div>
@@ -77,11 +81,33 @@ export default function Setting(props) {
             </button>
           </Link>
         </div>
+      </div>
 
+      {/* Second row - Apply grid here for different layout */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto py-3 px-5">
+      <div className="w-full scale-100">
+          <Link href={route('user.index')} className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-16 h-16 rounded-full" src="images/user_managment.png" alt="Role Setting" />
+                </div>
+              </div>
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                    User Management
+                  </span>
+                </div>
+              </div>
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
 
 
 
