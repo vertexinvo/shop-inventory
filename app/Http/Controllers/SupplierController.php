@@ -27,9 +27,13 @@ class SupplierController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $code = session('code') ?? '';
+        // $code = session('code') ?? '';
+        $code = '';
+        if($request->code){
+            $code = $this->generateCode(); 
+        }
         return Inertia::render('Supplier/Add', compact('code'));
     }
 
@@ -76,15 +80,19 @@ class SupplierController extends Controller
             }
             $exists = Supplier::where('code', $code)->exists();
         } while ($exists); 
-        session(['code' => $code]);
+        return $code;
     }
     
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Supplier $supplier)
+    public function edit( Request $request, Supplier $supplier)
     {
-        $code = session('code') ?? '';
+        // $code = session('code') ?? '';
+        $code = '';
+        if($request->code){
+            $code = $this->generateCode(); 
+        }
         return Inertia::render('Supplier/Edit', compact('supplier', 'code'));
     }
 

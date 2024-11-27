@@ -62,8 +62,17 @@ class ProductController extends Controller
             $supplierinvoices = Supplierinvoice::where('supplier_id', $request->supplier_id)->get();
         }
 
-        $code = session('code') ?? '';
-        $invoicecode = session('invoiceCode') ?? '';
+
+        $code =  '';
+        if($request->code){
+            $supplier = new SupplierController();
+            $code = $supplier->generateCode();
+        }
+        $invoicecode =  '';
+        if($request->invoicecode){
+            $supplierinvoice = new SupplierinvoiceController();
+            $invoicecode = $supplierinvoice->generateInvoiceCode();
+        }
 
         return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode','suppliers','supplierinvoices'));
     }

@@ -539,9 +539,9 @@ export default function Add(props) {
               {({ isSubmitting, values, errors, setFieldValue, }) => {
 
                 const generateCode = () => {
-                  router.post(route('supplier.generatecode'), {}, {
+                  router.get(route('product.create'), {code : true}, {
                     onSuccess: (response) => {
-                      setFieldValue('code', code);
+                      setFieldValue('code', response.props.code);
                     },
                     preserveScroll: true,
                     preserveState: true
@@ -676,9 +676,9 @@ export default function Add(props) {
               {({ isSubmitting, values, errors, setFieldValue, }) => {
 
                 const generateInvoiceNo = () => {
-                  router.post(route('supplier-invoice.generateinvoicecode'), {}, {
+                  router.get(route('product.create'), {invoicecode : true}, {
                     onSuccess: (response) => {
-                      setFieldValue('invoice_no', invoicecode);
+                      setFieldValue('invoice_no', response.props.invoicecode);
                     },
                     preserveScroll: true,
                     preserveState: true

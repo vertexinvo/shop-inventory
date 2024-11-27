@@ -45,9 +45,8 @@ class SupplierinvoiceController extends Controller
             $randomNumber = mt_rand(10000, 99999);
             $invoiceCode = $prefix . '-' . $date . '-' . $randomNumber;
         }
-    
-        // Return the generated invoice code
-        session(['invoiceCode' => $invoiceCode]);
+
+        return $invoiceCode;
     }
     
     

@@ -57,9 +57,9 @@ export default function Add(props) {
                 {({ isSubmitting, values, errors,setFieldValue, }) => { 
                     
                     const generateCode =  () => {
-                        router.post(route('supplier.generatecode'),{}, {
+                        router.get(route('supplier.create'),{ code : true }, {
                            onSuccess: (response) => {
-                               setFieldValue('code', code);
+                               setFieldValue('code', response.props.code);
                            },
                            preserveScroll: true,
                            preserveState: true
