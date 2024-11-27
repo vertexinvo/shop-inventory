@@ -16,9 +16,12 @@ import { toast } from 'react-toastify';
 
  
 export default function Add(props) {
-  const { auth ,users } = props
+  const { auth ,users,items } = props
 
   const [loading, setLoading] = useState(false);
+
+  const [loading2, setLoading2] = useState(false);
+  const [selectedItems, setSelectedItems] = useState(null); 
 
   return (
       <AuthenticatedLayout
@@ -62,12 +65,14 @@ export default function Add(props) {
               installment_start_date: '',
               installment_end_date: '',
               user_id :'',
+              items: [],
       }}
             validationSchema={Yup.object({
                 name: Yup.string().required('Name is required'),
                 email: Yup.string().email('Invalid email address').required('Email is required'),
                 phone: Yup.string()
-                  .matches(/^\d{10}$/, 'Phone must be a 10-digit number')
+                  .max(15, 'Phone number must be at most 15 digits')
+                  .min(10, 'Phone number must be at least 10 digits')
                   .required('Phone is required'),
                 address: Yup.string().required('Address is required'),
                 total: Yup.number().min(0, 'Total must be a positive number').required('Total is required'),
@@ -171,7 +176,7 @@ export default function Add(props) {
                           <Select
                             onChange={(e) => {
                               setFieldValue('user_id', e.value);
-                              setFieldValue('name', e.label);
+                              setFieldValue('name', e.name);
                               setFieldValue('email', e.email);
                               setFieldValue('phone', e.phone);
                               setFieldValue('address', e.address);
@@ -247,6 +252,159 @@ export default function Add(props) {
                     </Field>
                     <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
+
+                    <div className="mb-4">
+                    <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Items</label>
+                    <Select
+                            onChange={(e) => {
+                              setSelectedItems(e);
+                            }}
+                            onInputChange={(e) => {
+                              setLoading2(true); // Set loading to true before initiating the search
+                              setTimeout(() => {
+                                router.get(
+                                  route('order.create'),
+                                  { searchitem: e },
+                                  {
+                                    preserveScroll: true,
+                                    preserveState: true,
+                                  }
+                                );
+                                setLoading2(false); // Turn off loading after the search is triggered
+                              }, 1000);
+                            }}
+                            isSearchable={true}
+                            isLoading={loading2} // Dynamically set the loading state
+                            value={items.find((option) => option.value === selectedItems?.value)}
+                            options={items}
+                            className="basic-single"
+                            classNamePrefix="select"
+                          />
+                    
+                    </div>
+
+
+                    {selectedItems && (
+                      <div className="flex  ">
+                      <div className="w-1/2 mr-1">
+                          <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })}  placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" />
+                          </div>
+                          <div className="w-1/2 mr-1">
+                          <button onClick={() =>{
+                            setSelectedItems(null)
+                            setFieldValue('items', [...values.items, selectedItems]);
+                          }} className="bg-black text-sm hover:bg-blue-dark text-white font-bold py-[11px] px-4  rounded-lg" type="button">
+                              Add Item
+                          </button>
+                          </div>
+                      </div>
+                    )}
+
+                          {selectedItems && (
+                               <div className='mb-2'>
+    
+
+                               <div className="overflow-x-auto">
+                       <div class="font-[sans-serif] overflow-x-auto">
+                       <table class="min-w-full bg-white">
+                   <thead class="whitespace-nowrap">
+                     <tr>
+                       
+                     <th class="p-4 text-left text-sm font-semibold text-black">
+              Product Info
+            </th>
+           
+            <th class="p-4 text-left text-sm font-semibold text-black">
+            Purchase price
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+            Selling price
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+            Warranty period
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+            Is Borrow
+            </th>
+
+            <th class="p-4 text-left text-sm font-semibold text-black">
+            Stock  Quantity
+            </th>
+          
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Stock Status
+            </th>
+            <th class="p-4 text-left text-sm font-semibold text-black">
+              Supplier Invoice
+            </th>
+                      
+                     </tr>
+                   </thead>
+           
+                   <tbody class="whitespace-nowrap">
+           
+             
+                     <tr   class="odd:bg-gray-50">
+           
+                     <td class=" text-sm">
+              <div class="flex items-center cursor-pointer w-max">
+              {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
+                <div class="ml-4 ">
+                  <p class="text-sm text-black ">Name : {selectedItems?.data?.name}</p>
+                  {selectedItems?.data?.model && <p class="text-xs text-gray-500 mt-0.5">Model :{selectedItems?.data?.model} </p>}
+                  {selectedItems?.data?.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.identity_type}:{selectedItems?.data?.identity_value} </p>}
+                </div>
+              </div>
+            </td>
+           
+            <td class="p-4 text-sm text-black">
+              {selectedItems?.data?.purchase_price || 'N/A'}
+            </td>
+            <td class="p-4 text-sm text-black">
+              {selectedItems?.data?.selling_price || 'N/A'}
+            </td>
+            <td class="p-4 text-sm text-black">
+              {selectedItems?.data?.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+              {selectedItems?.data?.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.warranty_period} - {selectedItems?.data?.warranty_type} </p>)}
+            </td>
+            <td class="p-4 text-sm text-black">
+            {selectedItems?.data?.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+            {selectedItems?.data?.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
+              <ul class="list-disc">
+                {selectedItems?.data?.shop_name && <li>Name: {selectedItems?.data?.shop_name}</li>}
+                {selectedItems?.data?.shop_address && <li>Address: {selectedItems?.data?.shop_address}</li>}
+                {selectedItems?.data?.shop_phone && <li>Phone: {selectedItems?.data?.shop_phone}</li>}
+                {selectedItems?.data?.shop_email && <li>Email: {selectedItems?.data?.shop_email}</li>}
+              </ul>
+            </p>)}
+            </td>
+            <td class="p-4 text-sm text-black">
+              {selectedItems?.data?.stock?.quantity || 0}
+            </td>
+           
+            <td class="p-4">
+              {selectedItems?.data?.stock?.status ? <p class="text-xs text-gray-500 mt-0.5">Available</p> : <p class="text-xs text-gray-500 mt-0.5">Not Available</p>}
+            </td>
+
+            <td class="p-4 text-sm text-black">
+              {selectedItems?.data?.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+              {selectedItems?.data?.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.supplier_invoice_no}</p>)}
+            </td>
+                    
+                     </tr>
+              
+                   </tbody>
+                 </table>
+           
+               </div>
+              
+                       </div>
+
+           
+                               </div>
+                               
+                          )}
+                 
 
                      
 

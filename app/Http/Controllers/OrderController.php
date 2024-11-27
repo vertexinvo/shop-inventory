@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use App\Models\Product;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -30,20 +31,34 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $searchuser = $request->searchuser ?? '';
-        $userrec = User::role('customer')->where('name', 'like', "%$searchuser%")->limit(3)->get();
+        $userrec = User::role('customer')->where(function ($query) use ($searchuser) {
+            $query->where('name', 'like', "%$searchuser%")
+                  ->orWhere('phone', 'like', "%$searchuser%");
+        })->limit(6)->get();
         $users = $userrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name ?? '',
+                'label' => $item->name . '-' . $item->phone ?? '',
                 'email' => $item->email ?? '',
                 'phone' => $item->phone ?? '',
                 'address' => $item->address ?? '',
+                'name' => $item->name ?? '',
             ];
         });
 
-     
+        $searchitem = $request->searchitem ?? '';
+
+        $itemrec = Product::with('stock')->where('name', 'like', "%$searchitem%")->limit(2)->get();
+        $items = $itemrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '') ?? '',
+                'data' => $item,
+                'quantity' => 1
+            ];
+        });
         
-        return Inertia::render('Order/Add', compact('users'));
+        return Inertia::render('Order/Add', compact('users', 'items'));
     }
 
     /**
