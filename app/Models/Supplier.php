@@ -40,7 +40,7 @@ class Supplier extends Model
 
     public function supplierinvoices()
     {
-        return $this->hasMany(Supplierinvoice::class);
+        return $this->hasMany(Supplierinvoice::class, 'supplier_id');
     }
 
 

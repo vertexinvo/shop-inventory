@@ -63,11 +63,9 @@ class SupplierController extends Controller
         
     }
     public function invoices(Request $request,$id){
-          // find the supplier id
-          dd($request->id);
-          $supplier = Supplierinvoice::where('supplier_id', $supplierinvoice->supplier_id)->first();
-          // dd($supplier);
-          return Inertia::render('Supplier/Invoice', compact('supplierinvoice', 'supplier'));
+        $suppliers = Supplier::where('id' , $id)->first();
+        $supplier = Supplierinvoice::where('supplier_id' , $id)->paginate(10);
+        return Inertia::render('Supplier/Invoice', compact('supplier','suppliers'));
     }
 
     /**
