@@ -57,8 +57,16 @@ class OrderController extends Controller
                 'quantity' => 1
             ];
         });
+
+        //get order id latest
+        $order = Order::latest()->first();
+        if ($order) {
+            $order_id = $order->id + 1;
+        } else {
+            $order_id = 1;
+        }
         
-        return Inertia::render('Order/Add', compact('users', 'items'));
+        return Inertia::render('Order/Add', compact('users', 'items', 'order_id'));
     }
 
     /**

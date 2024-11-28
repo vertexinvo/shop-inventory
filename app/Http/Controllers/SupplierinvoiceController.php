@@ -114,10 +114,7 @@ class SupplierinvoiceController extends Controller
     public function show(Supplierinvoice $supplierinvoice)
     {
       
-    
-        return Inertia::render('SupplierInvoice', [
-            'invoiceData' => $invoice
-        ]);
+ 
     }
        
 
