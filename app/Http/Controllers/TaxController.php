@@ -55,7 +55,7 @@ class TaxController extends Controller
      */
     public function show(tax $tax)
     {
-        //
+        // 
     }
 
     /**
@@ -93,5 +93,13 @@ class TaxController extends Controller
         $tax = tax::find($tax->id);
         $tax->delete();
         return redirect()->back()->with('message', 'Tax deleted successfully');
+    }
+
+    public function bulkdestroy(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        tax::whereIn('id', $ids)->delete();
+        session()->flash('message', 'Tax deleted successfully');
+        return back();
     }
 }

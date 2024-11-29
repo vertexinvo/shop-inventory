@@ -51,7 +51,7 @@ export default function List(props) {
                   onSubmit={(values) => {
                     router.get(route('tax.index'), { search: values.search }, { preserveState: true });
                   }}
-                
+                 
                 >
                   {( { values ,setFieldValue, handleSubmit, errors, touched }) => (
                     
