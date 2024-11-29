@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
-{
+{ 
     /**
      * Display a listing of the resource.
      */
@@ -36,7 +36,7 @@ class UserController extends Controller
         return Inertia::render('User/Add', compact('roles'));
         
     }
- 
+  
     /**
      * Store a newly created resource in storage.
      */

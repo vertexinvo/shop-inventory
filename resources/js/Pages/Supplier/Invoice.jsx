@@ -20,39 +20,43 @@ export default function List(props) {
     >
       <Head title="Invoice" />
 
-    
 
-        <div className="p-4 ">
-          <div className="w-full bg-white shadow-lg rounded-xl overflow-hidden">
-            {/* Card Header */}
-            <div className="bg-gray-200 py-4 px-6">
-              <h3 className="text-xl font-semibold text-gray-800">{suppliers.person_name || 'N/A'}</h3>
-              <p className="text-sm text-gray-600">{suppliers.email}</p>
+
+      <div className="p-4 items-center  ">
+
+        <div class="flex items-center justify-center bg-gray-100">
+          <div class="bg-white px-4 pt-5 pb-4 w-full shadow rounded-lg border">
+            <div class="px-4 py-5 sm:px-6 ">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                Name: {suppliers.person_name || 'N/A'}
+              </h3>
+              <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                Email: {suppliers.email || 'N/A'}
+              </p>
             </div>
-
-            {/* Card Body */}
-            <div className="p-6">
-              <div className="space-y-4">
-                {/* Contact Field */}
-                <div className="flex justify-between">
-                  <span className="font-medium text-gray-600">Contact:</span>
-                  <span className="text-gray-800">{suppliers.contact || 'N/A'}</span>
+            <div class="border-t border-gray-200 px-4 py-5 sm:p-0">
+              <dl class="sm:divide-y sm:divide-gray-200">
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Code:</dt>
+                  <b><dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.code || 'N/A'}</dd></b>
                 </div>
-                {/* Address Field */}
-                <div className="flex justify-between">
-                  <span className="font-medium text-gray-600">Address:</span>
-                  <span className="text-gray-800">{suppliers.address || 'N/A'}</span>
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Contact:</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.contact || 'N/A'}</dd>
                 </div>
-                {/* Code Field */}
-                <div className="flex justify-between ">
-                  <span className="font-medium text-gray-600">Code:</span>
-                  <span className="text-gray-800"><b>{suppliers.code}</b></span>
+                <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt class="text-sm font-medium text-gray-500">Address:</dt>
+                  <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.address || 'N/A'}</dd>
                 </div>
-              </div>
+              </dl>
             </div>
           </div>
         </div>
-     
+      </div>
+
+
+
+
       <div className="flex flex-col px-4  mt-2 mx-auto w-full">
         <div className="w-full ">
 
@@ -64,7 +68,7 @@ export default function List(props) {
                 enableReinitialize
                 initialValues={{ search: '' }}
                 onSubmit={(values) => {
-                  router.get(route('supplier.index'), { search: values.search }, { preserveState: true });
+                  router.get(route('supplier.invoices', suppliers.id), { search: values.search }, { preserveState: true });
                 }}
 
               >
@@ -80,7 +84,7 @@ export default function List(props) {
                       />
                       <button
                         type="button"
-                        onClick={() => { setFieldValue('search', ''); router.get(route('supplier.index')) }}
+                        onClick={() => { setFieldValue('search', ''); router.get(route('supplier.invoices')) }}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
                         ✖
@@ -103,14 +107,11 @@ export default function List(props) {
           </div>
 
           <div className="overflow-x-auto">
-           
+
             <div className="font-[sans-serif] overflow-x-auto">
               <table className="min-w-full bg-white">
                 <thead className="whitespace-nowrap">
                   <tr>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
-                      Supplier Id
-                    </th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Invoice No</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Invoice Date</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Due Date</th>
@@ -136,7 +137,6 @@ export default function List(props) {
                   {supplier.data.map((item, index) => (
 
                     <tr className={`${item?.total_amount_pending > 0 ? 'bg-red-100' : ''}`}>
-                      <td className="p-4 text-sm text-black">{item.supplier_id || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.invoice_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.invoice_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.due_date || 'N/A'}</td>

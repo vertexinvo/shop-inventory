@@ -103,6 +103,44 @@ export default function Setting(props) {
             </button>
           </Link>
         </div>
+
+        <div className="w-full scale-100">
+          <Link href={route('tax.index')} className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-16 h-16 rounded-full" src="images/tax.png" alt="Role Setting" />
+                </div>
+              </div>
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                    Tax
+                  </span>
+                </div>
+              </div>
+            </button>
+          </Link>
+        </div>
+
+        <div className="w-full scale-100">
+          <Link href={route('tax.index')} className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-auto h-16 rounded-full" src="images/shipping_charges.png" alt="Role Setting" />
+                </div>
+              </div>
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                    Shipping Carges
+                  </span>
+                </div>
+              </div>
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   </div>

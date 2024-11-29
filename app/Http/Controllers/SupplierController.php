@@ -62,10 +62,27 @@ class SupplierController extends Controller
             session()->flash('message', 'Supplier created successfully');
         
     }
-    public function invoices(Request $request,$id){
-        $suppliers = Supplier::where('id' , $id)->first();
-        $supplier = Supplierinvoice::where('supplier_id' , $id)->paginate(10);
-        return Inertia::render('Supplier/Invoice', compact('supplier','suppliers'));
+    // public function invoices(Request $request,$id){
+    //     $suppliers = Supplier::where('id' , $id)->first();
+        
+    //     $search = $request->search ?? '';
+    //     $supplier = Supplierinvoice::where('supplier_id' , $id)->orWhere('invoice_no', 'like', "%$search%")->latest()->paginate(10);
+   
+    //     return Inertia::render('Supplier/Invoice', compact('supplier','suppliers'));
+    // }
+    public function invoices(Request $request, $id) {
+        $suppliers = Supplier::findOrFail($id);
+
+        $search = $request->input('search', '');
+    
+        $supplier = Supplierinvoice::where('supplier_id', $id)
+            ->when($search, function ($query, $search) {
+                return $query->where('invoice_no', 'like', "%{$search}%");
+            })
+            ->latest()
+            ->paginate(10);
+    
+        return Inertia::render('Supplier/Invoice', compact('suppliers', 'supplier', 'search'));
     }
 
     /**
