@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet , FaEdit} from 'react-icons/fa'
+import { FaWallet , FaEdit, FaTrash} from 'react-icons/fa'
 import { MdClear, MdContentPaste, MdDelete } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -48,7 +48,7 @@ export default function Add(props) {
                 shipping_charges: 0,
                 discount: 0,
                 tax: 0,
-                is_installment: false,
+                is_installment: '0',
                 installment_amount: 0,
                 installment_period: '',
                 installment_count: 0,
@@ -251,17 +251,7 @@ export default function Add(props) {
                       </div>
                       </div>
 
-                      <div className="mb-4">
-                      <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Payment Method</label>
-                      <Field name="method"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
-                          <option value="">Select Payment Method</option>
-                          <option value="cash">Cash</option>
-                          <option value="bank">Bank Transfer</option>
-                          <option value="cheque">Cheque</option>
-                          <option value="online">Online</option>
-                      </Field>
-                      <ErrorMessage name="method" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
+                      
                       <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
                       <Field name="status"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
@@ -320,6 +310,11 @@ export default function Add(props) {
                               if(values.items.find(item => item.data.id === selectedItems?.data?.id)){
                                 toast.error('Item already added');
                                 return
+                              }
+
+                              if (selectedItems?.quantity <= 0) {
+                                toast.error('Quantity must be greater than 0');
+                                return;
                               }
                 
                               setSelectedItems(null)
@@ -456,6 +451,265 @@ export default function Add(props) {
           </div>
         </div>
 
+        <div className="font-sans antialiased bg-grey-lightest">
+
+
+<div className="w-full bg-grey-lightest">
+  <div className="container mx-auto py-3 px-5">
+    <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
+   
+                  <div className="mb-4">
+                  <div className="w-full flex items-center justify-between">
+                  <label className="block text-grey-darker text-lg font-bold mb-2" >Payment</label>
+
+                 
+              </div>
+
+
+                       
+                    </div>
+
+                    <div className="mb-4">
+                            <label className="block text-grey-darker text-sm font-bold mb-2">Is Installment</label>
+                            <div className="flex items-center">
+                              <label className="mr-4">
+                                <Field name="is_installment" type="radio" value="1" className="mr-2" /> Yes
+                              </label>
+                              <label>
+                                <Field name="is_installment" type="radio" value="0" className="mr-2" /> No
+                              </label>
+                            </div>
+                            <ErrorMessage name="is_installment" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+
+                          {values.is_installment == '1' && (
+                    <>
+                        <div className="flex mb-4">
+                      
+                      <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm  mb-2" >	Installment Amount</label>
+                          <Field name="installment_amount" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Installment Amount" />
+                          <ErrorMessage name="installment_amount" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+                      <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm  mb-2" >Installment Period</label>
+                          <Field name="installment_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Installment Period" />
+                          <ErrorMessage name="installment_period" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+                      
+                      </div>
+                      <div className="flex mb-4">
+                      
+                      <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm  mb-2" >	Installment Start Date</label>
+                          <Field name="installment_start_date" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="date" placeholder="Enter Installment Start Date" />
+                          <ErrorMessage name="installment_start_date" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+                      <div className="w-1/2 mr-1">
+                          <label className="block text-grey-darker text-sm  mb-2" >Installment End Date</label>
+                          <Field name="installment_end_date" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="date" placeholder="Enter Installment End Date" />
+                          <ErrorMessage name="installment_end_date" component="div" className="text-red-500 text-xs mt-1" />
+                      </div>
+                      
+                      </div>
+
+                      <div className="mb-4">
+                      <label className="block text-grey-darker text-sm  mb-2 " >Installment Count</label>
+                          <Field name="installment_count" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="number" placeholder="Enter Installment Count" />
+                          <ErrorMessage name="installment_count" component="div" className="text-red-500 text-xs mt-1" />
+                  </div>
+                    </>
+                  )}
+
+
+
+                  <div className="mb-4">
+                  <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Payment Method</label>
+                  <Field name="method"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                      <option value="">Select Payment Method</option>
+                      <option value="cash">Cash</option>
+                      <option value="bank">Bank Transfer</option>
+                      <option value="cheque">Cheque</option>
+                      <option value="online">Online</option>
+                  </Field>
+                  <ErrorMessage name="method" component="div" className="text-red-500 text-xs mt-1" />
+                  </div>
+             
+              
+                
+
+
+
+                  {values.method === "cheque" && (
+                      <>
+                        <div className="mb-4">
+                          <label className="block text-grey-darker text-sm mb-2">
+                            Cheque No (optional)
+                          </label>
+                          <Field
+                            name="cheque_no"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            type="text"
+                            placeholder="Enter cheque no"
+                          />
+                          <ErrorMessage
+                            name="cheque_no"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
+                        </div>
+
+
+                        <div className="mb-4">
+                          <label className="block text-grey-darker text-sm mb-2">
+                            Cheque Date (optional)
+                          </label>
+                          <Field
+                            name="cheque_date"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            type="date"
+                          />
+                          <ErrorMessage
+                            name="cheque_date"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
+                        </div>
+
+                      </>
+                    )}
+
+
+                    {values.method === "bank" && (
+                      <>
+                        <div className="mb-4">
+                          <label className="block text-grey-darker text-sm mb-2">
+                            Bank Name (optional)
+                          </label>
+                          <Field
+                            name="bank_name"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            type="text"
+                            placeholder="Enter bank name"
+                          />
+                          <ErrorMessage
+                            name="bank_name"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
+                        </div>
+
+
+                        <div className="mb-4">
+                          <label className="block text-grey-darker text-sm mb-2">
+                            Brank Brank (optional)
+                          </label>
+                          <Field
+                            name="bank_branch"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            type="text"
+                            placeholder="Enter bank branch"
+                          />
+                          <ErrorMessage
+                            name="bank_branch"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
+                        </div>
+
+                        <div className="mb-4">
+                          <label className="block text-grey-darker text-sm mb-2">
+                            Bank Account No (optional)
+                          </label>
+                          <Field
+                            name="bank_account"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            type="text"
+                            placeholder="Enter bank account no"
+                          />
+                          <ErrorMessage
+                            name="bank_account"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
+                        </div>
+
+                      </>
+                    )}
+
+
+                    {values.method === "online" && (
+                      <>
+                        <div className="mb-4">
+                          <label className="block text-grey-darker text-sm mb-2">
+                            Online payment link (optional)
+                          </label>
+                          <Field
+                            name="online_payment_link"
+                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            type="url"
+                            placeholder="Enter online payment link"
+                          />
+                          <ErrorMessage
+                            name="online_payment_link"
+                            component="div"
+                            className="text-red-500 text-xs mt-1"
+                          />
+                        </div>
+
+                      </>
+                    )}
+                 
+
+           
+                 <div className="mb-4">
+                  <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Tax</label>
+                  <Field name="tax"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                      <option value="">Select Tax</option>
+                     
+                  </Field>
+                  <ErrorMessage name="tax" component="div" className="text-red-500 text-xs mt-1" />
+                  </div>
+
+
+                  <div className="mb-4">
+                  <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Shipping Cost</label>
+                  <Select
+                              onChange={(e) => {
+                                setSelectedItems(e);
+                              }}
+                              onInputChange={(e) => {
+                                setLoading2(true); // Set loading to true before initiating the search
+                                setTimeout(() => {
+                                  router.get(
+                                    route('order.create'),
+                                    { searchitem: e },
+                                    {
+                                      preserveScroll: true,
+                                      preserveState: true,
+                                    }
+                                  );
+                                  setLoading2(false); // Turn off loading after the search is triggered
+                                }, 1000);
+                              }}
+                              isSearchable={true}
+                              isLoading={loading2} // Dynamically set the loading state
+                              value={items.find((option) => option.value === selectedItems?.value)}
+                              options={items}
+                              className="basic-single"
+                              classNamePrefix="select"
+                            />
+                  <ErrorMessage name="shipping" component="div" className="text-red-500 text-xs mt-1" />
+                  </div>
+
+                
+            
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
             
             </div>
          
@@ -488,28 +742,20 @@ export default function Add(props) {
                   Product Info
                 </th>
               
+               
                 <th class="p-4 text-left text-sm font-semibold text-black">
-                Purchase price
-                </th>
-                <th class="p-4 text-left text-sm font-semibold text-black">
-                Selling price
-                </th>
-                <th class="p-4 text-left text-sm font-semibold text-black">
-                Warranty period
-                </th>
-                <th class="p-4 text-left text-sm font-semibold text-black">
-                Is Borrow
+                price
                 </th>
   
                 <th class="p-4 text-left text-sm font-semibold text-black">
-                Stock  Quantity
+                Qty
                 </th>
-              
+                
                 <th class="p-4 text-left text-sm font-semibold text-black">
-                  Stock Status
+                Total
                 </th>
                 <th class="p-4 text-left text-sm font-semibold text-black">
-                  Supplier Invoice
+            
                 </th>
                           
                         </tr>
@@ -517,7 +763,7 @@ export default function Add(props) {
               
                       <tbody class="whitespace-nowrap">
               
-              {values.items.map((record) => (
+              {values.items.map((record,index) => (
                 
         
                 
@@ -534,39 +780,41 @@ export default function Add(props) {
                   </div>
                 </td>
               
-                <td class="p-4 text-sm text-black">
-                  {record?.data?.purchase_price || 'N/A'}
-                </td>
+                
                 <td class="p-4 text-sm text-black">
                   {record?.data?.selling_price || 'N/A'}
                 </td>
-                <td class="p-4 text-sm text-black">
-                  {record?.data?.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                  {record?.data?.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{record?.data?.warranty_period} - {record?.data?.warranty_type} </p>)}
-                </td>
-                <td class="p-4 text-sm text-black">
-                {record?.data?.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                {record?.data?.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
-                  <ul class="list-disc">
-                    {record?.data?.shop_name && <li>Name: {record?.data?.shop_name}</li>}
-                    {record?.data?.shop_address && <li>Address: {record?.data?.shop_address}</li>}
-                    {record?.data?.shop_phone && <li>Phone: {record?.data?.shop_phone}</li>}
-                    {record?.data?.shop_email && <li>Email: {record?.data?.shop_email}</li>}
-                  </ul>
-                </p>)}
-                </td>
-                <td class="p-4 text-sm text-black">
-                  {record?.data?.stock?.quantity || 0}
-                </td>
+               
               
-                <td class="p-4">
-                  {record?.data?.stock?.status ? <p class="text-xs text-gray-500 mt-0.5">Available</p> : <p class="text-xs text-gray-500 mt-0.5">Not Available</p>}
+                <td class="p-4 text-sm text-black">
+                 <input type="number" name="quantity" value={record?.quantity} className="appearance-none border rounded w-[60px] py-2 px-3 text-grey-darker"
+                max={record?.data?.stock?.quantity || 0} 
+                onChange={(e) => {
+                  const value = Number(e.target.value);
+                  if (value > record?.data?.stock?.quantity) {
+                    toast.error('Quantity exceeds stock quantity');
+                    return;
+                  }
+                  if (value <= 0) {
+                    toast.error('Quantity must be greater than 0');
+                    return;
+                  }
+                  setFieldValue(`items.${index}.quantity`, Math.min(value, record?.data?.stock?.quantity || 0));
+                }}
+                 />
+                </td>
+
+                <td class="p-4 text-sm text-black">
+                  {record?.quantity * record?.data?.selling_price || 0}
+                </td>
+                <td class="p-4 text-sm text-black">
+                  <FaTrash color='red' className='cursor-pointer hover:scale-110' onClick={() => {
+    
+                    setFieldValue('items', values.items.filter((item) => item.data.id !== record.data.id));
+                  }} />
                 </td>
   
-                <td class="p-4 text-sm text-black">
-                  {record?.data?.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                  {record?.data?.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{record?.data?.supplier_invoice_no}</p>)}
-                </td>
+                
                         
                         </tr>
   
@@ -588,6 +836,43 @@ export default function Add(props) {
               </div>
             </div>
           </div>
+
+          <div className="font-sans antialiased bg-grey-lightest">
+  
+  
+  <div className="w-full bg-grey-lightest">
+    <div className="container mx-auto py-3 px-5">
+      <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
+       {values.items.length > 0 && (
+                              <div className='mb-2'>
+
+                                <div className='w-full flex items-center justify-between mb-2'>
+    <label className="block text-grey-darker text-lg font-bold " >Calculation</label>
+
+    </div>
+
+        <ul className='mt-5'>
+            <li className='w-full flex items-center justify-between mb-2'><div>Total Amount:</div><div><input type="number"  value={values.items.reduce((total, item) => total + item.quantity * item.data.selling_price, 0)} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
+            <li className='w-full flex items-center justify-between'><div>Extra Charges:</div><div> <Field type="number" name="extra_charges" value={values.extra_charges} className="appearance-none border rounded 	 py-2 px-3 text-grey-darker"/></div></li>
+            <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="extra_charges" component="div" className="text-red-600 text-xs mt-1" /></li>
+            <li className='w-full flex items-center justify-between'><div>Discount:</div><div> <Field type="number" name="discount" value={values.discount} className="appearance-none border rounded 	 py-2 px-3 text-grey-darker"/></div></li>
+            <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="discount" component="div" className="text-red-600 text-xs mt-1" /></li>
+            <li className='w-full flex items-center justify-between mb-2'><div>Tax:</div><div><input type="number"  className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
+            <li className='w-full flex items-center justify-between mb-2'><div>Shipping Cost:</div><div><input type="number"  className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
+            <li className='w-full flex items-center justify-between mb-2'><div className='font-bold'>Grant Total:</div><div><input type="number" value={values.items.reduce((total, item) => total + item.quantity * item.data.selling_price, 0) + values.extra_charges +values.tax + values.shipping_charges - values.discount} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker " disabled /></div></li>
+        
+        </ul>
+                             
+
+          
+                              </div>
+                              
+                          )}
+              </div>
+            
+          </div>
+        </div>
+      </div>
   
               
               </div>
