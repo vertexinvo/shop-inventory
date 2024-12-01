@@ -15,8 +15,8 @@ import { toast } from 'react-toastify';
 
 
  
-export default function Add(props) {
-  const { auth ,users,items,order_id,taxs ,shippingrates} = props
+export default function InstantOrder(props) {
+  const { auth ,users,order_id,items} = props
 
   const [loading, setLoading] = useState(false);
 
@@ -30,9 +30,9 @@ export default function Add(props) {
 
   return (
       <AuthenticatedLayout
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Order</h2>}
+          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Order</h2>}
       >
-          <Head title="Order" />
+          <Head title="Instant Order" />
           <Formik enableReinitialize initialValues={{
                 name: '',
                 email: '',
@@ -41,106 +41,17 @@ export default function Add(props) {
                 total: 0,
                 payable_amount: 0,
                 paid_amount: 0,
-                method: '',
-                cheque_no: '',
-                cheque_date: '',
-                status : 'completed',
-                bank_name: '',
-                bank_branch: '',
-                bank_account: '',
-                online_payment_link: '',
-                extra_charges: 0,
-                shipping_charges: 0,
+                identity_value: '',
                 discount: 0,
-                tax: 0,
-                is_installment: '0',
-                installment_amount: 0,
-                installment_period: '',
-                installment_count: 0,
-                installment_start_date: '',
-                installment_end_date: '',
-                user_id :'',
                 items: [],
-                tax_id: '',
-                shipping_id: '',
-        }}
+            }}
               validationSchema={Yup.object({
+                  identity_value: Yup.string().required('Identity value is required'),
                   name: Yup.string().required('Name is required'),
-                  email: Yup.string().email('Invalid email address').required('Email is required'),
-                  phone: Yup.string()
-                    .max(15, 'Phone number must be at most 15 digits')
-                    .min(10, 'Phone number must be at least 10 digits')
-                    .required('Phone is required'),
-                  address: Yup.string().required('Address is required'),
-                  total: Yup.number().min(0, 'Total must be a positive number').required('Total is required'),
-                  payable_amount: Yup.number()
-                    .min(0, 'Payable amount must be a positive number')
-                    .required('Payable amount is required'),
-                  paid_amount: Yup.number()
-                    .min(0, 'Paid amount must be a positive number')
-                    .required('Paid amount is required'),
-                  method: Yup.string().required('Payment method is required'),
-                  cheque_no: Yup.string().when('method', {
-                      is: 'cheque',
-                      then: scheme => scheme.required(),
-                      otherwise: scheme => scheme.optional()
-                    }),
-                  cheque_date: Yup.date().when('method', {
-                      is: 'cheque',
-                      then: scheme => scheme.required(),
-                      otherwise: scheme => scheme.optional()
-                    }),
-                  bank_name: Yup.string().when('method', {
-                      is: 'bank',
-                      then: scheme => scheme.required(),
-                      otherwise: scheme => scheme.optional()
-                    }),
-                  bank_branch: Yup.string().when('method', {
-                      is: 'bank',
-                      then: scheme => scheme.required(),
-                      otherwise: scheme => scheme.optional()
-                    }),
-                  bank_account: Yup.string().when('method', {
-                      is: 'bank',
-                      then: scheme => scheme.required(),
-                      otherwise: scheme => scheme.optional()
-                    }),
-                  online_payment_link: Yup.string().url('Invalid URL'),
-                  extra_charges: Yup.number().min(0, 'Extra charges must be a positive number'),
-                  discount: Yup.number().min(0, 'Discount must be a positive number'),
-                  tax: Yup.number().min(0, 'Tax must be a positive number'),
-                  status: Yup.string().oneOf(['pending', 'completed', 'cancelled'], 'Invalid status').required('Status is required'),
-                  is_installment: Yup.boolean(),
-                  installment_amount: Yup.number().when('is_installment', {
-                      is: true,
-                      then: scheme => scheme.number().min(0, 'Installment amount must be a positive number').required('Installment amount is required'),
-                      otherwise: scheme => scheme.optional()
-                    }),
-                  
-                  installment_period: Yup.string().when('is_installment', {
-                    is: true,
-                    then: scheme => scheme.string().required('Installment period is required'),
-                      otherwise: scheme => scheme.optional()
-                  }),
-                  installment_count: Yup.number().when('is_installment', {
-                    is: true,
-                      then: scheme => scheme.number()
-                      .min(1, 'Installment count must be at least 1')
-                      .required('Installment count is required'),
-                      otherwise: scheme => scheme.optional()
-                  }),
-                  installment_start_date: Yup.date().when('is_installment', {
-                    is: true,
-                    then: scheme => scheme.date().required('Installment start date is required'),
-                    otherwise: scheme => scheme.optional()
-                  }),
-                  installment_end_date: Yup.date().when('is_installment', {
-                    is: true,
-                      then: scheme => scheme.date()
-                      .min(Yup.ref('installment_start_date'), 'End date must be after start date')
-                      .required('Installment end date is required'),
-                      otherwise: scheme => scheme.optional()
-                  }),
+                  email: Yup.string(),
+                  phone: Yup.string(),
+                  address: Yup.string(),
+                  items: Yup.array().min(1, 'At least one item is required'),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
                 router.post(route('supplier.store'), values, {
@@ -154,21 +65,21 @@ export default function Add(props) {
               } }
               >
                   {({ isSubmitting, values, errors,setFieldValue, }) => { 
-                      
-                    
+
 useEffect(() => {
-  const totalAmount = values.items.reduce(
-    (total, item) => total + item.quantity * item.data.selling_price,
-    0
-  );
-  const discount = parseFloat(values.discount || 0);
+    const totalAmount = values.items.reduce(
+      (total, item) => total + item.quantity * item.data.selling_price,
+      0
+    );
+    const discount = parseFloat(values.discount || 0);
 
-  // Set the payable amount, factoring in the discount
-  setFieldValue('payable_amount', totalAmount - discount);
-}, [values.items, values.discount, setFieldValue]);
+    // Set the payable amount, factoring in the discount
+    setFieldValue('payable_amount', totalAmount - discount);
+  }, [values.items, values.discount, setFieldValue]);
 
 
 
+          
                       
                       return (
                   <Form>
@@ -215,7 +126,7 @@ useEffect(() => {
                                 setLoading(true); // Set loading to true before initiating the search
                                 setTimeout(() => {
                                   router.get(
-                                    route('order.create'),
+                                    route('order.instantorder'),
                                     { searchuser: e },
                                     {
                                       preserveScroll: true,
@@ -264,16 +175,6 @@ useEffect(() => {
 
                       
                       <div className="mb-4">
-                      <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
-                      <Field name="status"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
-                          <option value="">Select Status</option>
-                          <option value="pending">Pending</option>
-                          <option value="completed">Completed</option>
-                      </Field>
-                      <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-
-                      <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Items</label>
                       <Select
                               onChange={(e) => {
@@ -283,7 +184,7 @@ useEffect(() => {
                                 setLoading2(true); // Set loading to true before initiating the search
                                 setTimeout(() => {
                                   router.get(
-                                    route('order.create'),
+                                    route('order.instantorder'),
                                     { searchitem: e },
                                     {
                                       preserveScroll: true,
@@ -448,12 +349,7 @@ useEffect(() => {
                                 
                             )}
                   
-
-
-
-
-               
-
+             
                     
                 
                 </div>
@@ -462,283 +358,7 @@ useEffect(() => {
           </div>
         </div>
 
-        <div className="font-sans antialiased bg-grey-lightest">
-
-
-<div className="w-full bg-grey-lightest">
-  <div className="container mx-auto py-3 px-5">
-    <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
-   
-                  <div className="mb-4">
-                  <div className="w-full flex items-center justify-between">
-                  <label className="block text-grey-darker text-lg font-bold mb-2" >Payment</label>
-
-                 
-              </div>
-
-
-                       
-                    </div>
-
-                    <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2">Is Installment</label>
-                            <div className="flex items-center">
-                              <label className="mr-4">
-                                <Field name="is_installment" type="radio" value="1" className="mr-2" /> Yes
-                              </label>
-                              <label>
-                                <Field name="is_installment" type="radio" value="0" className="mr-2" /> No
-                              </label>
-                            </div>
-                            <ErrorMessage name="is_installment" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
-
-                          {values.is_installment == '1' && (
-                    <>
-                        <div className="flex mb-4">
-                      
-                      <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm  mb-2" >	Installment Amount</label>
-                          <Field name="installment_amount" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Installment Amount" />
-                          <ErrorMessage name="installment_amount" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-                      <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm  mb-2" >Installment Period</label>
-                          <Field name="installment_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Installment Period" />
-                          <ErrorMessage name="installment_period" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-                      
-                      </div>
-                      <div className="flex mb-4">
-                      
-                      <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm  mb-2" >	Installment Start Date</label>
-                          <Field name="installment_start_date" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="date" placeholder="Enter Installment Start Date" />
-                          <ErrorMessage name="installment_start_date" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-                      <div className="w-1/2 mr-1">
-                          <label className="block text-grey-darker text-sm  mb-2" >Installment End Date</label>
-                          <Field name="installment_end_date" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="date" placeholder="Enter Installment End Date" />
-                          <ErrorMessage name="installment_end_date" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
-                      
-                      </div>
-
-                      <div className="mb-4">
-                      <label className="block text-grey-darker text-sm  mb-2 " >Installment Count</label>
-                          <Field name="installment_count" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="number" placeholder="Enter Installment Count" />
-                          <ErrorMessage name="installment_count" component="div" className="text-red-500 text-xs mt-1" />
-                  </div>
-                    </>
-                  )}
-
-
-
-                  <div className="mb-4">
-                  <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Payment Method</label>
-                  <Field name="method"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
-                      <option value="">Select Payment Method</option>
-                      <option value="cash">Cash</option>
-                      <option value="bank">Bank Transfer</option>
-                      <option value="cheque">Cheque</option>
-                      <option value="online">Online</option>
-                  </Field>
-                  <ErrorMessage name="method" component="div" className="text-red-500 text-xs mt-1" />
-                  </div>
-             
-              
-                
-
-
-
-                  {values.method === "cheque" && (
-                      <>
-                        <div className="mb-4">
-                          <label className="block text-grey-darker text-sm mb-2">
-                            Cheque No (optional)
-                          </label>
-                          <Field
-                            name="cheque_no"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            type="text"
-                            placeholder="Enter cheque no"
-                          />
-                          <ErrorMessage
-                            name="cheque_no"
-                            component="div"
-                            className="text-red-500 text-xs mt-1"
-                          />
-                        </div>
-
-
-                        <div className="mb-4">
-                          <label className="block text-grey-darker text-sm mb-2">
-                            Cheque Date (optional)
-                          </label>
-                          <Field
-                            name="cheque_date"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            type="date"
-                          />
-                          <ErrorMessage
-                            name="cheque_date"
-                            component="div"
-                            className="text-red-500 text-xs mt-1"
-                          />
-                        </div>
-
-                      </>
-                    )}
-
-
-                    {values.method === "bank" && (
-                      <>
-                        <div className="mb-4">
-                          <label className="block text-grey-darker text-sm mb-2">
-                            Bank Name (optional)
-                          </label>
-                          <Field
-                            name="bank_name"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            type="text"
-                            placeholder="Enter bank name"
-                          />
-                          <ErrorMessage
-                            name="bank_name"
-                            component="div"
-                            className="text-red-500 text-xs mt-1"
-                          />
-                        </div>
-
-
-                        <div className="mb-4">
-                          <label className="block text-grey-darker text-sm mb-2">
-                            Brank Brank (optional)
-                          </label>
-                          <Field
-                            name="bank_branch"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            type="text"
-                            placeholder="Enter bank branch"
-                          />
-                          <ErrorMessage
-                            name="bank_branch"
-                            component="div"
-                            className="text-red-500 text-xs mt-1"
-                          />
-                        </div>
-
-                        <div className="mb-4">
-                          <label className="block text-grey-darker text-sm mb-2">
-                            Bank Account No (optional)
-                          </label>
-                          <Field
-                            name="bank_account"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            type="text"
-                            placeholder="Enter bank account no"
-                          />
-                          <ErrorMessage
-                            name="bank_account"
-                            component="div"
-                            className="text-red-500 text-xs mt-1"
-                          />
-                        </div>
-
-                      </>
-                    )}
-
-
-                    {values.method === "online" && (
-                      <>
-                        <div className="mb-4">
-                          <label className="block text-grey-darker text-sm mb-2">
-                            Online payment link (optional)
-                          </label>
-                          <Field
-                            name="online_payment_link"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                            type="url"
-                            placeholder="Enter online payment link"
-                          />
-                          <ErrorMessage
-                            name="online_payment_link"
-                            component="div"
-                            className="text-red-500 text-xs mt-1"
-                          />
-                        </div>
-
-                      </>
-                    )}
-                 
-
-           
-                 <div className="mb-4">
-                  <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Tax</label>
-                  <Field
-                      name="tax_id"
-                      as="select"
-                      onChange={(e) => {
-                        const selectedTax = taxs.find((tax) => tax.id == e.target.value);
-                        console.log(selectedTax);
-                        setFieldValue('tax', selectedTax ? selectedTax.cost : ''); // Default to an empty string if no match
-                        setFieldValue('tax_id', e.target.value); // Ensure tax_id is updated as well
-                      }}
-                      className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
-                    >
-                      <option value="">Select Tax</option>
-                      {taxs.map((tax) => (
-                        <option key={tax.id} value={tax.id}>
-                          {tax.name} - {tax.cost}
-                        </option>
-                      ))}
-                    </Field>
-
-                  <ErrorMessage name="tax_id" component="div" className="text-red-500 text-xs mt-1" />
-                  </div>
-
-
-                  <div className="mb-4">
-                  <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Shipping Cost</label>
-                  <Select
-                              onChange={(e) => {
-                               console.log(e);
-                               setSelectedShippingrate(e);
-                                setFieldValue('shipping_id', e.value);
-                                setFieldValue('shipping_charges', e.fee);
-                             
-                              }}
-                              onInputChange={(e) => {
-                                setLoading3(true); // Set loading to true before initiating the search
-                                setTimeout(() => {
-                                  router.get(
-                                    route('order.create'),
-                                    { searchshipping: e },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading3(false); // Turn off loading after the search is triggered
-                                }, 1000);
-                              }}
-                              isSearchable={true}
-                              isLoading={loading3} // Dynamically set the loading state
-                              value={selectedShippingrate }
-                              options={shippingrates}
-                              className="basic-single"
-                              classNamePrefix="select"
-                            />
-                  <ErrorMessage name="shipping_id" component="div" className="text-red-500 text-xs mt-1" />
-                  </div>
-
-                
-            
-            </div>
-          
-        </div>
-      </div>
-    </div>
+    
 
             
             </div>
@@ -883,12 +503,9 @@ useEffect(() => {
 
         <ul className='mt-5'>
             <li className='w-full flex items-center justify-between mb-2'><div>Total Amount:</div><div><input type="number"  value={values.items.reduce((total, item) => total + item.quantity * item.data.selling_price, 0)} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
-            <li className='w-full flex items-center justify-between'><div>Extra Charges:</div><div> <Field type="number" name="extra_charges" value={values.extra_charges} className="appearance-none border rounded 	 py-2 px-3 text-grey-darker"/></div></li>
-            <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="extra_charges" component="div" className="text-red-600 text-xs mt-1" /></li>
+           <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="extra_charges" component="div" className="text-red-600 text-xs mt-1" /></li>
             <li className='w-full flex items-center justify-between'><div>Discount:</div><div> <Field type="number" name="discount" value={values.discount} className="appearance-none border rounded 	 py-2 px-3 text-grey-darker"/></div></li>
             <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="discount" component="div" className="text-red-600 text-xs mt-1" /></li>
-            <li className='w-full flex items-center justify-between mb-2'><div>Tax:</div><div><input type="number" value={values.tax} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
-            <li className='w-full flex items-center justify-between mb-2'><div>Shipping Cost:</div><div><input type="number" value={parseFloat(values.shipping_charges || 0).toFixed(2)} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
              <li className="w-full flex items-center justify-between mb-2">
               <div className="font-bold">Grand Total:</div>
               <div>
@@ -898,10 +515,7 @@ useEffect(() => {
                     values.items.reduce(
                       (total, item) => total + item.quantity * item.data.selling_price,
                       0
-                    ) +
-                    parseFloat(values.extra_charges || 0) +
-                    parseFloat(values.tax || 0) +
-                    parseFloat(values.shipping_charges || 0) -
+                    ) -
                     parseFloat(values.discount || 0)
                   }
                   className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
@@ -921,6 +535,7 @@ useEffect(() => {
                     />
                 </div>
                 </li>
+
 
         
         </ul>

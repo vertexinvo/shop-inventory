@@ -36,12 +36,19 @@ export default function List(props) {
                   Bulk Delete
                 </button>
               }
+               <button
+                onClick={() => router.get(route('order.instantorder'))}
+                className="text-white py-2 px-4 rounded-lg bg-blue-500 hover:bg-blue-600"
+              >
+                Instant Order
+              </button>
               <button
                 onClick={() => router.get(route('order.create'))}
                 className="text-white py-2 px-4 rounded-lg bg-blue-500 hover:bg-blue-600"
               >
                 Create
               </button>
+             
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}

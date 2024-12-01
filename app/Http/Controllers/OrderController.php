@@ -27,6 +27,54 @@ class OrderController extends Controller
         return Inertia::render('Order/List', compact('orders'));
     }
 
+
+    public function instantorder(Request $request)
+    {
+        $searchuser = $request->searchuser ?? '';
+        $userrec = User::role('customer')->where(function ($query) use ($searchuser) {
+            $query->where('name', 'like', "%$searchuser%")
+                  ->orWhere('phone', 'like', "%$searchuser%");
+        })->limit(6)->get();
+        $users = $userrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name . '-' . $item->phone ?? '',
+                'email' => $item->email ?? '',
+                'phone' => $item->phone ?? '',
+                'address' => $item->address ?? '',
+                'name' => $item->name ?? '',
+            ];
+        });
+
+        $searchitem = $request->searchitem ?? '';
+
+        $itemrec = Product::with('stock')->where(function ($query) use ($searchitem) {
+            $query->where('name', 'like', "%$searchitem%")
+                  ->orWhere('identity_value', 'like', "%$searchitem%");
+        })->limit(2)->get();
+        $items = $itemrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) ?? '',
+                'data' => $item,
+                'quantity' => 1
+            ];
+        });
+
+      
+
+        //get order id latest
+        $order = Order::latest()->first();
+        if ($order) {
+            $order_id = $order->id + 1;
+        } else {
+            $order_id = 1;
+        }
+
+        
+        return Inertia::render('Order/InstantOrder', compact('users', 'items', 'order_id',));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -50,11 +98,14 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock')->where('name', 'like', "%$searchitem%")->limit(2)->get();
+        $itemrec = Product::with('stock')->where(function ($query) use ($searchitem) {
+            $query->where('name', 'like', "%$searchitem%")
+                  ->orWhere('identity_value', 'like', "%$searchitem%");
+        })->limit(2)->get();
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '') ?? '',
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) ?? '',
                 'data' => $item,
                 'quantity' => 1
             ];
