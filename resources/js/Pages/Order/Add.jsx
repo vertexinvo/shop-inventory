@@ -141,6 +141,7 @@ export default function Add(props) {
                       .required('Installment end date is required'),
                       otherwise: scheme => scheme.optional()
                   }),
+                  items: Yup.array().min(1, 'At least one item is required'),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
                 router.post(route('supplier.store'), values, {
@@ -162,7 +163,7 @@ useEffect(() => {
     0
   );
   const discount = parseFloat(values.discount || 0);
-
+  setFieldValue('total', totalAmount);
   // Set the payable amount, factoring in the discount
   setFieldValue('payable_amount', totalAmount - discount);
 }, [values.items, values.discount, setFieldValue]);
@@ -300,7 +301,7 @@ useEffect(() => {
                               className="basic-single"
                               classNamePrefix="select"
                             />
-                      
+                        <ErrorMessage name="items" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
 

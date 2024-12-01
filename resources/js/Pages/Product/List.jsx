@@ -147,7 +147,7 @@ export default function List(props) {
           )}
         {products.data.map((product, index) => (
          
-         <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : ''}`}>
+         <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}`}>
 
 <td className="pl-4 w-8">
         <input

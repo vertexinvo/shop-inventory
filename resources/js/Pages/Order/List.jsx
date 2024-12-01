@@ -164,7 +164,7 @@ export default function List(props) {
                   {orders.data.map((order, index) => (
 
 
-                    <tr className={` bg-cyan-50 ${order?.stock?.quantity === 0 || order?.stock?.quantity === null ? 'bg-red-100' : ''}`}>
+                    <tr className={`  ${order?.stock?.quantity === 0 || order?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}`}>
 
                       <td className="pl-4 w-8">
                         <input
@@ -270,9 +270,9 @@ export default function List(props) {
                       <td class=" text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
-                            <p class="text-sm text-black ">Extra Charges : <span class="text-xs text-gray-500 mt-0.5">{order.extra_charges}</span></p>
-                            <p class="text-sm text-black ">Shipping Charges : <span class="text-xs text-gray-500 mt-0.5">{order.shipping_charges}</span></p>
-                            <p class="text-sm text-black ">Tax : <span class="text-xs text-gray-500 mt-0.5">{order.tax}</span></p>
+                            <p class="text-sm text-black ">Extra Charges : {order.extra_charges || '0'}</p>
+                            <p class="text-sm text-black ">Shipping Charges : {order.shipping_charges || '0'}</p>
+                            <p class="text-sm text-black ">Tax : {order.tax || '0'}</p>
                           </div>
                         </div>
                       </td>
@@ -282,12 +282,13 @@ export default function List(props) {
                       <td class=" pt-4 pb-4 text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
-                            <p class="text-sm text-black ">Is Installment : <span class="text-xs text-gray-500 mt-0.5">{order.is_installment}</span></p>
-                            <p class="text-sm text-black ">Installment Amount : <span class="text-xs text-gray-500 mt-0.5">{order.installment_amount}</span></p>
-                            <p class="text-sm text-black ">Installment Period : <span class="text-xs text-gray-500 mt-0.5">{order.installment_period}</span></p>
-                            <p class="text-sm text-black ">Installment Count : <span class="text-xs text-gray-500 mt-0.5">{order.installment_count}</span></p>
-                            <p class="text-sm text-black ">Installment Start Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_start_date}</span></p>
-                            <p class="text-sm text-black ">Installment End Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_end_date}</span></p>
+                           {!order.installment_amount ? <p class="text-sm text-black ">No</p> : <>
+                            <p class="text-sm text-black ">Installment Amount : <span class="text-xs text-gray-500 mt-0.5">{order.installment_amount || 'N/A'}</span></p>
+                            <p class="text-sm text-black ">Installment Period : <span class="text-xs text-gray-500 mt-0.5">{order.installment_period || 'N/A'}</span></p>
+                            <p class="text-sm text-black ">Installment Count : <span class="text-xs text-gray-500 mt-0.5">{order.installment_count || 'N/A'}</span></p>
+                            <p class="text-sm text-black ">Installment Start Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_start_date || 'N/A'}</span></p>
+                            <p class="text-sm text-black ">Installment End Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_end_date || 'N/A'}</span></p>
+                            </>}
                           </div>
                         </div>
                       </td>

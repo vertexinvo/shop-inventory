@@ -11,7 +11,7 @@ use App\Models\tax;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -73,6 +73,53 @@ class OrderController extends Controller
 
         
         return Inertia::render('Order/InstantOrder', compact('users', 'items', 'order_id',));
+    }
+
+    public function instantorderstore(Request $request)
+    {
+//         array:10 [▼ // app\Http\Controllers\OrderController.php:80
+//   "name" => "test1"
+//   "email" => "test@gmail.com"
+//   "phone" => null
+//   "address" => null
+//   "total" => 130
+//   "payable_amount" => 130
+//   "paid_amount" => 0
+//   "discount" => 0
+//   "items" => array:1 [▶]
+//   "user_id" => 2
+// ]
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:255',
+            'address' => 'nullable|max:500',
+            'total' => 'required|numeric',
+            'payable_amount' => 'required|numeric',
+            'paid_amount' => 'required|numeric',
+            'discount' => 'nullable|numeric',
+            'items' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return back();
+        }
+        $data = $request->only([
+            'name',
+            'email',
+            'phone',
+            'address',
+            'total',
+            'payable_amount',
+            'paid_amount',
+            'discount', 
+        ]);
+        $order = Order::create($request->all());
+    
+        session()->flash('message', 'Order created successfully.');
+        return back();
+
     }
 
     /**

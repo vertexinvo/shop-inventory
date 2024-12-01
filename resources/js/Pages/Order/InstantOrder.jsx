@@ -41,20 +41,21 @@ export default function InstantOrder(props) {
                 total: 0,
                 payable_amount: 0,
                 paid_amount: 0,
-                identity_value: '',
+    
                 discount: 0,
                 items: [],
             }}
               validationSchema={Yup.object({
-                  identity_value: Yup.string().required('Identity value is required'),
-                  name: Yup.string().required('Name is required'),
-                  email: Yup.string(),
-                  phone: Yup.string(),
-                  address: Yup.string(),
-                  items: Yup.array().min(1, 'At least one item is required'),
+           
+                name: Yup.string().required('Name is required'),
+                email: Yup.string(),
+                phone: Yup.string(),
+                address: Yup.string(),
+                items: Yup.array().min(1, 'At least one item is required'),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
-                router.post(route('supplier.store'), values, {
+                console.log(values);
+                router.post(route('order.instantorderstore'), values, {
                   onSuccess: () => {
                       resetForm();
                   },
@@ -72,8 +73,7 @@ useEffect(() => {
       0
     );
     const discount = parseFloat(values.discount || 0);
-
-    // Set the payable amount, factoring in the discount
+    setFieldValue('total', totalAmount);
     setFieldValue('payable_amount', totalAmount - discount);
   }, [values.items, values.discount, setFieldValue]);
 
@@ -201,7 +201,7 @@ useEffect(() => {
                               className="basic-single"
                               classNamePrefix="select"
                             />
-                      
+                      <ErrorMessage name="items" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
 
