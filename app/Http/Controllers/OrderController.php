@@ -105,6 +105,15 @@ class OrderController extends Controller
             'user_id'
         ]);
         $order = Order::create($request->all());
+
+        // //update product stock quantity
+        // foreach ($request->items as $item) {
+        //     $product = Product::find($item['id']);
+        //     $product->stock()->update([
+        //         'quantity' => $product->stock->quantity - $item['quantity'],
+        //     ]);
+        // }
+
     
         session()->flash('message', 'Order created successfully.');
         return back();
