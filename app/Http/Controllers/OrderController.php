@@ -77,18 +77,6 @@ class OrderController extends Controller
 
     public function instantorderstore(Request $request)
     {
-//         array:10 [▼ // app\Http\Controllers\OrderController.php:80
-//   "name" => "test1"
-//   "email" => "test@gmail.com"
-//   "phone" => null
-//   "address" => null
-//   "total" => 130
-//   "payable_amount" => 130
-//   "paid_amount" => 0
-//   "discount" => 0
-//   "items" => array:1 [▶]
-//   "user_id" => 2
-// ]
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|max:255',
@@ -114,6 +102,7 @@ class OrderController extends Controller
             'payable_amount',
             'paid_amount',
             'discount', 
+            'user_id'
         ]);
         $order = Order::create($request->all());
     
