@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { CiUser } from "react-icons/ci";
 import Chart from "react-apexcharts";
 import { useState } from 'react';
@@ -111,9 +111,15 @@ export default function Dashboard(props) {
 
             </div>
             <div class="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-            <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
-                Recent Orders
-            </p>
+            
+            <div className='flex justify-between items-center'>
+          <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
+          Recent Orders
+          </p>
+          <Link href={route('order.index')} class="text-sm font-semibold text-blue-500 leading-tight underline mb-2">
+              View All
+          </Link>
+      </div>  
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
   <div class="w-full overflow-x-auto">
     <table class="w-full">

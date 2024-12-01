@@ -1,5 +1,5 @@
 import React from 'react'
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { CiUser } from "react-icons/ci";
 import Chart from "react-apexcharts";
 import { useState } from 'react';
@@ -10,10 +10,14 @@ import { LiaFileInvoiceSolid } from "react-icons/lia";
 function SupplierBalance({suppliers}) {
   return (
     <div class="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-    <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
-                    Supplier Balance
-                </p>
-             
+      <div className='flex justify-between items-center'>
+          <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
+              Supplier Balance
+          </p>
+          <Link href={route('supplier.index')} class="text-sm font-semibold text-blue-500 leading-tight underline mb-2">
+              View All
+          </Link>
+      </div>  
     
                 {suppliers.data.length > 0 ?
             <div className="overflow-x-auto">
@@ -69,7 +73,6 @@ function SupplierBalance({suppliers}) {
               <div class="flex items-center cursor-pointer w-max">
                 <div class="ml-4 ">
                   <p class="text-sm text-black ">Person Name : {item.person_name}</p>
-                  {item.email && <p class="text-xs text-gray-500 mt-0.5">Email :{item.email} </p>}
                   {item.contact && <p class="text-xs text-gray-500 mt-0.5">Contact :{item.contact} </p>}
                 </div>
               </div>

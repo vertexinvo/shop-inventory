@@ -1,5 +1,5 @@
 import React from 'react'
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { CiUser } from "react-icons/ci";
 import Chart from "react-apexcharts";
 import { useState } from 'react';
@@ -7,9 +7,14 @@ import { useState } from 'react';
 function OutofstockProduct({outOfStockProductrecord}) {
   return (
     <div class="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-    <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
-                    Out of Stock Products
-                </p>
+      <div className='flex justify-between items-center'>
+          <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
+          Out of Stock Products
+          </p>
+          <Link href={route('product.index')} class="text-sm font-semibold text-blue-500 leading-tight underline mb-2">
+              View All
+          </Link>
+      </div>  
              
     
                 {outOfStockProductrecord.data.length > 0 ?

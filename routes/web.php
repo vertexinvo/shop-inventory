@@ -75,3 +75,4 @@ require __DIR__.'/dashboard/supplier.php';
 require __DIR__.'/dashboard/supplierinvoice.php';
 require __DIR__.'/dashboard/order.php';
 require __DIR__.'/dashboard/tax.php';
+require __DIR__.'/dashboard/shippingrate.php';

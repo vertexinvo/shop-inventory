@@ -16,12 +16,17 @@ import { toast } from 'react-toastify';
 
  
 export default function Add(props) {
-  const { auth ,users,items,order_id } = props
+  const { auth ,users,items,order_id,taxs ,shippingrates} = props
 
   const [loading, setLoading] = useState(false);
 
   const [loading2, setLoading2] = useState(false);
   const [selectedItems, setSelectedItems] = useState(null); 
+  
+  const [selectedShippingrate, setSelectedShippingrate] = useState(null);
+
+  const [loading3, setLoading3] = useState(false);
+
 
   return (
       <AuthenticatedLayout
@@ -56,6 +61,8 @@ export default function Add(props) {
                 installment_end_date: '',
                 user_id :'',
                 items: [],
+                tax_id: '',
+                shipping_id: '',
         }}
               validationSchema={Yup.object({
                   name: Yup.string().required('Name is required'),
@@ -100,7 +107,6 @@ export default function Add(props) {
                     }),
                   online_payment_link: Yup.string().url('Invalid URL'),
                   extra_charges: Yup.number().min(0, 'Extra charges must be a positive number'),
-                  shipping_charges: Yup.number().min(0, 'Shipping charges must be a positive number'),
                   discount: Yup.number().min(0, 'Discount must be a positive number'),
                   tax: Yup.number().min(0, 'Tax must be a positive number'),
                   status: Yup.string().oneOf(['pending', 'completed', 'cancelled'], 'Invalid status').required('Status is required'),
@@ -664,11 +670,26 @@ export default function Add(props) {
            
                  <div className="mb-4">
                   <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Tax</label>
-                  <Field name="tax"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                  <Field
+                      name="tax_id"
+                      as="select"
+                      onChange={(e) => {
+                        const selectedTax = taxs.find((tax) => tax.id == e.target.value);
+                        console.log(selectedTax);
+                        setFieldValue('tax', selectedTax ? selectedTax.cost : ''); // Default to an empty string if no match
+                        setFieldValue('tax_id', e.target.value); // Ensure tax_id is updated as well
+                      }}
+                      className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                    >
                       <option value="">Select Tax</option>
-                     
-                  </Field>
-                  <ErrorMessage name="tax" component="div" className="text-red-500 text-xs mt-1" />
+                      {taxs.map((tax) => (
+                        <option key={tax.id} value={tax.id}>
+                          {tax.name} - {tax.cost}
+                        </option>
+                      ))}
+                    </Field>
+
+                  <ErrorMessage name="tax_id" component="div" className="text-red-500 text-xs mt-1" />
                   </div>
 
 
@@ -676,30 +697,34 @@ export default function Add(props) {
                   <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Shipping Cost</label>
                   <Select
                               onChange={(e) => {
-                                setSelectedItems(e);
+                               console.log(e);
+                               setSelectedShippingrate(e);
+                                setFieldValue('shipping_id', e.value);
+                                setFieldValue('shipping_charges', e.fee);
+                             
                               }}
                               onInputChange={(e) => {
-                                setLoading2(true); // Set loading to true before initiating the search
+                                setLoading3(true); // Set loading to true before initiating the search
                                 setTimeout(() => {
                                   router.get(
                                     route('order.create'),
-                                    { searchitem: e },
+                                    { searchshipping: e },
                                     {
                                       preserveScroll: true,
                                       preserveState: true,
                                     }
                                   );
-                                  setLoading2(false); // Turn off loading after the search is triggered
+                                  setLoading3(false); // Turn off loading after the search is triggered
                                 }, 1000);
                               }}
                               isSearchable={true}
-                              isLoading={loading2} // Dynamically set the loading state
-                              value={items.find((option) => option.value === selectedItems?.value)}
-                              options={items}
+                              isLoading={loading3} // Dynamically set the loading state
+                              value={selectedShippingrate }
+                              options={shippingrates}
                               className="basic-single"
                               classNamePrefix="select"
                             />
-                  <ErrorMessage name="shipping" component="div" className="text-red-500 text-xs mt-1" />
+                  <ErrorMessage name="shipping_id" component="div" className="text-red-500 text-xs mt-1" />
                   </div>
 
                 
@@ -857,9 +882,29 @@ export default function Add(props) {
             <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="extra_charges" component="div" className="text-red-600 text-xs mt-1" /></li>
             <li className='w-full flex items-center justify-between'><div>Discount:</div><div> <Field type="number" name="discount" value={values.discount} className="appearance-none border rounded 	 py-2 px-3 text-grey-darker"/></div></li>
             <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="discount" component="div" className="text-red-600 text-xs mt-1" /></li>
-            <li className='w-full flex items-center justify-between mb-2'><div>Tax:</div><div><input type="number"  className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
-            <li className='w-full flex items-center justify-between mb-2'><div>Shipping Cost:</div><div><input type="number"  className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
-            <li className='w-full flex items-center justify-between mb-2'><div className='font-bold'>Grant Total:</div><div><input type="number" value={values.items.reduce((total, item) => total + item.quantity * item.data.selling_price, 0) + values.extra_charges +values.tax + values.shipping_charges - values.discount} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker " disabled /></div></li>
+            <li className='w-full flex items-center justify-between mb-2'><div>Tax:</div><div><input type="number" value={values.tax} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
+            <li className='w-full flex items-center justify-between mb-2'><div>Shipping Cost:</div><div><input type="number" value={parseFloat(values.shipping_charges || 0).toFixed(2)} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
+             <li className="w-full flex items-center justify-between mb-2">
+              <div className="font-bold">Grand Total:</div>
+              <div>
+                <input
+                  type="number"
+                  value={
+                    values.items.reduce(
+                      (total, item) => total + item.quantity * item.data.selling_price,
+                      0
+                    ) +
+                    parseFloat(values.extra_charges || 0) +
+                    parseFloat(values.tax || 0) +
+                    parseFloat(values.shipping_charges || 0) -
+                    parseFloat(values.discount || 0)
+                  }
+                  className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
+                  disabled
+                />
+              </div>
+            </li>
+
         
         </ul>
                              

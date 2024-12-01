@@ -6,6 +6,8 @@ use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
+use App\Models\ShippingRate;
+use App\Models\tax;
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -58,6 +60,17 @@ class OrderController extends Controller
             ];
         });
 
+        $searchshipping = $request->searchshipping ?? '';
+
+        $shippingrec = ShippingRate::where('area_name', 'like', "%$searchshipping%")->limit(5)->get();
+        $shippingrates = $shippingrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->area_name .' - '. $item->city_name ?? '',
+                'fee' => $item->fee
+            ];
+        });
+
         //get order id latest
         $order = Order::latest()->first();
         if ($order) {
@@ -65,8 +78,10 @@ class OrderController extends Controller
         } else {
             $order_id = 1;
         }
+
+        $taxs = tax::latest()->get();
         
-        return Inertia::render('Order/Add', compact('users', 'items', 'order_id'));
+        return Inertia::render('Order/Add', compact('users', 'items', 'order_id', 'taxs', 'shippingrates'));
     }
 
     /**
