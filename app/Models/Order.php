@@ -36,6 +36,20 @@ class Order extends Model
         'installment_period',
         'installment_count',
         'installment_start_date',
-        'installment_end_date'
+        'installment_end_date',
+        'tax_id',
+        'shipping_id',
+        'order_date'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
 }

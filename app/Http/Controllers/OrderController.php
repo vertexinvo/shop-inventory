@@ -48,7 +48,7 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock')->where(function ($query) use ($searchitem) {
+        $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
             $query->where('name', 'like', "%$searchitem%")
                   ->orWhere('identity_value', 'like', "%$searchitem%");
         })->limit(2)->get();
@@ -77,6 +77,7 @@ class OrderController extends Controller
 
     public function instantorderstore(Request $request)
     {
+      
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|max:255',
@@ -102,9 +103,21 @@ class OrderController extends Controller
             'payable_amount',
             'paid_amount',
             'discount', 
-            'user_id'
+            'user_id',
+            'order_date'
         ]);
-        $order = Order::create($request->all());
+        $order = Order::create($data);
+
+        foreach ($request->items as $item) {
+            $order->items()->create([
+                'product_id' => $item["data"]['id'],
+                'name' => $item["data"]['name'],
+                'price' => $item["data"]['selling_price'],
+                'qty' => $item['quantity'],
+                'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
+                'status'=> 'active'
+            ]);
+        }
 
         // //update product stock quantity
         // foreach ($request->items as $item) {
@@ -116,6 +129,9 @@ class OrderController extends Controller
 
     
         session()->flash('message', 'Order created successfully.');
+        if($request->close){
+            return redirect()->route('order.index');
+        }
         return back();
 
     }
@@ -143,7 +159,7 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock')->where(function ($query) use ($searchitem) {
+        $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
             $query->where('name', 'like', "%$searchitem%")
                   ->orWhere('identity_value', 'like', "%$searchitem%");
         })->limit(2)->get();
@@ -185,7 +201,82 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        //
+      
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:255',
+            'address' => 'nullable|max:500',
+            'total' => 'required|numeric',
+            'payable_amount' => 'required|numeric',
+            'paid_amount' => 'required|numeric',
+            'discount' => 'nullable|numeric',
+            'items' => 'required|array',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return back();
+        }
+        $data = $request->only([
+            'name',
+            'email',
+            'phone',
+            'address',
+            'user_id',
+            'total',
+            'payable_amount',
+            'paid_amount',
+            'method',
+            'cheque_no',
+            'cheque_date',
+            'bank_name',
+            'bank_branch',
+            'bank_account',
+            'online_payment_link',
+            'extra_charges',
+            'shipping_charges',
+            'discount',
+            'tax',
+            'status',
+            'is_installment',
+            'installment_amount',
+            'installment_period',
+            'installment_count',
+            'installment_start_date',
+            'installment_end_date',
+            'tax_id',
+            'shipping_id',
+            'order_date',
+
+        ]);
+        $order = Order::create($data);
+
+        foreach ($request->items as $item) {
+            $order->items()->create([
+                'product_id' => $item["data"]['id'],
+                'name' => $item["data"]['name'],
+                'price' => $item["data"]['selling_price'],
+                'qty' => $item['quantity'],
+                'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
+                'status'=> 'active'
+            ]);
+        }
+
+        // //update product stock quantity
+        // foreach ($request->items as $item) {
+        //     $product = Product::find($item['id']);
+        //     $product->stock()->update([
+        //         'quantity' => $product->stock->quantity - $item['quantity'],
+        //     ]);
+        // }
+
+    
+        session()->flash('message', 'Order created successfully.');
+        if($request->close){
+            return redirect()->route('order.index');
+        }
+        return back();
     }
 
     /**

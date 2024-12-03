@@ -19,4 +19,9 @@ class Item extends Model
         'qty',
         'status'
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

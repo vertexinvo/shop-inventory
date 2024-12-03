@@ -282,7 +282,7 @@ export default function List(props) {
                       <td class=" pt-4 pb-4 text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
-                           {!order.installment_amount ? <p class="text-sm text-black ">No</p> : <>
+                           {!order.is_installment  ? <p class="text-sm text-black ">No</p> : <>
                             <p class="text-sm text-black ">Installment Amount : <span class="text-xs text-gray-500 mt-0.5">{order.installment_amount || 'N/A'}</span></p>
                             <p class="text-sm text-black ">Installment Period : <span class="text-xs text-gray-500 mt-0.5">{order.installment_period || 'N/A'}</span></p>
                             <p class="text-sm text-black ">Installment Count : <span class="text-xs text-gray-500 mt-0.5">{order.installment_count || 'N/A'}</span></p>

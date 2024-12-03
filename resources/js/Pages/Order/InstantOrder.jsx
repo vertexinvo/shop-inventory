@@ -44,6 +44,8 @@ export default function InstantOrder(props) {
     
                 discount: 0,
                 items: [],
+                order_date : new Date().toISOString().slice(0, 10),
+                close: false,
             }}
               validationSchema={Yup.object({
            
@@ -52,6 +54,7 @@ export default function InstantOrder(props) {
                 phone: Yup.string(),
                 address: Yup.string(),
                 items: Yup.array().min(1, 'At least one item is required'),
+                order_date: Yup.date().required('Order date is required'),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
                 console.log(values);
@@ -65,7 +68,7 @@ export default function InstantOrder(props) {
 
               } }
               >
-                  {({ isSubmitting, values, errors,setFieldValue, }) => { 
+                  {({ isSubmitting, values, errors,setFieldValue,handleSubmit  }) => { 
 
 useEffect(() => {
     const totalAmount = values.items.reduce(
@@ -79,7 +82,15 @@ useEffect(() => {
 
 
 
-          
+  const saveAndClose = () => {
+    setFieldValue('close', true); 
+    handleSubmit(); 
+  };  
+
+  const save = () => {
+    setFieldValue('close',false); 
+    handleSubmit(); 
+  };  
                       
                       return (
                   <Form>
@@ -97,20 +108,28 @@ useEffect(() => {
     <div className="w-full bg-grey-lightest">
       <div className="container mx-auto py-3 px-5">
         <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
-       
-                      <div className="mb-4">
-                      <div className="w-full flex items-center justify-between">
-                      <label className="block text-grey-darker text-lg font-bold mb-2" >Order #{order_id}</label>
 
+        <div className="w-full flex items-center justify-between mb-5">
+                      <div className='flex items-center gap-2'>
+                        <label className="block text-grey-darker text-lg font-bold" >Order#{order_id}</label>
+                        <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" /> 
+                      </div>
                       <div className="flex items-center justify-start gap-1 ">
-                      <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                          Submit
+                      <button onClick={save}  className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                          Save
+                      </button>
+                      <button  onClick={saveAndClose} className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                          Save & Close
                       </button>
                       <button  onClick={() => router.visit(route('order.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                           Close
                       </button>
                   </div>
                   </div>
+
+       
+                      <div className="mb-4">
+                     
 
 
                             <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Customer (Existing)</label>
@@ -359,6 +378,35 @@ useEffect(() => {
         </div>
 
     
+
+
+
+        <div className="font-sans antialiased bg-grey-lightest">
+
+
+<div className="w-full bg-grey-lightest">
+  <div className="container mx-auto py-3 px-5">
+    <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
+   
+                
+                  <div className="w-full flex items-center justify-between">
+                  <label className="block text-grey-darker text-lg font-bold mb-2" >Exchange</label>
+
+ 
+              </div>
+
+
+                
+              
+         
+                
+            
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
 
             
             </div>

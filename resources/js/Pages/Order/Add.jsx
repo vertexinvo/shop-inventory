@@ -63,15 +63,16 @@ export default function Add(props) {
                 items: [],
                 tax_id: '',
                 shipping_id: '',
+                order_date : new Date().toISOString().slice(0, 10),
         }}
               validationSchema={Yup.object({
                   name: Yup.string().required('Name is required'),
-                  email: Yup.string().email('Invalid email address').required('Email is required'),
+                  email: Yup.string().email('Invalid email address'),
                   phone: Yup.string()
                     .max(15, 'Phone number must be at most 15 digits')
                     .min(10, 'Phone number must be at least 10 digits')
-                    .required('Phone is required'),
-                  address: Yup.string().required('Address is required'),
+                    ,
+                  address: Yup.string(),
                   total: Yup.number().min(0, 'Total must be a positive number').required('Total is required'),
                   payable_amount: Yup.number()
                     .min(0, 'Payable amount must be a positive number')
@@ -113,38 +114,40 @@ export default function Add(props) {
                   is_installment: Yup.boolean(),
                   installment_amount: Yup.number().when('is_installment', {
                       is: true,
-                      then: scheme => scheme.number().min(0, 'Installment amount must be a positive number').required('Installment amount is required'),
+                      then: scheme => scheme.min(0, 'Installment amount must be a positive number').required('Installment amount is required'),
                       otherwise: scheme => scheme.optional()
                     }),
+
                   
                   installment_period: Yup.string().when('is_installment', {
                     is: true,
-                    then: scheme => scheme.string().required('Installment period is required'),
+                    then: scheme => scheme.required('Installment period is required'),
                       otherwise: scheme => scheme.optional()
                   }),
                   installment_count: Yup.number().when('is_installment', {
                     is: true,
-                      then: scheme => scheme.number()
+                      then: scheme => scheme
                       .min(1, 'Installment count must be at least 1')
                       .required('Installment count is required'),
                       otherwise: scheme => scheme.optional()
                   }),
                   installment_start_date: Yup.date().when('is_installment', {
                     is: true,
-                    then: scheme => scheme.date().required('Installment start date is required'),
+                    then: scheme => scheme.required('Installment start date is required'),
                     otherwise: scheme => scheme.optional()
                   }),
                   installment_end_date: Yup.date().when('is_installment', {
                     is: true,
-                      then: scheme => scheme.date()
+                      then: scheme => scheme
                       .min(Yup.ref('installment_start_date'), 'End date must be after start date')
                       .required('Installment end date is required'),
                       otherwise: scheme => scheme.optional()
                   }),
                   items: Yup.array().min(1, 'At least one item is required'),
+                  order_date: Yup.date().required('Order date is required'),
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
-                router.post(route('supplier.store'), values, {
+                router.post(route('order.store'), values, {
                   onSuccess: () => {
                       resetForm();
                   },
@@ -152,9 +155,10 @@ export default function Add(props) {
                   preserveState: true,
                 });
 
+
               } }
               >
-                  {({ isSubmitting, values, errors,setFieldValue, }) => { 
+                  {({ isSubmitting, values, errors,setFieldValue, handleSubmit}) => { 
                       
                     
 useEffect(() => {
@@ -169,6 +173,15 @@ useEffect(() => {
 }, [values.items, values.discount, setFieldValue]);
 
 
+const saveAndClose = () => {
+  setFieldValue('close', true); 
+  handleSubmit(); 
+};  
+
+const save = () => {
+  setFieldValue('close',false); 
+  handleSubmit(); 
+};
 
                       
                       return (
@@ -187,20 +200,28 @@ useEffect(() => {
     <div className="w-full bg-grey-lightest">
       <div className="container mx-auto py-3 px-5">
         <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
-       
-                      <div className="mb-4">
-                      <div className="w-full flex items-center justify-between">
-                      <label className="block text-grey-darker text-lg font-bold mb-2" >Order #{order_id}</label>
 
+        <div className="w-full flex items-center justify-between mb-5">
+                      <div className='flex items-center gap-2'>
+                        <label className="block text-grey-darker text-lg font-bold" >Order#{order_id}</label>
+                        <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" /> 
+                      </div>
                       <div className="flex items-center justify-start gap-1 ">
-                      <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                          Submit
+                      <button onClick={save}  className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                          Save
+                      </button>
+                      <button  onClick={saveAndClose} className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                          Save & Close
                       </button>
                       <button  onClick={() => router.visit(route('order.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                           Close
                       </button>
                   </div>
                   </div>
+
+       
+                      <div className="mb-4">
+                    
 
 
                             <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Customer (Existing)</label>
