@@ -145,6 +145,16 @@ export default function Add(props) {
                   }),
                   items: Yup.array().min(1, 'At least one item is required'),
                   order_date: Yup.date().required('Order date is required'),
+                  paid_amount: Yup.number()
+                  .when('payable_amount', {
+                    is: (payable_amount) => payable_amount !== undefined, // Check if payable_amount exists
+                    then: (scheme) =>
+                      scheme
+                        .max(Yup.ref('payable_amount'), 'Paid amount cannot exceed payable amount')
+                        .required('Paid amount is required'),
+                    otherwise: (scheme) => scheme.optional(),
+                  }),
+                
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
                 router.post(route('order.store'), values, {
@@ -182,6 +192,12 @@ const save = () => {
   setFieldValue('close',false); 
   handleSubmit(); 
 };
+
+useEffect(() => {
+  if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
+    setFieldValue('paid_amount', values.payable_amount);
+  }
+}, [values.payable_amount,values.tax_id,values.shipping_id]);
 
                       
                       return (
@@ -937,12 +953,13 @@ const save = () => {
                     <Field
                     type="number"
                     name="paid_amount"
-                    value={values.paid_amount || values.payable_amount || 0} // Default to payable_amount if paid_amount is empty
-                    onChange={(e) => setFieldValue('paid_amount', e.target.value)} // Update paid_amount when changed
+                    
                     className="appearance-none border rounded py-2 px-3 text-grey-darker"
                     />
                 </div>
                 </li>
+                <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="paid_amount" component="div" className="text-red-600 text-xs mt-1" /></li>
+        
 
         
         </ul>

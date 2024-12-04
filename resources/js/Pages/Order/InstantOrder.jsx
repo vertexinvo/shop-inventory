@@ -41,7 +41,7 @@ export default function InstantOrder(props) {
                 total: 0,
                 payable_amount: 0,
                 paid_amount: 0,
-    
+
                 discount: 0,
                 items: [],
                 order_date : new Date().toISOString().slice(0, 10),
@@ -55,6 +55,16 @@ export default function InstantOrder(props) {
                 address: Yup.string(),
                 items: Yup.array().min(1, 'At least one item is required'),
                 order_date: Yup.date().required('Order date is required'),
+                paid_amount: Yup.number()
+                .when('payable_amount', {
+                  is: (payable_amount) => payable_amount !== undefined, // Check if payable_amount exists
+                  then: (scheme) =>
+                    scheme
+                      .max(Yup.ref('payable_amount'), 'Paid amount cannot exceed payable amount')
+                      .required('Paid amount is required'),
+                  otherwise: (scheme) => scheme.optional(),
+                }),
+              
               })}
               onSubmit={(values, { setSubmitting, resetForm }) => {
                 console.log(values);
@@ -91,6 +101,13 @@ useEffect(() => {
     setFieldValue('close',false); 
     handleSubmit(); 
   };  
+
+  useEffect(() => {
+    if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
+      setFieldValue('paid_amount', values.payable_amount);
+    }
+  }, [values.payable_amount,]);
+
                       
                       return (
                   <Form>
@@ -577,12 +594,13 @@ useEffect(() => {
                     <Field
                     type="number"
                     name="paid_amount"
-                    value={values.paid_amount || values.payable_amount || 0} // Default to payable_amount if paid_amount is empty
-                    onChange={(e) => setFieldValue('paid_amount', e.target.value)} // Update paid_amount when changed
+                    
                     className="appearance-none border rounded py-2 px-3 text-grey-darker"
                     />
                 </div>
                 </li>
+                <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="paid_amount" component="div" className="text-red-600 text-xs mt-1" /></li>
+        
 
 
         

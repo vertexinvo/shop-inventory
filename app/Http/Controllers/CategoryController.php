@@ -37,7 +37,7 @@ class CategoryController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories,name',
-            'description' => 'required',
+            'description' => 'nullable|max:50',
             'parent_id' => 'nullable',
         ]);
 
@@ -46,7 +46,7 @@ class CategoryController extends Controller
             return redirect()->back();
         }
         $data = $request->all();
-        $category = Category::create($data);
+        Category::create($data);
         return redirect()->back()->with('message', 'Category created successfully');
     }
 
@@ -76,7 +76,7 @@ class CategoryController extends Controller
        
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:categories,name,'.$category->id,
-            'description' => 'required',
+            'description' =>  'nullable|max:50',
             'parent_id' => 'nullable',
         ]);
 
@@ -101,7 +101,7 @@ class CategoryController extends Controller
 
     public function bulkdestroy(Request $request)
     {
-       $bulkdestroy = Category::whereIn('id', explode(',', $request->ids))->delete();
+       Category::whereIn('id', explode(',', $request->ids))->delete();
        session()->flash('message', 'Category deleted successfully');
        return back();
     }
