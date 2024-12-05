@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
 import React, { useEffect, useState } from 'react'
-import { FaWallet , FaEdit, FaTrash} from 'react-icons/fa'
+import { FaWallet , FaEdit, FaTrash, FaPlusCircle, FaCheck, FaCheckCircle} from 'react-icons/fa'
 import { MdClear, MdContentPaste, MdDelete } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -27,6 +27,8 @@ export default function InstantOrder(props) {
 
   const [loading3, setLoading3] = useState(false);
 
+  const [exchangeItems, setExchangeItems] = useState(null);
+
 
   return (
       <AuthenticatedLayout
@@ -46,6 +48,7 @@ export default function InstantOrder(props) {
                 items: [],
                 order_date : new Date().toISOString().slice(0, 10),
                 close: false,
+                exchange_items: [],
             }}
               validationSchema={Yup.object({
            
@@ -406,13 +409,173 @@ useEffect(() => {
     <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
    
                 
-                  <div className="w-full flex items-center justify-between">
+                  <div className="w-full flex items-center justify-between mb-2">
                   <label className="block text-grey-darker text-lg font-bold mb-2" >Exchange</label>
-
- 
+                 
               </div>
 
+              <div class="relative flex flex-col w-full h-full  text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+  <table class="w-full text-left table-auto min-w-max">
+    <thead>
+      <tr>
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500">
+            Name
+          </p>
+        </th>
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500">
+            Model
+          </p>
+        </th>
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500">
+            Identity
+          </p>
+        </th>
+       
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500">
+            Purchase Price
+          </p>
+        </th>
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500">
+            Quantity
+          </p>
+        </th>
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500">
+            Total
+          </p>
+        </th>
+      
+        <th class="p-4 border-b border-slate-300 bg-slate-50">
+          <p class="block text-sm font-normal leading-none text-slate-500"></p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
 
+    {values.exchange_items.length === 0 && exchangeItems === null && (
+       <tr class="hover:bg-slate-50">
+       <td colspan="7" class="p-4 border-b border-slate-200 text-center">
+         <p class="block text-sm text-slate-800">
+           No Exchange Item! &nbsp; <button type='button'
+           onClick={()=>{
+             setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '', total : ''})
+           }}
+           className='text-sm font-semibold text-blue-500 leading-tight underline'>Add Item</button>
+         </p>
+       </td>
+     
+   </tr>
+    )}
+   
+{exchangeItems && (
+  
+
+   <tr class="hover:bg-slate-50">
+        <td class="p-4 border-b border-slate-200">
+         <input type="text" value={exchangeItems.name} onChange={(e)=>{
+           setExchangeItems({...exchangeItems, name : e.target.value})
+         }}
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        </td>
+        <td class="p-4 border-b border-slate-200">
+        <input type="text" value={exchangeItems.model} onChange={(e)=>{
+           setExchangeItems({...exchangeItems, model : e.target.value})
+         }}
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        </td>
+        <td class="p-4 border-b border-slate-200 flex items-center gap-2">
+        <select  value={exchangeItems.identity_type} onChange={(e)=>{
+           setExchangeItems({...exchangeItems, identity_type : e.target.value})
+         }}
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+            <option value="none">None</option>
+            <option value="imei">IMEI</option>
+            <option value="serial">Serial</option>
+            <option value="sku">SKU</option>
+          </select>
+          {exchangeItems.identity_type !== 'none' && (
+             <input type="text" value={exchangeItems.identity_value} onChange={(e)=>{
+              setExchangeItems({...exchangeItems, identity_value : e.target.value})
+            }}
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+          )}
+         
+        </td>
+        <td class="p-4 border-b border-slate-200">
+        <input type="text" value={exchangeItems.purchase_price} onChange={(e)=>{
+           setExchangeItems({...exchangeItems, purchase_price : e.target.value})
+         }}
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        </td>
+        <td class="p-4 border-b border-slate-200">
+        <input type="text" value={exchangeItems.quantity} onChange={(e)=>{
+           setExchangeItems({...exchangeItems, quantity : e.target.value})
+         }}
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        </td>
+        <td class="p-4 border-b border-slate-200">
+        <input type="text" disabled value={exchangeItems.name} onChange={(e)=>{
+           setExchangeItems({...exchangeItems, name : e.target.value})
+         }}
+         class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+        </td>
+        <td class="p-4 border-b border-slate-200 ">
+            <button type="button" className="text-sm font-semibold text-blue-500 leading-tight underline">Add</button>
+        </td>
+      </tr>
+)}
+
+      {values.exchange_items.map((exchange_item) => (
+        <tr class="hover:bg-slate-50">
+        <td class="p-4 border-b border-slate-200">
+          <p class="block text-sm text-slate-800">
+            Alexa Liras
+          </p>
+        </td>
+        <td class="p-4 border-b border-slate-200">
+          <p class="block text-sm text-slate-800">
+            Alexa Liras
+          </p>
+        </td>
+        <td class="p-4 border-b border-slate-200">
+          <p class="block text-sm text-slate-800">
+            Alexa Liras
+          </p>
+        </td>
+        <td class="p-4 border-b border-slate-200">
+          <p class="block text-sm text-slate-800">
+            Developer
+          </p>
+        </td>
+        <td class="p-4 border-b border-slate-200">
+          <p class="block text-sm text-slate-800">
+            23/04/18
+          </p>
+        </td>
+        <td class="p-4 border-b border-slate-200">
+          <p class="block text-sm text-slate-800">
+            23/04/18
+          </p>
+        </td>
+        <td class="p-4 border-b border-slate-200 flex items-center gap-2">
+      
+            <FaTrash size={20} color='red'/>
+            <FaPlusCircle size={20} color='green'/>
+         
+        </td>
+      </tr>
+      ))}
+      
+      
+    </tbody>
+  </table>
+</div>
+ 
                 
               
          
