@@ -200,7 +200,7 @@ export default function Add(props) {
                                   name="identity_type"
                                 />
                                 <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "none" ? "border-blue-500" : "border-gray-400"
+                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "none" ? "  border-black" : "border-gray-400"
                                     }`}
                                   htmlFor="radio_1"
                                 >
@@ -218,7 +218,7 @@ export default function Add(props) {
                                   name="identity_type"
                                 />
                                 <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "imei" ? "border-blue-500" : "border-gray-400"
+                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "imei" ? "border-black" : "border-gray-400"
                                     }`}
                                   htmlFor="radio_2"
                                 >
@@ -236,7 +236,7 @@ export default function Add(props) {
                                   name="identity_type"
                                 />
                                 <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "sku" ? "border-blue-500" : "border-gray-400"
+                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "sku" ? "border-black" : "border-gray-400"
                                     }`}
                                   htmlFor="radio_3"
                                 >
@@ -253,7 +253,7 @@ export default function Add(props) {
                                   name="identity_type"
                                 />
                                 <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "serial" ? "border-blue-500" : "border-gray-400"
+                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "serial" ? "border-black" : "border-gray-400"
                                     }`}
                                   htmlFor="radio_4"
                                 >
@@ -373,7 +373,7 @@ export default function Add(props) {
 
 <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {setNotRemember(!notremember);
                              setFieldValue('supplier_invoice_no', '')
-                          }} className='text-blue-500 text-sm underline hover:text-blue-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
+                          }} className='text-black text-sm underline hover:text-gray-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
                           {!notremember ? (
                           <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
                           ) : (
@@ -406,7 +406,7 @@ export default function Add(props) {
 <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
                             <div className="flex items-center justify-start gap-2 mt-2">
                        
-                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new invoice</button>
+                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-black text-sm underline hover:text-blue-700'>Create a new invoice</button>
                          <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
 
                           </div>
@@ -471,7 +471,7 @@ export default function Add(props) {
                                   <button
                                     type="button"
                                     onClick={() => push({ name: '', value: '' })}
-                                    className="mt-2 text-blue-500 text-sm underline hover:text-blue-700"
+                                    className="mt-2 text-black text-sm underline hover:text-gray-700"
                                   >
                                     Add Field
                                   </button>
@@ -579,7 +579,7 @@ export default function Add(props) {
                       <div className="flex gap-2 items-center">
                         <Field name="code" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
 
-                        <RiAiGenerate onClick={() => generateCode()} size={40} color="blue" />
+                        <RiAiGenerate onClick={() => generateCode()} size={40} color="black" />
                       </div>
                       <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
 
@@ -588,7 +588,7 @@ export default function Add(props) {
                           //copy to clipboard
                           navigator.clipboard.writeText(values.code);
                           toast.success('Copied to clipboard');
-                        }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
+                        }} className='bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
                       }
                     </div>
 
@@ -706,7 +706,7 @@ export default function Add(props) {
                           type="text"
                           placeholder="Enter invoice no"
                         />
-                        <RiAiGenerate onClick={() => generateInvoiceNo()} size={40} color="blue" />
+                        <RiAiGenerate onClick={() => generateInvoiceNo()} size={40} color="black" />
                       </div>
                       <ErrorMessage
                         name="invoice_no"
@@ -719,7 +719,7 @@ export default function Add(props) {
                           //copy to clipboard
                           navigator.clipboard.writeText(values.invoice_no);
                           toast.success('Copied to clipboard');
-                        }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
+                        }} className='bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
                       }
                     </div>
                     {/* Invoice Date */}

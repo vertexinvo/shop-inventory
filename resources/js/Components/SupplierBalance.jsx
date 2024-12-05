@@ -14,7 +14,7 @@ function SupplierBalance({suppliers}) {
           <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
               Supplier Balance
           </p>
-          <Link href={route('supplier.index')} class="text-sm font-semibold text-blue-500 leading-tight underline mb-2">
+          <Link href={route('supplier.index')} class="text-sm font-semibold text-black leading-tight underline mb-2">
               View All
           </Link>
       </div>  

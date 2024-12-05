@@ -38,7 +38,7 @@ console.log(roles);
                                 <button
                                     onClick={() => setIsModalOpen(true)}
                                     
-                                    className="text-white bg-blue-500 py-2 px-4 rounded-lg hover:bg-blue-600 w-full md:w-auto"
+                                    className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                                 >
                                     Create
                                 </button>
@@ -71,11 +71,12 @@ console.log(roles);
 
                                                     <td className="py-2 px-4 border-b border-gray-200 text-right">
                                                         <div className="text-right space-x-2">
-                                                            <button
+                                                            <button 
                                                                 onClick={() => openEditModal(item)}
 
                                                             >
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="
+                                                                w-5 fill-black hover:fill-gray-600"
                   viewBox="0 0 348.882 348.882">
                   <path
                     d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
@@ -130,7 +131,7 @@ console.log(roles);
                                     <Link
                                         key={index}
                                         href={link.url}
-                                        className={`px-3 py-1 mt-1 border rounded-md text-sm ${link.active ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
+                                        className={`px-3 py-1 mt-1 border rounded-md text-sm ${link.active ? 'bg-black text-white' : 'bg-gray-200 hover:bg-gray-300'}`}
                                         dangerouslySetInnerHTML={{ __html: link.label }}
                                     />
                                 ))}
@@ -189,12 +190,12 @@ console.log(roles);
                                         name="name"
                                         type="text"
                                         id="name"
-                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
                                         placeholder=" "
                                     />
                                     <label
                                         htmlFor="name"
-                                        className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                        className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                     >
                                         Name
                                     </label>
@@ -205,7 +206,7 @@ console.log(roles);
                                         name="guard_name"
                                         as="select"
                                         id="guard_name"
-                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
                                         placeholder=" "
                                     >
                                         <option value="">Select Guard</option>
@@ -220,7 +221,7 @@ console.log(roles);
                                 <div className="flex justify-end space-x-2 mt-4">
                                     <button
                                         type="submit"
-                                        className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                        className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                     >
                                         Submit
                                     </button>
@@ -277,12 +278,12 @@ console.log(roles);
                                         name="name"
                                         type="text"
                                         id="name"
-                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
                                         placeholder=" "
                                     />
                                     <label
                                         htmlFor="name"
-                                        className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                                        className="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:text-black peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                                     >
                                         Name
                                     </label>
@@ -293,7 +294,7 @@ console.log(roles);
                                         name="guard_name"
                                         as="select"
                                         id="guard_name"
-                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-black peer"
                                         placeholder=" "
                                     >
                                         <option value="">Select Guard</option>
@@ -312,7 +313,7 @@ console.log(roles);
                                 <div className="flex justify-end space-x-2 mt-4">
                                     <button
                                         type="submit"
-                                        className="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                        className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                     >
                                         Update
                                     </button>

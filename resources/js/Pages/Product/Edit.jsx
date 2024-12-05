@@ -238,7 +238,7 @@ export default function Edit(props) {
                                 />
                                 <label
                                     className={`flex flex-col p-4 border-2 cursor-pointer ${
-                                        values.identity_type === "imei" ? "border-blue-500" : "border-gray-400"
+                                        values.identity_type === "imei" ? "border-black" : "border-gray-400"
                                     }`}
                                     htmlFor="radio_2"
                                 >
@@ -257,7 +257,7 @@ export default function Edit(props) {
                                 />
                                 <label
                                    className={`flex flex-col p-4 border-2 cursor-pointer ${
-                                    values.identity_type === "sku" ? "border-blue-500" : "border-gray-400"
+                                    values.identity_type === "sku" ? "border-black" : "border-gray-400"
                                 }`}
                                     htmlFor="radio_3"
                                 >
@@ -275,7 +275,7 @@ export default function Edit(props) {
                                 />
                                 <label
                                    className={`flex flex-col p-4 border-2 cursor-pointer ${
-                                    values.identity_type === "serial" ? "border-blue-500" : "border-gray-400"
+                                    values.identity_type === "serial" ? "border-black" : "border-gray-400"
                                 }`}
                                   htmlFor="radio_4"
                                 >
@@ -472,7 +472,7 @@ export default function Edit(props) {
                                 <button
                                   type="button"
                                   onClick={() => push({ name: '', value: '' })}
-                                  className="mt-2 text-blue-500 text-sm underline hover:text-blue-700"
+                                  className="mt-2 text-black text-sm underline hover:text-gray-700"
                                 >
                                   Add Field
                                 </button>
@@ -579,7 +579,7 @@ export default function Edit(props) {
                           <div className="flex gap-2 items-center">
                           <Field name="code"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
                          
-                          <RiAiGenerate onClick={() => generateCode()} size={40} color="blue" />
+                          <RiAiGenerate onClick={() => generateCode()} size={40} color="black" />
                           </div>
                           <ErrorMessage name="code" component="div" className="text-red-500 text-xs mt-1" />
 
@@ -588,7 +588,7 @@ export default function Edit(props) {
                               //copy to clipboard
                               navigator.clipboard.writeText(values.code);
                               toast.success('Copied to clipboard');
-                            }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
+                            }} className='bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
                           }
                       </div>
 
@@ -705,7 +705,7 @@ export default function Edit(props) {
                 type="text"
                 placeholder="Enter invoice no"
               />
-               <RiAiGenerate  onClick={()=>generateInvoiceNo()} size={40} color="blue" />
+               <RiAiGenerate  onClick={()=>generateInvoiceNo()} size={40} color="black" />
               </div>
               <ErrorMessage
                 name="invoice_no"
@@ -719,7 +719,7 @@ export default function Edit(props) {
                 //copy to clipboard
                 navigator.clipboard.writeText(values.invoice_no);
                 toast.success('Copied to clipboard');
-               }} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
+               }} className='bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2' >Copy</button>
             }
             </div>
                       {/* Invoice Date */}

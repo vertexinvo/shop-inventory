@@ -220,7 +220,7 @@ useEffect(() => {
         <div className="w-full flex items-center justify-between mb-5">
                       <div className='flex items-center gap-2'>
                         <label className="block text-grey-darker text-lg font-bold" >Order#{order_id}</label>
-                        <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" /> 
+                        <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" /> 
                       </div>
                       <div className="flex items-center justify-start gap-1 ">
                       <button onClick={save}  className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">

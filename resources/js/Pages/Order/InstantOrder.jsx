@@ -132,7 +132,7 @@ useEffect(() => {
         <div className="w-full flex items-center justify-between mb-5">
                       <div className='flex items-center gap-2'>
                         <label className="block text-grey-darker text-lg font-bold" >Order#{order_id}</label>
-                        <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" /> 
+                        <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" /> 
                       </div>
                       <div className="flex items-center justify-start gap-1 ">
                       <button onClick={save}  className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
@@ -465,7 +465,7 @@ useEffect(() => {
            onClick={()=>{
              setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '', total : ''})
            }}
-           className='text-sm font-semibold text-blue-500 leading-tight underline'>Add Item</button>
+           className='text-sm font-semibold text-black dark:text-white leading-tight underline'>Add Item</button>
          </p>
        </td>
      
@@ -480,19 +480,19 @@ useEffect(() => {
          <input type="text" value={exchangeItems.name} onChange={(e)=>{
            setExchangeItems({...exchangeItems, name : e.target.value})
          }}
-         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200">
         <input type="text" value={exchangeItems.model} onChange={(e)=>{
            setExchangeItems({...exchangeItems, model : e.target.value})
          }}
-         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200 flex items-center gap-2">
         <select  value={exchangeItems.identity_type} onChange={(e)=>{
            setExchangeItems({...exchangeItems, identity_type : e.target.value})
          }}
-         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5">
             <option value="none">None</option>
             <option value="imei">IMEI</option>
             <option value="serial">Serial</option>
@@ -502,7 +502,7 @@ useEffect(() => {
              <input type="text" value={exchangeItems.identity_value} onChange={(e)=>{
               setExchangeItems({...exchangeItems, identity_value : e.target.value})
             }}
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
           )}
          
         </td>
@@ -510,22 +510,22 @@ useEffect(() => {
         <input type="text" value={exchangeItems.purchase_price} onChange={(e)=>{
            setExchangeItems({...exchangeItems, purchase_price : e.target.value})
          }}
-         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200">
         <input type="text" value={exchangeItems.quantity} onChange={(e)=>{
            setExchangeItems({...exchangeItems, quantity : e.target.value})
          }}
-         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200">
         <input type="text" disabled value={exchangeItems.name} onChange={(e)=>{
            setExchangeItems({...exchangeItems, name : e.target.value})
          }}
-         class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" />
+         class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200 ">
-            <button type="button" className="text-sm font-semibold text-blue-500 leading-tight underline">Add</button>
+            <button type="button" className="text-sm font-semibold text-black dark:text-white leading-tight underline">Add</button>
         </td>
       </tr>
 )}

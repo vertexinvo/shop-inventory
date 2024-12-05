@@ -40,7 +40,7 @@ export default function List(props) {
                 <button
                 //   onClick={() => setIsModalOpen(true)}
                  onClick={() => router.get(route('user.create'))}
-                  className="text-white py-2 px-4 rounded-lg bg-blue-500 hover:bg-blue-600"
+                  className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                 >
                   Create
                 </button>
@@ -97,7 +97,7 @@ export default function List(props) {
                 checked={selectId.length === users.data.length}
               />
               <label for="checkbox"
-                class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden">
+                class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
                   <path
                     d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
@@ -150,7 +150,7 @@ export default function List(props) {
         />
         <label
           htmlFor={`checkbox-${user.id}`} // Match label with checkbox id
-          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-blue-500 border border-gray-400 rounded overflow-hidden"
+          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -179,13 +179,13 @@ export default function List(props) {
               <label class="relative cursor-pointer">
                 <input type="checkbox" onClick={() => router.put(route('user.status', user.id))} class="sr-only peer" checked={user.status} />
                 <div
-                  class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]">
+                  class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black">
                 </div>
               </label>
             </td>
             <td class="p-4">
               <button onClick={() => router.get(route('user.edit', user.id))} class="mr-4" title="Edit">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                   viewBox="0 0 348.882 348.882">
                   <path
                     d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
@@ -267,7 +267,7 @@ export default function List(props) {
                     ) : link.active ? (
                         // Active page button
                         <button
-                            className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                            className="px-3 py-1 text-white transition-colors duration-150 bg-black    rounded-md "
                             aria-current="page"
                         >
                             {link.label}
