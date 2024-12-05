@@ -94,7 +94,7 @@ export default function List(props) {
             <div class="font-[sans-serif] overflow-x-auto">
             <table class="min-w-full bg-white">
         <thead class="whitespace-nowrap">
-          <tr>
+          <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
             <th class="pl-4 w-8">
               <input id="checkbox" type="checkbox" class="hidden peer" 
                onChange={(e) => setSelectId(e.target.checked ? suppliers.data.map((item) => item.id) : [])}
@@ -109,34 +109,34 @@ export default function List(props) {
                 </svg>
               </label>
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Supplier Info
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Contact
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Address
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Code
             </th>
 
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Total Invoices
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Total Amount
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Total Amount Paid
             </th>
 
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Total Amount Pending
             </th>
        
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Action
             </th>
           </tr>

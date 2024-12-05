@@ -83,8 +83,8 @@ export default function Setting(props) {
         </div>
       </div>
 
-      {/* Second row - Apply grid here for different layout */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 container mx-auto py-3 px-5">
+      {/* Second row */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 container mx-auto py-3 px-5">
       <div className="w-full scale-100">
           <Link href={route('user.index')} className="w-full">
             <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">

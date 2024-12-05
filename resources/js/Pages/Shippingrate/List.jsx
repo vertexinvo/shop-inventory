@@ -90,7 +90,7 @@ export default function List(props) {
             <div class="font-[sans-serif] overflow-x-auto">
       <table class="min-w-full bg-white">
         <thead class="whitespace-nowrap">
-          <tr>
+          <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
             <th class="pl-4 w-8">
               <input id="checkbox" type="checkbox" class="hidden peer" 
                 onChange={(e) => setSelectId(e.target.checked ? shippingrates.data.map((tax) => tax.id) : [])}
@@ -105,26 +105,26 @@ export default function List(props) {
                 </svg>
               </label>
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Area Name
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             Postal Code
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             City
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             State
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             Country
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Fee
               
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Action
             </th>
           </tr>

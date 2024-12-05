@@ -93,7 +93,7 @@ export default function List(props) {
             <div class="font-[sans-serif] overflow-x-auto">
               <table class="min-w-full bg-white">
                 <thead class="whitespace-nowrap">
-                  <tr>
+                  <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
                     <th class="pl-4 w-8">
                       <input id="checkbox" type="checkbox" class="hidden peer"
                         onChange={(e) => setSelectId(e.target.checked ? orders.data.map((order) => order.id) : [])}
@@ -108,45 +108,45 @@ export default function List(props) {
                         </svg>
                       </label>
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Order Info
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Phone
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Address
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Total
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Payment Info
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Payable Amount
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Paid Amount
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Online Payment Link
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Charges Info
                     </th>
 
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Discount
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
 
-                    <th class="p-4 text-left text-sm font-semibold text-black">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Action
                     </th>
                   </tr>

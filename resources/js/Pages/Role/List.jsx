@@ -48,11 +48,11 @@ console.log(roles);
                         <div className='overflow-x-auto'>
                             <table className="min-w-full bg-white rounded-lg shadow-lg">
                                 <thead>
-                                    <tr>
-                                        <th className="py-3 px-4 border-b-2 border-gray-200 text-left font-semibold text-gray-700">ID</th>
-                                        <th className="py-3 px-4 border-b-2 border-gray-200 text-left font-semibold text-gray-700">Name</th>
+                                    <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
+                                        <th className="py-3 px-4 border-b-2 border-gray-200 text-left font-semibold ">ID</th>
+                                        <th className="py-3 px-4 border-b-2 border-gray-200 text-left font-semibold ">Name</th>
 
-                                        <th className="py-3 px-4 border-b-2 border-gray-200 text-right font-semibold text-gray-700">Action</th>
+                                        <th className="py-3 px-4 border-b-2 border-gray-200 text-right font-semibold ">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>

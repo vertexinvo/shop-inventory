@@ -88,7 +88,7 @@ export default function List(props) {
             <div class="font-[sans-serif] overflow-x-auto">
             <table class="min-w-full bg-white">
         <thead class="whitespace-nowrap">
-          <tr>
+          <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
             <th class="pl-4 w-8">
               <input id="checkbox" type="checkbox" class="hidden peer" 
                onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
@@ -103,34 +103,34 @@ export default function List(props) {
                 </svg>
               </label>
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Product Info
             </th>
            
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             Purchase price
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             Selling price
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             Warranty period
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
             Is Borrow
             </th>
 
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Quantity
             </th>
           
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Stock Status
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Supplier Invoice
             </th>
-            <th class="p-4 text-left text-sm font-semibold text-black">
+            <th class="p-4 text-left text-sm font-semibold ">
               Action
             </th>
           </tr>

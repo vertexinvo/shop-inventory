@@ -24,7 +24,7 @@ function SupplierBalance({suppliers}) {
             <div class="font-[sans-serif] overflow-x-auto">
             <table class="min-w-full bg-white">
         <thead class="whitespace-nowrap">
-          <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+          <tr class="text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black">
           
             <th class="px-4 py-3">
               Supplier Info

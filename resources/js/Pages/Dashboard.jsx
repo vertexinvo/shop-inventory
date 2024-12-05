@@ -124,7 +124,7 @@ export default function Dashboard(props) {
   <div class="w-full overflow-x-auto">
     <table class="w-full">
       <thead>
-        <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+        <tr class="text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black ">
           <th class="px-4 py-3">Client</th>
           <th class="px-4 py-3">Amount</th>
           <th class="px-4 py-3">Status</th>
