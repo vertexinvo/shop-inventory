@@ -197,7 +197,7 @@ export default function List(props) {
             </td>
           
             <td class="p-4">
-              <button onClick={() => router.get(route('shippingrate.edit', tax.id))} class="mr-4" title="Edit">
+              <button onClick={() => router.get(route('shippingrate.edit', shippingrate.id))} class="mr-4" title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-blue-500 hover:fill-blue-700"
                   viewBox="0 0 348.882 348.882">
                   <path

@@ -28,15 +28,25 @@ class ShippingRateController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Shippingrate/Add');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreShippingRateRequest $request)
+    public function store(Request $request)
     {
-        //
+       $validator = Validator::make($request->all(), [
+        'area_name' => 'required',
+        'fee' => 'required',
+       ]);
+
+       if ($validator->fails()) {
+        session()->flash('error', $validator->errors()->first());
+        return redirect()->back();
+       }
+       $shippingrate = ShippingRate::create($request->all());
+       return redirect()->back()->with('message', 'Shipping rate created successfully');
     }
 
     /**
@@ -50,24 +60,38 @@ class ShippingRateController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ShippingRate $shippingRate)
+    public function edit(String $id)
     {
-        //
+        $shippingrate = ShippingRate::find($id);
+        return Inertia::render('Shippingrate/Edit', compact('shippingrate'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateShippingRateRequest $request, ShippingRate $shippingRate)
+    public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'area_name' => 'required',
+            'fee' => 'required|numeric',
+           ]);
+
+           if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+           }
+        $shippingrate = ShippingRate::find($id);
+        $shippingrate->update($request->all());
+        return redirect()->back()->with('message', 'Shipping rate updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ShippingRate $shippingRate)
+    public function destroy($id)
     {
-        //
+        $shippingrate = ShippingRate::find($id);
+        $shippingrate->delete();
+        return redirect()->back()->with('message', 'Shipping rate deleted successfully');
     }
 }
