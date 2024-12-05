@@ -33,12 +33,12 @@ export default function Guest({ children }) {
             </h2>
             <p class="text-sm mt-6 text-gray-800">Immerse yourself in a hassle-free login journey with our intuitively designed login form. Effortlessly access your account.</p>
             {/* if current route is login the show this */}
-            {route().current('login') && (
+            {/* {route().current('login') && (
                     <p class="text-sm mt-12 text-gray-800">Don't have an account <Link href={route('register')} class="text-blue-600 font-semibold hover:underline ml-1">Register here</Link></p>
             )}
               {route().current('register') && (
                     <p class="text-sm mt-12 text-gray-800">Already have an account <Link href={route('login')} class="text-blue-600 font-semibold hover:underline ml-1">Login here</Link></p>
-            )}
+            )} */}
 
           </div>
 
