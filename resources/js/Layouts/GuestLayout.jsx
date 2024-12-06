@@ -29,9 +29,9 @@ export default function Guest({ children }) {
         <div class="grid md:grid-cols-2 items-center gap-10 max-w-6xl w-full">
           <div>
             <h2 class="lg:text-5xl text-4xl font-extrabold lg:leading-[55px] text-gray-800">
-              Seamless Login for Exclusive Access
+            Secure Access to Your Dashboard
             </h2>
-            <p class="text-sm mt-6 text-gray-800">Immerse yourself in a hassle-free login journey with our intuitively designed login form. Effortlessly access your account.</p>
+            <p class="text-sm mt-6 text-gray-800">Experience a streamlined login process designed for efficiency and security. Gain instant access to manage your inventory with confidence.</p>
             {/* if current route is login the show this */}
             {/* {route().current('login') && (
                     <p class="text-sm mt-12 text-gray-800">Don't have an account <Link href={route('register')} class="text-blue-600 font-semibold hover:underline ml-1">Register here</Link></p>
