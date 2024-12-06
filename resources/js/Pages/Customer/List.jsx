@@ -61,7 +61,7 @@ export default function List(props) {
                       name="search"
                       type="text"
                       placeholder="Search..."
-                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"          
                     />
                     <button
                       type="button"
@@ -185,7 +185,7 @@ export default function List(props) {
               <label class="relative cursor-pointer">
                 <input type="checkbox" onClick={() => router.put(route('customer.status', user.id))} class="sr-only peer" checked={user.status} />
                 <div
-                  class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007bff]">
+                  class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black">
                 </div>
               </label>
             </td>

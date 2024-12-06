@@ -19,7 +19,16 @@ export default function Edit(props) {
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
 
- 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderColor: state.isFocused ? 'black' : base.borderColor, // Change focus border color to black
+      boxShadow: state.isFocused ? '0 0 0 1px black' : base.boxShadow, // Optional: Add shadow for focus
+      '&:hover': {
+        borderColor: state.isFocused ? 'black' : base.borderColor, // Keep border color on hover
+      },
+    }),
+  };
 
 
   return (
@@ -183,6 +192,7 @@ export default function Edit(props) {
                                             className="basic-multi-select"
                                             classNamePrefix="select"
                                             defaultValue={values.categories}
+                                            styles={customStyles}
                                         />
                           <ErrorMessage name="categories" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
@@ -198,6 +208,7 @@ export default function Edit(props) {
                                             className="basic-multi-select"
                                             classNamePrefix="select"
                                             defaultValue={values.brands}
+                                            styles={customStyles}
                                         />
                           <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
@@ -300,10 +311,10 @@ export default function Edit(props) {
                           <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
                           <div className="flex items-center">
                               <label className="mr-4">
-                                  <Field name="is_warranty" type="radio" value="1" className="mr-2" /> Yes
+                                  <Field name="is_warranty" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                  <Field name="is_warranty" type="radio" value="0" className="mr-2" /> No
+                                  <Field name="is_warranty" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                           </div>
                           <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
@@ -348,10 +359,10 @@ export default function Edit(props) {
                           <label className="block text-grey-darker text-sm font-bold mb-2">Is Borrow</label>
                           <div className="flex items-center">
                               <label className="mr-4">
-                                  <Field name="is_borrow" type="radio" value="1" className="mr-2" /> Yes
+                                  <Field name="is_borrow" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                  <Field name="is_borrow" type="radio" value="0" className="mr-2" /> No
+                                  <Field name="is_borrow" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                           </div>
                           <ErrorMessage name="is_borrow" component="div" className="text-red-500 text-xs mt-1" />
@@ -391,10 +402,10 @@ export default function Edit(props) {
                           <label className="block text-grey-darker text-sm font-bold mb-2">Is Supplier</label>
                           <div className="flex items-center">
                               <label className="mr-4">
-                                  <Field name="is_supplier" type="radio" value="1" className="mr-2" /> Yes
+                                  <Field name="is_supplier" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                  <Field name="is_supplier" type="radio" value="0" className="mr-2" /> No
+                                  <Field name="is_supplier" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                           </div>
                           <ErrorMessage name="is_supplier" component="div" className="text-red-500 text-xs mt-1" />

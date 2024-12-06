@@ -43,31 +43,31 @@ export default function List(props) {
             <div class="py-4 px-8">
                 <div class="flex mb-4">
                     <div class="w-1/2 mr-1">
-                        <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
-                        <Field name="name" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name"/>
+                        <label class="block  text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
+                        <Field name="name" class="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="name" type="text" placeholder="Enter name"/>
                         <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
                     <div class="w-1/2 ml-1">
-                    <label class="block text-grey-darker text-sm font-bold mb-2" for="email">Email Address</label>
-                    <Field name="email"  class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="email" type="email" placeholder="Enter email address"/>
+                    <label class="block focus:ring-black focus:border-black text-grey-darker text-sm font-bold mb-2" for="email">Email Address</label>
+                    <Field name="email"  class="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="email" type="email" placeholder="Enter email address"/>
                     <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
                 </div>
               
                 <div class="mb-4">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Password</label>
-                    <Field name="password"  class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Enter secure password"/>
+                    <Field name="password"  class="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="password" type="password" placeholder="Enter secure password"/>
                     <ErrorMessage name="password" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
                 <div class="mb-4">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Confirm Password</label>
-                    <Field name="password_confirmation" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="password" type="password" placeholder="Enter secure password"/>
+                    <Field name="password_confirmation" class="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="password" type="password" placeholder="Enter secure password"/>
                    <ErrorMessage name="password_confirmation" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
                 <div class="mb-4">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="password">Role</label>
-                    <Field as="select" name="role" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="select">
-                        <option value="">Select Role</option>
+                    <Field as="select" name="role" class="appearance-none border  rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="select">
+                        <option value=""  >Select Role</option>
                         {roles.map((role) => (
                             <option key={role.id} value={role.name}>
                                 {role.name}

@@ -27,6 +27,16 @@ export default function Add(props) {
 
   const [loading3, setLoading3] = useState(false);
 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderColor: state.isFocused ? 'black' : base.borderColor, // Change focus border color to black
+      boxShadow: state.isFocused ? '0 0 0 1px black' : base.boxShadow, // Optional: Add shadow for focus
+      '&:hover': {
+        borderColor: state.isFocused ? 'black' : base.borderColor, // Keep border color on hover
+      },
+    }),
+  };
 
   return (
       <AuthenticatedLayout
@@ -269,6 +279,7 @@ useEffect(() => {
                               options={users}
                               className="basic-single"
                               classNamePrefix="select"
+                              styles={customStyles}
                             />
     
                         </div>
@@ -277,12 +288,12 @@ useEffect(() => {
                       
                         <div className="w-1/2 mr-1">
                             <label className="block text-grey-darker text-sm  mb-2" >Customer Name</label>
-                            <Field name="name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer name" />
+                            <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer name" />
                             <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                         </div>
                         <div className="w-1/2 mr-1">
                             <label className="block text-grey-darker text-sm  mb-2" >Customer Email</label>
-                            <Field name="email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer email" />
+                            <Field name="email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer email" />
                             <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                         </div>
                         </div>
@@ -290,12 +301,12 @@ useEffect(() => {
                       
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >Customer Phone</label>
-                          <Field name="phone" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer phone" />
+                          <Field name="phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer phone" />
                           <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >Customer Address</label>
-                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer address" />
+                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer address" />
                           <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       </div>
@@ -303,7 +314,7 @@ useEffect(() => {
                       
                       <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
-                      <Field name="status"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                      <Field name="status"  className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" as="select">
                           <option value="">Select Status</option>
                           <option value="pending">Pending</option>
                           <option value="completed">Completed</option>
@@ -337,6 +348,7 @@ useEffect(() => {
                               options={items}
                               className="basic-single"
                               classNamePrefix="select"
+                              styles={customStyles}
                             />
                         <ErrorMessage name="items" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
@@ -345,7 +357,7 @@ useEffect(() => {
                       {selectedItems && (
                         <div className="flex  ">
                         <div className="w-1/2 mr-1">
-                            <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })}  placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" />
+                            <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })}  placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" />
                             </div>
                             <div className="w-1/2 mr-1">
                             <button onClick={() =>{
@@ -522,10 +534,10 @@ useEffect(() => {
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Installment</label>
                             <div className="flex items-center">
                               <label className="mr-4">
-                                <Field name="is_installment" type="radio" value="1" className="mr-2" /> Yes
+                                <Field name="is_installment" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                <Field name="is_installment" type="radio" value="0" className="mr-2" /> No
+                                <Field name="is_installment" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                             </div>
                             <ErrorMessage name="is_installment" component="div" className="text-red-500 text-xs mt-1" />
@@ -537,12 +549,12 @@ useEffect(() => {
                       
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >	Installment Amount</label>
-                          <Field name="installment_amount" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Installment Amount" />
+                          <Field name="installment_amount" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Installment Amount" />
                           <ErrorMessage name="installment_amount" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >Installment Period</label>
-                          <Field name="installment_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Installment Period" />
+                          <Field name="installment_period" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Installment Period" />
                           <ErrorMessage name="installment_period" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       
@@ -551,12 +563,12 @@ useEffect(() => {
                       
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >	Installment Start Date</label>
-                          <Field name="installment_start_date" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="date" placeholder="Enter Installment Start Date" />
+                          <Field name="installment_start_date" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="date" placeholder="Enter Installment Start Date" />
                           <ErrorMessage name="installment_start_date" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >Installment End Date</label>
-                          <Field name="installment_end_date" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="date" placeholder="Enter Installment End Date" />
+                          <Field name="installment_end_date" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="date" placeholder="Enter Installment End Date" />
                           <ErrorMessage name="installment_end_date" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       
@@ -564,7 +576,7 @@ useEffect(() => {
 
                       <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2 " >Installment Count</label>
-                          <Field name="installment_count" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="number" placeholder="Enter Installment Count" />
+                          <Field name="installment_count" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="number" placeholder="Enter Installment Count" />
                           <ErrorMessage name="installment_count" component="div" className="text-red-500 text-xs mt-1" />
                   </div>
                     </>
@@ -574,7 +586,7 @@ useEffect(() => {
 
                   <div className="mb-4">
                   <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Payment Method</label>
-                  <Field name="method"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" as="select">
+                  <Field name="method"  className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" as="select">
                       <option value="">Select Payment Method</option>
                       <option value="cash">Cash</option>
                       <option value="bank">Bank Transfer</option>
@@ -597,7 +609,7 @@ useEffect(() => {
                           </label>
                           <Field
                             name="cheque_no"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter cheque no"
                           />
@@ -615,7 +627,7 @@ useEffect(() => {
                           </label>
                           <Field
                             name="cheque_date"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="date"
                           />
                           <ErrorMessage
@@ -637,7 +649,7 @@ useEffect(() => {
                           </label>
                           <Field
                             name="bank_name"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter bank name"
                           />
@@ -655,7 +667,7 @@ useEffect(() => {
                           </label>
                           <Field
                             name="bank_branch"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter bank branch"
                           />
@@ -672,7 +684,7 @@ useEffect(() => {
                           </label>
                           <Field
                             name="bank_account"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter bank account no"
                           />
@@ -695,7 +707,7 @@ useEffect(() => {
                           </label>
                           <Field
                             name="online_payment_link"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="url"
                             placeholder="Enter online payment link"
                           />
@@ -722,7 +734,7 @@ useEffect(() => {
                         setFieldValue('tax', selectedTax ? selectedTax.cost : ''); // Default to an empty string if no match
                         setFieldValue('tax_id', e.target.value); // Ensure tax_id is updated as well
                       }}
-                      className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                      className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                     >
                       <option value="">Select Tax</option>
                       {taxs.map((tax) => (
@@ -766,6 +778,7 @@ useEffect(() => {
                               options={shippingrates}
                               className="basic-single"
                               classNamePrefix="select"
+                              styles={customStyles}
                             />
                   <ErrorMessage name="shipping_id" component="div" className="text-red-500 text-xs mt-1" />
                   </div>

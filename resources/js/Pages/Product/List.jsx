@@ -58,7 +58,7 @@ export default function List(props) {
                       name="search"
                       type="text"
                       placeholder="Search..."
-                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
+                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"          
                     />
                     <button
                       type="button"

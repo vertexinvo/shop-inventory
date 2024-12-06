@@ -47,26 +47,31 @@ export default function List(props) {
                   initialValues={{ search: '' }}
                 
                 >
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div>
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                     
-                     />
-                      
-                    </div>
-
+                 <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
+                  <div className="relative">
+                    <Field
+                      name="search"
+                      type="text"
+                      placeholder="Search..."
+                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"                             
+                   />
                     <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                      type="button"
+                      onClick={() => {setFieldValue('search', ''); router.get(route('brand.index'))}}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                     >
-                      Search
+                      ✖
                     </button>
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                  >
+                    Search
+                  </button>
 
-                  </Form>
+                </Form>
                 </Formik>
               </div>
             </div>

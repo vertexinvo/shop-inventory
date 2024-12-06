@@ -23,6 +23,16 @@ export default function Add(props) {
 
   const [supplierId, setSupplierId] = useState('');
 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderColor: state.isFocused ? 'black' : base.borderColor, // Change focus border color to black
+      boxShadow: state.isFocused ? '0 0 0 1px black' : base.boxShadow, // Optional: Add shadow for focus
+      '&:hover': {
+        borderColor: state.isFocused ? 'black' : base.borderColor, // Keep border color on hover
+      },
+    }),
+  };
 
   return (
     <AuthenticatedLayout
@@ -106,12 +116,12 @@ export default function Add(props) {
                           <div className="flex mb-4">
                             <div className="w-1/2 mr-1">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
-                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name" />
+                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="name" type="text" placeholder="Enter name" />
                               <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
                             <div className="w-1/2 mr-1">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Model  (optional)</label>
-                              <Field name="model" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="model" type="text" placeholder="Enter model" />
+                              <Field name="model" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="model" type="text" placeholder="Enter model" />
                               <ErrorMessage name="model" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
 
@@ -119,7 +129,7 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="specifications">Specifications  (optional)</label>
-                            <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
+                            <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
 
                             <ErrorMessage name="specifications" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
@@ -127,36 +137,36 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="specifications">Description  (optional)</label>
-                            <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" value={values.description} onChange={(e) => setFieldValue('description', e)} />
+                            <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.description} onChange={(e) => setFieldValue('description', e)} />
                             <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="purchase_price">Purchase Price</label>
-                            <Field name="purchase_price" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="purchase_price" type="number" step="0.01" placeholder="Enter purchase price" />
+                            <Field name="purchase_price" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="purchase_price" type="number" step="0.01" placeholder="Enter purchase price" />
                             <ErrorMessage name="purchase_price" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Selling Price</label>
-                            <Field name="selling_price" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="selling_price" type="number" step="0.01" placeholder="Enter selling price" />
+                            <Field name="selling_price" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="selling_price" type="number" step="0.01" placeholder="Enter selling price" />
                             <ErrorMessage name="selling_price" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Quantity</label>
-                            <Field name="quantity" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="quantity" type="number" min="1" placeholder="Enter quantity" />
+                            <Field name="quantity" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="quantity" type="number" min="1" placeholder="Enter quantity" />
                             <ErrorMessage name="quantity" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Weight - (kg) (optional)</label>
-                            <Field name="weight" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="weight" type="number" step="0.01" placeholder="Enter weight" />
+                            <Field name="weight" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="weight" type="number" step="0.01" placeholder="Enter weight" />
                             <ErrorMessage name="weight" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
 
 
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="categories">Select Category (optional)</label>
+                          <div className="mb-4 ">
+                            <label className="block   text-grey-darker text-sm font-bold mb-2" for="categories">Select Category (optional)</label>
                             <Select
                               onChange={(e) => {
                                 setFieldValue("categories", e.map((item) => item.value));
@@ -166,6 +176,7 @@ export default function Add(props) {
                               options={categories}
                               className="basic-multi-select"
                               classNamePrefix="select"
+                              styles={customStyles}
                             />
                             <ErrorMessage name="categories" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
@@ -180,6 +191,7 @@ export default function Add(props) {
                               options={brands}
                               className="basic-multi-select"
                               classNamePrefix="select"
+                              styles={customStyles}
                             />
                             <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
@@ -266,7 +278,7 @@ export default function Add(props) {
                           {values.identity_type !== 'none' && (
                             <div className=" mr-1 mb-4 ">
                               <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">{values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} </label>
-                              <Field name="identity_value" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder={"Enter " + values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} />
+                              <Field name="identity_value" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder={"Enter " + values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} />
                               <ErrorMessage name="identity_value" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
                           )}
@@ -278,10 +290,10 @@ export default function Add(props) {
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
                             <div className="flex items-center">
                               <label className="mr-4">
-                                <Field name="is_warranty" type="radio" value="1" className="mr-2" /> Yes
+                                <Field name="is_warranty" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                <Field name="is_warranty" type="radio" value="0" className="mr-2" /> No
+                                <Field name="is_warranty" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                             </div>
                             <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
@@ -292,7 +304,7 @@ export default function Add(props) {
                               <div className="flex mb-4">
                                 <div className="w-1/2 mr-1">
                                   <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Type </label>
-                                  <Field name="warranty_type" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_type" as="select" >
+                                  <Field name="warranty_type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="warranty_type" as="select" >
                                     <option value=''>Select Warranty Type</option>
                                     <option value='years'>Year</option>
                                     <option value="months">Month</option>
@@ -302,7 +314,7 @@ export default function Add(props) {
                                 </div>
                                 <div className="w-1/2 mr-1">
                                   <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Period </label>
-                                  <Field name="warranty_period" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="warranty_period" type="number" step="1" placeholder="Enter warranty period" />
+                                  <Field name="warranty_period" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="warranty_period" type="number" step="1" placeholder="Enter warranty period" />
                                   <ErrorMessage name="warranty_period" component="div" className="text-red-500 text-xs mt-1" />
                                 </div>
 
@@ -314,10 +326,10 @@ export default function Add(props) {
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Borrow</label>
                             <div className="flex items-center">
                               <label className="mr-4">
-                                <Field name="is_borrow" type="radio" value="1" className="mr-2" /> Yes
+                                <Field name="is_borrow" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                <Field name="is_borrow" type="radio" value="0" className="mr-2" /> No
+                                <Field name="is_borrow" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                             </div>
                             <ErrorMessage name="is_borrow" component="div" className="text-red-500 text-xs mt-1" />
@@ -328,25 +340,25 @@ export default function Add(props) {
                               <label className="block text-grey-darker text-sm my-2 text-red-500" for="shop_name" >Fill atleast one</label>
                               <div className="mb-4">
                                 <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Shop Name</label>
-                                <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
+                                <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
                                 <ErrorMessage name="shop_name" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
 
                               <div className="mb-4">
                                 <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Shop Address</label>
-                                <Field as="textarea" name="shop_address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_address" rows="3" placeholder="Enter shop address"></Field>
+                                <Field as="textarea" name="shop_address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_address" rows="3" placeholder="Enter shop address"></Field>
                                 <ErrorMessage name="shop_address" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
 
                               <div className="mb-4">
                                 <label className="block text-grey-darker text-sm  mb-2" for="shop_phone">Shop Phone</label>
-                                <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_phone" type="number" placeholder="Enter purchase price" />
+                                <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_phone" type="number" placeholder="Enter purchase price" />
                                 <ErrorMessage name="shop_phone" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
 
                               <div className="mb-4">
                                 <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Shop Email</label>
-                                <Field name="shop_email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="shop_email" type="email" placeholder="Enter shop email" />
+                                <Field name="shop_email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_email" type="email" placeholder="Enter shop email" />
                                 <ErrorMessage name="shop_email" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
                             </>
@@ -356,11 +368,11 @@ export default function Add(props) {
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Supplier</label>
                             <div className="flex items-center">
-                              <label className="mr-4">
-                                <Field name="is_supplier" type="radio" value="1" className="mr-2" /> Yes
+                              <label className="mr-4 ">
+                                <Field name="is_supplier" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
                               </label>
                               <label>
-                                <Field name="is_supplier" type="radio" value="0" className="mr-2" /> No
+                                <Field name="is_supplier" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
                               </label>
                             </div>
                             <ErrorMessage name="is_supplier" component="div" className="text-red-500 text-xs mt-1" />
@@ -375,7 +387,7 @@ export default function Add(props) {
                              setFieldValue('supplier_invoice_no', '')
                           }} className='text-black text-sm underline hover:text-gray-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
                           {!notremember ? (
-                          <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
+                          <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
                           ) : (
                             <>
                             <select onChange={(e) => {
@@ -383,14 +395,14 @@ export default function Add(props) {
                               setSupplierId(e.target.value)
                               router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
                             )
-                              }}  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
+                              }}  className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
                             <option value="">Select supplier</option>
                             {suppliers.map((supplier) => (
                               <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
                             ))}
                             </select>
                            {supplierinvoices.length > 0 && (
-                              <Field as="select"  name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="supplier_invoice_no">
+                              <Field as="select"  name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
                               <option value="">Select supplier invoice no</option>
                               {supplierinvoices.map((item) => (
                                 <option key={item.id} value={item.invoice_no}>{item.invoice_no }</option>
@@ -406,8 +418,8 @@ export default function Add(props) {
 <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
                             <div className="flex items-center justify-start gap-2 mt-2">
                        
-                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-black text-sm underline hover:text-blue-700'>Create a new invoice</button>
-                         <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-blue-500 text-sm underline hover:text-blue-700'>Create a new supplier</button>
+                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new invoice</button>
+                         <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new supplier</button>
 
                           </div>
                           </div>
@@ -428,7 +440,7 @@ export default function Add(props) {
                                         <div className="flex flex-col gap-2">
                                           <Field
                                             name={`customfield.${index}.name`}
-                                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                                             type="text"
                                             placeholder="Enter field name"
                                           />
@@ -442,7 +454,7 @@ export default function Add(props) {
                                         <div className="flex flex-col gap-2">
                                           <Field
                                             name={`customfield.${index}.value`}
-                                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                                             type="text"
                                             placeholder="Enter field value"
                                           />
@@ -552,32 +564,32 @@ export default function Add(props) {
                   <Form>
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Name</label>
-                      <Field name="person_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier name" />
+                      <Field name="person_name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier name" />
                       <ErrorMessage name="person_name" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
 
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Supplier Address</label>
-                      <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier address" />
+                      <Field name="address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier address" />
                       <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
 
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_contact">Supplier Contact</label>
-                      <Field name="contact" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="number" placeholder="Enter supplier contact" />
+                      <Field name="contact" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="number" placeholder="Enter supplier contact" />
                       <ErrorMessage name="contact" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
 
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Supplier Email</label>
-                      <Field name="email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="email" placeholder="Enter supplier email" />
+                      <Field name="email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="email" placeholder="Enter supplier email" />
                       <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
 
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2" for="shop_code">Supplier Code</label>
                       <div className="flex gap-2 items-center">
-                        <Field name="code" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
+                        <Field name="code" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier code" />
 
                         <RiAiGenerate onClick={() => generateCode()} size={40} color="black" />
                       </div>
@@ -690,7 +702,7 @@ export default function Add(props) {
 
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2">Supplier Code</label>
-                      <Field name="supplier_code" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
+                      <Field name="supplier_code" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier code" />
 
                       <ErrorMessage name="supplier_code" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
@@ -702,7 +714,7 @@ export default function Add(props) {
                       <div className="flex gap-2 items-center">
                         <Field
                           name="invoice_no"
-                          className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                          className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                           type="text"
                           placeholder="Enter invoice no"
                         />
@@ -729,7 +741,7 @@ export default function Add(props) {
                       </label>
                       <Field
                         name="invoice_date"
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                         type="date"
                       />
                       <ErrorMessage
@@ -746,7 +758,7 @@ export default function Add(props) {
                       </label>
                       <Field
                         name="due_date"
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                         type="date"
                       />
                       <ErrorMessage
@@ -763,7 +775,7 @@ export default function Add(props) {
                       </label>
                       <Field
                         name="total_payment"
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                         type="number"
                         placeholder="Enter total payment"
                       />
@@ -781,7 +793,7 @@ export default function Add(props) {
                       <Field
                         as="select"
                         name="status"
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                       >
                         <option value="">Select status</option>
                         <option value="pending">Pending</option>
@@ -803,7 +815,7 @@ export default function Add(props) {
                       <Field
                         as="select"
                         name="method"
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                       >
                         <option value="">Select method</option>
                         <option value="cash">Cash</option>
@@ -829,7 +841,7 @@ export default function Add(props) {
                           </label>
                           <Field
                             name="cheque_no"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter cheque no"
                           />
@@ -847,7 +859,7 @@ export default function Add(props) {
                           </label>
                           <Field
                             name="cheque_date"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="date"
                           />
                           <ErrorMessage
@@ -869,7 +881,7 @@ export default function Add(props) {
                           </label>
                           <Field
                             name="bank_name"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter bank name"
                           />
@@ -887,7 +899,7 @@ export default function Add(props) {
                           </label>
                           <Field
                             name="bank_branch"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter bank branch"
                           />
@@ -904,7 +916,7 @@ export default function Add(props) {
                           </label>
                           <Field
                             name="bank_account"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="text"
                             placeholder="Enter bank account no"
                           />
@@ -927,7 +939,7 @@ export default function Add(props) {
                           </label>
                           <Field
                             name="online_payment_link"
-                            className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                             type="url"
                             placeholder="Enter online payment link"
                           />
@@ -948,7 +960,7 @@ export default function Add(props) {
                       </label>
                       <Field
                         name="note"
-                        className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                         as="textarea"
                         placeholder="Enter note"
                       ></Field>

@@ -48,7 +48,7 @@ export default function List(props) {
                             <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="area_name">Area Name</label>
                             <Field
                               name="area_name"
-                              className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                              className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                               id="area_name"
                               type="text"
                               placeholder="Enter area name"
@@ -59,7 +59,7 @@ export default function List(props) {
                             <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="postal_code">Postal Code</label>
                             <Field
                               name="postal_code"
-                              className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                              className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                               id="postal_code"
                               type="text"
                               placeholder="Enter postal code"
@@ -77,7 +77,7 @@ export default function List(props) {
                             <Field
                               name="city_name"
                               // value="Karachi" // Set default value to Karachi
-                              className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                              className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                               id="city_name"
                               type="text"
                               placeholder="Enter city name"
@@ -98,7 +98,7 @@ export default function List(props) {
                             <Field
                               name="state_name"
                               // value="Sindh" // Set default value to Sindh
-                              className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                              className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                               id="state_name"
                               type="text"
                               placeholder="Enter state name"
@@ -121,7 +121,7 @@ export default function List(props) {
                             <Field
                               name="country_name"
                               // value="Pakistan" // Set default value to Pakistan
-                              className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                              className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                               id="country_name"
                               type="text"
                               placeholder="Enter country name"
@@ -136,7 +136,7 @@ export default function List(props) {
                             <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="fee">Fee</label>
                             <Field
                               name="fee"
-                              className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"
+                              className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
                               id="fee"
                               type="text"
                               placeholder="Enter fee"

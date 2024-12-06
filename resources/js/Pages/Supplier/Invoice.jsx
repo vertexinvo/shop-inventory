@@ -16,7 +16,7 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Suplier #{suppliers.code}</h2>}
+      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier #{suppliers.code}</h2>}
     >
       <Head title="Invoice" />
 

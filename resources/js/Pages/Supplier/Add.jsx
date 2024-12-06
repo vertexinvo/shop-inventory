@@ -70,32 +70,32 @@ export default function Add(props) {
                 <Form>
                     <div className="mb-4">
                           <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Name</label>
-                          <Field name="person_name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter supplier name" />
+                          <Field name="person_name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter supplier name" />
                           <ErrorMessage name="person_name" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Supplier Address</label>
-                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier address" />
+                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier address" />
                           <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm  mb-2" for="shop_contact">Supplier Contact</label>
-                          <Field name="contact" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="number" placeholder="Enter supplier contact" />
+                          <Field name="contact" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="number" placeholder="Enter supplier contact" />
                           <ErrorMessage name="contact" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Supplier Email</label>
-                          <Field name="email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="email" placeholder="Enter supplier email" />
+                          <Field name="email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="email" placeholder="Enter supplier email" />
                           <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm  mb-2" for="shop_code">Supplier Code</label>
                           <div className="flex gap-2 items-center">
-                          <Field name="code"  className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" type="text" placeholder="Enter supplier code" />
+                          <Field name="code"  className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier code" />
                          
                           <RiAiGenerate onClick={() => generateCode()} size={40} color="black" />
                           </div>

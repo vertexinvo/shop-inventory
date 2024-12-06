@@ -29,6 +29,16 @@ export default function InstantOrder(props) {
 
   const [exchangeItems, setExchangeItems] = useState(null);
 
+  const customStyles = {
+    control: (base, state) => ({
+      ...base,
+      borderColor: state.isFocused ? 'black' : base.borderColor, // Change focus border color to black
+      boxShadow: state.isFocused ? '0 0 0 1px black' : base.boxShadow, // Optional: Add shadow for focus
+      '&:hover': {
+        borderColor: state.isFocused ? 'black' : base.borderColor, // Keep border color on hover
+      },
+    }),
+  };
 
   return (
       <AuthenticatedLayout
@@ -148,11 +158,11 @@ useEffect(() => {
                   </div>
 
        
-                      <div className="mb-4">
+                         <div className="mb-4">
                      
 
 
-                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Customer (Existing)</label>
+                            <label className="block text-grey-darker text-sm  mb-2 " for="shop_name">Select Customer (Existing)</label>
                             <Select
                               onChange={(e) => {
                                 setFieldValue('user_id', e.value);
@@ -179,8 +189,10 @@ useEffect(() => {
                               isLoading={loading} // Dynamically set the loading state
                               value={users.find((option) => option.value === values.user_id)}
                               options={users}
-                              className="basic-single"
-                              classNamePrefix="select"
+                              className="basic-single "
+                              classNamePrefix="select "
+                              styles={customStyles}
+
                             />
     
                         </div>
@@ -189,12 +201,12 @@ useEffect(() => {
                       
                         <div className="w-1/2 mr-1">
                             <label className="block text-grey-darker text-sm  mb-2" >Customer Name</label>
-                            <Field name="name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer name" />
+                            <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer name" />
                             <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                         </div>
                         <div className="w-1/2 mr-1">
                             <label className="block text-grey-darker text-sm  mb-2" >Customer Email</label>
-                            <Field name="email" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer email" />
+                            <Field name="email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer email" />
                             <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                         </div>
                         </div>
@@ -202,12 +214,12 @@ useEffect(() => {
                       
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >Customer Phone</label>
-                          <Field name="phone" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer phone" />
+                          <Field name="phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer phone" />
                           <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       <div className="w-1/2 mr-1">
                           <label className="block text-grey-darker text-sm  mb-2" >Customer Address</label>
-                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker"  type="text" placeholder="Enter Customer address" />
+                          <Field name="address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"  type="text" placeholder="Enter Customer address" />
                           <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
                       </div>
@@ -239,6 +251,7 @@ useEffect(() => {
                               options={items}
                               className="basic-single"
                               classNamePrefix="select"
+                              styles={customStyles}
                             />
                       <ErrorMessage name="items" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
@@ -247,7 +260,7 @@ useEffect(() => {
                       {selectedItems && (
                         <div className="flex  ">
                         <div className="w-1/2 mr-1">
-                            <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })}  placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" />
+                            <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })}  placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" />
                             </div>
                             <div className="w-1/2 mr-1">
                             <button onClick={() =>{

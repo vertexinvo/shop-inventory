@@ -41,12 +41,12 @@ export default function List(props) {
                 <div class="flex mb-4">
                     <div class="w-1/2 mr-1">
                         <label class="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
-                        <Field name="name" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name"/>
+                        <Field name="name" class="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="name" type="text" placeholder="Enter name"/>
                         <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
                     <div class="w-1/2 mr-1">
                     <label class="block text-grey-darker text-sm font-bold mb-2" for="cost">Cost</label>
-                    <Field name="cost"  step="0.01" class="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="cost" type="number" placeholder="Enter tax cost"/>
+                    <Field name="cost"  step="0.01" class="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="cost" type="number" placeholder="Enter tax cost"/>
                     <ErrorMessage name="cost" component="div" className="text-red-500 text-xs mt-1" />
                 </div>
                 </div>

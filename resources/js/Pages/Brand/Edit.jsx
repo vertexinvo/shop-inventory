@@ -48,7 +48,7 @@ export default function Add(props) {
                       <div className="flex mb-4">
                           <div className="w-full mr-1">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
-                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name"/>
+                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="name" type="text" placeholder="Enter name"/>
                               <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                           </div> 
                           
@@ -56,7 +56,7 @@ export default function Add(props) {
                       </div>
                       <div className="mb-4">
                               <label  className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Description</label>
-                              <Field as="textarea" rows="4" name="description" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="description" type="text" placeholder="Enter description"/>
+                              <Field as="textarea" rows="4" name="description" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="description" type="text" placeholder="Enter description"/>
                               <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
     
