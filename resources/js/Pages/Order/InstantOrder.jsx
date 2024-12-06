@@ -411,6 +411,11 @@ useEffect(() => {
                 
                   <div className="w-full flex items-center justify-between mb-2">
                   <label className="block text-grey-darker text-lg font-bold mb-2" >Exchange</label>
+                  {values.exchange_items.length > 0 && exchangeItems=== null &&  <button type='button'
+           onClick={()=>{
+             setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '', total : ''})
+           }}
+           className='text-sm font-semibold text-black dark:text-white leading-tight underline'>Add Item</button>}
                  
               </div>
 
@@ -513,19 +518,30 @@ useEffect(() => {
          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200">
-        <input type="text" value={exchangeItems.quantity} onChange={(e)=>{
-           setExchangeItems({...exchangeItems, quantity : e.target.value})
-         }}
+        <input
+          type="number"
+          value={exchangeItems.quantity}
+          onChange={(e) => {
+            const newQuantity = e.target.value;
+            setExchangeItems({
+              ...exchangeItems,
+              quantity: newQuantity,
+              total: newQuantity * exchangeItems.purchase_price,
+            });
+          }}
          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200">
-        <input type="text" disabled value={exchangeItems.name} onChange={(e)=>{
-           setExchangeItems({...exchangeItems, name : e.target.value})
-         }}
+        <input type="text" disabled value={exchangeItems.total}
          class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
         <td class="p-4 border-b border-slate-200 ">
-            <button type="button" className="text-sm font-semibold text-black dark:text-white leading-tight underline">Add</button>
+            <button type="button"
+            onClick={()=>{
+              setFieldValue('exchange_items', [...values.exchange_items, exchangeItems])
+              setExchangeItems(null)
+            }}
+            className="text-sm font-semibold text-black dark:text-white leading-tight underline">Add</button>
         </td>
       </tr>
 )}
@@ -534,38 +550,39 @@ useEffect(() => {
         <tr class="hover:bg-slate-50">
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-            Alexa Liras
+           {exchange_item.name}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-            Alexa Liras
+           {exchange_item.model}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-            Alexa Liras
+           {exchange_item.identity_type}
+           {exchange_item.identity_value !== '' && ` : ${exchange_item.identity_value}`}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-            Developer
+           {exchange_item.purchase_price}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-            23/04/18
+           {exchange_item.quantity}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-            23/04/18
+           {exchange_item.total}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200 flex items-center gap-2">
       
             <FaTrash size={20} color='red'/>
-            <FaPlusCircle size={20} color='green'/>
+    
          
         </td>
       </tr>

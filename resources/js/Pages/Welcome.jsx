@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react";
 import React from "react";
 
 export default function Welcome() {
@@ -19,7 +20,7 @@ export default function Welcome() {
               <li>Ut imperdiet dui at tincidunt mattis.</li>
             </ul>
 
-            <button onClick={() => window.location.href = '/login'} className="mt-6 px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition">Login</button>
+            <Link href={route('login')} className="mt-6 px-6 py-3 bg-black text-white rounded-md hover:bg-gray-800 transition">Login</Link>
           </div>
           <div className="flex justify-center items-center relative">
             <div className="bg-pink-100 rounded-md p-4 absolute -top-4 -left-6 shadow-md">
