@@ -72,6 +72,7 @@ class ShippingRateController extends Controller
      */
     public function update(Request $request, string $id)
     {
+       
         $validator = Validator::make($request->all(), [
             'area_name' => 'required',
             'fee' => 'required|numeric',

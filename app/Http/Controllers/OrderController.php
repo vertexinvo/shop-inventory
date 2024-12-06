@@ -284,7 +284,12 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+
+        $order->load('items','user','tax','shipping','items.product');
+     
+        // $order->load('items','user','tax','shipping','items.product');
+        // $order = Order::with('items','user','tax','shipping','items.product');
+        return Inertia::render('Order/View', compact('order'));
     }
 
     /**

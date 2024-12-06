@@ -36,7 +36,7 @@ export default function List(props) {
                   Bulk Delete
                 </button>
               }
-               <button
+              <button
                 onClick={() => router.get(route('order.instantorder'))}
                 className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
               >
@@ -48,7 +48,7 @@ export default function List(props) {
               >
                 Create
               </button>
-             
+
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -244,7 +244,7 @@ export default function List(props) {
                         </div>
                       </td>
 
-                     
+
                       {order.method === "check" && (
                         <td class="text-sm text-black">
 
@@ -282,12 +282,12 @@ export default function List(props) {
                       <td class=" pt-4 pb-4 text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
-                           {!order.is_installment  ? <p class="text-sm text-black ">No</p> : <>
-                            <p class="text-sm text-black ">Installment Amount : <span class="text-xs text-gray-500 mt-0.5">{order.installment_amount || 'N/A'}</span></p>
-                            <p class="text-sm text-black ">Installment Period : <span class="text-xs text-gray-500 mt-0.5">{order.installment_period || 'N/A'}</span></p>
-                            <p class="text-sm text-black ">Installment Count : <span class="text-xs text-gray-500 mt-0.5">{order.installment_count || 'N/A'}</span></p>
-                            <p class="text-sm text-black ">Installment Start Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_start_date || 'N/A'}</span></p>
-                            <p class="text-sm text-black ">Installment End Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_end_date || 'N/A'}</span></p>
+                            {!order.is_installment ? <p class="text-sm text-black ">No</p> : <>
+                              <p class="text-sm text-black ">Installment Amount : <span class="text-xs text-gray-500 mt-0.5">{order.installment_amount || 'N/A'}</span></p>
+                              <p class="text-sm text-black ">Installment Period : <span class="text-xs text-gray-500 mt-0.5">{order.installment_period || 'N/A'}</span></p>
+                              <p class="text-sm text-black ">Installment Count : <span class="text-xs text-gray-500 mt-0.5">{order.installment_count || 'N/A'}</span></p>
+                              <p class="text-sm text-black ">Installment Start Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_start_date || 'N/A'}</span></p>
+                              <p class="text-sm text-black ">Installment End Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_end_date || 'N/A'}</span></p>
                             </>}
                           </div>
                         </div>
@@ -298,6 +298,12 @@ export default function List(props) {
 
 
                       <td class="p-4">
+                        <button className='w-6 h-6 mr-4' onClick={() => router.get(route('order.show', { id: order.id }))} >
+                          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-eye">
+                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
+                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
+                          </svg>
+                        </button>
                         <button onClick={() => router.get(route('order.edit', product.id))} class="mr-4" title="Edit">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                             viewBox="0 0 348.882 348.882">

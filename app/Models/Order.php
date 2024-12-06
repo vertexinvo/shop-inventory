@@ -52,4 +52,14 @@ class Order extends Model
     {
         return $this->hasMany(Item::class);
     }
+
+    public function tax()
+    {
+        return $this->belongsTo(Tax::class);
+    }
+
+    public function shipping()
+    {
+        return $this->belongsTo(ShippingRate::class);
+    }
 }
