@@ -17,6 +17,7 @@ export default function Welcome() {
         <div>
           <h1 className="text-4xl font-bold text-gray-800 mb-4 2xl:text-6xl">
             Inventory Management
+            
           </h1>
           <p className="text-gray-600 mb-6 2xl:text-3xl">
             Streamline your operations and gain full control over your inventory with a powerful, efficient, and user-friendly management solution. Optimize stock levels, reduce waste, and ensure seamless supply chain operations.

@@ -36,6 +36,7 @@ class ShippingRateController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
        $validator = Validator::make($request->all(), [
         'area_name' => 'required',
         'fee' => 'required',
