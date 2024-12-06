@@ -53,14 +53,19 @@ const View = (props) => {
                 {/* Action Buttons */}
                 <div className="flex justify-end mb-4 no-print">
                     <button
-                        onClick={() => window.print()}
-                        className="bg-blue-500 text-white py-2 px-4 rounded shadow hover:bg-blue-600 transition duration-300"
+                        className="bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
                     >
-                        Print
+                        Thermal Print
+                    </button>
+                    <button
+                        onClick={() => window.print()}
+                        className="ml-2 bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
+                    >
+                        Print PDF
                     </button>
                     <button
                         // onClick={generatePDF}
-                        className="ml-2 bg-blue-500 text-white py-2 px-4 rounded shadow hover:bg-blue-600 transition duration-300"
+                        className="ml-2 bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
                     >
                         Download PDF
                     </button>
