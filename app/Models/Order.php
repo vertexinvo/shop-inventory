@@ -39,7 +39,8 @@ class Order extends Model
         'installment_end_date',
         'tax_id',
         'shipping_id',
-        'order_date'
+        'order_date',
+        'exchange'
     ];
 
 

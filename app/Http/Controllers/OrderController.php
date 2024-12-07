@@ -88,6 +88,8 @@ class OrderController extends Controller
             'paid_amount' => 'required|numeric',
             'discount' => 'nullable|numeric',
             'items' => 'required|array',
+            'exchange_items' => 'nullable|array',
+            'exchange' => 'nullable|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -104,7 +106,8 @@ class OrderController extends Controller
             'paid_amount',
             'discount', 
             'user_id',
-            'order_date'
+            'order_date',
+            'exchange',
         ]);
         $order = Order::create($data);
 
@@ -117,6 +120,18 @@ class OrderController extends Controller
                 'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
                 'status'=> 'active'
             ]);
+        }
+
+        foreach ($request->exchange_items as $item) {
+            $item["is_exchange"] = true;
+            $item["selling_price"] = $item["purchase_price"];
+            $item["exchange_order_id"] = $order->id;
+            unset($item['total']);
+          $product =  Product::create($item);
+          $product->stock()->create([
+            'quantity' => $item['quantity'],
+            'status' => true,
+          ]);
         }
 
         // //update product stock quantity

@@ -9,6 +9,7 @@ class Product extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'name',
         'model',
@@ -30,6 +31,11 @@ class Product extends Model
         'weight',
         'is_supplier',
         'customfield',
+        'is_exchange',
+        'exchange_remarks',
+        'is_return',
+        'return_remarks',
+        'exchange_order_id',
     ];
 
     public function categories()

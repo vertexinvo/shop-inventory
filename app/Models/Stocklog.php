@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Stocklog extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'stock_id',
+        'quantity',
+        'type',
+        'is_supplier',
+        'supplier_invoice_no',
+        'user_id',
+        'remarks',
+    ];
 }

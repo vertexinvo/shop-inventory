@@ -12,6 +12,7 @@ import 'react-quill/dist/quill.snow.css';
 import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
+import { use } from 'react';
 
 
  
@@ -59,6 +60,7 @@ export default function InstantOrder(props) {
                 order_date : new Date().toISOString().slice(0, 10),
                 close: false,
                 exchange_items: [],
+                exchange : 0
             }}
               validationSchema={Yup.object({
            
@@ -101,7 +103,7 @@ useEffect(() => {
     const discount = parseFloat(values.discount || 0);
     setFieldValue('total', totalAmount);
     setFieldValue('payable_amount', totalAmount - discount);
-  }, [values.items, values.discount, setFieldValue]);
+  }, [values.items, values.discount, setFieldValue,values.exchange]);
 
 
 
@@ -120,6 +122,16 @@ useEffect(() => {
       setFieldValue('paid_amount', values.payable_amount);
     }
   }, [values.payable_amount,]);
+
+  useEffect(() => {
+    if(values.exchange_items.length > 0){
+      const totalAmount = values.exchange_items.reduce(
+        (total, item) => total + item.quantity * item.purchase_price,
+        0
+      );
+      setFieldValue('exchange', totalAmount);
+    }
+  },[values.exchange_items]);
 
                       
                       return (
@@ -426,7 +438,7 @@ useEffect(() => {
                   <label className="block text-grey-darker text-lg font-bold mb-2" >Exchange</label>
                   {values.exchange_items.length > 0 && exchangeItems=== null &&  <button type='button'
            onClick={()=>{
-             setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '', total : ''})
+             setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '1', total : ''})
            }}
            className='text-sm font-semibold text-black dark:text-white leading-tight underline'>Add Item</button>}
                  
@@ -448,18 +460,18 @@ useEffect(() => {
         </th>
         <th class="p-4 border-b border-slate-300 bg-slate-50">
           <p class="block text-sm font-normal leading-none text-slate-500">
-            Identity
+            Identity*
           </p>
         </th>
        
         <th class="p-4 border-b border-slate-300 bg-slate-50">
           <p class="block text-sm font-normal leading-none text-slate-500">
-            Purchase Price
+            Purchase Price*
           </p>
         </th>
         <th class="p-4 border-b border-slate-300 bg-slate-50">
           <p class="block text-sm font-normal leading-none text-slate-500">
-            Quantity
+            Quantity*
           </p>
         </th>
         <th class="p-4 border-b border-slate-300 bg-slate-50">
@@ -481,7 +493,7 @@ useEffect(() => {
          <p class="block text-sm text-slate-800">
            No Exchange Item! &nbsp; <button type='button'
            onClick={()=>{
-             setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '', total : ''})
+             setExchangeItems({name : '', model : '', identity_type : 'none' ,identity_value : '', purchase_price : '', quantity : '1', total : ''})
            }}
            className='text-sm font-semibold text-black dark:text-white leading-tight underline'>Add Item</button>
          </p>
@@ -526,7 +538,12 @@ useEffect(() => {
         </td>
         <td class="p-4 border-b border-slate-200">
         <input type="text" value={exchangeItems.purchase_price} onChange={(e)=>{
-           setExchangeItems({...exchangeItems, purchase_price : e.target.value})
+           const newPurchasePrice = e.target.value;
+           setExchangeItems({
+             ...exchangeItems,
+             purchase_price: newPurchasePrice,
+             total: newPurchasePrice * exchangeItems.quantity,
+           });
          }}
          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
         </td>
@@ -551,10 +568,20 @@ useEffect(() => {
         <td class="p-4 border-b border-slate-200 ">
             <button type="button"
             onClick={()=>{
-              setFieldValue('exchange_items', [...values.exchange_items, exchangeItems])
-              setExchangeItems(null)
+              if(exchangeItems.name !== '' &&  exchangeItems.purchase_price !== '' && exchangeItems.identity_type !== '' && exchangeItems.quantity !== '' && exchangeItems.total !== ''){
+                setFieldValue('exchange_items', [...values.exchange_items, exchangeItems])
+                setExchangeItems(null)
+              }else{
+                toast.error('Please required fields')
+              }
+            
             }}
             className="text-sm font-semibold text-black dark:text-white leading-tight underline">Add</button>
+             &nbsp;   <button type="button"
+            onClick={()=>{
+              setExchangeItems(null)
+            }}
+            className="text-sm font-semibold text-black dark:text-white leading-tight underline">Cancel</button>
         </td>
       </tr>
 )}
@@ -568,7 +595,7 @@ useEffect(() => {
         </td>
         <td class="p-4 border-b border-slate-200">
           <p class="block text-sm text-slate-800">
-           {exchange_item.model}
+           {exchange_item.model || <span class="text-red-500">N/A</span>}
           </p>
         </td>
         <td class="p-4 border-b border-slate-200">
@@ -594,7 +621,7 @@ useEffect(() => {
         </td>
         <td class="p-4 border-b border-slate-200 flex items-center gap-2">
       
-            <FaTrash size={20} color='red'/>
+            <FaTrash size={20} color='red' className='cursor-pointer' onClick={()=>setFieldValue('exchange_items', values.exchange_items.filter((item) => item !== exchange_item))}/>
     
          
         </td>
@@ -760,10 +787,12 @@ useEffect(() => {
     </div>
 
         <ul className='mt-5'>
-            <li className='w-full flex items-center justify-between mb-2'><div>Total Amount:</div><div><input type="number"  value={values.items.reduce((total, item) => total + item.quantity * item.data.selling_price, 0)} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
+            <li className='w-full flex items-center justify-between '><div>Total Amount:</div><div><input type="number"  value={values.items.reduce((total, item) => total + item.quantity * item.data.selling_price, 0)} className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200	 py-2 px-3 text-grey-darker" disabled /></div></li>
            <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="extra_charges" component="div" className="text-red-600 text-xs mt-1" /></li>
             <li className='w-full flex items-center justify-between'><div>Discount:</div><div> <Field type="number" name="discount" value={values.discount} className="appearance-none border rounded 	 py-2 px-3 text-grey-darker"/></div></li>
             <li className='w-full flex items-center justify-between mb-2'><ErrorMessage name="discount" component="div" className="text-red-600 text-xs mt-1" /></li>
+            <li className='w-full flex items-center justify-between mb-2'><div>Exchange:</div><div> <Field type="number" disabled name="exchange" value={values.exchange} className="appearance-none border rounded disabled:bg-gray-200	 py-2 px-3 text-grey-darker"/></div></li>
+           
              <li className="w-full flex items-center justify-between mb-2">
               <div className="font-bold">Grand Total:</div>
               <div>
@@ -773,8 +802,8 @@ useEffect(() => {
                     values.items.reduce(
                       (total, item) => total + item.quantity * item.data.selling_price,
                       0
-                    ) -
-                    parseFloat(values.discount || 0)
+                    ) - 
+                   (values.exchange + parseFloat(values.discount || 0) )
                   }
                   className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
                   disabled
