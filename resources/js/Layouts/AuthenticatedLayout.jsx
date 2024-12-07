@@ -41,7 +41,7 @@ export default function AuthenticatedLayout({ header, children }) {
             <div className="min-h-screen bg-gray-100">
 
 
-                <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white">
+                <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">
                     <div className="px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 justify-between">
                             <div className="flex">
@@ -197,7 +197,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
             
 
-<aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
+<aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 flex flex-col">
         <ul class="space-y-2 font-medium flex-grow">
             <li>
@@ -267,17 +267,17 @@ export default function AuthenticatedLayout({ header, children }) {
 
 
 
-                <div class=" sm:ml-64">
+                <div class=" sm:ml-64 ">
                     <div class="    mt-14">
                         {header && (
-                            <header className="bg-white shadow">
+                            <header className="bg-white shadow no-print">
                                 <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
                                     {header}
                                 </div>
                             </header>
                         )}
 
-                        <main>{children}
+                        <main >{children}
                             
                         </main>
 

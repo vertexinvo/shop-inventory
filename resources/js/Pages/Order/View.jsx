@@ -45,9 +45,40 @@ const View = (props) => {
                         .print-gap {
                             margin-top: 100px;
                         }
+                          /* Hide unnecessary elements */
+    .no-print,
+    nav,
+    aside,
+    .fixed, 
+    .toastify-container,
+    .ConfirmModal {
+        display: none !important;
+    }
+
+    /* Adjust main content for full width */
+    .sm\\:ml-64 {
+        margin-left: 0 !important;
+    }
+
+    .print-w-full {
+        width: 100%;
+    }
+
+    /* Ensure a gap before content begins */
+    .print-gap {
+        margin-top: 100px;
+    }
+
+    /* Handle page breaks for large content */
+    .page-break {
+        page-break-before: always;
+    }  
+                        
+                        
                     }
                 `}
             </style>
+           
 
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 ">
                 {/* Action Buttons */}
@@ -63,12 +94,7 @@ const View = (props) => {
                     >
                         Print PDF
                     </button>
-                    <button
-                        // onClick={generatePDF}
-                        className="ml-2 bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
-                    >
-                        Download PDF
-                    </button>
+                   
 
                 </div>
 
