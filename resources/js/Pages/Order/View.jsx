@@ -1,8 +1,11 @@
+import React from 'react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import React from 'react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+// Remove direct import of Printer, we'll use a more flexible approach
+
+
 
 const View = (props) => {
     const { order } = props;
@@ -30,6 +33,90 @@ const View = (props) => {
             }
             pdf.save(`Invoice_${order.id}.pdf`);
         });
+    };
+    const printThermalReceipt = () => {
+        // Check if browser supports printing
+        if (!window.print) {
+            alert("Printing is not supported in this browser.");
+            return;
+        }
+    
+        // Create a new window for thermal-like receipt printing
+        const printWindow = window.open('', 'PRINT', 'height=600,width=400');
+        
+        printWindow.document.write(`
+            <html>
+                <head>
+                    <script src="https://cdn.tailwindcss.com"></script>
+                    <style>
+                        body { 
+                            font-family: monospace; 
+                            max-width: 300px; 
+                            margin: 0 auto; 
+                        }
+                    </style>
+                </head>
+                <body class="p-4 bg-white">
+                    <div class="border-2 border-dashed border-gray-300 p-4 text-center">
+                        <div class="font-bold text-lg mb-2">VERTEX INVO</div>
+                        <div class="text-sm text-gray-600 mb-4">
+                            <div>vertexInvo.com</div>
+                            <div>+92-3331325935</div>
+                            <div>sales@vertexInvo.com</div>
+                        </div>
+    
+                        <div class="border-t border-dashed border-gray-300 my-2"></div>
+    
+                        <div class="text-left text-sm mb-4">
+                            <div>Invoice #: <span class="font-semibold">INV-${order.id}</span></div>
+                            <div>Date: <span class="font-semibold">${order.created_at_formatted}</span></div>
+                            <div>Customer: <span class="font-semibold">${order.name}</span></div>
+                        </div>
+    
+                        <div class="border-t border-dashed border-gray-300 my-2"></div>
+    
+                        <div class="mb-4">
+                            <div class="grid grid-cols-3 font-bold bg-gray-100 p-1">
+                                <div>Name</div>
+                                <div class="text-center">Qty</div>
+                                <div class="text-right">Price</div>
+                            </div>
+                            ${order.items.map(item => `
+                                <div class="grid grid-cols-3 border-b border-gray-200 py-1">
+                                    <div class="truncate">${item.product.name}</div>
+                                    <div class="text-center">${item.qty}</div>
+                                    <div class="text-right">Rs. ${item.price}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+    
+                        <div class="border-t border-dashed border-gray-300 my-2"></div>
+    
+                        <div class="text-right text-sm">
+                            <div>Subtotal: <span class="font-semibold">Rs. 12435</span></div>
+                            <div>Discount: <span class="font-semibold">Rs. 0</span></div>
+                            <div class="font-bold">Total: <span class="text-lg">Rs.   8765</span></div>
+                        </div>
+    
+                        <div class="border-t border-dashed border-gray-300 my-2"></div>
+    
+                        <div class="text-xs text-gray-600 mt-4">
+                            <div>Thank You for Your Business!</div>
+                            <div>vertexInvo.com</div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        window.onload = function() { 
+                            window.print(); 
+                            window.close(); 
+                        }
+                    </script>
+                </body>
+            </html>
+        `);
+        
+        printWindow.document.close();
     };
 
     return (
@@ -83,7 +170,8 @@ const View = (props) => {
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 ">
                 {/* Action Buttons */}
                 <div className="flex justify-end mb-4 no-print">
-                    <button
+                    <button  onClick={printThermalReceipt}
+
                         className="bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
                     >
                         Thermal Print
