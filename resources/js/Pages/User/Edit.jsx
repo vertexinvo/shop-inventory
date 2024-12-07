@@ -70,6 +70,7 @@ export default function Edit(props) {
                     <button class="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
                         Submit
                     </button>
+                    
                     <button  onClick={() => router.get(route('user.index'))} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                         Close
                     </button>
