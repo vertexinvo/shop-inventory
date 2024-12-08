@@ -7,6 +7,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 
+
 export default function List(props) {
   const { auth, orders } = props
 
@@ -137,7 +138,8 @@ export default function List(props) {
                     </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
-                      Discount
+                      
+                    Adjustment
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
@@ -164,7 +166,7 @@ export default function List(props) {
                   {orders.data.map((order, index) => (
 
 
-                    <tr className={`  ${order?.stock?.quantity === 0 || order?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}`}>
+                    <tr className={`  ${order?.stock?.quantity === 0 || order?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50 border-b'}`}>
 
                       <td className="pl-4 w-8">
                         <input
@@ -273,11 +275,13 @@ export default function List(props) {
                             <p class="text-sm text-black ">Extra Charges : {order.extra_charges || '0'}</p>
                             <p class="text-sm text-black ">Shipping Charges : {order.shipping_charges || '0'}</p>
                             <p class="text-sm text-black ">Tax : {order.tax || '0'}</p>
+                          
                           </div>
                         </div>
                       </td>
                       <td class="p-4 text-sm text-black">
-                        {order.discount || 'N/A'}
+                      <p class="text-sm text-black "> Discount : {order.discount || 'N/A'}</p>
+                        <p class="text-sm text-black ">Exchange : {order.exchange || '0'}</p>
                       </td>
                       <td class=" pt-4 pb-4 text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">

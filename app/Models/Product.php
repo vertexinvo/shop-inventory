@@ -47,6 +47,11 @@ class Product extends Model
     {
         return $this->hasOne(Stock::class);
     }
+
+    public function exchangeorder()
+    {
+        return $this->belongsTo(Order::class, 'exchange_order_id');
+    }
     
 
 

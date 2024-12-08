@@ -49,6 +49,10 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function exchangeproduct(){
+        return $this->hasMany(Product::class, 'exchange_order_id');
+    }
+
     public function items()
     {
         return $this->hasMany(Item::class);

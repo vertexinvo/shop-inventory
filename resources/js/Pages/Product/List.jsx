@@ -6,6 +6,7 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
+import { FaBox } from "react-icons/fa";
 
 export default function List(props) {
   const {auth ,  products } = props
@@ -131,6 +132,9 @@ export default function List(props) {
               Supplier Invoice
             </th>
             <th class="p-4 text-left text-sm font-semibold ">
+              Is Exchange
+            </th>
+            <th class="p-4 text-left text-sm font-semibold ">
               Action
             </th>
           </tr>
@@ -230,9 +234,14 @@ export default function List(props) {
               {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
             </td>
 
+            <td class="p-4 text-sm text-black">
+              {product.is_exchange !== 1 && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+              {product.is_exchange === 1 && product.exchange_order_id !== null  && (<a href={route('order.show', product.exchange_order_id)} class="text-xs text-blue-500 mt-0.5">Order# {product.exchange_order_id}</a>)}
+            </td>
 
-            <td class="p-4">
-              <button onClick={() => router.get(route('product.edit', product.id))}  class="mr-4" title="Edit">
+
+            <td class="p-4 flex items-center gap-2">
+              <button onClick={() => router.get(route('product.edit', product.id))}   title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                   viewBox="0 0 348.882 348.882">
                   <path
@@ -252,6 +261,9 @@ export default function List(props) {
                     data-original="#000000" />
                 </svg>
               </button>
+
+              <FaBox size={18}/>
+     
             </td>
           </tr>
         ))}
