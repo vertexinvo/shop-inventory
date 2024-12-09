@@ -40,7 +40,7 @@ export default function Dashboard(props) {
 
             <div class="p-5 mx-4 grid grid-cols-4 gap-1 ">
     
-                <div class="pl-1 w-full h-20 bg-green-400 rounded-lg shadow-md">
+                <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
                     <p class="font-bold">TOTAL (USERS)</p>
@@ -52,7 +52,7 @@ export default function Dashboard(props) {
                 </div>
                 </div>
             
-                <div class="pl-1 w-full h-20 bg-blue-500 rounded-lg shadow-md">
+                <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
                     <p class="font-bold">TOTAL PRODUCT IN STOCK</p>
@@ -66,7 +66,7 @@ export default function Dashboard(props) {
                 </div>
                 </div>
             
-                <div class="pl-1 w-full h-20 bg-purple-500 rounded-lg shadow-md">
+                <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
                     <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
@@ -80,7 +80,7 @@ export default function Dashboard(props) {
                 </div>
                 </div>
             
-                <div class="pl-1 w-full h-20 bg-yellow-400 rounded-lg shadow-md">
+                <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
                     <p class="font-bold">PENDING REQUESTS</p>

@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Http\Requests\StoreStockRequest;
 use App\Http\Requests\UpdateStockRequest;
-
+use App\Models\Stocklog;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 class StockController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+       $product_id = $request->product_id;
+       $stocks = Stock::where('product_id', $product_id)->first();
+       $stocklogs = Stocklog::where('stock_id', $stocks->id)->latest()->paginate(10);
+       return Inertia::render('Stock/List', compact('stocks', 'stocklogs'));
     }
 
     /**
@@ -37,7 +43,7 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
-        //
+
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stocklog;
 use App\Http\Requests\StoreStocklogRequest;
 use App\Http\Requests\UpdateStocklogRequest;
+use Illuminate\Http\Request;
 
 class StocklogController extends Controller
 {
@@ -61,6 +62,16 @@ class StocklogController extends Controller
      */
     public function destroy(Stocklog $stocklog)
     {
-        //
+        $stocklog->delete();
+        session()->flash('message', 'Stock log deleted successfully');
+        return back();
+    }
+
+    public function bulkdestroy(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        Stocklog::whereIn('id', $ids)->delete();
+        session()->flash('message', 'Stock log deleted successfully');
+        return back();
     }
 }

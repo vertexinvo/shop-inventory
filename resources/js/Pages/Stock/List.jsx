@@ -1,27 +1,88 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet , FaEdit} from 'react-icons/fa'
+import { FaWallet , FaEdit, FaClipboardList} from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { FaBox } from "react-icons/fa";
+import { CiUser } from "react-icons/ci";
+import { LuRefreshCcw } from "react-icons/lu";
+import { TbStatusChange } from 'react-icons/tb';
+import { BsCalendarDate } from "react-icons/bs";
+import FormatDate from '@/Helpers/FormatDate';
 
 export default function List(props) {
-  const {auth ,  products } = props
+  const {auth ,  stocks , stocklogs } = props
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
-  console.log(products);
+
   return (
       <AuthenticatedLayout
           Product={auth.Product}
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>}
+          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Manage Stock</h2>}
       >
           <Head title="Product" />
+
+          <div class="p-5 mx-4 grid grid-cols-4 gap-1 ">
+    
+    <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+        <div class="my-auto">
+        <p class="font-bold">LAST UPDATED</p>
+        <p class="text-lg">{FormatDate(stocks.last_updated)}</p>
+        </div>
+        <div class="my-auto">
+        <BsCalendarDate  size={40} />                 
+        </div>
+    </div>
+    </div>
+
+    <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+        <div class="my-auto">
+        <p class="font-bold">STOCK STATUS</p>
+        <p class="text-lg">
+            
+            {stocks.status ? <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">IN STOCK</span>
+            : <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">OUT OF STOCK</span>}</p>
+        </div>
+        <div class="my-auto">
+                <TbStatusChange size={40} />
+        </div>
+    </div>
+    </div>
+
+    <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+        <div class="my-auto">
+        <p class="font-bold">TOTAL PRODUCT IN STOCK</p>
+        <p class="text-lg">{stocks.quantity}</p>
+        </div>
+        <div class="my-auto">
+        <FaClipboardList   size={40} />  
+        </div>
+    </div>
+    </div>
+
+    <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+        <div class="my-auto">
+        <p class="font-bold">REORDER LEVEL</p>
+        <p class="text-lg">{stocks.reorder_level}</p>
+        </div>
+        <div class="my-auto">
+        <LuRefreshCcw  size={40} />  
+        </div>
+    </div>
+    </div>
+
+</div>
+
 
           <div className="flex flex-col px-4  mt-10 mx-auto w-full">
           <div className="w-full ">
@@ -41,46 +102,9 @@ export default function List(props) {
                   onClick={() => router.get(route('product.create'))}
                   className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                 >
-                  Create
+                  Add New Stock
                 </button>
-                <Formik
-                  enableReinitialize
-                  initialValues={{ search: '' }}
-                  onSubmit={(values) => {
-                    router.get(route('product.index'), { search: values.search }, { preserveState: true });
-                  }}
-                
-                >
-                  {( { values ,setFieldValue, handleSubmit, errors, touched }) => (
-                    
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div className="relative">
-                    <Field
-                      name="search"
-                      type="text"
-                      placeholder="Search..."
-                      className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"          
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {setFieldValue('search', ''); router.get(route('product.index'))}}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                    >
-                      ✖
-                    </button>
-                  </div>
-
-
-                    <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
-                    >
-                      Search
-                    </button>
-
-                  </Form>
-                    )}
-                </Formik>
+               
                
               </div>
             </div>
@@ -92,8 +116,8 @@ export default function List(props) {
           <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
             <th class="pl-4 w-8">
               <input id="checkbox" type="checkbox" class="hidden peer" 
-               onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
-               checked={selectId.length === products.data.length}
+               onChange={(e) => setSelectId(e.target.checked ? stocklogs.data.map((product) => product.id) : [])}
+               checked={selectId.length === stocklogs.data.length}
               />
               <label for="checkbox"
                 class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
@@ -104,36 +128,27 @@ export default function List(props) {
                 </svg>
               </label>
             </th>
-            <th class="p-4 text-left text-sm font-semibold ">
-              Product Info
-            </th>
            
             <th class="p-4 text-left text-sm font-semibold ">
-            Purchase price
+              Date/Time
             </th>
-            <th class="p-4 text-left text-sm font-semibold ">
-            Selling price
-            </th>
-            <th class="p-4 text-left text-sm font-semibold ">
-            Warranty period
-            </th>
-            <th class="p-4 text-left text-sm font-semibold ">
-            Is Borrow
-            </th>
-
+           
+         
+            
             <th class="p-4 text-left text-sm font-semibold ">
               Quantity
             </th>
           
             <th class="p-4 text-left text-sm font-semibold ">
-              Stock Status
+                type
             </th>
             <th class="p-4 text-left text-sm font-semibold ">
               Supplier Invoice
             </th>
             <th class="p-4 text-left text-sm font-semibold ">
-              Is Exchange
+            Remarks
             </th>
+           
             <th class="p-4 text-left text-sm font-semibold ">
               Action
             </th>
@@ -142,14 +157,14 @@ export default function List(props) {
 
         <tbody class="whitespace-nowrap">
 
-          {products.data.length === 0 && (
+          {stocklogs.data.length === 0 && (
             <tr>
               <td colSpan="12" className="p-4 text-center">
-                No products found.
+                No stock logs found.
               </td>
             </tr>
           )}
-        {products.data.map((product, index) => (
+        {stocklogs.data.map((product, index) => (
          
          <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}`}>
 
@@ -183,62 +198,26 @@ export default function List(props) {
           </svg>
         </label>
       </td>
-            <td class=" text-sm">
-              <div class="flex items-center cursor-pointer w-max">
-              {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
-                <div class="ml-4 ">
-                  <p class="text-sm text-black ">Name : {product.name}</p>
-                  {product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{product.model} </p>}
-                  {product.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
-                </div>
-              </div>
-            </td>
+           
            
             <td class="p-4 text-sm text-black">
-              {product.purchase_price || 'N/A'}
+            { FormatDate(product?.datetime) || 'N/A'}
             </td>
             <td class="p-4 text-sm text-black">
-              {product.selling_price || 'N/A'}
+                {product?.quantity || 'N/A'}
             </td>
             <td class="p-4 text-sm text-black">
-              {product.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-              {product.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.warranty_period} - {product.warranty_type} </p>)}
+                {product?.type || 'N/A'}
             </td>
             <td class="p-4 text-sm text-black">
-            {product.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-            {product.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
-              <ul class="list-disc">
-                {product.shop_name && <li>Name: {product.shop_name}</li>}
-                {product.shop_address && <li>Address: {product.shop_address}</li>}
-                {product.shop_phone && <li>Phone: {product.shop_phone}</li>}
-                {product.shop_email && <li>Email: {product.shop_email}</li>}
-              </ul>
-            </p>)}
+            {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+            {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
             </td>
             <td class="p-4 text-sm text-black">
-              {product?.stock?.quantity || 0}
+            {product?.remarks || 'N/A'}
             </td>
+   
            
-            <td class="p-4">
-              <label class="relative cursor-pointer">
-              <input type="checkbox" onClick={() => router.put(route('product.status', product.id),{},{preserveScroll: true})} class="sr-only peer" checked={product?.stock?.status || false} />
-              <div
-                  class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black">
-
-                </div>
-              </label>
-            </td>
-
-            <td class="p-4 text-sm text-black">
-              {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-              {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
-            </td>
-
-            <td class="p-4 text-sm text-black">
-              {product.is_exchange !== 1 && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-              {product.is_exchange === 1 && product.exchange_order_id !== null  && (<a href={route('order.show', product.exchange_order_id)} class="text-xs text-blue-500 mt-0.5">Order# {product.exchange_order_id}</a>)}
-            </td>
-
 
             <td class="p-4 flex items-center gap-2">
               <button onClick={() => router.get(route('product.edit', product.id))}   title="Edit">
@@ -262,7 +241,6 @@ export default function List(props) {
                 </svg>
               </button>
 
-              <FaBox className='cursor-pointer' onClick={() => router.get(route('stock.index'), {product_id: product.id})} size={18}/>
      
             </td>
           </tr>
@@ -273,7 +251,7 @@ export default function List(props) {
 
     </div>
     <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
-              <span class="flex items-center col-span-3"> Showing {products.from} - {products.to} of {products.total} </span>
+              <span class="flex items-center col-span-3"> Showing {stocklogs.from} - {stocklogs.to} of {stocklogs.total} </span>
               <span class="col-span-2"></span>
             
               <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
@@ -281,7 +259,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => stocklogs.links[0].url ? router.get(stocklogs.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -289,9 +267,9 @@ export default function List(props) {
                     </li>
                     {(() => {
     let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
-    const activeIndex = products.links.findIndex((l) => l.active);
+    const activeIndex = stocklogs.links.findIndex((l) => l.active);
 
-    return products.links
+    return stocklogs.links
         .slice(1, -1) // Exclude the first and last items
         .filter((link, index, array) => {
             const currentIndex = parseInt(link.label, 10); // Parse label as number
@@ -348,7 +326,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => stocklogs.links[stocklogs.links.length - 1].url && window.location.assign(stocklogs.links[stocklogs.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -366,7 +344,7 @@ export default function List(props) {
 
         <ConfirmModal   isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={()=>{
  
- router.delete(route('product.destroy',isDeleteModalOpen.id),{
+ router.delete(route('stocklog.destroy',isDeleteModalOpen.id),{
     preserveScroll: true,
         preserveState: true,
 })
@@ -376,9 +354,9 @@ setIsDeleteModalOpen(null)
 
 
 
-<ConfirmModal   isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these products?" onConfirm={()=>{
+<ConfirmModal   isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these stock log?" onConfirm={()=>{
  
- router.post(route('product.bulkdestroy'), { ids: selectId.join(',') }, {
+ router.post(route('stocklog.bulkdestroy'), { ids: selectId.join(',') }, {
   onSuccess: () => {
       setIsBulkDeleteModalOpen(false);
       setSelectId([]);

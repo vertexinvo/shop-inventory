@@ -17,5 +17,6 @@ class Stocklog extends Model
         'supplier_invoice_no',
         'user_id',
         'remarks',
+        'datetime',
     ];
 }
