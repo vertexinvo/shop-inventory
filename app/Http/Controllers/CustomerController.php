@@ -7,6 +7,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Validator;
 
+
 class CustomerController extends Controller
 {
     /**

@@ -12,7 +12,7 @@ import { toast } from 'react-toastify';
 import { CiSettings } from "react-icons/ci";
 function List(props) {
     const { roles } = props;
-console.log(roles);
+// console.log(roles);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
@@ -36,7 +36,7 @@ console.log(roles);
                         <div className="flex flex-col md:flex-row justify-between items-center mt-6 mb-4 px-4 sm:px-8">
                             <div className="flex space-x-2 mt-2 md:mt-0">
                                 <button
-                                    onClick={() => setIsModalOpen(true)}
+                                    onClick={() => router.get(route('role.create'))} 
                                     
                                     className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                                 >
@@ -72,7 +72,7 @@ console.log(roles);
                                                     <td className="py-2 px-4 border-b border-gray-200 text-right">
                                                         <div className="text-right space-x-2">
                                                             <button 
-                                                                onClick={() => openEditModal(item)}
+                                                               onClick={() => router.get(route('role.edit', item.id))} class="mr-4" title="Edit"
 
                                                             >
                                                                 <svg xmlns="http://www.w3.org/2000/svg" class="
@@ -148,7 +148,7 @@ console.log(roles);
                     </div>
                 </div>
                 {/* Create Product Modal */}
-                <Modal
+                {/* <Modal
                     show={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                     maxWidth="2xl"
@@ -184,7 +184,7 @@ console.log(roles);
 
                         {({ isSubmitting, handleSubmit, setFieldValue, values }) => (
                             <Form className="bg-white p-2 mt-2 mb-2 w-full max-w-lg mx-auto flex flex-col items-center">
-                                <h2 className="text-lg font-bold mb-4">Create Role</h2>
+                                <h2 className="text-lg font-bold mb-4 ">Create Role</h2>  
                                 <div className="relative z-0 w-full mb-5 group">
                                     <Field
                                         name="name"
@@ -223,8 +223,9 @@ console.log(roles);
                                         type="submit"
                                         className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                     >
-                                        Submit
+                                        Save
                                     </button>
+                                   
                                     <button
                                         type="button"
                                         onClick={() => setIsModalOpen(false)}
@@ -236,11 +237,11 @@ console.log(roles);
                             </Form>
                         )}
                     </Formik>
-                </Modal>
+                </Modal> */}
 
 
                 {/* Edit Product Modal */}
-                <Modal
+                {/* <Modal
                     show={isEditModalOpen}
                     onClose={() => setIsEditModalOpen(false)}
                     maxWidth="2xl"
@@ -328,7 +329,7 @@ console.log(roles);
                             </Form>
                         )}
                     </Formik>
-                </Modal>
+                </Modal> */}
 
 
 

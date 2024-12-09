@@ -55,7 +55,10 @@ export default function List(props) {
                 
                 <div class="flex items-center justify-start gap-1 mt-8">
                     <button class="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                        Submit
+                    Save
+                    </button>
+                    <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                    Save & Close
                     </button>
                     <button  onClick={() => router.get(route('tax.index'))} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                         Close

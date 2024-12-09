@@ -153,7 +153,7 @@ export default function List(props) {
                             className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg"
                             type="submit"
                           >
-                            Submit
+                            Update
                           </button>
                           <button
                             onClick={() => router.get(route('shippingrate.index'))}

@@ -96,4 +96,11 @@ class ShippingRateController extends Controller
         $shippingrate->delete();
         return redirect()->back()->with('message', 'Shipping rate deleted successfully');
     }
+    public function bulkdestroy(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        ShippingRate::whereIn('id', $ids)->delete();
+        session()->flash('message', 'Shipping rate deleted successfully');
+        return back();
+    }
 }

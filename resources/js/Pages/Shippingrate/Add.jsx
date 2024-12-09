@@ -154,6 +154,9 @@ export default function List(props) {
                           >
                             Submit
                           </button>
+                          <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                          Save & Close
+                           </button>
                           <button
                             onClick={() => router.get(route('shippingrate.index'))}
                             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
