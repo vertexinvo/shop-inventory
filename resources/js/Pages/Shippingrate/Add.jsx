@@ -152,7 +152,7 @@ export default function Add(props) {
                             className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg"
                             type="submit"
                           >
-                            Submit
+                            Save
                           </button>
                           <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
                           Save & Close
