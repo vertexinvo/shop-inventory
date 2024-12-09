@@ -34,7 +34,7 @@ export default function List(props) {
     <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
         <div class="my-auto">
         <p class="font-bold">LAST UPDATED</p>
-        <p class="text-lg">{FormatDate(stocks.last_updated)}</p>
+        <p class="text-lg">{stocks.last_updated ? FormatDate(stocks.last_updated) : '-'}</p>
         </div>
         <div class="my-auto">
         <BsCalendarDate  size={40} />                 
@@ -99,7 +99,7 @@ export default function List(props) {
                     </button>
                 }
                 <button
-                  onClick={() => router.get(route('product.create'))}
+                  onClick={() => router.get(route('stocklog.create'),{product_id : stocks.product_id})}
                   className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                 >
                   Add New Stock

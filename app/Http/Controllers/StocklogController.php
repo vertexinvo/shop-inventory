@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Stocklog;
 use App\Http\Requests\StoreStocklogRequest;
 use App\Http\Requests\UpdateStocklogRequest;
+use App\Models\Stock;
+use App\Models\Supplier;
+use App\Models\Supplierinvoice;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Validator;
 
 class StocklogController extends Controller
 {
@@ -20,9 +25,28 @@ class StocklogController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $suppliers = Supplier::all();
+
+        $supplierinvoices = [];
+        if($request->supplier_id){
+            $supplierinvoices = Supplierinvoice::where('supplier_id', $request->supplier_id)->get();
+        }
+
+
+        $code =  '';
+        if($request->code){
+            $supplier = new SupplierController();
+            $code = $supplier->generateCode();
+        }
+        $invoicecode =  '';
+        if($request->invoicecode){
+            $supplierinvoice = new SupplierinvoiceController();
+            $invoicecode = $supplierinvoice->generateInvoiceCode();
+        }
+        $product_id = $request->product_id;
+        return Inertia::render('Stock/Add', compact('code', 'invoicecode','suppliers','supplierinvoices','product_id'));
     }
 
     /**
@@ -30,7 +54,25 @@ class StocklogController extends Controller
      */
     public function store(StoreStocklogRequest $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'quantity' => 'required',
+            'type' => 'required|in:addition,removal,adjustment',
+            'remarks' => 'nullable|max:1000',
+            'supplier_invoice_no' => 'nullable|exists:supplierinvoices,invoice_no',
+            'product_id' => 'required|exists:products,id',
+            'datetime' => 'required',
+           ]);
+    
+           if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+           }
+           $stock = Stock::where('product_id', $request->product_id)->first();
+           $data = $request->only(['quantity', 'type', 'remarks','is_supplier', 'supplier_invoice_no', 'datetime']);
+           $data['user_id'] = auth()->user()->id;
+           $data['stock_id'] = $stock->id;
+           Stocklog::create($data);
+           return redirect()->back()->with('message', 'Stock log created successfully');
     }
 
     /**
