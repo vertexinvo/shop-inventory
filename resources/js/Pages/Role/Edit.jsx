@@ -7,7 +7,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import * as Yup from 'yup';
 
-export default function List(props) {
+export default function Edit(props) {
     const { auth, role } = props
     console.log(role);
     return (

@@ -4,7 +4,7 @@ import { Head, router } from '@inertiajs/react';
 import * as Yup from 'yup';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function List(props) {
+export default function Add(props) {
   const { auth } = props;
 
   return (
