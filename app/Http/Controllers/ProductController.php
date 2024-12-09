@@ -27,9 +27,9 @@ class ProductController extends Controller
                   ->orWhere('identity_value', 'like', "%$search%");
         })->latest()->paginate(10);
 
-    
+        $stock = Product::with('stock')->get();
 
-        return Inertia::render('Product/List', compact('products' ));
+        return Inertia::render('Product/List', compact('products' , 'stock'));
     }
 
     /**

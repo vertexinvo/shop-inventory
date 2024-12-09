@@ -20,7 +20,7 @@ export default function List(props) {
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
-
+ 
   return (
       <AuthenticatedLayout
           Product={auth.Product}
