@@ -1,10 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
-import { CiUser } from "react-icons/ci";
 import Chart from "react-apexcharts";
 import { useState } from 'react';
 import OutofstockProduct from '@/Components/OutofstockProduct';
 import SupplierBalance from '@/Components/SupplierBalance';
+import { VscGraph } from "react-icons/vsc";
+import { FaBoxOpen } from "react-icons/fa6";
+import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
+import { BsGraphUp } from "react-icons/bs";
+
 
 export default function Dashboard(props) {
   const { auth, totalUser,totalProductInStock,totalProductOutofStock,outOfStockProductrecord , supplierBalanceRecord } = props
@@ -47,7 +51,7 @@ export default function Dashboard(props) {
                     <p class="text-lg">{totalUser}</p>
                     </div>
                     <div class="my-auto">
-                    <CiUser size={40} />                 
+                    <VscGraph size={40} />                 
                     </div>
                 </div>
                 </div>
@@ -59,9 +63,7 @@ export default function Dashboard(props) {
                     <p class="text-lg">{totalProductInStock}</p>
                     </div>
                     <div class="my-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>               
+                    <FaBoxOpen  size={40} />                 
                     </div>
                 </div>
                 </div>
@@ -73,9 +75,7 @@ export default function Dashboard(props) {
                     <p class="text-lg">{totalProductOutofStock}</p>
                     </div>
                     <div class="my-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-            </svg>
+                    <HiMiniArchiveBoxXMark  size={40} />                 
                     </div>
                 </div>
                 </div>
@@ -84,14 +84,12 @@ export default function Dashboard(props) {
                 <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
                     <div class="my-auto">
                     <p class="font-bold">
-
+                    MONTHLY SALES
                     </p>
                     <p class="text-lg">18</p>
                     </div>
                     <div class="my-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-            </svg>
+                    <BsGraphUp    size={40} />                 
                     </div>
                 </div>
                 </div>
@@ -99,6 +97,7 @@ export default function Dashboard(props) {
             </div>
 
             <div class="p-5 grid grid-cols-2 gap-1 w-full">
+              
             <div class="mt-4 mx-4  bg-white p-4 rounded-lg shadow-md">
             <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
                 Sales

@@ -43,6 +43,7 @@ const View = (props) => {
 
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
+        const currentDateTime = new Date().toLocaleString();
 
         printWindow.document.write(`
             <html>
@@ -58,7 +59,8 @@ const View = (props) => {
                 </head>
                 <body class="p-4 bg-white">
                     <div class="border-2 border-dashed border-gray-300 p-4 text-center">
-                        <div class="font-bold text-lg mb-2">VERTEX INVO</div>
+                        <h1 class="text-2xl font-bold mb-4">Invoice</h1>
+                        
                         <div class="text-sm text-gray-600 mb-4">
                             <div>vertexInvo.com</div>
                             <div>+92-3331325935</div>
@@ -69,7 +71,7 @@ const View = (props) => {
     
                         <div class="text-left text-sm mb-4">
                             <div>Invoice #: <span class="font-semibold">INV-${order.id}</span></div>
-                            <div>Date: <span class="font-semibold">${order.created_at_formatted}</span></div>
+                            <div>Date: <span class="font-semibold">${currentDateTime}</span></div>
                             <div>Customer: <span class="font-semibold">${order.name}</span></div>
                         </div>
     
@@ -93,16 +95,22 @@ const View = (props) => {
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-right text-sm">
-                            <div>Subtotal: <span class="font-semibold">Rs. 12435</span></div>
-                            <div>Discount: <span class="font-semibold">Rs. 0</span></div>
-                            <div class="font-bold">Total: <span class="text-lg">Rs.   8765</span></div>
+                            <div>Subtotal: <span class="font-semibold">Rs. ${order.total}</span></div>
+                            <div>Discount: <span class="font-semibold">Rs. ${order.discount}</span></div>
+                            <div>Exchange: <span class="font-semibold">Rs. ${order.exchange || '0.00'}</span></div>
+                            <div>Tax: <span class="font-semibold">Rs. ${order.tax || '0.00'}</span></div>
+                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping || '0.00'}</span></div>
+                            <div>Extra Charges: <span class="font-semibold">Rs. ${order.extra_charges || '0.00'}</span></div>
+                            <div class="border-t border-dashed border-gray-300 my-2"></div>
+
+                            <div class="font-bold">Total: <span class="text-lg">Rs.  ${order.payable_amount}</span></div>
                         </div>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-xs text-gray-600 mt-4">
                             <div>Thank You for Your Business!</div>
-                            <div>vertexInvo.com</div>
+                            <div>vertexinvo.com</div>
                         </div>
                     </div>
                     
@@ -236,7 +244,7 @@ const View = (props) => {
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
-                                  
+
                                 </colgroup>
                                 <thead className="border-b border-gray-300 text-gray-900">
                                     <tr >
@@ -262,14 +270,14 @@ const View = (props) => {
                                             <div class="flex items-center cursor-pointer w-max">
                                                 <div className='mt-3'>
                                                     <p class="text-sm text-black ">Order Name : {order.name}</p>
-                                                    { <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
+                                                    {<p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
                                                     {<p class="text-xs text-gray-500 mt-0.5">Email :{order.phone} </p>}
                                                 </div>
                                             </div>
                                         </td>
                                         {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
                                         {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
-                 
+
                                         <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.price}</td>
                                         <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.qty ? item.qty : 'N/A'}</td>
                                         <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total}</td>
@@ -298,7 +306,7 @@ const View = (props) => {
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Subtotal:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. {order.total} </td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. {order.total ? order.total : '0.00'} </td>
                                 </tr>
                                 <tr>
                                     {/* add delivery cgarges */}
@@ -312,22 +320,22 @@ const View = (props) => {
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Discount:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount ? order.discount : '0.00'}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Exchange :</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.exchange}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.exchange ? order.exchange : '0.00'}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Extra Charges:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.extra_charges ? order.extra_charges : '0.00'}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Tax:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.tax ? order.tax : '0.00'}</td>
                                 </tr>
 
 
