@@ -40,10 +40,10 @@ const View = (props) => {
             alert("Printing is not supported in this browser.");
             return;
         }
-    
+
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
-        
+
         printWindow.document.write(`
             <html>
                 <head>
@@ -115,7 +115,7 @@ const View = (props) => {
                 </body>
             </html>
         `);
-        
+
         printWindow.document.close();
     };
 
@@ -165,12 +165,12 @@ const View = (props) => {
                     }
                 `}
             </style>
-           
+
 
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 ">
                 {/* Action Buttons */}
                 <div className="flex justify-end mb-4 no-print">
-                    <button  onClick={printThermalReceipt}
+                    <button onClick={printThermalReceipt}
 
                         className="bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
                     >
@@ -182,7 +182,7 @@ const View = (props) => {
                     >
                         Print PDF
                     </button>
-                   
+
 
                 </div>
 
@@ -220,7 +220,7 @@ const View = (props) => {
                                 Invoice number: <span className="text-gray-500">INV-{order.id}</span>
                             </p>
                             <p>
-                                Invoice date: <span className="text-gray-500">{order.created_at_formatted}</span>
+                                Invoice date: <span className="text-gray-500">{order.created_at}</span>
 
                             </p>
                         </div>
@@ -231,33 +231,47 @@ const View = (props) => {
                         <div className="overflow-x-auto">
                             <table className="min-w-full">
                                 <colgroup>
-                                    <col className="w-full sm:w-1/2" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
-                                    <col className="sm:w-1/6" />
-                                    <col className="sm:w-1/6" />
-                                    <col className="sm:w-1/6" />
+                                    <col className="w-full sm:w-1/6" />
+                                    <col className="w-full sm:w-1/6" />
+                                  
                                 </colgroup>
                                 <thead className="border-b border-gray-300 text-gray-900">
                                     <tr >
-                                        <th scope="col" className="pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 whitespace-nowrap">Product Name</th>
-                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Description</th>
-                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Selling Price</th>
-                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">supplier Invoice No</th>
+                                        {/* <th scope="col" className="pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 whitespace-nowrap">Product Info</th> */}
+                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Product Info</th>
+                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Order Info</th>
                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Price</th>
-                                        <th scope="col" className="hidden px-3 py-2 text-right text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">QTY</th>
+                                        <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">QTY</th>
                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">Total</th>
                                     </tr>
                                 </thead>
                                 {order.items.map((item) => (
                                     <tr key={item.id}>
-                                        <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td>
-                                        <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td>
-                                        <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.selling_price ? item.selling_price : 'N/A'}</td>
-                                        <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.supplier_invoice_no ? item.supplier_invoice_no : 'N/A'}</td>
+                                        <td class=" text-sm">
+                                            <div class="flex items-center cursor-pointer w-max">
+                                                <div >
+                                                    <p class="text-sm text-black ">Name : {item.product.name}</p>
+                                                    {item.product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{item.product.model} </p>}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class=" text-sm">
+                                            <div class="flex items-center cursor-pointer w-max">
+                                                <div className='mt-3'>
+                                                    <p class="text-sm text-black ">Order Name : {order.name}</p>
+                                                    { <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
+                                                    {<p class="text-xs text-gray-500 mt-0.5">Email :{order.phone} </p>}
+                                                </div>
+                                            </div>
+                                        </td>
+                                        {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
+                                        {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
+                 
                                         <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.price}</td>
-                                        <td className="hidden px-3 py-2 text-right text-sm text-gray-500 sm:table-cell">{item.qty ? item.qty : 'N/A'}</td>
+                                        <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.qty ? item.qty : 'N/A'}</td>
                                         <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total}</td>
                                     </tr>
                                 ))}
@@ -284,28 +298,43 @@ const View = (props) => {
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Subtotal:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. </td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. {order.total} </td>
                                 </tr>
                                 <tr>
                                     {/* add delivery cgarges */}
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Delivery Charges:</th>
 
                                     <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">
-                                        {/* Rs. {parseFloat(order.delivery_charges).toFixed(2)} */}
+                                        Rs.{order.shipping_charges ? order.shipping_charges : '0.00'}
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Discount:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">-Rs. 12</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Exchange :</th>
+
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.exchange}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Extra Charges:</th>
+
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Tax:</th>
+
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount}</td>
                                 </tr>
 
 
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Total:</th>
 
-                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable}</td>
+                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount}</td>
                                 </tr>
                             </tfoot>
                         </div>
