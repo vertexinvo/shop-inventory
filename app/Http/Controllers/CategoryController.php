@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use App\Facades\CategoryService;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 
 class CategoryController extends Controller
 {
@@ -17,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::with('parent')->latest()->paginate(10);
+        $categories = CategoryService::getAllCategories();
         return Inertia::render('Category/List', compact('categories'));
     }
 
@@ -35,19 +35,8 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,name',
-            'description' => 'nullable|max:50',
-            'parent_id' => 'nullable',
-        ]);
-
-        if ($validator->fails()) {
-            session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
-        }
-        $data = $request->all();
-        Category::create($data);
-        return redirect()->back()->with('message', 'Category created successfully');
+        $response = CategoryService::createCategory($request);
+        return $response ? session()->flash('message', 'Brand created successfully') : back();
     }
 
     /**
@@ -73,20 +62,8 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-       
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,name,'.$category->id,
-            'description' =>  'nullable|max:50',
-            'parent_id' => 'nullable',
-        ]);
-
-        if ($validator->fails()) {
-            session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
-        }
-        $data = $request->all();
-        $category = Category::find($category->id)->update($data);
-        return redirect()->back()->with('message','Category updated successfully');
+        $response = CategoryService::updateCategory($request, $category);
+        return $response ? session()->flash('message', 'Brand created successfully') : back();
     }
 
     /**
@@ -101,8 +78,8 @@ class CategoryController extends Controller
 
     public function bulkdestroy(Request $request)
     {
-       Category::whereIn('id', explode(',', $request->ids))->delete();
-       session()->flash('message', 'Category deleted successfully');
-       return back();
+        Category::whereIn('id', explode(',', $request->ids))->delete();
+        session()->flash('message', 'Category deleted successfully');
+        return back();
     }
 }

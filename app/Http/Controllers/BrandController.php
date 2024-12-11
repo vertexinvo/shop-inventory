@@ -19,7 +19,7 @@ class BrandController extends Controller
         $brands = BrandService::getAllBrands();
         return Inertia::render('Brand/List', compact('brands'));
     }
-
+ 
     /**
      * Show the form for creating a new resource.
      */

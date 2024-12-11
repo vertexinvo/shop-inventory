@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+ 
 use App\Facades\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
