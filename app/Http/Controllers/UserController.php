@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\UserService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
@@ -15,15 +16,7 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search ?? '';
-
-        //dont show role superadmin
-        $users = User::with('roles') ->whereDoesntHave('roles', function ($query) {
-            $query->where('name', 'superadmin');
-        })->where(function ($query) use ($search) {
-            $query->where('name', 'like', "%$search%")
-                  ->orWhere('email', 'like', "%$search%");
-        })->latest()->paginate(10);
+        $users =  UserService::getAllUser($request, null, ['superadmin', 'customer']);
         return Inertia::render('User/List' , compact('users'));
     }
 

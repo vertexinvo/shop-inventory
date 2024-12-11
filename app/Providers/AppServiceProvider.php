@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Stocklog;
 use App\Observers\StocklogObserver;
 use App\Services\BrandService;
+use App\Services\UserService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -17,6 +18,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('brandService', function () {
             return new BrandService();
         });
+        $this->app->singleton('userService', function () {
+            return new UserService();
+        });
+
     }
 
     /**

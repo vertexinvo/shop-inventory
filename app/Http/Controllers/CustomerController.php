@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\UserService;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
@@ -14,23 +15,11 @@ class CustomerController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-{
-    $search = $request->search ?? '';
-
-    // Don't show users with the 'customer' role
-    $users = User::with('roles')
-        ->whereHas('roles', function ($query) {
-            $query->where('name', 'customer');
-        })
-        ->where(function ($query) use ($search) {
-            $query->where('name', 'like', "%$search%")
-                  ->orWhere('email', 'like', "%$search%");
-        })
-        ->latest()
-        ->paginate(10);
-
-    return Inertia::render('Customer/List', compact('users'));
-}
+    {
+        $users = UserService::getAllUser($request, 'customer');
+ 
+        return Inertia::render('Customer/List', compact('users'));
+    }
 
 
     /**
