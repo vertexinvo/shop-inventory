@@ -74,6 +74,9 @@ export default function Add(props) {
                 tax_id: '',
                 shipping_id: '',
                 order_date : new Date().toISOString().slice(0, 10),
+                close: false,
+                exchange_items: [],
+                exchange : 0
         }}
               validationSchema={Yup.object({
                   name: Yup.string().required('Name is required'),
