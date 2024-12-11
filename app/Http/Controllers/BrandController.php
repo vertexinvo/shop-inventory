@@ -52,18 +52,16 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Brand $brand)
     {
-        $brand = Brand::find($id);
         return Inertia::render('Brand/Edit', compact('brand'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,Brand $brand)
     {
-        $brand = Brand::find($id);
         $response = BrandService::updateBrand($request, $brand);
         if($response){
             session()->flash('message', 'Brand updated successfully');
@@ -74,9 +72,8 @@ class BrandController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Brand $brand)
     {
-        $brand = Brand::find($id);
         $brand->delete();
         return redirect()->back()->with('message', 'Brand deleted successfully');
     }
