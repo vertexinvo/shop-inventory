@@ -13,7 +13,7 @@ export default function Add(props) {
   return (
       <AuthenticatedLayout
           brand={auth.brand}
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Brand</h2>}
+          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Brand</h2>}
       >
           <Head title="Brand" />
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\BrandService;
 use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
@@ -15,7 +16,7 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = Brand::latest()->paginate(10);
+        $brands = BrandService::getAllBrands();
         return Inertia::render('Brand/List', compact('brands'));
     }
 
@@ -32,18 +33,11 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:brands,name',
-            'description' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+        $response = BrandService::createBrand($request);
+        if($response){
+            session()->flash('message', 'Brand created successfully');
         }
-        $data = $request->all();
-        $brand = Brand::create($data);
-        return redirect()->back()->with('message', 'Brand created successfully');
+        return back();
         
     }
 
@@ -58,37 +52,31 @@ class BrandController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Brand $brand)
+    public function edit($id)
     {
-        $brand = Brand::find($brand->id);
+        $brand = Brand::find($id);
         return Inertia::render('Brand/Edit', compact('brand'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Brand $brand)
+    public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:brands,name'.$brand->id,
-            'description' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+        $brand = Brand::find($id);
+        $response = BrandService::updateBrand($request, $brand);
+        if($response){
+            session()->flash('message', 'Brand updated successfully');
         }
-        $data = $request->all();
-        $brand = Brand::find($brand->id)->update($data);
-        return redirect()->back()->with('message', 'Brand updated successfully');
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Brand $brand)
+    public function destroy($id)
     {
-        $brand = Brand::find($brand->id);
+        $brand = Brand::find($id);
         $brand->delete();
         return redirect()->back()->with('message', 'Brand deleted successfully');
     }
