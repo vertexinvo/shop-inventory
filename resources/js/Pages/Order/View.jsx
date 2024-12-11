@@ -1,6 +1,6 @@
 import React from 'react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 // Remove direct import of Printer, we'll use a more flexible approach
@@ -19,9 +19,7 @@ const View = (props) => {
             const pageHeight = pdf.internal.pageSize.height;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
             let heightLeft = imgHeight;
-
             let position = 0;
-
             pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
             heightLeft -= pageHeight;
 
@@ -40,7 +38,6 @@ const View = (props) => {
             alert("Printing is not supported in this browser.");
             return;
         }
-
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
         const currentDateTime = new Date().toLocaleString();
@@ -123,10 +120,8 @@ const View = (props) => {
                 </body>
             </html>
         `);
-
         printWindow.document.close();
     };
-
     return (
         <Authenticated auth={props.auth} errors={props.errors}
             header={<h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id}</h2>}>
@@ -178,9 +173,15 @@ const View = (props) => {
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 ">
                 {/* Action Buttons */}
                 <div className="flex justify-end mb-4 no-print">
-                    <button onClick={printThermalReceipt}
+                    <button onClick={() => router.get(route('order.index'))}
 
                         className="bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
+                    >
+                        Cancel
+                    </button>
+                    <button onClick={printThermalReceipt}
+
+                        className="ml-2 bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
                     >
                         Thermal Print
                     </button>
@@ -214,21 +215,21 @@ const View = (props) => {
                     <div className="grid grid-cols-2 items-center mt-8">
                         <div>
                             {/* <p className="font-bold text-gray-800">Bill to:</p> */}
-                            <p>Bill to: <span className='text-gray-500'>{order.name}</span>
+                            <p>Bill to: <span className='text-gray-500'>{order.name ? order.name : 'N/A'}</span>
                                 {/* <br />
             {order.address}, {order.city}, {order.country} */}
                             </p>
-                            <p>Address: <span className="text-gray-500" >{order.address}, {order.city}, {order.country}</span></p>
-                            <p>Email: <span className="text-gray-500">{order.email}</span></p>
-                            <p>payment method: <span className="text-gray-500">{order.method}</span></p>
-                            <p>Status: <span className="text-gray-500" >{order.status}</span></p>
+                            <p>Address: <span className="text-gray-500" >{order.address ? order.address : 'N/A'}</span></p>
+                            <p>Email: <span className="text-gray-500">{order.email ? order.email : 'N/A'}</span></p>
+                            <p>payment method: <span className="text-gray-500">{order.method ? order.method : 'N/A'}</span></p>
+                            <p>Status: <span className="text-gray-500" >{order.status ? order.status : 'N/A'}</span></p>
                         </div>
                         <div className="text-right">
                             <p>
-                                Invoice number: <span className="text-gray-500">INV-{order.id}</span>
+                                Invoice number: <span className="text-gray-500">INV-{order.id ? order.id : 'N/A'}</span>
                             </p>
                             <p>
-                                Invoice date: <span className="text-gray-500">{order.created_at}</span>
+                                Invoice date: <span className="text-gray-500">{order.created_at ? order.created_at : 'N/A'}</span>
 
                             </p>
                         </div>
@@ -237,14 +238,13 @@ const View = (props) => {
                     {/* Invoice Items */}
                     <div className="-mx-4 mt-2 flow-root sm:mx-0 py-4">
                         <div className="overflow-x-auto">
-                            <table className="min-w-full">
+                            <table className="min-w-full mb-8">
                                 <colgroup>
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
-
                                 </colgroup>
                                 <thead className="border-b border-gray-300 text-gray-900">
                                     <tr >
@@ -256,34 +256,38 @@ const View = (props) => {
                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">Total</th>
                                     </tr>
                                 </thead>
-                                {order.items.map((item) => (
-                                    <tr key={item.id}>
-                                        <td class=" text-sm">
-                                            <div class="flex items-center cursor-pointer w-max">
-                                                <div >
-                                                    <p class="text-sm text-black ">Name : {item.product.name}</p>
-                                                    {item.product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{item.product.model} </p>}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class=" text-sm">
-                                            <div class="flex items-center cursor-pointer w-max">
-                                                <div className='mt-3'>
-                                                    <p class="text-sm text-black ">Order Name : {order.name}</p>
-                                                    {<p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
-                                                    {<p class="text-xs text-gray-500 mt-0.5">Email :{order.phone} </p>}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
-                                        {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
-
-                                        <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.price}</td>
-                                        <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.qty ? item.qty : 'N/A'}</td>
-                                        <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total}</td>
-                                    </tr>
-                                ))}
+                              
                                 <tbody>
+                                    {order.items.map((item) => (
+                                        <tr key={item.id}>
+                                            <td class=" text-sm">
+                                                <div class="flex items-center cursor-pointer w-max">
+                                                    <div >
+                                                        <p class="text-sm text-black ">Name : {item.product.name}</p>
+                                                        {item.product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{item.product.model ? item.product.model : 'N/A'} </p>}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class=" text-sm">
+                                                <div class="flex items-center cursor-pointer w-max">
+                                                    <div className='mt-3'>
+                                                        <p class="text-sm text-black ">Order Name : {order.name ? order.name : 'N/A'}</p>
+                                                        {<p class="text-xs text-gray-500 mt-0.5">Email :{order.email ? order.email : 'N/A'} </p>}
+                                                        {<p class="text-xs text-gray-500 mt-0.5">Phone :{order.phone ? order.phone : 'N/A'} </p>}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
+                                            {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
+
+                                            <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.price ? item.price : 'N/A'}</td>
+                                            <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.qty ? item.qty : 'N/A'}</td>
+                                            <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total ? order.total : 'N/A'}</td>
+                                        </tr>
+
+                                    ))}
+                                </tbody>
+                                {/* <tbody>
                                     <tr>
                                         <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">
                                             <div className="flex items-center">
@@ -296,22 +300,16 @@ const View = (props) => {
                                             </div>
                                         </td>
                                     </tr>
-                                </tbody>
-
-
-
+                                </tbody> */}
                             </table>
-
                             <tfoot className="justify-content-right">
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Subtotal:</th>
-
                                     <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. {order.total ? order.total : '0.00'} </td>
                                 </tr>
                                 <tr>
                                     {/* add delivery cgarges */}
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Delivery Charges:</th>
-
                                     <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">
                                         Rs.{order.shipping_charges ? order.shipping_charges : '0.00'}
                                     </td>
@@ -342,7 +340,7 @@ const View = (props) => {
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Total:</th>
 
-                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount}</td>
+                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount ? order.payable_amount : '0.00'}</td>
                                 </tr>
                             </tfoot>
                         </div>
@@ -350,10 +348,10 @@ const View = (props) => {
                     </div>
 
 
-                    {/* Footer
+                    {/* Footer */}
                     <div className="border-t-2 pt-4 text-xs text-gray-500 text-center mt-16">
-                        Please pay the invoice before the due date. You can pay the invoice by logging in to your account from our client portal.
-                    </div> */}
+                        developed by <strong>vertexInvo</strong>
+                    </div>
                 </div>
             </div>
         </Authenticated>
