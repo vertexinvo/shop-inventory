@@ -30,6 +30,12 @@ class OrderController extends Controller
         return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total'));
     }
 
+    public function changestatus(Request $request, $id){
+        $order = Order::findOrFail($id);
+        $order->status = $request->status;
+        $order->save();
+        return back();
+    }
 
     public function instantorder(Request $request)
     {

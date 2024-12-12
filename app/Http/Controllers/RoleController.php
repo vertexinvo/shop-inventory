@@ -102,6 +102,8 @@ class RoleController extends Controller
         return session()->flash('message', 'Role updated successfully');
     }
 
+   
+
     /**
      * Remove the specified resource from storage.
      */

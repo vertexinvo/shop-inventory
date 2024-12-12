@@ -19,6 +19,7 @@ function List(props) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 
+
     const openEditModal = (product) => {
         setSelectedProduct(product);
         setIsEditModalOpen(true);

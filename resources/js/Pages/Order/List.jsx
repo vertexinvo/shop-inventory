@@ -1,31 +1,26 @@
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, ErrorMessage } from 'formik'
 import React, { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
+import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
-import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
+import { PiListChecksFill } from "react-icons/pi";
 import { FaBoxOpen } from "react-icons/fa6";
+import { FaPen } from "react-icons/fa";
+import * as Yup from 'yup';
 
 
 export default function List(props) {
   const { auth, orders, pendingCount, completedCount, total } = props
 
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("Select Order By");
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prev) => !prev);
-  };
 
-  const handleOptionSelect = (option) => {
-    setSelectedOption(option);
-    setIsDropdownOpen(false); // Close the dropdown after selecting an option
-  };
 
   return (
     <AuthenticatedLayout
@@ -36,14 +31,14 @@ export default function List(props) {
 
 
 
-      <div className='flex justify-end px-5 py-2 mx-4 '> 
-<select name="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
-      <option value="day">Day</option>
-      <option value="week">Week</option>
-      <option value="month">Month</option>
-      <option value="year">Year</option>
-    </select>
-</div>
+      <div className='flex justify-end px-5 py-2 mx-4 '>
+        <select name="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
+          <option value="day">Day</option>
+          <option value="week">Week</option>
+          <option value="month">Month</option>
+          <option value="year">Year</option>
+        </select>
+      </div>
 
       <div class="px-5 mx-4 grid grid-cols-3 gap-2 ">
 
@@ -78,7 +73,7 @@ export default function List(props) {
               <p class="text-lg">{completedCount}</p>
             </div>
             <div class="my-auto">
-              <HiMiniArchiveBoxXMark size={40} />
+              <PiListChecksFill size={40} />
             </div>
           </div>
         </div>
@@ -361,8 +356,23 @@ export default function List(props) {
                           </div>
                         </div>
                       </td>
+
                       <td class="p-4 text-sm text-black">
-                        {order.status || 'N/A'}
+                        <button onClick={() => setIsStatusModalOpen(order)}>
+                          {order.status === "pending" ? (
+                            <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+                            > {order.status || 'N/A'}<FaPen className="ms-1" />
+                            </span>) : order.status === "completed" ?  (
+                            <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                            >{order.status || 'N/A'}<FaPen className="ms-1" />
+                            </span>
+                          ) : order.status === "cancel" && (
+                            <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                            >{order.status || 'N/A'}<FaPen className="ms-1" />
+                            </span>
+                          )}
+                        </button>
+
                       </td>
 
 
@@ -492,6 +502,66 @@ export default function List(props) {
 
         </div>
       </div>
+      <Modal
+        show={isStatusModalOpen !== null}
+        onClose={() => setIsStatusModalOpen(null)}
+        maxWidth="2xl"
+      >
+        <Formik
+          initialValues={{
+            status: isStatusModalOpen?.status || 'pending',
+          }}
+          validationSchema={Yup.object({
+            status: Yup.string().required('Status is required'),
+          })}
+          onSubmit={(values, { resetForm }) => {
+
+            router.put(route('order.changeStatus', isStatusModalOpen?.id), values, {
+              onSuccess: () => {
+                resetForm();
+                setIsStatusModalOpen(null);
+              },
+            });
+          }}
+
+        >
+          {({ isSubmitting, handleSubmit, setFieldValue, values }) => (
+            <Form className="bg-white p-2 mt-2 mb-2 w-full max-w-lg mx-auto flex flex-col items-center">
+              <h2 className="text-lg font-bold mb-4">Change Status</h2>
+
+
+              <div className="relative z-0 w-full mb-5 group">
+       
+                <Field name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" as="select">
+                  <option value="pending">Pending</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancel">Cancel</option>
+                </Field>
+
+                <ErrorMessage name="status" component="div" className="text-red-600 text-sm mt-1" />
+              </div>
+
+
+              <div className="flex justify-end space-x-2 mt-4">
+                <button
+                  type="submit"
+                  className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                   onClick={() => setIsStatusModalOpen(null)}
+                  className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+                >
+                  Close
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+
+      </Modal>
 
       <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
 
