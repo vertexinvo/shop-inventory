@@ -23,8 +23,11 @@ class OrderController extends Controller
        
         $search = $request->search ?? '';
         $orders = Order::where('name', 'like', "%$search%")->latest()->paginate(10);
-
-        return Inertia::render('Order/List', compact('orders'));
+        $total = Order::count();
+        $pendingCount = Order::where('status', 'pending')->count();
+        $completedCount = Order::where('status', 'completed')->count();
+        
+        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total'));
     }
 
 

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Facades\RoleService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Validator;
 //Role
 use Spatie\Permission\Models\Role;
+
 use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
@@ -16,8 +19,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::whereNotIn('name', ['superadmin'])->latest()->paginate(10);
-        // $roles = Role::whereNotIn('name', ['user'])->pluck('name')->toArray();
+        $roles = RoleService::getAllRoles();
         return Inertia::render('Role/List',compact('roles'));
     }
 

@@ -1,27 +1,92 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md';
-import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
+import { VscGraph } from "react-icons/vsc";
+import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
+import { FaBoxOpen } from "react-icons/fa6";
 
 
 export default function List(props) {
-  const { auth, orders } = props
+  const { auth, orders, pendingCount, completedCount, total } = props
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
-  console.log(orders);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState("Select Order By");
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+    setIsDropdownOpen(false); // Close the dropdown after selecting an option
+  };
+
   return (
     <AuthenticatedLayout
       Order={auth.Order}
       header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>}
     >
       <Head title="Order" />
+
+
+
+      <div className='flex justify-end px-5 py-2 mx-4 '> 
+<select name="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
+      <option value="day">Day</option>
+      <option value="week">Week</option>
+      <option value="month">Month</option>
+      <option value="year">Year</option>
+    </select>
+</div>
+
+      <div class="px-5 mx-4 grid grid-cols-3 gap-2 ">
+
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">TOTAL ORDERS</p>
+              <p class="text-lg">{total}</p>
+            </div>
+            <div class="my-auto">
+              <VscGraph size={40} />
+            </div>
+          </div>
+        </div>
+
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">PENDING ORDERS</p>
+              <p class="text-lg">{pendingCount}</p>
+            </div>
+            <div class="my-auto">
+              <FaBoxOpen size={40} />
+            </div>
+          </div>
+        </div>
+
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">COMPLETED ORDERS</p>
+              <p class="text-lg">{completedCount}</p>
+            </div>
+            <div class="my-auto">
+              <HiMiniArchiveBoxXMark size={40} />
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
@@ -66,7 +131,7 @@ export default function List(props) {
                         name="search"
                         type="text"
                         placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"          
+                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
                       />
                       <button
                         type="button"
@@ -138,8 +203,8 @@ export default function List(props) {
                     </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
-                      
-                    Adjustment
+
+                      Adjustment
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
@@ -275,12 +340,12 @@ export default function List(props) {
                             <p class="text-sm text-black ">Extra Charges : {order.extra_charges || '0'}</p>
                             <p class="text-sm text-black ">Shipping Charges : {order.shipping_charges || '0'}</p>
                             <p class="text-sm text-black ">Tax : {order.tax || '0'}</p>
-                          
+
                           </div>
                         </div>
                       </td>
                       <td class="p-4 text-sm text-black">
-                      <p class="text-sm text-black "> Discount : {order.discount || 'N/A'}</p>
+                        <p class="text-sm text-black "> Discount : {order.discount || 'N/A'}</p>
                         <p class="text-sm text-black ">Exchange : {order.exchange || '0'}</p>
                       </td>
                       <td class=" pt-4 pb-4 text-sm text-black">

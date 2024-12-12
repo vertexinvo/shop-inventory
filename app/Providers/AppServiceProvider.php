@@ -8,6 +8,7 @@ use App\Observers\StocklogObserver;
 use App\Services\BrandService;
 use App\Services\UserService;
 use App\Services\CategoryService;
+use App\Services\RoleService;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('categoryService', function () {
             return new CategoryService();
         });
+        $this->app->singleton('roleService', function () {
+            return new RoleService();
+        });
+
 
     }
 
