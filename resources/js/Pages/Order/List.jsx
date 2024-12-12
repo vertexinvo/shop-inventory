@@ -1,5 +1,5 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
@@ -9,6 +9,9 @@ import { PiListChecksFill } from "react-icons/pi";
 import { FaBoxOpen } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
 import * as Yup from 'yup';
+import './order.css'
+import { IoIosSave } from "react-icons/io";
+
 
 
 export default function List(props) {
@@ -20,6 +23,19 @@ export default function List(props) {
   const [selectId, setSelectId] = useState([]);
 
 
+  const [orderAmounts, setOrderAmounts] = useState({});
+
+  const handleAmountChange = (e, orderId) => {
+    const updatedAmount = e.target.value;
+    setOrderAmounts((prevState) => ({
+      ...prevState,
+      [orderId]: updatedAmount,
+    }));
+
+    const updatedOrders = orders.map((order) =>
+      order.id === orderId ? { ...order, paid_amount: updatedAmount } : order
+    );
+  }
 
 
   return (
@@ -319,11 +335,27 @@ export default function List(props) {
 
                         </td>)}
 
-                      {/* asf */}
                       <td class="p-4 text-sm text-black">
+
+
                         {order.payable_amount || 'N/A'}
-                      </td><td class="p-4 text-sm text-black">
-                        {order.paid_amount || 'N/A'}
+
+                      </td>
+                      <td class="p-4 text-sm text-black">
+                        <div className="flex items-center w-[130px] ">
+                          <input
+                            name="phone"
+                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
+                            type="number"
+                            step="0.01"
+                            value={orderAmounts[order.id] || order.paid_amount || 0} // Use order-specific value
+                            onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
+
+                          />
+                          <IoIosSave className="ml-2 cursor-pointer" size={30}   onClick={async() => { 
+                            await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
+                          }}/>
+                        </div>
                       </td>
                       <td class="p-4 text-sm text-black">
                         {order.method === "online" ? order.online_payment_link || "N/A" : "N/A"}
@@ -362,15 +394,15 @@ export default function List(props) {
                           {order.status === "pending" ? (
                             <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
                             > {order.status || 'N/A'}<FaPen className="ms-1" />
-                            </span>) : order.status === "completed" ?  (
-                            <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
-                            >{order.status || 'N/A'}<FaPen className="ms-1" />
-                            </span>
-                          ) : order.status === "cancel" && (
-                            <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
-                            >{order.status || 'N/A'}<FaPen className="ms-1" />
-                            </span>
-                          )}
+                            </span>) : order.status === "completed" ? (
+                              <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                              >{order.status || 'N/A'}<FaPen className="ms-1" />
+                              </span>
+                            ) : order.status === "cancel" && (
+                              <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                              >{order.status || 'N/A'}<FaPen className="ms-1" />
+                              </span>
+                            )}
                         </button>
 
                       </td>
@@ -531,7 +563,7 @@ export default function List(props) {
 
 
               <div className="relative z-0 w-full mb-5 group">
-       
+
                 <Field name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" as="select">
                   <option value="pending">Pending</option>
                   <option value="completed">Completed</option>
@@ -551,7 +583,7 @@ export default function List(props) {
                 </button>
                 <button
                   type="button"
-                   onClick={() => setIsStatusModalOpen(null)}
+                  onClick={() => setIsStatusModalOpen(null)}
                   className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
                 >
                   Close

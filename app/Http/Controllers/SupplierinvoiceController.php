@@ -27,7 +27,28 @@ class SupplierinvoiceController extends Controller
     {
         //
     }
+    public function changestatus(Request $request, $id){
+        $supplierinvoice = Supplierinvoice::findOrFail($id);
+        $supplierinvoice->status = $request->status;
+        $supplierinvoice->save();
+        session()->flash('message', 'Status updated successfully');
+        return back();
+    }
 
+    public function amountupdate(Request $request, $id){
+        $supplierinvoice = Supplierinvoice::findOrFail($id);
+        $supplierinvoice->paid_amount = $request->paid_amount;
+        if($supplierinvoice->paid_amount >= $supplierinvoice->total_payment){
+            $supplierinvoice->status = 'paid';
+        }
+        else{
+            $supplierinvoice->status = 'pending';
+        }
+
+        $supplierinvoice->save();
+        session()->flash('message', 'Amount updated successfully');
+        return back();
+    }
     public function generateInvoiceCode()
     {
         // Define a prefix for invoice codes

@@ -9,6 +9,7 @@ Route::middleware(['auth'])->prefix('dashboard')->controller(OrderController::cl
     Route::get('order/create/instantorder', 'instantorder')->name('order.instantorder');
     Route::post('order/instantorder', 'instantorderstore')->name('order.instantorderstore');
     Route::put('order/{id}/changestatus', 'changestatus')->name('order.changeStatus');
+    Route::put('order/{id}/amountupdate', 'amountupdate')->name('order.amountupdate');
 
 });
 

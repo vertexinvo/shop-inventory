@@ -1,22 +1,43 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md';
-import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { BiCopy } from 'react-icons/bi';
 import { toast } from 'react-toastify';
-import { LiaFileInvoiceSolid } from "react-icons/lia";
 import Modal from '@/Components/Modal';
 // Yup
 import * as Yup from 'yup';
 import { RiAiGenerate } from 'react-icons/ri';
+import { FaPen } from "react-icons/fa";
+import { IoIosSave } from 'react-icons/io';
+
+
 
 export default function List(props) {
-  const { auth, supplier, suppliers } = props
+  let { auth, supplier, suppliers, } = props
+
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
+
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
+
+  const [supplierInvoiceAmounts, setSupplierInvoiceAmounts] = useState({});
+
+  const handleAmountChange = (e, orderId) => {
+    const updatedAmount = e.target.value;
+    setSupplierInvoiceAmounts((prevState) => ({
+      ...prevState,
+      [orderId]: updatedAmount,
+    }));
+  };
+
+  const handleSaveAmount = async (orderId) => {
+    const amountToSave = supplierInvoiceAmounts[orderId] || 0; // Default to 0 if not set
+    // Assuming you have a router to handle this request
+    await router.put(route('order.amountupdate', orderId), { paid_amount: amountToSave });
+  };
+
+
 
 
   return (
@@ -88,12 +109,12 @@ export default function List(props) {
                       Create Invoice
                     </button>
                     <div className="relative">
-                    
+
                       <Field
                         name="search"
                         type="text"
                         placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"          
+                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
                       />
                       <button
                         type="button"
@@ -154,13 +175,43 @@ export default function List(props) {
                       <td className="p-4 text-sm text-black">{item.invoice_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.due_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.total_payment || 'N/A'}</td>
-                      <td className="p-4 text-sm text-black">{item.paid_amount || 'N/A'}</td>
+
+                      <td className="p-4 text-sm text-black">
+                        <div className="flex items-center w-[130px] ">
+                          <input
+                            name="phone"
+                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
+                            type="number"
+                            step="0.01"
+                            value={supplierInvoiceAmounts[item.id] || item.paid_amount || 0} // Use order-specific value
+                            onChange={(e) => handleAmountChange(e, item.id)} // Pass the order id
+                          />
+                          <IoIosSave
+                            className="ml-2 cursor-pointer"
+                            size={30}
+                            onClick={() => handleSaveAmount(item.id)} // Save the updated amount
+                          />
+                        </div>
+                        {/* {item.paid_amount || 'N/A'} */}
+                      </td>
+
                       <td className="p-4 text-sm text-black">{item.outstanding || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.payment_method || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.bank_name || 'N/A'}</td>
-                      <td className="p-4 text-sm text-black">{item.status}</td>
+                      <td className="p-4 text-sm text-black">
+                        <button onClick={() => setIsStatusModalOpen(item)}>
+                          {item.status === "pending" ? (
+                            <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+                            > {item.status || 'N/A'}<FaPen className="ms-1" />
+                            </span>) : item.status === "paid" && (
+                              <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                              >{item.status || 'N/A'}<FaPen className="ms-1" />
+                              </span>
+                            )}
+                        </button>
+                      </td>
 
                     </tr>
                   ))}
@@ -327,15 +378,15 @@ export default function List(props) {
             >
               {({ isSubmitting, values, errors, setFieldValue, }) => {
 
-                  const generateInvoiceNo = () => {
-                    router.get(route('supplier.invoices', suppliers.id), {invoicecode : true}, {
-                      onSuccess: (response) => {
-                        setFieldValue('invoice_no', response.props.invoicecode);
-                      },
-                      preserveScroll: true,
-                      preserveState: true
-                    });
-                  }
+                const generateInvoiceNo = () => {
+                  router.get(route('supplier.invoices', suppliers.id), { invoicecode: true }, {
+                    onSuccess: (response) => {
+                      setFieldValue('invoice_no', response.props.invoicecode);
+                    },
+                    preserveScroll: true,
+                    preserveState: true
+                  });
+                }
 
                 return (
                   <Form>
@@ -626,6 +677,67 @@ export default function List(props) {
             </Formik>
           </div>
         </div>
+      </Modal>
+
+
+      <Modal
+        show={isStatusModalOpen !== null}
+        onClose={() => setIsStatusModalOpen(null)}
+        maxWidth="2xl"
+      >
+        <Formik
+          initialValues={{
+            status: isStatusModalOpen?.status || 'pending',
+          }}
+          validationSchema={Yup.object({
+            status: Yup.string().required('Status is required'),
+          })}
+          onSubmit={(values, { resetForm }) => {
+
+            router.put(route('supplier-invoice.changeStatus', isStatusModalOpen?.id), values, {
+              onSuccess: () => {
+                resetForm();
+                setIsStatusModalOpen(null);
+              },
+            });
+          }}
+
+        >
+          {({ isSubmitting, handleSubmit, setFieldValue, values }) => (
+            <Form className="bg-white p-2 mt-2 mb-2 w-full max-w-lg mx-auto flex flex-col items-center">
+              <h2 className="text-lg font-bold mb-4">Change Status</h2>
+
+
+              <div className="relative z-0 w-full mb-5 group">
+
+                <Field name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" as="select">
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                </Field>
+
+                <ErrorMessage name="status" component="div" className="text-red-600 text-sm mt-1" />
+              </div>
+
+
+              <div className="flex justify-end space-x-2 mt-4">
+                <button
+                  type="submit"
+                  className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsStatusModalOpen(null)}
+                  className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+                >
+                  Close
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+
       </Modal>
     </AuthenticatedLayout>
   );

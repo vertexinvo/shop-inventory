@@ -34,8 +34,24 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $order->status = $request->status;
         $order->save();
+        session()->flash('message', 'Status updated successfully');
         return back();
     }
+
+    public function amountupdate(Request $request, $id){
+        $order = Order::findOrFail($id);
+        $order->paid_amount = $request->paid_amount;
+        if($order->paid_amount >= $order->payable_amount){
+            $order->status = 'completed';
+        }
+        else{
+            $order->status = 'pending';
+        }
+        $order->save();
+        session()->flash('message', 'Amount updated successfully');
+        return back();
+    }
+    
 
     public function instantorder(Request $request)
     {
