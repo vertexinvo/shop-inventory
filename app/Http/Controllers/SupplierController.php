@@ -81,8 +81,14 @@ class SupplierController extends Controller
             })
             ->latest()
             ->paginate(10);
+
+            $invoicecode =  '';
+        if($request->invoicecode){
+            $supplierinvoice = new SupplierinvoiceController();
+            $invoicecode = $supplierinvoice->generateInvoiceCode();
+        }
     
-        return Inertia::render('Supplier/Invoice', compact('suppliers', 'supplier', 'search'));
+        return Inertia::render('Supplier/Invoice', compact('suppliers', 'supplier', 'search', 'invoicecode'));
     }
 
     /**

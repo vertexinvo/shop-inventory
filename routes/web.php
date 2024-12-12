@@ -5,9 +5,11 @@ use App\Models\Product;
 use App\Models\Supplier;
 use App\Models\Supplierinvoice;
 use App\Models\User;
+use App\Models\Order;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +33,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    
-    $totalUser = User::with('roles')->whereDoesntHave('roles', function ($query) {
-        $query->where('name', 'superadmin');
-    }) ->count();
+
+    $totalOrder = Order::count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
         $query->where('quantity', '>', 0);
     })->count();
@@ -50,7 +50,9 @@ Route::get('/dashboard', function () {
 
     $supplierBalanceRecord = Supplier::withPendingAmount()->paginate(6);
 
-    return Inertia::render('Dashboard',compact('totalUser','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord'));
+    $latestOrder = Order::latest()->paginate(4);
+
+    return Inertia::render('Dashboard',compact('totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard');
 
 

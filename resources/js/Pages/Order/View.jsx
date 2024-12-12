@@ -3,12 +3,14 @@ import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import Modal from '@/Components/Modal';
 // Remove direct import of Printer, we'll use a more flexible approach
 
 
 
 const View = (props) => {
     const { order } = props;
+
     console.log(order);
     const generatePDF = () => {
         const input = document.getElementById('invoice');
@@ -354,6 +356,8 @@ const View = (props) => {
                     </div>
                 </div>
             </div>
+
+           
         </Authenticated>
     );
 };
