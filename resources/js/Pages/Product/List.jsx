@@ -10,6 +10,7 @@ import ConfirmModal from '@/Components/ConfirmModal';
 import { FaBox } from "react-icons/fa";
 import FormatDate from '@/Helpers/FormatDate';
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
+import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function List(props) {
@@ -29,7 +30,16 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>}
+      header={
+       <>
+           <MdKeyboardBackspace
+                size={20}
+                className="mr-2 cursor-pointer"
+                onClick={() => router.get(route('dashboard'))}
+                title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>
+              </>}
     >
       <Head title="Product" />
 

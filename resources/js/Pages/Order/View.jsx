@@ -5,7 +5,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import Modal from '@/Components/Modal';
 // Remove direct import of Printer, we'll use a more flexible approach
-
+import { MdKeyboardBackspace } from "react-icons/md";
 
 
 const View = (props) => {
@@ -43,7 +43,7 @@ const View = (props) => {
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
         const currentDateTime = new Date().toLocaleString();
-
+ 
         printWindow.document.write(`
             <html>
                 <head>
@@ -126,7 +126,16 @@ const View = (props) => {
     };
     return (
         <Authenticated auth={props.auth} errors={props.errors}
-            header={<h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id}</h2>}>
+            header={
+                <>
+                <MdKeyboardBackspace
+                     size={20}
+                     className="mr-2 cursor-pointer"
+                     onClick={() => router.get(route('order.index'))}
+                     title="Back"
+                 />
+            <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id}</h2>
+                </>}>
             <Head title="View Order" />
             <style>
                 {`

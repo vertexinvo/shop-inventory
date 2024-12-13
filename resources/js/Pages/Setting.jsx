@@ -6,13 +6,22 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router } from '@inertiajs/react';
 import * as Yup from 'yup';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function Setting(props) {
   const { auth, roles } = props
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Setting</h2>}
+      header={ <>
+        <MdKeyboardBackspace
+             size={20}
+             className="mr-2 cursor-pointer"
+             onClick={() => router.get(route('dashboard'))}
+             title="Back"
+         />
+      <h2 className="font-semibold text-xl text-gray-800 leading-tight">Setting</h2>
+      </>}
     >
       <Head title="Setting" />
 

@@ -13,9 +13,10 @@ import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function Add(props) {
-  const { auth , categories , brands,code,invoicecode,suppliers,supplierinvoices } = props
+  const { auth, categories, brands, code, invoicecode, suppliers, supplierinvoices } = props
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
 
@@ -37,7 +38,14 @@ export default function Add(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Product</h2>}
+      header={<>
+        <MdKeyboardBackspace
+          size={20}
+          className="mr-2 cursor-pointer"
+          onClick={() => router.get(route('product.index'))}
+          title="Back"
+        /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Product</h2>
+      </>}
     >
       <Head title="Product" />
 
@@ -383,46 +391,47 @@ export default function Add(props) {
 
                             <div className="mb-4">
 
-<label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {setNotRemember(!notremember);
-                             setFieldValue('supplier_invoice_no', '')
-                          }} className='text-black text-sm underline hover:text-gray-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>       
-                          {!notremember ? (
-                          <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
-                          ) : (
-                            <>
-                            <select onChange={(e) => {
-                              setFieldValue('supplier_invoice_no', '')
-                              setSupplierId(e.target.value)
-                              router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
-                            )
-                              }}  className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
-                            <option value="">Select supplier</option>
-                            {suppliers.map((supplier) => (
-                              <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
-                            ))}
-                            </select>
-                           {supplierinvoices.length > 0 && (
-                              <Field as="select"  name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
-                              <option value="">Select supplier invoice no</option>
-                              {supplierinvoices.map((item) => (
-                                <option key={item.id} value={item.invoice_no}>{item.invoice_no }</option>
-                              ))}
-                              </Field>
-                           )} 
-                           
-                            </>
-                          
+                              <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {
+                                setNotRemember(!notremember);
+                                setFieldValue('supplier_invoice_no', '')
+                              }} className='text-black text-sm underline hover:text-gray-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>
+                              {!notremember ? (
+                                <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
+                              ) : (
+                                <>
+                                  <select onChange={(e) => {
+                                    setFieldValue('supplier_invoice_no', '')
+                                    setSupplierId(e.target.value)
+                                    router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
+                                    )
+                                  }} className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
+                                    <option value="">Select supplier</option>
+                                    {suppliers.map((supplier) => (
+                                      <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
+                                    ))}
+                                  </select>
+                                  {supplierinvoices.length > 0 && (
+                                    <Field as="select" name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
+                                      <option value="">Select supplier invoice no</option>
+                                      {supplierinvoices.map((item) => (
+                                        <option key={item.id} value={item.invoice_no}>{item.invoice_no}</option>
+                                      ))}
+                                    </Field>
+                                  )}
 
-                          )}
+                                </>
 
-<ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
-                            <div className="flex items-center justify-start gap-2 mt-2">
-                       
-                         <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new invoice</button>
-                         <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new supplier</button>
 
-                          </div>
-                          </div>
+                              )}
+
+                              <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
+                              <div className="flex items-center justify-start gap-2 mt-2">
+
+                                <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new invoice</button>
+                                <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new supplier</button>
+
+                              </div>
+                            </div>
                           )}
 
 
@@ -499,17 +508,17 @@ export default function Add(props) {
 
                           <div className="flex items-center justify-start gap-1 mt-8">
                             <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                            Save
+                              Save
                             </button>
                             <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
-                             Save & Close
+                              Save & Close
                             </button>
                             <button onClick={() => router.get(route('product.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                               Close
                             </button>
                           </div>
                         </div>
-                        
+
                       </Form>
                     )}
                   </Formik>
@@ -554,7 +563,7 @@ export default function Add(props) {
               {({ isSubmitting, values, errors, setFieldValue, }) => {
 
                 const generateCode = () => {
-                  router.get(route('product.create'), {code : true}, {
+                  router.get(route('product.create'), { code: true }, {
                     onSuccess: (response) => {
                       setFieldValue('code', response.props.code);
                     },
@@ -691,7 +700,7 @@ export default function Add(props) {
               {({ isSubmitting, values, errors, setFieldValue, }) => {
 
                 const generateInvoiceNo = () => {
-                  router.get(route('product.create'), {invoicecode : true}, {
+                  router.get(route('product.create'), { invoicecode: true }, {
                     onSuccess: (response) => {
                       setFieldValue('invoice_no', response.props.invoicecode);
                     },

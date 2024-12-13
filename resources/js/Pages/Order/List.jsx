@@ -11,7 +11,7 @@ import { FaPen } from "react-icons/fa";
 import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
-
+import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function List(props) {
@@ -41,7 +41,15 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Order={auth.Order}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>}
+      header={
+       <>
+           <MdKeyboardBackspace
+                size={20}
+                className="mr-2 cursor-pointer"
+                onClick={() => router.get(route('dashboard'))}
+                title="Back"
+            /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>
+            </>}
     >
       <Head title="Order" />
 

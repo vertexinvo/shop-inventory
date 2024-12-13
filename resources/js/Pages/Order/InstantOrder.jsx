@@ -14,7 +14,7 @@ import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { use } from 'react';
 import './order.css'
-
+import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function InstantOrder(props) {
@@ -46,7 +46,16 @@ export default function InstantOrder(props) {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Order</h2>}
+      header={
+        <>
+        <MdKeyboardBackspace
+             size={20}
+             className="mr-2 cursor-pointer"
+             onClick={() => router.get(route('order.index'))}
+             title="Back"
+         />
+         <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Order</h2>
+        </>}
     >
       <Head title="Instant Order" />
       <Formik enableReinitialize initialValues={{

@@ -7,13 +7,22 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import * as Yup from 'yup';
 import Select from 'react-select';
- 
+import { MdKeyboardBackspace } from "react-icons/md";
+
 export default function Add(props) {
   const { auth , brand } = props
   return (
       <AuthenticatedLayout
           brand={auth.brand}
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Brand</h2>}
+          header={
+            <>
+            <MdKeyboardBackspace
+                 size={20}
+                 className="mr-2 cursor-pointer"
+                 onClick={() => router.get(route('brand.index'))}
+                 title="Back"
+             /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Brand</h2>
+            </>}
       >
           <Head title="Brand" />
 

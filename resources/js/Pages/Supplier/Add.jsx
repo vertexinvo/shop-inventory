@@ -12,7 +12,7 @@ import 'react-quill/dist/quill.snow.css';
 import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
-
+import { MdKeyboardBackspace } from "react-icons/md";
  
 export default function Add(props) {
   const { auth ,code } = props
@@ -22,7 +22,16 @@ export default function Add(props) {
 
   return (
       <AuthenticatedLayout
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Supplier</h2>}
+          header={
+            <>
+            <MdKeyboardBackspace
+                 size={20}
+                 className="mr-2 cursor-pointer"
+                 onClick={() => router.get(route('supplier.index'))}
+                 title="Back"
+             />
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Supplier</h2>
+            </>}
       >
           <Head title="Supplier" />
 

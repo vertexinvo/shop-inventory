@@ -12,9 +12,10 @@ import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { PiListChecksFill } from 'react-icons/pi';
 import { FaBoxOpen } from 'react-icons/fa6';
 import { VscGraph } from 'react-icons/vsc';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function List(props) {
-  const { auth, suppliers,totalPendingAmount,totalPaidAmount,totalSuppliers } = props
+  const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers } = props
   console.log(totalSuppliers)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -23,7 +24,16 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier</h2>}
+      header={<>
+         
+             <MdKeyboardBackspace
+                  size={20}
+                  className="mr-2 cursor-pointer"
+                  onClick={() => router.get(route('dashboard'))}
+                  title="Back"
+              />
+        <h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier</h2>
+      </>}
     >
       <Head title="Product" />
 

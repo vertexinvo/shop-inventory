@@ -6,6 +6,7 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function List(props) {
   const {auth ,brands } = props
@@ -17,7 +18,14 @@ export default function List(props) {
   return (
       <AuthenticatedLayout
           Brand={auth.Brand}
-          header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Brand</h2>}
+          header={ <>
+               <MdKeyboardBackspace
+                    size={20}
+                    className="mr-2 cursor-pointer"
+                    onClick={() => router.get(route('dashboard'))}
+                    title="Back"
+                /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Brand</h2>
+                  </>}
       >
           <Head title="Brand" />
 

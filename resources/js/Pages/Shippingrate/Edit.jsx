@@ -3,6 +3,7 @@ import React from 'react';
 import { Head, router } from '@inertiajs/react';
 import * as Yup from 'yup';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function Edit(props) {
   const { auth ,shippingrate} = props;
@@ -10,7 +11,16 @@ export default function Edit(props) {
   return (
     <AuthenticatedLayout
       tax={auth.tax}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Shipping Rate</h2>}
+      header={
+        <>
+        <MdKeyboardBackspace
+             size={20}
+             className="mr-2 cursor-pointer"
+             onClick={() => router.get(route('shippingrate.index'))}
+             title="Back"
+         />
+      <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Shipping Rate</h2>
+        </>}  
     >
       <Head title="Shipping Rate" />
 

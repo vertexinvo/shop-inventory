@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
+import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function Add(props) {
   const { auth,suppliers,supplierinvoices ,product_id, } = props;
@@ -22,7 +23,15 @@ export default function Add(props) {
   return (
     <AuthenticatedLayout
       tax={auth.tax}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Stock Log</h2>}
+      header={
+        <>
+        <MdKeyboardBackspace
+             size={20}
+             className="mr-2 cursor-pointer"
+             onClick={() => router.get(route('stock.index'))}
+             title="Back"
+         /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Stock Log</h2>
+        </>}
     >
       <Head title="Add Stocklog" />
 

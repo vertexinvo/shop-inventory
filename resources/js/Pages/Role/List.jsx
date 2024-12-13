@@ -8,8 +8,9 @@ import { IoMdCloseCircleOutline } from 'react-icons/io';
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { toast } from 'react-toastify';
-
 import { CiSettings } from "react-icons/ci";
+import { MdKeyboardBackspace } from "react-icons/md";
+
 function List(props) {
     const { roles } = props;
 // console.log(roles);
@@ -29,7 +30,15 @@ function List(props) {
             <AuthenticatedLayout
                 auth={props.auth}
                 errors={props.errors}
-                header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Role List</h2>}
+                header={
+                 <>
+                     <MdKeyboardBackspace
+                          size={20}
+                          className="mr-2 cursor-pointer"
+                          onClick={() => router.get(route('dashboard'))}
+                          title="Back"
+                      /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Role List</h2>
+                 </>}
             >
                 <Head title="Admin Dashboard" />
                 <div className="flex flex-col px-4 max-w-7xl mt-10 mx-auto w-full">

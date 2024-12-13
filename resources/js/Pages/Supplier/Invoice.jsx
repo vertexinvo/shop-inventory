@@ -11,6 +11,7 @@ import * as Yup from 'yup';
 import { RiAiGenerate } from 'react-icons/ri';
 import { FaPen } from "react-icons/fa";
 import { IoIosSave } from 'react-icons/io';
+import { MdKeyboardBackspace } from 'react-icons/md';
 
 
 
@@ -43,7 +44,20 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier #{suppliers.code}</h2>}
+      header={
+    <>
+     <MdKeyboardBackspace
+          size={20}
+          className="mr-2 cursor-pointer"
+          onClick={() => router.get(route('supplier.index'))}
+          title="Back"
+      />
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier #{suppliers.code}</h2>
+
+    
+    </>  
+  
+    }
     >
       <Head title="Invoice" />
 
@@ -170,14 +184,14 @@ export default function List(props) {
                   )}
                   {supplier.data.map((item, index) => (
 
-                    <tr className={`${item?.total_amount_pending > 0 ? 'bg-red-100' : ''}`}>
+                    <tr className={`${item?.total_payment < 0 ? 'bg-red-100' : ''}`}>
                       <td className="p-4 text-sm text-black">{item.invoice_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.invoice_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.due_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.total_payment || 'N/A'}</td>
 
                       <td className="p-4 text-sm text-black">
-                        <div className="flex items-center w-[130px] ">
+                        {/* <div className="flex items-center w-[130px] ">
                           <input
                             name="phone"
                             className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
@@ -191,12 +205,12 @@ export default function List(props) {
                             size={30}
                             onClick={() => handleSaveAmount(item.id)} // Save the updated amount
                           />
-                        </div>
-                        {/* {item.paid_amount || 'N/A'} */}
+                        </div> */}
+                        {item.paid_amount || 'N/A'}
                       </td>
 
                       <td className="p-4 text-sm text-black">{item.outstanding || 'N/A'}</td>
-                      <td className="p-4 text-sm text-black">{item.payment_method || 'N/A'}</td>
+                      <td className="p-4 text-sm text-black">{item.method || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.bank_name || 'N/A'}</td>
