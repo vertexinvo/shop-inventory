@@ -19,7 +19,12 @@ export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value;
 
+    // Send request with the selected value
+    router.get(route('product.index'), { filter: selectedValue }, { preserveState: true });
+  };
   console.log(products);
   return (
     <AuthenticatedLayout
@@ -65,7 +70,18 @@ export default function List(props) {
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
             <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
-
+              <div className="flex justify-end px-5 mx-4">
+                <select
+                  name="filter"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={handleSelectChange}
+                >
+                  <option value="day">Day</option>
+                  <option value="week">Week</option>
+                  <option value="month">Month</option>
+                  <option value="year">Year</option>
+                </select>
+              </div>
               {selectId.length > 0 &&
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
@@ -91,6 +107,7 @@ export default function List(props) {
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
 
                   <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
+
                     <div className="relative">
                       <Field
                         name="search"

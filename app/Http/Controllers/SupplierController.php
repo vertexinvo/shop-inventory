@@ -18,13 +18,27 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
+        $totalSuppliers = Supplier::count();
         $search = $request->search ?? '';
 
         $suppliers = Supplier::where('person_name', 'like', "%$search%")->orWhere('code', 'like', "%$search%")
         ->orWhere('contact', 'like', "%$search%")->latest()->paginate(10);
+        // $totalpending = Supplier::with('gettotalpendingamount');
 
-   
-        return Inertia::render('Supplier/List', compact('suppliers'));
+        $allsuppliers = Supplier::all();
+
+        
+        $totalPendingAmount = $allsuppliers->sum(function ($supplier) {
+            return $supplier->total_amount_pending; // Use the accessor
+        });
+
+        $totalPaidAmount = $allsuppliers->sum(function ($supplier) {
+            return $supplier->total_amount_paid; // Use the accessor
+        });
+      
+       
+
+        return Inertia::render('Supplier/List', compact('totalSuppliers','suppliers','totalPendingAmount','totalPaidAmount'));
     }
 
     /**

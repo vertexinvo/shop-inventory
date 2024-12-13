@@ -15,22 +15,36 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index( Request $request)
-    {
-        $search = $request->search ?? '';
-        $products = Product::with('categories', 'stock', 'brands')->where(function ($query) use ($search) {
+    public function index(Request $request)
+{
+    $search = $request->search ?? '';
+    $filter = $request->filter ?? 'day'; 
+   
+    $dateRange = match ($filter) {
+        'day' => now()->subDay(),
+        'week' => now()->subWeek(),
+        'month' => now()->subMonth(),
+        'year' => now()->subYear(),
+        default => now()->subDay(),
+    };
+
+    
+    $products = Product::with('categories', 'stock', 'brands')
+        ->where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                   ->orWhere('model', 'like', "%$search%")
                   ->orWhere('identity_value', 'like', "%$search%");
-        })->latest()->paginate(10);
+        })
+        ->where('created_at', '>=', $dateRange) 
+        ->latest()
+        ->paginate(10);
 
-        $stock = Product::with('stock')->get();
+    $stock = Product::with('stock')->get();
 
-        return Inertia::render('Product/List', compact('products' , 'stock'));
-    }
+    return Inertia::render('Product/List', compact('products', 'stock'));
+}
+
+    
 
     /**
      * Show the form for creating a new resource.
