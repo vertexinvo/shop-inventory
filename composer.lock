@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ca61737e13450b50481c964f0449de2",
+    "content-hash": "0fd255958bb21b65431c44ceaac8b90f",
     "packages": [
         {
             "name": "brick/math",
@@ -509,6 +509,69 @@
                 }
             ],
             "time": "2023-10-06T06:47:41+00:00"
+        },
+        {
+            "name": "eliseekn/laravel-metrics",
+            "version": "v2.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eliseekn/laravel-metrics.git",
+                "reference": "5413c70a4448dad5ba0ca2c50702019d05a7a160"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eliseekn/laravel-metrics/zipball/5413c70a4448dad5ba0ca2c50702019d05a7a160",
+                "reference": "5413c70a4448dad5ba0ca2c50702019d05a7a160",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^10.20",
+                "illuminate/support": "^10.20",
+                "nesbot/carbon": "^2.69",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.13",
+                "phpunit/phpunit": "^9.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "LaravelMetrics": "Eliseekn\\LaravelMetrics\\LaravelMetricsFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Eliseekn\\LaravelMetrics\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "N'Guessan Kouadio Elisée",
+                    "email": "eliseekn@gmail.com",
+                    "homepage": "https://eliseekn.netlify.app",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Generate easily metrics and trends data of your models for your dashboards.",
+            "homepage": "https://github.com/eliseekn/laravel-metrics",
+            "keywords": [
+                "charts",
+                "dashboard",
+                "laravel",
+                "laravel-package"
+            ],
+            "support": {
+                "issues": "https://github.com/eliseekn/laravel-metrics/issues",
+                "source": "https://github.com/eliseekn/laravel-metrics/tree/v2.10.0"
+            },
+            "time": "2024-06-22T16:35:27+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -3252,74 +3315,6 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
-        },
-        {
-            "name": "sakanjo/laravel-easy-metrics",
-            "version": "v1.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/sakanjo/laravel-easy-metrics.git",
-                "reference": "bc12dd8d747516ffce7e751596b594a69d0fb821"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/sakanjo/laravel-easy-metrics/zipball/bc12dd8d747516ffce7e751596b594a69d0fb821",
-                "reference": "bc12dd8d747516ffce7e751596b594a69d0fb821",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "^10.0|^11.0",
-                "illuminate/http": "^10.0|^11.0",
-                "illuminate/support": "^10.0|^11.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "laravel/pint": "^1.13",
-                "orchestra/testbench": "^8.14",
-                "pestphp/pest": "^2.24",
-                "phpstan/phpstan": "^1.10"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "SaKanjo\\EasyMetrics\\EasyMetricsServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SaKanjo\\EasyMetrics\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Salah Kanjo",
-                    "email": "dev.salah.kanjo@gmail.com"
-                }
-            ],
-            "description": "Generate metrics with ease and precision.",
-            "keywords": [
-                "Metrics",
-                "charts",
-                "laravel",
-                "reports"
-            ],
-            "support": {
-                "issues": "https://github.com/sakanjo/laravel-easy-metrics/issues",
-                "source": "https://github.com/sakanjo/laravel-easy-metrics/tree/v1.0.9"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/sakanjo",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-08-06T16:51:02+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -8480,12 +8475,12 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.1"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

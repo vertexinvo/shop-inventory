@@ -12,8 +12,8 @@ import RecentOrder from '@/Components/RecentOrder';
 
 
 export default function Dashboard(props) {
-  const { auth, latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord } = props
-  // console.log(latestOrder)
+  const { auth, latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord,trend,period } = props
+
 
   const [chartdata, setChartData] = useState(
     {
@@ -22,13 +22,13 @@ export default function Dashboard(props) {
           id: "basic-bar"
         },
         xaxis: {
-          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+          categories: trend.labels
         }
       },
       series: [
         {
           name: "series-1",
-          data: [30, 40, 45, 50, 49, 60, 70, 91]
+          data: trend.data
         }
       ]
     }
@@ -36,13 +36,10 @@ export default function Dashboard(props) {
 
   return (
     <AuthenticatedLayout
-      headerTitle="Dashboard"
       header={
-        
-          <h2 className="text-xl font-semibold leading-tight text-gray-800">
-            Dashboard
-          </h2>
-        
+        <h2 className="text-xl font-semibold leading-tight text-gray-800">
+          Dashboard
+        </h2>
       }
     >
       <Head title="Dashboard" />
@@ -93,17 +90,28 @@ export default function Dashboard(props) {
 
         <div class=" mt-4 mx-4  bg-white p-4 rounded-lg shadow-md">
           <div className=' flex justify-between items-center my-4'>
-            <p class="text-xl font-semibold leading-tight text-gray-800 ">
-              Sales
-            </p>
-            <select id="countries" class="bg-gray-50 w-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-              <option value="today">TODAY</option>
-              <option value="week">WEEK</option>
-              <option value="month">MONTH</option>
-              <option value="year">YEAR</option>
-            </select>
+          <p class="text-xl font-semibold leading-tight text-gray-800 ">
+            Sales
+          </p>
+          <select
+  onChange={(e) => {
+    router.get(route('dashboard'), { period: e.target.value }, { preserveScroll: true }); // Send the selected period to the server
+  }}
+  value={period}
+  id="countries"
+  class="bg-gray-50 w-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <option value="day">TODAY</option>
+  <option value="week">WEEK</option>
+  <option value="month">MONTH</option>
+  <option value="year">YEAR</option>
+  <option value="last_week">LAST WEEK</option>
+  <option value="last_month">LAST MONTH</option>
+  <option value="last_year">LAST YEAR</option>
+  <option value="quater_year">QUATER YEAR</option>
+  <option value="half_year">HALF YEAR</option>
+</select>
           </div>
-
+         
           <div id="chart">
             <Chart options={chartdata.options} series={chartdata.series} type="line" height={350} />
           </div>

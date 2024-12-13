@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Eliseekn\LaravelMetrics\HasMetrics;
+
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, HasMetrics;
 
     protected $fillable = [ 
         

@@ -6,10 +6,16 @@ use App\Models\Supplier;
 use App\Models\Supplierinvoice;
 use App\Models\User;
 use App\Models\Order;
+use App\Services\Metrics;
+use Carbon\Carbon;
+use Eliseekn\LaravelMetrics\Enums\Aggregate;
+use Eliseekn\LaravelMetrics\LaravelMetrics;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use SaKanjo\EasyMetrics\Metrics\Trend;
+use Illuminate\Http\Request;
+use Eliseekn\LaravelMetrics\Enums\Period;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +38,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Request $request) {
 
     $totalOrder = Order::count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
@@ -52,9 +58,26 @@ Route::get('/dashboard', function () {
 
     $latestOrder = Order::latest()->paginate(4);
 
-    return Inertia::render('Dashboard',compact('totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
-})->name('dashboard');
 
+    $period = $request->period ?? 'day';
+
+    if (str_contains($period, '~')) {
+        // Split the period into start and end dates and ensure they're valid strings
+        $period = array_map(fn($date) => Carbon::parse(trim($date))->toDateString(), explode('~', $period, 2));
+    }
+
+    $groupedDataLabels = LaravelMetrics::query(Order::query())->dateColumn('order_date')->labelColumn('order_date')->trends();
+
+    $trend = Metrics::trends(
+        Order::metrics()->dateColumn('order_date')->fillMissingData(),
+        $period,
+        $groupedDataLabels["labels"],
+        'order_date'
+    );
+
+ 
+    return Inertia::render('Dashboard',compact('trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+})->name('dashboard');
 
 
 
