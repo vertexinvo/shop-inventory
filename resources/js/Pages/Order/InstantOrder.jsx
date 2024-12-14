@@ -114,7 +114,7 @@ export default function InstantOrder(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount', totalAmount - discount);
+            setFieldValue('payable_amount', totalAmount - (discount+values.exchange));
           }, [values.items, values.discount, setFieldValue, values.exchange]);
 
 
@@ -133,7 +133,7 @@ export default function InstantOrder(props) {
             if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
               setFieldValue('paid_amount', values.payable_amount);
             }
-          }, [values.payable_amount,]);
+          }, [values.payable_amount, values]);
 
           useEffect(() => {
             if (values.exchange_items.length > 0) {
@@ -633,7 +633,20 @@ export default function InstantOrder(props) {
                                     </td>
                                     <td class="p-4 border-b border-slate-200 flex items-center gap-2">
 
-                                      <FaTrash size={20} color='red' className='cursor-pointer' onClick={() => setFieldValue('exchange_items', values.exchange_items.filter((item) => item !== exchange_item))} />
+                                      <FaTrash size={20} color='red' className='cursor-pointer' onClick={() =>
+                                         {
+                                          const updatedExchangeItems = values.exchange_items.filter((item) => item !== exchange_item);
+                                          setFieldValue('exchange_items', updatedExchangeItems);
+                                        
+                                          // Recalculate exchange immediately
+                                          const totalAmount = updatedExchangeItems.reduce(
+                                            (total, item) => total + item.quantity * item.purchase_price,
+                                            0
+                                          );
+                                          setFieldValue('exchange', totalAmount);
+                                         
+
+                                         }} />
 
 
                                     </td>

@@ -203,20 +203,16 @@ export default function List(props) {
                       Address
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
-                      Total
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
                       Payment Info
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Total
+                    </th>
+                   
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Payable Amount
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Paid Amount
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Online Payment Link
-                    </th>
+
                     <th class="p-4 text-left text-sm font-semibold ">
                       Charges Info
                     </th>
@@ -227,6 +223,9 @@ export default function List(props) {
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      Paid Amount
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
@@ -297,6 +296,22 @@ export default function List(props) {
                       <td class="p-4 text-sm text-black">
                         {order.address || 'N/A'}
                       </td>
+                      <td class="text-sm text-black">
+                        <div class="flex items-center cursor-pointer w-max">
+                          <div class="ml-4">
+                            <p class="text-sm text-black">{order.method}</p>
+                            {order.method === "cheque" && (
+                              <>
+                                <p class="text-sm text-black">Cheque No: <span class="text-xs text-gray-500">{order.cheque_no}</span></p>
+                                <p class="text-sm text-black">Bank Name: <span class="text-xs text-gray-500">{order.bank_name}</span></p>
+                                <p class="text-sm text-black">Bank Branch: <span class="text-xs text-gray-500">{order.bank_branch}</span></p>
+                                <p class="text-sm text-black">Bank Amount: <span class="text-xs text-gray-500">{order.bank_account}</span></p>
+                              </>
+                            )}
+                            {order.method === "online" && order.online_payment_link }
+                          </div>
+                        </div>
+                      </td>
                       <td class="p-4 text-sm text-black">
                         {order.total || 'N/A'}
                       </td>
@@ -314,21 +329,7 @@ export default function List(props) {
                       </td> */}
 
 
-                      <td class="text-sm text-black">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4">
-                            <p class="text-sm text-black">{order.method}</p>
-                            {order.method === "cheque" && (
-                              <>
-                                <p class="text-sm text-black">Cheque No: <span class="text-xs text-gray-500">{order.cheque_no}</span></p>
-                                <p class="text-sm text-black">Bank Name: <span class="text-xs text-gray-500">{order.bank_name}</span></p>
-                                <p class="text-sm text-black">Bank Branch: <span class="text-xs text-gray-500">{order.bank_branch}</span></p>
-                                <p class="text-sm text-black">Bank Amount: <span class="text-xs text-gray-500">{order.bank_account}</span></p>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      </td>
+                  
 
 
                       {order.method === "check" && (
@@ -349,26 +350,7 @@ export default function List(props) {
                         {order.payable_amount || 'N/A'}
 
                       </td>
-                      <td class="p-4 text-sm text-black">
-                        <div className="flex items-center w-[130px] ">
-                          <input
-                            name="phone"
-                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
-                            type="number"
-                            step="0.01"
-                            value={orderAmounts[order.id] || order.paid_amount || 0} // Use order-specific value
-                            onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
-
-                          />
-                          <IoIosSave className="ml-2 cursor-pointer" size={30}   onClick={async() => { 
-                            await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
-                          }}/>
-                        </div>
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        {order.method === "online" ? order.online_payment_link || "N/A" : "N/A"}
-                      </td>
-
+ 
                       <td class=" text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
@@ -394,6 +376,22 @@ export default function List(props) {
                               <p class="text-sm text-black ">Installment End Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_end_date || 'N/A'}</span></p>
                             </>}
                           </div>
+                        </div>
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
+                        <div className="flex items-center w-[130px] ">
+                          <input
+                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
+                            type="number"
+                            step="0.01"
+                            value={orderAmounts[order.id] || order.paid_amount || 0} // Use order-specific value
+                            onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
+
+                          />
+                          <IoIosSave className="ml-2 cursor-pointer" size={30}   onClick={async() => { 
+                            await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
+                          }}/>
                         </div>
                       </td>
 
