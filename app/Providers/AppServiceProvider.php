@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\Stocklog;
+use App\Observers\ProductObserver;
 use App\Observers\StocklogObserver;
 use App\Services\BrandService;
 use App\Services\UserService;
@@ -44,5 +46,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Stocklog::observe(StocklogObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }

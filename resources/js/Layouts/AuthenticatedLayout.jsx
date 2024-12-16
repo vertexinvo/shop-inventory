@@ -244,12 +244,12 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                     <span class="ms-3">Suppliers</span>
                                 </NavLink>
                             </li>
-                            <li>
+                            {/* <li>
                                 <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                                     <GoGraph className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white' />
                                     <span class="ms-3">Sales</span>
                                 </NavLink>
-                            </li>
+                            </li> */}
                         </ul>
 
                         <hr />
