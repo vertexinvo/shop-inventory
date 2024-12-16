@@ -282,6 +282,7 @@ class ProductController extends Controller
         $data = $request->except(['categories', 'brands']);
         $data['customfield'] = json_encode($request->customfield);
         $product->update($data);
+        
         if ($request->categories) {
             $product->categories()->sync($request->categories);
         }
@@ -289,7 +290,7 @@ class ProductController extends Controller
             
             $product->categories()->detach();
         }
-     
+       
         if ($request->brands) {
             $product->brands()->sync($request->brands);
         }

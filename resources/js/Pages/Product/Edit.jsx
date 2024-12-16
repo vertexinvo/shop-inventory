@@ -31,6 +31,7 @@ export default function Edit(props) {
   };
 
 
+
   return (
       <AuthenticatedLayout
           Product={auth.Product}
@@ -129,6 +130,18 @@ export default function Edit(props) {
            
           })}
           onSubmit={(values, { setSubmitting, resetForm }) => {
+
+            //if values.brands array contain objects so only get value and set direclty in array
+            const extractAndValidateValues = (array) =>
+              Array.isArray(array) && array.length > 0
+                ? array
+                    .map((item) => (typeof item === 'object' && item.value ? item.value : item)) // Extract 'value' if object
+                    .filter((value) => value !== null && value !== undefined && value !== '') // Remove invalid values
+                : [];
+            
+            // Update brands and categories
+            values.brands = extractAndValidateValues(values.brands);
+            values.categories = extractAndValidateValues(values.categories);
             
             router.put(route('product.update', product.id), values, { onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
           }}
@@ -209,6 +222,7 @@ export default function Edit(props) {
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="brands">Select Brand  (optional)</label>
                           <Select
                                             onChange={(e) => {
+                                              
                                                 setFieldValue("brands", e.map((item) => item.value));
                                             }}
                                             isMulti
