@@ -9,7 +9,7 @@ use App\Services\BrandService;
 use App\Services\UserService;
 use App\Services\CategoryService;
 use App\Services\RoleService;
-
+use App\Services\StockService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
         });
         $this->app->singleton('roleService', function () {
             return new RoleService();
+        });
+        $this->app->singleton('stockService', function () {
+            return new StockService();
         });
 
 

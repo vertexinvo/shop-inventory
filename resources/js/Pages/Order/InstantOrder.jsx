@@ -18,7 +18,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function InstantOrder(props) {
-  const { auth, users, order_id, items } = props
+  const { auth, users, order_id, items,user } = props
 
   const [loading, setLoading] = useState(false);
 
@@ -59,14 +59,14 @@ export default function InstantOrder(props) {
     >
       <Head title="Instant Order" />
       <Formik enableReinitialize initialValues={{
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
+        name: user?.name || '',
+        email:user?.email || '',
+        phone:user?.phone || '',
+        address: user?.address || '',
         total: 0,
         payable_amount: 0,
         paid_amount: 0,
-
+        user_id : user?.id || '',
         discount: 0,
         items: [],
         order_date: new Date().toISOString().slice(0, 10),
@@ -260,7 +260,7 @@ export default function InstantOrder(props) {
                                 setTimeout(() => {
                                   router.get(
                                     route('order.instantorder'),
-                                    { searchitem: e },
+                                    { searchitem: e, searchid : user?.id || '' },
                                     {
                                       preserveScroll: true,
                                       preserveState: true,

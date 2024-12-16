@@ -18,11 +18,20 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
        
         $search = $request->search ?? '';
-        $orders = Order::where('name', 'like', "%$search%")->latest()->paginate(10);
+        $status = $request->status; 
+        $orders = Order::where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('id', 'like', "%$search%");
+        })->latest();
+        if($status){
+            $orders = $orders->where('status', $status);
+        }
+        $orders = $orders->paginate(10);
+
         $total = Order::count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
@@ -56,7 +65,8 @@ class OrderController extends Controller
     public function instantorder(Request $request)
     {
         $searchuser = $request->searchuser ?? '';
-        $userrec = User::role('customer')->where(function ($query) use ($searchuser) {
+       
+        $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
             $query->where('name', 'like', "%$searchuser%")
                   ->orWhere('phone', 'like', "%$searchuser%");
         })->limit(6)->get();
@@ -96,13 +106,18 @@ class OrderController extends Controller
             $order_id = 1;
         }
 
-        
-        return Inertia::render('Order/InstantOrder', compact('users', 'items', 'order_id',));
+        $searchid = $request->searchid ?? '';
+        $user = null;
+        if($searchid !== ''){
+            $user =  User::find($searchid);
+        }
+
+        return Inertia::render('Order/InstantOrder', compact('users', 'items', 'order_id','user'));
     }
 
     public function instantorderstore(Request $request)
     {
-      
+   
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|max:255',
@@ -152,20 +167,20 @@ class OrderController extends Controller
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
             unset($item['total']);
-          $product =  Product::create($item);
-          $product->stock()->create([
-            'quantity' => $item['quantity'],
-            'status' => true,
-          ]);
+            $product =  Product::create($item);
+            $product->stock()->create([
+                'quantity' => $item['quantity'],
+                'status' => true,
+            ]);
         }
 
         // //update product stock quantity
-        // foreach ($request->items as $item) {
-        //     $product = Product::find($item['id']);
-        //     $product->stock()->update([
-        //         'quantity' => $product->stock->quantity - $item['quantity'],
-        //     ]);
-        // }
+        foreach ($request->items as $item) {
+            $product = Product::find($item["data"]['id']);
+            $product->stock()->update([
+                'quantity' => $product->stock->quantity - $item['quantity'],
+            ]);
+        }
 
     
         session()->flash('message', 'Order created successfully.');
@@ -182,7 +197,7 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $searchuser = $request->searchuser ?? '';
-        $userrec = User::role('customer')->where(function ($query) use ($searchuser) {
+        $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
             $query->where('name', 'like', "%$searchuser%")
                   ->orWhere('phone', 'like', "%$searchuser%");
         })->limit(6)->get();

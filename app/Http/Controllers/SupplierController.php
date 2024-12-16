@@ -9,7 +9,7 @@ use App\Models\Supplierinvoice;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SupplierController extends Controller
 {
@@ -20,14 +20,44 @@ class SupplierController extends Controller
     {
         $totalSuppliers = Supplier::count();
         $search = $request->search ?? '';
+        $status = $request->status;
+        // total_amount_pending > 0
+        $suppliersQuery = Supplier::where('person_name', 'like', "%$search%")
+        ->orWhere('code', 'like', "%$search%")
+        ->orWhere('contact', 'like', "%$search%")
+        ->latest();
+    
+        // Retrieve suppliers and make the appended attribute visible
+        $suppliers = $suppliersQuery->get()->makeVisible('total_amount_pending');
+        
+        // Filter the suppliers based on the status
+        if ($status) {
+            $suppliers = $suppliers->filter(function ($supplier) use ($status) {
+                if ($status === 'pending') {
+                    return $supplier->total_amount_pending > 0;
+                }
+                if ($status === 'paid') {
+                    return $supplier->total_amount_pending <= 0;
+                }
+                return true;
+            })->values(); // Reset collection indices with ->values()
+        }
 
-        $suppliers = Supplier::where('person_name', 'like', "%$search%")->orWhere('code', 'like', "%$search%")
-        ->orWhere('contact', 'like', "%$search%")->latest()->paginate(10);
-        // $totalpending = Supplier::with('gettotalpendingamount');
-
+    // Manually paginate the filtered collection
+    $currentPage = LengthAwarePaginator::resolveCurrentPage();
+    $perPage = 10;
+    $offset = ($currentPage - 1) * $perPage;
+    $suppliers = new LengthAwarePaginator(
+        $suppliers->slice($offset, $perPage),
+        $suppliers->count(),
+        $perPage,
+        $currentPage,
+        ['path' => LengthAwarePaginator::resolveCurrentPath()]
+    );
+   
         $allsuppliers = Supplier::all();
 
-        
+                // $totalpending = Supplier::with('gettotalpendingamount');
         $totalPendingAmount = $allsuppliers->sum(function ($supplier) {
             return $supplier->total_amount_pending; // Use the accessor
         });

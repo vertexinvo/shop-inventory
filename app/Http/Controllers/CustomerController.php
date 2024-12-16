@@ -17,6 +17,7 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $users = UserService::getAllUser($request, 'customer');
+
  
         return Inertia::render('Customer/List', compact('users'));
     }

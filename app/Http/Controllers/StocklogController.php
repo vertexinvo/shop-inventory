@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\StockService;
 use App\Models\Stocklog;
 use App\Http\Requests\StoreStocklogRequest;
 use App\Http\Requests\UpdateStocklogRequest;
@@ -65,14 +66,11 @@ class StocklogController extends Controller
     
            if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+            return back();
            }
-           $stock = Stock::where('product_id', $request->product_id)->first();
-           $data = $request->only(['quantity', 'type', 'remarks','is_supplier', 'supplier_invoice_no', 'datetime']);
-           $data['user_id'] = auth()->user()->id;
-           $data['stock_id'] = $stock->id;
-           Stocklog::create($data);
-           return redirect()->back()->with('message', 'Stock log created successfully');
+           StockService::manageStockLog($request);
+           session()->flash('message', 'Stock log created successfully');
+           return redirect()->back();
     }
 
     /**

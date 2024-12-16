@@ -55,16 +55,16 @@ export default function List(props) {
 
 
 
-      <div className='flex justify-end px-5 py-2 mx-4 '>
+      {/* <div className='flex justify-end px-5 py-2 mx-4 '>
         <select name="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
           <option value="day">Day</option>
           <option value="week">Week</option>
           <option value="month">Month</option>
           <option value="year">Year</option>
         </select>
-      </div>
+      </div> */}
 
-      <div class="px-5 mx-4 grid grid-cols-3 gap-2 ">
+      <div class="px-5 mx-4 grid grid-cols-3 gap-2 py-5">
 
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
@@ -113,6 +113,18 @@ export default function List(props) {
 
             <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
 
+                <select
+                                name="filter"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                onChange={(e) => router.get(route('order.index'), { status: e.target.value }, { preserveState: true })}
+                              >
+                                <option value="">Select Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                                
+                              </select>
+
               {selectId.length > 0 &&
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
@@ -154,7 +166,7 @@ export default function List(props) {
                       />
                       <button
                         type="button"
-                        onClick={() => { setFieldValue('search', ''); router.get(route('product.index')) }}
+                        onClick={() => { setFieldValue('search', ''); router.get(route('order.index')) }}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
                         ✖

@@ -21,6 +21,9 @@ export default function List(props) {
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
+
+
+
   return (
     <AuthenticatedLayout
       Product={auth.Product}
@@ -35,7 +38,7 @@ export default function List(props) {
         <h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier</h2>
       </>}
     >
-      <Head title="Product" />
+      <Head title="Supplier" />
 
       <div class="px-5 mx-4 grid grid-cols-3 gap-2 mt-10">
 
@@ -87,6 +90,17 @@ export default function List(props) {
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
             <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
+
+                <select
+                  name="filter"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
+                >
+                  <option value="">Select Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="paid">Paid</option>
+                  
+                </select>
 
               {selectId.length > 0 &&
                 <button

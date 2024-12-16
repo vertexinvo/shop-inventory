@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\StockService;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -18,15 +19,15 @@ class ProductController extends Controller
     public function index(Request $request)
 {
     $search = $request->search ?? '';
-    $filter = $request->filter ?? 'day'; 
+    $status = $request->status; 
    
-    $dateRange = match ($filter) {
-        'day' => now()->subDay(),
-        'week' => now()->subWeek(),
-        'month' => now()->subMonth(),
-        'year' => now()->subYear(),
-        default => now()->subDay(),
-    };
+    // $dateRange = match ($filter) {
+    //     'day' => now()->subDay(),
+    //     'week' => now()->subWeek(),
+    //     'month' => now()->subMonth(),
+    //     'year' => now()->subYear(),
+    //     default => now()->subDay(),
+    // };
 
     
     $products = Product::with('categories', 'stock', 'brands')
@@ -35,9 +36,16 @@ class ProductController extends Controller
                   ->orWhere('model', 'like', "%$search%")
                   ->orWhere('identity_value', 'like', "%$search%");
         })
-        ->where('created_at', '>=', $dateRange) 
-        ->latest()
-        ->paginate(10);
+        // ->where('created_at', '>=', $dateRange) 
+        ->latest();
+
+        if($status){
+            $products = $products->whereHas('stock', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
+
+        $products = $products->paginate(10);
 
     $stock = Product::with('stock')->get();
 
@@ -88,6 +96,7 @@ class ProductController extends Controller
             $invoicecode = $supplierinvoice->generateInvoiceCode();
         }
 
+        
         return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode','suppliers','supplierinvoices'));
     }
 
@@ -146,9 +155,21 @@ class ProductController extends Controller
         }
         //manage stock
         $product->stock()->create([
-            'quantity' => $request->quantity,
+            'quantity' => 0,
             'status' => 1
         ]);
+
+        $stocklogrec = [
+            'product_id' => $product->id,
+            'quantity' => (int) $request->quantity,
+            'type' => 'addition',
+            'is_supplier' => $request->is_supplier,
+            'supplier_invoice_no' => $request->supplier_invoice_no,
+            'datetime' => date('Y-m-d H:i:s'),
+        ];
+
+        StockService::manageStockLog($stocklogrec);
+
 
         session()->flash('message', 'Product created successfully');
         return back();

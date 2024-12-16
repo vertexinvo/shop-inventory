@@ -4,9 +4,10 @@ import { FaWallet , FaEdit} from 'react-icons/fa'
 import { MdDelete } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { MdKeyboardBackspace } from "react-icons/md";
+import { HiOutlineShoppingBag } from 'react-icons/hi2';
 
 export default function List(props) {
 
@@ -30,7 +31,7 @@ export default function List(props) {
           <h2 className="font-semibold text-xl text-gray-800 leading-tight">Customer</h2>
              </>}
       >
-          <Head title="User" />
+          <Head title="Customer" />
 
           <div className="flex flex-col px-4  mt-10 mx-auto w-full">
           <div className="w-full ">
@@ -127,6 +128,9 @@ export default function List(props) {
             <th class="p-4 text-left text-sm font-semibold ">
               Address
             </th>
+            <th class="p-4 text-left text-sm font-semibold ">
+              Total Orders
+            </th>
             
             <th class="p-4 text-left text-sm font-semibold ">
               Active
@@ -190,7 +194,7 @@ export default function List(props) {
             <td class="p-4 text-sm">{user.email || 'N/A'}</td>
             <td class="p-4 text-sm">{user.phone || 'N/A' }</td>
             <td class="p-4 text-sm">{user.address || 'N/A'}</td>
-            
+            <td class="p-4 text-sm">{user.total_orders || 0}</td>
             <td class="p-4">
               <label class="relative cursor-pointer">
                 <input type="checkbox" onClick={() => router.put(route('customer.status', user.id))} class="sr-only peer" checked={user.status} />
@@ -199,8 +203,8 @@ export default function List(props) {
                 </div>
               </label>
             </td>
-            <td class="p-4">
-              <button onClick={() => router.get(route('customer.edit', user.id))} class="mr-4" title="Edit">
+            <td class="p-4 flex items-center gap-2">
+              <button onClick={() => router.get(route('customer.edit', user.id))}  title="Edit">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                   viewBox="0 0 348.882 348.882">
                   <path
@@ -220,6 +224,9 @@ export default function List(props) {
                     data-original="#000000" />
                 </svg>
               </button>
+              <Link href={route('order.instantorder',{searchid:user.id})} >
+                <HiOutlineShoppingBag size={23} />
+              </Link>
             </td>
           </tr>
           ))}

@@ -29,6 +29,9 @@ class User extends Authenticatable
         'address',
     ];
 
+    protected $appends = [
+        'total_orders',
+    ];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -55,6 +58,13 @@ class User extends Authenticatable
      *
      * @return string|null
      */
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
+    public function getTotalOrdersAttribute(){
+        return $this->orders()->count();
+    }
  
 }
