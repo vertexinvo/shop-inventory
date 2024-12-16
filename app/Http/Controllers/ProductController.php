@@ -153,24 +153,7 @@ class ProductController extends Controller
         if ($request->brands) {
             $product->brands()->sync($request->brands);
         }
-        //manage stock
-        $product->stock()->create([
-            'quantity' => 0,
-            'status' => 1
-        ]);
-
-        $stocklogrec = [
-            'product_id' => $product->id,
-            'quantity' => (int) $request->quantity,
-            'type' => 'addition',
-            'is_supplier' => $request->is_supplier,
-            'supplier_invoice_no' => $request->supplier_invoice_no,
-            'datetime' => date('Y-m-d H:i:s'),
-        ];
-
-        StockService::manageStockLog($stocklogrec);
-
-
+        
         session()->flash('message', 'Product created successfully');
         return back();
     }

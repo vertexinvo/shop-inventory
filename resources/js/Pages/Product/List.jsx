@@ -319,7 +319,7 @@ export default function List(props) {
                               data-original="#000000" />
                           </svg>
                         </button>
-                          {product.identity_type === 'imei' && 
+                          {product.identity_type !== 'imei' && 
                               <FaBox className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={18} />
                           }
                       </td>

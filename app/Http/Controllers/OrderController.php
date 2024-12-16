@@ -7,6 +7,8 @@ use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Product;
 use App\Models\ShippingRate;
+use App\Models\Stock;
+use App\Models\Stocklog;
 use App\Models\tax;
 use App\Models\User;
 use Inertia\Inertia;
@@ -168,9 +170,12 @@ class OrderController extends Controller
             $item["exchange_order_id"] = $order->id;
             unset($item['total']);
             $product =  Product::create($item);
-            $product->stock()->create([
+            $product->stock()->update([
                 'quantity' => $item['quantity'],
-                'status' => true,
+            ]);
+            $stock = Stock::where('product_id', $product->id)->first();
+            Stocklog::where('stock_id', $stock->id)->update([
+                'quantity' => $item['quantity'],
             ]);
         }
 
@@ -267,6 +272,8 @@ class OrderController extends Controller
             'paid_amount' => 'required|numeric',
             'discount' => 'nullable|numeric',
             'items' => 'required|array',
+            'exchange_items' => 'nullable|array',
+            'exchange' => 'nullable|numeric',
         ]);
 
         if ($validator->fails()) {
@@ -318,13 +325,28 @@ class OrderController extends Controller
             ]);
         }
 
+        foreach ($request->exchange_items as $item) {
+            $item["is_exchange"] = true;
+            $item["selling_price"] = $item["purchase_price"];
+            $item["exchange_order_id"] = $order->id;
+            unset($item['total']);
+            $product = Product::create($item);
+            $product->stock()->update([
+                'quantity' => $item['quantity'],
+            ]);
+            $stock = Stock::where('product_id', $product->id)->first();
+            Stocklog::where('stock_id', $stock->id)->update([
+                'quantity' => $item['quantity'],
+            ]);
+        }
+
         // //update product stock quantity
-        // foreach ($request->items as $item) {
-        //     $product = Product::find($item['id']);
-        //     $product->stock()->update([
-        //         'quantity' => $product->stock->quantity - $item['quantity'],
-        //     ]);
-        // }
+        foreach ($request->items as $item) {
+            $product = Product::find($item["data"]['id']);
+            $product->stock()->update([
+                'quantity' => $product->stock->quantity - $item['quantity'],
+            ]);
+        }
 
     
         session()->flash('message', 'Order created successfully.');

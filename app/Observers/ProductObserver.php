@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Facades\StockService;
 use App\Models\Product;
 
 class ProductObserver
@@ -11,7 +12,24 @@ class ProductObserver
      */
     public function created(Product $product): void
     {
-        //
+        $request = request();
+
+        $product->stock()->create([
+            'quantity' => 0,
+            'status' => 1
+        ]);
+
+        $stocklogrec = [
+            'product_id' => $product->id,
+            'quantity' => (int) $request->quantity,
+            'type' => 'addition',
+            'is_supplier' => $request->is_supplier,
+            'supplier_invoice_no' => $request->supplier_invoice_no,
+            'datetime' => date('Y-m-d H:i:s'),
+        ];
+
+
+        StockService::manageStockLog($stocklogrec);
     }
 
     /**

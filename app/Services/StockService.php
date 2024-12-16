@@ -19,6 +19,7 @@ class StockService
        $data = is_array($request) ? $request : $request->only(['quantity', 'type', 'remarks','is_supplier', 'supplier_invoice_no', 'datetime']);
        $data['user_id'] = auth()->user()->id;
        $data['stock_id'] = $stock->id;
+       $data['is_supplier'] = $data['is_supplier'] ?? 0;
        $stocklog =  Stocklog::create($data);
        return $stocklog;
     }
