@@ -28,7 +28,7 @@ export default function Add(props) {
         <MdKeyboardBackspace
              size={20}
              className="mr-2 cursor-pointer"
-             onClick={() => router.get(route('stock.index'))}
+             onClick={() => router.get(route('stock.index'),{product_id:product_id})}
              title="Back"
          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Stock Log</h2>
         </>}
