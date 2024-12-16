@@ -18,7 +18,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function InstantOrder(props) {
-  const { auth, users, order_id, items,user } = props
+  const { auth, users, order_id, items, user } = props
 
   const [loading, setLoading] = useState(false);
 
@@ -48,25 +48,25 @@ export default function InstantOrder(props) {
     <AuthenticatedLayout
       header={
         <>
-        <MdKeyboardBackspace
-             size={20}
-             className="mr-2 cursor-pointer"
-             onClick={() => router.get(route('order.index'))}
-             title="Back"
-         />
-         <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Order</h2>
+          <MdKeyboardBackspace
+            size={20}
+            className="mr-2 cursor-pointer"
+            onClick={() => router.get(route('order.index'))}
+            title="Back"
+          />
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Order</h2>
         </>}
     >
       <Head title="Instant Order" />
       <Formik enableReinitialize initialValues={{
         name: user?.name || '',
-        email:user?.email || '',
-        phone:user?.phone || '',
+        email: user?.email || '',
+        phone: user?.phone || '',
         address: user?.address || '',
         total: 0,
         payable_amount: 0,
         paid_amount: 0,
-        user_id : user?.id || '',
+        user_id: user?.id || '',
         discount: 0,
         items: [],
         order_date: new Date().toISOString().slice(0, 10),
@@ -114,7 +114,7 @@ export default function InstantOrder(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount', totalAmount - (discount+values.exchange));
+            setFieldValue('payable_amount', totalAmount - (discount + values.exchange));
           }, [values.items, values.discount, setFieldValue, values.exchange]);
 
 
@@ -260,7 +260,7 @@ export default function InstantOrder(props) {
                                 setTimeout(() => {
                                   router.get(
                                     route('order.instantorder'),
-                                    { searchitem: e, searchid : user?.id || '' },
+                                    { searchitem: e, searchid: user?.id || '' },
                                     {
                                       preserveScroll: true,
                                       preserveState: true,
@@ -456,207 +456,207 @@ export default function InstantOrder(props) {
 
                           </div>
 
-                          <div class="relative flex flex-col w-full h-full  text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
-                            <table class="w-full text-left table-auto min-w-max">
-                              <thead>
-                                <tr>
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500">
-                                      Name
-                                    </p>
-                                  </th>
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500">
-                                      Model
-                                    </p>
-                                  </th>
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500">
-                                      Identity*
-                                    </p>
-                                  </th>
+                          <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
+                            <div class="overflow-x-auto">
+                              <table class="min-w-full text-left table-auto">
+                                <thead>
+                                  <tr>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Name</p>
+                                    </th>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Model</p>
+                                    </th>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Identity*</p>
+                                    </th>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Purchase Price*</p>
+                                    </th>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Quantity*</p>
+                                    </th>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Total</p>
+                                    </th>
+                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
+                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500"></p>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {values.exchange_items.length === 0 && exchangeItems === null && (
+                                    <tr class="hover:bg-slate-50">
+                                      <td colspan="7" class="p-4 border-b border-slate-200 text-center">
+                                        <p class="block text-sm text-slate-800">
+                                          No Exchange Item! &nbsp;
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setExchangeItems({ name: '', model: '', identity_type: 'none', identity_value: '', purchase_price: '', quantity: '1', total: '' });
+                                            }}
+                                            className="text-sm font-semibold text-black dark:text-white leading-tight underline"
+                                          >
+                                            Add Item
+                                          </button>
+                                        </p>
+                                      </td>
+                                    </tr>
+                                  )}
 
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500">
-                                      Purchase Price*
-                                    </p>
-                                  </th>
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500">
-                                      Quantity*
-                                    </p>
-                                  </th>
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500">
-                                      Total
-                                    </p>
-                                  </th>
-
-                                  <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                    <p class="block text-sm font-normal leading-none text-slate-500"></p>
-                                  </th>
-                                </tr>
-                              </thead>
-                              <tbody>
-
-                                {values.exchange_items.length === 0 && exchangeItems === null && (
-                                  <tr class="hover:bg-slate-50">
-                                    <td colspan="7" class="p-4 border-b border-slate-200 text-center">
-                                      <p class="block text-sm text-slate-800">
-                                        No Exchange Item! &nbsp; <button type='button'
-                                          onClick={() => {
-                                            setExchangeItems({ name: '', model: '', identity_type: 'none', identity_value: '', purchase_price: '', quantity: '1', total: '' })
+                                  {exchangeItems && (
+                                    <tr class="hover:bg-slate-50">
+                                      <td class="p-4 border-b border-slate-200">
+                                        <input
+                                          type="text"
+                                          value={exchangeItems.name}
+                                          onChange={(e) => setExchangeItems({ ...exchangeItems, name: e.target.value })}
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                        />
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <input
+                                          type="text"
+                                          value={exchangeItems.model}
+                                          onChange={(e) => setExchangeItems({ ...exchangeItems, model: e.target.value })}
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                        />
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200 flex items-center gap-2">
+                                        <select
+                                          value={exchangeItems.identity_type}
+                                          onChange={(e) => setExchangeItems({ ...exchangeItems, identity_type: e.target.value })}
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                        >
+                                          <option value="none">None</option>
+                                          <option value="imei">IMEI</option>
+                                          <option value="serial">Serial</option>
+                                          <option value="sku">SKU</option>
+                                        </select>
+                                        {exchangeItems.identity_type !== 'none' && (
+                                          <input
+                                            type="text"
+                                            value={exchangeItems.identity_value}
+                                            onChange={(e) => setExchangeItems({ ...exchangeItems, identity_value: e.target.value })}
+                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                          />
+                                        )}
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <input
+                                          type="text"
+                                          value={exchangeItems.purchase_price}
+                                          onChange={(e) => {
+                                            const newPurchasePrice = e.target.value;
+                                            setExchangeItems({
+                                              ...exchangeItems,
+                                              purchase_price: newPurchasePrice,
+                                              total: newPurchasePrice * exchangeItems.quantity,
+                                            });
                                           }}
-                                          className='text-sm font-semibold text-black dark:text-white leading-tight underline'>Add Item</button>
-                                      </p>
-                                    </td>
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                        />
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <input
+                                          type="number"
+                                          value={exchangeItems.quantity}
+                                          onChange={(e) => {
+                                            const newQuantity = e.target.value;
+                                            setExchangeItems({
+                                              ...exchangeItems,
+                                              quantity: newQuantity,
+                                              total: newQuantity * exchangeItems.purchase_price,
+                                            });
+                                          }}
+                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                        />
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <input
+                                          type="text"
+                                          disabled
+                                          value={exchangeItems.total}
+                                          class="bg-gray-200 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                        />
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <button
+                                          type="button"
+                                          onClick={() => {
+                                            if (
+                                              exchangeItems.name !== '' &&
+                                              exchangeItems.purchase_price !== '' &&
+                                              exchangeItems.identity_type !== '' &&
+                                              exchangeItems.quantity !== '' &&
+                                              exchangeItems.total !== ''
+                                            ) {
+                                              setFieldValue('exchange_items', [...values.exchange_items, exchangeItems]);
+                                              setExchangeItems(null);
+                                            } else {
+                                              toast.error('Please fill in all required fields');
+                                            }
+                                          }}
+                                          className="text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight underline"
+                                        >
+                                          Add
+                                        </button>
+                                        &nbsp;
+                                        <button
+                                          type="button"
+                                          onClick={() => setExchangeItems(null)}
+                                          className="text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight underline"
+                                        >
+                                          Cancel
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  )}
 
-                                  </tr>
-                                )}
+                                  {values.exchange_items.map((exchange_item) => (
+                                    <tr class="hover:bg-slate-50">
+                                      <td class="p-4 border-b border-slate-200">
+                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.name}</p>
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.model || <span class="text-red-500">N/A</span>}</p>
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <p class="block text-xs sm:text-sm text-slate-800">
+                                          {exchange_item.identity_type}
+                                          {exchange_item.identity_value !== '' && ` : ${exchange_item.identity_value}`}
+                                        </p>
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.purchase_price}</p>
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.quantity}</p>
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200">
+                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.total}</p>
+                                      </td>
+                                      <td class="p-4 border-b border-slate-200 flex items-center gap-2">
+                                        <FaTrash
+                                          size={20}
+                                          color="red"
+                                          className="cursor-pointer"
+                                          onClick={() => {
+                                            const updatedExchangeItems = values.exchange_items.filter((item) => item !== exchange_item);
+                                            setFieldValue('exchange_items', updatedExchangeItems);
 
-                                {exchangeItems && (
-
-
-                                  <tr class="hover:bg-slate-50">
-                                    <td class="p-4 border-b border-slate-200">
-                                      <input type="text" value={exchangeItems.name} onChange={(e) => {
-                                        setExchangeItems({ ...exchangeItems, name: e.target.value })
-                                      }}
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <input type="text" value={exchangeItems.model} onChange={(e) => {
-                                        setExchangeItems({ ...exchangeItems, model: e.target.value })
-                                      }}
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200 flex items-center gap-2">
-                                      <select value={exchangeItems.identity_type} onChange={(e) => {
-                                        setExchangeItems({ ...exchangeItems, identity_type: e.target.value })
-                                      }}
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5">
-                                        <option value="none">None</option>
-                                        <option value="imei">IMEI</option>
-                                        <option value="serial">Serial</option>
-                                        <option value="sku">SKU</option>
-                                      </select>
-                                      {exchangeItems.identity_type !== 'none' && (
-                                        <input type="text" value={exchangeItems.identity_value} onChange={(e) => {
-                                          setExchangeItems({ ...exchangeItems, identity_value: e.target.value })
-                                        }}
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
-                                      )}
-
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <input type="text" value={exchangeItems.purchase_price} onChange={(e) => {
-                                        const newPurchasePrice = e.target.value;
-                                        setExchangeItems({
-                                          ...exchangeItems,
-                                          purchase_price: newPurchasePrice,
-                                          total: newPurchasePrice * exchangeItems.quantity,
-                                        });
-                                      }}
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <input
-                                        type="number"
-                                        value={exchangeItems.quantity}
-                                        onChange={(e) => {
-                                          const newQuantity = e.target.value;
-                                          setExchangeItems({
-                                            ...exchangeItems,
-                                            quantity: newQuantity,
-                                            total: newQuantity * exchangeItems.purchase_price,
-                                          });
-                                        }}
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <input type="text" disabled value={exchangeItems.total}
-                                        class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200 ">
-                                      <button type="button"
-                                        onClick={() => {
-                                          if (exchangeItems.name !== '' && exchangeItems.purchase_price !== '' && exchangeItems.identity_type !== '' && exchangeItems.quantity !== '' && exchangeItems.total !== '') {
-                                            setFieldValue('exchange_items', [...values.exchange_items, exchangeItems])
-                                            setExchangeItems(null)
-                                          } else {
-                                            toast.error('Please required fields')
-                                          }
-
-                                        }}
-                                        className="text-sm font-semibold text-black dark:text-white leading-tight underline">Add</button>
-                                      &nbsp;   <button type="button"
-                                        onClick={() => {
-                                          setExchangeItems(null)
-                                        }}
-                                        className="text-sm font-semibold text-black dark:text-white leading-tight underline">Cancel</button>
-                                    </td>
-                                  </tr>
-                                )}
-
-                                {values.exchange_items.map((exchange_item) => (
-                                  <tr class="hover:bg-slate-50">
-                                    <td class="p-4 border-b border-slate-200">
-                                      <p class="block text-sm text-slate-800">
-                                        {exchange_item.name}
-                                      </p>
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <p class="block text-sm text-slate-800">
-                                        {exchange_item.model || <span class="text-red-500">N/A</span>}
-                                      </p>
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <p class="block text-sm text-slate-800">
-                                        {exchange_item.identity_type}
-                                        {exchange_item.identity_value !== '' && ` : ${exchange_item.identity_value}`}
-                                      </p>
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <p class="block text-sm text-slate-800">
-                                        {exchange_item.purchase_price}
-                                      </p>
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <p class="block text-sm text-slate-800">
-                                        {exchange_item.quantity}
-                                      </p>
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200">
-                                      <p class="block text-sm text-slate-800">
-                                        {exchange_item.total}
-                                      </p>
-                                    </td>
-                                    <td class="p-4 border-b border-slate-200 flex items-center gap-2">
-
-                                      <FaTrash size={20} color='red' className='cursor-pointer' onClick={() =>
-                                         {
-                                          const updatedExchangeItems = values.exchange_items.filter((item) => item !== exchange_item);
-                                          setFieldValue('exchange_items', updatedExchangeItems);
-                                        
-                                          // Recalculate exchange immediately
-                                          const totalAmount = updatedExchangeItems.reduce(
-                                            (total, item) => total + item.quantity * item.purchase_price,
-                                            0
-                                          );
-                                          setFieldValue('exchange', totalAmount);
-                                         
-
-                                         }} />
-
-
-                                    </td>
-                                  </tr>
-                                ))}
-
-
-                              </tbody>
-                            </table>
+                                            const totalAmount = updatedExchangeItems.reduce((total, item) => total + item.quantity * item.purchase_price, 0);
+                                            setFieldValue('exchange', totalAmount);
+                                          }}
+                                        />
+                                      </td>
+                                    </tr>
+                                  ))}
+                                </tbody>
+                              </table>
+                            </div>
                           </div>
+
 
 
 
