@@ -39,7 +39,7 @@ export default function Add(props) {
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
                       description: Yup.string()
-                        .required('Description is required')
+                        
                         .test('word-limit', 'Description cannot exceed 50 words', (value) => {
                           if (!value) return true;
                           const wordCount = value.trim().split(/\s+/).length;

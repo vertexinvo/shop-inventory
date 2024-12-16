@@ -18,8 +18,11 @@ class CustomerController extends Controller
     {
         $users = UserService::getAllUser($request, 'customer');
 
- 
-        return Inertia::render('Customer/List', compact('users'));
+        $totalcustomers = $users->count();
+        $totalactivecus = $users->where('status', '1')->count();
+        $totalinactivecus = $users->where('status', '0')->count();
+        // dd($totalactivecus);
+        return Inertia::render('Customer/List', compact('users', 'totalcustomers', 'totalactivecus', 'totalinactivecus'));
     }
 
 

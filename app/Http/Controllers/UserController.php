@@ -17,7 +17,11 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users =  UserService::getAllUser($request, null, ['superadmin', 'customer']);
-        return Inertia::render('User/List' , compact('users'));
+
+        $totalusers = $users->count();
+        $totalactiveusers = $users->where('status', '1')->count();
+        $totalinactiveusers = $users->where('status', '0')->count();
+        return Inertia::render('User/List' , compact('users', 'totalusers', 'totalactiveusers', 'totalinactiveusers'));
     }
 
     /**
