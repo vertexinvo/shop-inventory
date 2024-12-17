@@ -41,7 +41,7 @@ export default function Dashboard(props) {
       <Head title="Dashboard" />
 
       <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-4">
-        
+      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL (ORDERS)</p>
@@ -50,8 +50,9 @@ export default function Dashboard(props) {
             <div className="my-auto">
               <VscGraph size={40} />
             </div>
+            </div>
           </div>
-
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL PRODUCT IN STOCK</p>
@@ -60,9 +61,10 @@ export default function Dashboard(props) {
             <div className="my-auto">
               <FaBoxOpen size={40} />
             </div>
+            </div>
           </div>
         
-
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
@@ -71,6 +73,7 @@ export default function Dashboard(props) {
             <div className="my-auto">
               <HiMiniArchiveBoxXMark size={40} />
             </div>
+          </div>
           </div>
         </div>
 

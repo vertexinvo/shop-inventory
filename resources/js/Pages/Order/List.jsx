@@ -64,47 +64,44 @@ export default function List(props) {
         </select>
       </div> */}
 
-      <div class="px-5 mx-4 grid grid-cols-3 gap-2 py-5">
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL ORDERS</p>
-              <p class="text-lg">{total}</p>
-            </div>
-            <div class="my-auto">
-              <VscGraph size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">PENDING ORDERS</p>
-              <p class="text-lg">{pendingCount}</p>
-            </div>
-            <div class="my-auto">
-              <FaBoxOpen size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">COMPLETED ORDERS</p>
-              <p class="text-lg">{completedCount}</p>
-            </div>
-            <div class="my-auto">
-              <PiListChecksFill size={40} />
-            </div>
-          </div>
-        </div>
-
-
-
+<div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 py-5">
+  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+      <div class="my-auto">
+        <p class="font-bold">TOTAL ORDERS</p>
+        <p class="text-lg">{total}</p>
       </div>
+      <div class="my-auto">
+        <VscGraph size={40} />
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+      <div class="my-auto">
+        <p class="font-bold">PENDING ORDERS</p>
+        <p class="text-lg">{pendingCount}</p>
+      </div>
+      <div class="my-auto">
+        <FaBoxOpen size={40} />
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+      <div class="my-auto">
+        <p class="font-bold">COMPLETED ORDERS</p>
+        <p class="text-lg">{completedCount}</p>
+      </div>
+      <div class="my-auto">
+        <PiListChecksFill size={40} />
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">

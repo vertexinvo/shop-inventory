@@ -12,7 +12,6 @@ import 'react-quill/dist/quill.snow.css';
 import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
-
 import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function Add(props) {

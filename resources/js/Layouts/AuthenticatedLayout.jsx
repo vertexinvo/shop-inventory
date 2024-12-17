@@ -44,8 +44,6 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
             <ToastContainer />
             <div className="min-h-screen bg-gray-100">
-
-
                 <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">
                     <div className="px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 justify-between">
@@ -161,14 +159,41 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         className={
                             (showingNavigationDropdown ? 'block' : 'hidden') +
                             ' sm:hidden'
-                        }
-                    >
-                        <div className="space-y-1 pb-3 pt-2">
+                        }>
+                        <div className="space-y-1">
                             <ResponsiveNavLink
                                 href={route('dashboard')}
                                 active={route().current('dashboard')}
                             >
                                 Dashboard
+                            </ResponsiveNavLink>
+                        </div>
+                        <div className='space-y-1 '>
+                            <ResponsiveNavLink
+                                href={route('customer.index')}
+                                active={route().current('customer.index')}>
+                                Customer
+                            </ResponsiveNavLink>
+                        </div>
+                        <div className='space-y-1 '>
+                            <ResponsiveNavLink
+                                href={route('order.index')}
+                                active={route().current('order.index')}>
+                                Order
+                            </ResponsiveNavLink>
+                        </div>
+                        <div className='space-y-1 '>
+                            <ResponsiveNavLink
+                                href={route('product.index')}
+                                active={route().current('product.index')}>
+                                Product
+                            </ResponsiveNavLink>
+                        </div>
+                        < div className='space-y-1 '>
+                            <ResponsiveNavLink
+                                href={route('supplier.index')}
+                                active={route().current('supplier.index')}>
+                                Supplier
                             </ResponsiveNavLink>
                         </div>
 
@@ -185,6 +210,10 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                             <div className="mt-3 space-y-1">
                                 <ResponsiveNavLink href={route('profile.edit')}>
                                     Profile
+                                </ResponsiveNavLink>
+                                
+                                <ResponsiveNavLink href={route('setting')}>
+                                    Setting
                                 </ResponsiveNavLink>
                                 <ResponsiveNavLink
                                     method="post"

@@ -37,35 +37,32 @@ export default function List(props) {
     >
       <Head title="Product" />
 
-      <div class="p-5 mx-4 grid grid-cols-2 gap-3 ">
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL PRODUCTS</p>
-              <p class="text-lg">
-                0
-              </p>
-            </div>
-            <div class="my-auto">
-              <FaBoxes size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
-              <p class="text-lg">
-                0
-              </p>
-            </div>
-            <div class="my-auto">
-              <HiMiniArchiveBoxXMark size={40} />
-            </div>
-          </div>
-        </div>
+      <div class="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3">
+  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+      <div class="my-auto">
+        <p class="font-bold">TOTAL PRODUCTS</p>
+        <p class="text-lg">0</p>
       </div>
+      <div class="my-auto">
+        <FaBoxes size={40} />
+      </div>
+    </div>
+  </div>
+
+  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+      <div class="my-auto">
+        <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
+        <p class="text-lg">0</p>
+      </div>
+      <div class="my-auto">
+        <HiMiniArchiveBoxXMark size={40} />
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 
