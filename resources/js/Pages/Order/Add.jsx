@@ -16,7 +16,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function Add(props) {
-  const { auth, users, items, order_id, taxs, shippingrates } = props
+  const { auth, users, items, order_id, taxs, shippingrates ,order} = props
 
   const [loading, setLoading] = useState(false);
 
@@ -40,6 +40,8 @@ export default function Add(props) {
     }),
   };
 
+  console.log(order);
+
   return (
     <AuthenticatedLayout
       header={
@@ -49,44 +51,44 @@ export default function Add(props) {
             className="mr-2 cursor-pointer"
             onClick={() => router.get(route('order.index'))}
             title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Order</h2>
+          /><h2 className="font-semibold text-xl text-gray-800 leading-tight"> {order ? 'Edit Order' : 'Add Order'}</h2>
         </>}
     >
       <Head title="Order" />
       <Formik enableReinitialize initialValues={{
-        name: '',
-        email: '',
-        phone: '',
-        address: '',
-        total: 0,
-        payable_amount: 0,
-        paid_amount: 0,
-        method: '',
-        cheque_no: '',
-        cheque_date: '',
-        status: 'completed',
-        bank_name: '',
-        bank_branch: '',
-        bank_account: '',
-        online_payment_link: '',
-        extra_charges: 0,
-        shipping_charges: 0,
-        discount: 0,
-        tax: 0,
-        is_installment: '0',
-        installment_amount: 0,
-        installment_period: '',
-        installment_count: 0,
-        installment_start_date: '',
-        installment_end_date: '',
-        user_id: '',
+        name: order?.name || '',
+        email: order?.email || '',
+        phone: order?.phone ||'',
+        address: order?.address || '',
+        total: order?.total ||  0,
+        payable_amount:  order?.payable_amount || 0,
+        paid_amount: order?.paid_amount || 0,
+        method:  order?.method || '',
+        cheque_no: order?.cheque_no || '',
+        cheque_date: order?.cheque_date || '',
+        status:  order?.status ||  'completed',
+        bank_name: order?.bank_name || '',
+        bank_branch: order?.bank_branch || '',
+        bank_account: order?.bank_account || '',
+        online_payment_link: order?.online_payment_link || '',
+        extra_charges: order?.extra_charges ||  0,
+        shipping_charges: order?.shipping_charges ||  0,
+        discount:  order?.discount || 0,
+        tax:  order?.tax || 0,
+        is_installment: order?.is_installment === true && '1' ||  '0',
+        installment_amount: order?.installment_amount || 0,
+        installment_period:  order?.installment_period || '',
+        installment_count: order?.installment_count || 0,
+        installment_start_date: order?.installment_start_date || '',
+        installment_end_date: order?.installment_end_date || '',
+        user_id: order?.user_id || '',
         items: [],
-        tax_id: '',
-        shipping_id: '',
-        order_date: new Date().toISOString().slice(0, 10),
+        tax_id:  order?.tax_id || '',
+        shipping_id:  order?.shipping_id || '',
+        order_date: order?.order_date || new Date().toISOString().slice(0, 10),
         close: false,
-        exchange_items: [],
-        exchange: 0
+        exchange_items:  order?.exchangeproduct ||[],
+        exchange:  order?.exchange || 0
       }}
         validationSchema={Yup.object({
           name: Yup.string().required('Name is required'),
@@ -933,7 +935,7 @@ export default function Add(props) {
                                       <td class="p-4 border-b border-slate-200">
                                         <input
                                           type="number"
-                                          value={exchangeItems.quantity}
+                                          value={exchangeItems.quantity }
                                           onChange={(e) => {
                                             const newQuantity = e.target.value;
                                             setExchangeItems({

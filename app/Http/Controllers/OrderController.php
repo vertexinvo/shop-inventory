@@ -370,7 +370,59 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-        //
+      $order->load('items','user','tax','shipping','items.product','items.product.stock','exchangeproduct.stock');
+        
+        
+        $searchuser = $request->searchuser ?? '';
+        $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
+            $query->where('name', 'like', "%$searchuser%")
+                  ->orWhere('phone', 'like', "%$searchuser%");
+        })->limit(6)->get();
+        $users = $userrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name . '-' . $item->phone ?? '',
+                'email' => $item->email ?? '',
+                'phone' => $item->phone ?? '',
+                'address' => $item->address ?? '',
+                'name' => $item->name ?? '',
+            ];
+        });
+
+        $searchitem = $request->searchitem ?? '';
+
+        $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
+            $query->where('name', 'like', "%$searchitem%")
+                  ->orWhere('identity_value', 'like', "%$searchitem%");
+        })->limit(2)->get();
+        $items = $itemrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) ?? '',
+                'data' => $item,
+                'quantity' => 1
+            ];
+        });
+
+        $searchshipping = $request->searchshipping ?? '';
+
+        $shippingrec = ShippingRate::where('area_name', 'like', "%$searchshipping%")->limit(5)->get();
+        $shippingrates = $shippingrec->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->area_name .' - '. $item->city_name ?? '',
+                'fee' => $item->fee
+            ];
+        });
+
+        //get order id latest
+        
+        $order_id = $order->id;
+        
+
+        $taxs = tax::latest()->get();
+        
+        return Inertia::render('Order/Add', compact('users', 'items', 'order_id', 'taxs', 'shippingrates','order'));
     }
 
     /**
