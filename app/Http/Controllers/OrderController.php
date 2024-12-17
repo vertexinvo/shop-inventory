@@ -165,11 +165,18 @@ class OrderController extends Controller
         }
 
         foreach ($request->exchange_items as $item) {
+
+            $data = $item;
+
             $item["is_exchange"] = true;
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
             unset($item['total']);
             $product =  Product::create($item);
+
+            $data["product_id"] = $product->id;
+            $order->exchange_items()->create($data);
+
             $product->stock()->update([
                 'quantity' => $item['quantity'],
             ]);
@@ -186,6 +193,8 @@ class OrderController extends Controller
                 'quantity' => $product->stock->quantity - $item['quantity'],
             ]);
         }
+
+
 
     
         session()->flash('message', 'Order created successfully.');
