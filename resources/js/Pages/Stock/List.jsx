@@ -37,13 +37,12 @@ export default function List(props) {
     >
       <Head title="Product" />
 
-      <div class="p-5 mx-4 grid grid-cols-4 gap-1 ">
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+      <div class="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 h-full lg:grid-cols-4 gap-4">
+        <div class="w-full  bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
-              <p class="font-bold">LAST UPDATED</p>
-              <p class="text-lg">{stocks.last_updated ? FormatDate(stocks.last_updated) : '-'}</p>
+              <p class="font-bold text-sm lg:text-base">LAST UPDATED</p>
+              <p class="text-sm lg:text-lg">{stocks.last_updated ? FormatDate(stocks.last_updated) : '-'}</p>
             </div>
             <div class="my-auto">
               <BsCalendarDate size={40} />
@@ -51,8 +50,8 @@ export default function List(props) {
           </div>
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+        <div class="w-full  bg-black rounded-lg shadow-md">
+          <div class="flex flex-row  w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
               <p class="font-bold">STOCK STATUS</p>
               <label className="relative cursor-pointer">
@@ -61,10 +60,10 @@ export default function List(props) {
                   
                 </div>
               </label>
-              <p class="text-lg">
+              <p class="text-lg flex  ">
 
-                {stocks.status ? <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">IN STOCK</span>
-                  : <span class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">OUT OF STOCK</span>}</p>
+                {stocks.status ? <span class="bg-green-100 text-green-800 text-xs font-medium me-2 mt-1 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">IN STOCK</span>
+                  : <span class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-1 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">OUT OF STOCK</span>}</p>
             </div>
             <div class="my-auto">
               <TbStatusChange size={40} />
@@ -72,11 +71,11 @@ export default function List(props) {
           </div>
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+        <div class="w-full  bg-black rounded-lg shadow-md">
+          <div class="flex  w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
-              <p class="font-bold">TOTAL PRODUCT IN STOCK</p>
-              <p class="text-lg">{stocks.quantity}</p>
+              <p class="font-bold text-sm lg:text-base">TOTAL PRODUCT IN STOCK</p>
+              <p class="text-sm lg:text-lg">{stocks.quantity}</p>
             </div>
             <div class="my-auto">
               <FaClipboardList size={40} />
@@ -84,31 +83,31 @@ export default function List(props) {
           </div>
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+        <div class="w-full  bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
-              <p class="font-bold">REORDER LEVEL</p>
-              <p class="text-lg">{stocks.reorder_level}</p>
+              <p class="font-bold text-sm lg:text-base">REORDER LEVEL</p>
+              <p class="text-sm lg:text-lg">{stocks.reorder_level}</p>
             </div>
             <div class="my-auto">
               <LuRefreshCcw size={40} />
             </div>
           </div>
         </div>
-
       </div>
+
 
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
-          <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+        <div className="flex flex-col md:flex-row justify-left items-center mt-2 mb-4">
 
-            <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
+          <div className="flex flex-col md:flex-row w-full  space-y-2 md:space-y-0 md:space-x-2">
 
               {selectId.length > 0 &&
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600"
+                  className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>

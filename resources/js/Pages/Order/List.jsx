@@ -65,7 +65,7 @@ console.log(orders)
         </select>
       </div> */}
 
-      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 py-5">
+      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -124,11 +124,11 @@ console.log(orders)
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
               </select>
-
+ 
               {selectId.length > 0 && (
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                  className="text-white  w-full md:w-1/6  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>
