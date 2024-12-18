@@ -399,6 +399,11 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        if($order->status === 'cancel'){
+            return abort(403);
+        }
+
+
       $order->load('items','user','tax','shipping','items.product','items.product.stock','exchange_items','items.product.stock','items.product.categories');
         
         

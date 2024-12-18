@@ -467,6 +467,7 @@ console.log(orders)
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                           </svg>
                         </button>
+                        {order.status !== "cancel" && 
                         <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                             viewBox="0 0 348.882 348.882">
@@ -478,6 +479,7 @@ console.log(orders)
                               data-original="#000000" />
                           </svg>
                         </button>
+                        }
                         <button onClick={() => setIsDeleteModalOpen(order)} title="Delete">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                             <path
