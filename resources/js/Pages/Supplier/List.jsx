@@ -84,76 +84,87 @@ export default function List(props) {
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
-          <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
-
-            <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
-
-                <select
-                  name="filter"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
-                >
-                  <option value="">Select Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="paid">Paid</option>
-                  
-                </select>
-
-              {selectId.length > 0 &&
-                <button
-                  onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600"
-                >
-                  Bulk Delete
-                </button>
-              }
-              <button
-                onClick={() => router.get(route('supplier.create'))}
-                className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
-              >
-                Create
-              </button>
-              <Formik
-                enableReinitialize
-                initialValues={{ search: '' }}
-                onSubmit={(values) => {
-                  router.get(route('supplier.index'), { search: values.search }, { preserveState: true });
-                }}
-
-              >
-                {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div className="relative">
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => { setFieldValue('search', ''); router.get(route('supplier.index')) }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                      >
-                        ✖
-                      </button>
+         
+          {/*  */}
+            <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+          
+                      <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+                        <select
+                          name="filter"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                          w-full md:w-[150px] p-2.5  pr-10  
+                                          dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="pending">Pending</option>
+                          <option value="completed">Completed</option>
+                          <option value="cancelled">Cancelled</option>
+          
+                        </select>
+                        {selectId.length > 0 && (
+                                <button
+                                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                                  className="text-white w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                                >
+                                  Bulk Delete
+                                </button>
+                              )}
+                       
+                        <button
+                          onClick={() => router.get(route('supplier.create'))}
+                          className="text-white  py-2 px-4 rounded-lg bg-black hover:bg-gray-600  "
+                        >
+                          Create
+                        </button>
+          
+          
+                        <Formik
+                          enableReinitialize
+                          initialValues={{ search: '' }}
+                          onSubmit={(values) => {
+                            router.get(route('supplier.index'), { search: values.search }, { preserveState: true });
+                          }}
+                        >
+                          {({ values, setFieldValue, handleSubmit, errors, touched }) => (
+                            <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                              <div className="relative w-full md:w-auto">
+                                <Field
+                                  name="search"
+                                  type="text"
+                                  placeholder="Search..."
+                                  className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setFieldValue('search', '');
+                                    router.get(route('supplier.index'));
+                                  }}
+                                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                                >
+                                  ✖
+                                </button>
+                              </div>
+          
+                              <button
+                                type="submit"
+                                className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                              >
+                                Search
+                              </button>
+                             
+          
+                            </Form>
+          
+                          )}
+          
+                        </Formik>
+                        
+          
+                      </div>
                     </div>
-
-
-                    <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
-                    >
-                      Search
-                    </button>
-
-                  </Form>
-                )}
-              </Formik>
-
-            </div>
-          </div>
 
 
 

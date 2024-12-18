@@ -42,14 +42,14 @@ export default function List(props) {
     <AuthenticatedLayout
       Order={auth.Order}
       header={
-       <>
-           <MdKeyboardBackspace
-                size={20}
-                className="mr-2 cursor-pointer"
-                onClick={() => router.get(route('dashboard'))}
-                title="Back"
-            /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>
-            </>}
+        <>
+          <MdKeyboardBackspace
+            size={20}
+            className="mr-2 cursor-pointer"
+            onClick={() => router.get(route('dashboard'))}
+            title="Back"
+          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>
+        </>}
     >
       <Head title="Order" />
 
@@ -64,84 +64,87 @@ export default function List(props) {
         </select>
       </div> */}
 
-<div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 py-5">
-  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-      <div class="my-auto">
-        <p class="font-bold">TOTAL ORDERS</p>
-        <p class="text-lg">{total}</p>
-      </div>
-      <div class="my-auto">
-        <VscGraph size={40} />
-      </div>
-    </div>
-  </div>
+      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 py-5">
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">TOTAL ORDERS</p>
+              <p class="text-lg">{total}</p>
+            </div>
+            <div class="my-auto">
+              <VscGraph size={40} />
+            </div>
+          </div>
+        </div>
 
-  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-      <div class="my-auto">
-        <p class="font-bold">PENDING ORDERS</p>
-        <p class="text-lg">{pendingCount}</p>
-      </div>
-      <div class="my-auto">
-        <FaBoxOpen size={40} />
-      </div>
-    </div>
-  </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">PENDING ORDERS</p>
+              <p class="text-lg">{pendingCount}</p>
+            </div>
+            <div class="my-auto">
+              <FaBoxOpen size={40} />
+            </div>
+          </div>
+        </div>
 
-  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-      <div class="my-auto">
-        <p class="font-bold">COMPLETED ORDERS</p>
-        <p class="text-lg">{completedCount}</p>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">COMPLETED ORDERS</p>
+              <p class="text-lg">{completedCount}</p>
+            </div>
+            <div class="my-auto">
+              <PiListChecksFill size={40} />
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="my-auto">
-        <PiListChecksFill size={40} />
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
+
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
-            <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
+            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+              <select
+                name="filter"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                w-full md:w-[150px] p-2.5 pr-10 
+                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => router.get(route('order.index'), { status: e.target.value }, { preserveState: true })}
+              >
+                <option value="">Select Status</option>
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
 
-                <select
-                                name="filter"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onChange={(e) => router.get(route('order.index'), { status: e.target.value }, { preserveState: true })}
-                              >
-                                <option value="">Select Status</option>
-                                <option value="pending">Pending</option>
-                                <option value="completed">Completed</option>
-                                <option value="cancelled">Cancelled</option>
-                                
-                              </select>
-
-              {selectId.length > 0 &&
-                <button
-                  onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600"
-                >
-                  Bulk Delete
-                </button>
-              }
+              </select>
+              {selectId.length > 0 && (
+                      <button
+                        onClick={() => setIsBulkDeleteModalOpen(true)}
+                        className="text-white w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                      >
+                        Bulk Delete
+                      </button>
+                    )}
               <button
                 onClick={() => router.get(route('order.instantorder'))}
-                className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                className="text-white w-auto sm:w-1/5 py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
               >
                 Instant Order
               </button>
               <button
                 onClick={() => router.get(route('order.create'))}
-                className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                className="text-white  py-2 px-4 rounded-lg bg-black hover:bg-gray-600  "
               >
                 Create
               </button>
+
 
               <Formik
                 enableReinitialize
@@ -149,12 +152,10 @@ export default function List(props) {
                 onSubmit={(values) => {
                   router.get(route('order.index'), { search: values.search }, { preserveState: true });
                 }}
-
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div className="relative">
+                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                    <div className="relative w-full md:w-auto">
                       <Field
                         name="search"
                         type="text"
@@ -163,25 +164,34 @@ export default function List(props) {
                       />
                       <button
                         type="button"
-                        onClick={() => { setFieldValue('search', ''); router.get(route('order.index')) }}
+                        onClick={() => {
+                          setFieldValue('search', '');
+                          router.get(route('order.index'));
+                        }}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
                         ✖
                       </button>
                     </div>
+
                     <button
                       type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
                     >
                       Search
                     </button>
+                   
 
                   </Form>
+
                 )}
+
               </Formik>
+              
 
             </div>
           </div>
+          
 
           <div className="overflow-x-auto">
             <div class="font-[sans-serif] overflow-x-auto">
@@ -217,7 +227,7 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Total
                     </th>
-                   
+
                     <th class="p-4 text-left text-sm font-semibold ">
                       Payable Amount
                     </th>
@@ -317,7 +327,7 @@ export default function List(props) {
                                 <p class="text-sm text-black">Bank Amount: <span class="text-xs text-gray-500">{order.bank_account}</span></p>
                               </>
                             )}
-                            {order.method === "online" && order.online_payment_link }
+                            {order.method === "online" && order.online_payment_link}
                           </div>
                         </div>
                       </td>
@@ -338,7 +348,7 @@ export default function List(props) {
                       </td> */}
 
 
-                  
+
 
 
                       {order.method === "check" && (
@@ -359,7 +369,7 @@ export default function List(props) {
                         {order.payable_amount || 'N/A'}
 
                       </td>
- 
+
                       <td class=" text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
@@ -398,9 +408,9 @@ export default function List(props) {
                             onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
 
                           />
-                          <IoIosSave className="ml-2 cursor-pointer" size={30}   onClick={async() => { 
+                          <IoIosSave className="ml-2 cursor-pointer" size={30} onClick={async () => {
                             await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
-                          }}/>
+                          }} />
                         </div>
                       </td>
 
@@ -424,13 +434,13 @@ export default function List(props) {
 
 
                       <td class="p-4 flex items-center gap-2">
-                        <button  type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
+                        <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
                           <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 bi bi-eye">
                             <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                           </svg>
                         </button>
-                        <button onClick={() => router.get(route('order.edit', order.id))}  title="Edit" type='button'>
+                        <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                             viewBox="0 0 348.882 348.882">
                             <path

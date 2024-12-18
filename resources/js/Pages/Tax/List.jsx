@@ -20,14 +20,14 @@ export default function List(props) {
     <AuthenticatedLayout
       tax={auth.tax}
       header={
-         <>
-             <MdKeyboardBackspace
-                  size={20}
-                  className="mr-2 cursor-pointer"
-                  onClick={() => router.get(route('setting'))}
-                  title="Back"
-              />
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">Tax</h2>
+        <>
+          <MdKeyboardBackspace
+            size={20}
+            className="mr-2 cursor-pointer"
+            onClick={() => router.get(route('setting'))}
+            title="Back"
+          />
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Tax</h2>
         </>
       }
     >
@@ -37,21 +37,20 @@ export default function List(props) {
         <div className="w-full ">
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
-            <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
+            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
 
-              {selectId.length > 0 &&
+
+              {selectId.length > 0 && (
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600"
+                  className="text-white  w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>
-              }
-
+              )}
               <button
-                //   onClick={() => setIsModalOpen(true)}
                 onClick={() => router.get(route('tax.create'))}
-                className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
               >
                 Create
               </button>
@@ -62,12 +61,10 @@ export default function List(props) {
                 onSubmit={(values) => {
                   router.get(route('tax.index'), { search: values.search }, { preserveState: true });
                 }}
-
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div className="relative">
+                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                    <div className="relative w-full md:w-auto">
                       <Field
                         name="search"
                         type="text"
@@ -76,17 +73,19 @@ export default function List(props) {
                       />
                       <button
                         type="button"
-                        onClick={() => { setFieldValue('search', ''); router.get(route('tax.index')) }}
+                        onClick={() => {
+                          setFieldValue('search', '');
+                          router.get(route('tax.index'));
+                        }}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
                         ✖
                       </button>
                     </div>
 
-
                     <button
                       type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
                     >
                       Search
                     </button>

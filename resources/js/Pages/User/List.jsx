@@ -20,12 +20,12 @@ export default function List(props) {
       user={auth.user}
       header={
         <>
-     <MdKeyboardBackspace
-          size={20}
-          className="mr-2 cursor-pointer"
-          onClick={() => router.get(route('setting'))}
-          title="Back"
-      />
+          <MdKeyboardBackspace
+            size={20}
+            className="mr-2 cursor-pointer"
+            onClick={() => router.get(route('setting'))}
+            title="Back"
+          />
           <h2 className="font-semibold text-xl text-gray-800 leading-tight">User</h2>
         </>}
     >
@@ -33,62 +33,62 @@ export default function List(props) {
       <Head title="User" />
 
       <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 py-5">
-  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-      <div class="my-auto">
-        <p class="font-bold">TOTAL USERS</p>
-        <p class="text-lg">{totalusers}</p>
-      </div>
-      <div class="my-auto">
-        <FaUsers size={40} />
-      </div>
-    </div>
-  </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">TOTAL USERS</p>
+              <p class="text-lg">{totalusers}</p>
+            </div>
+            <div class="my-auto">
+              <FaUsers size={40} />
+            </div>
+          </div>
+        </div>
 
-  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-      <div class="my-auto">
-        <p class="font-bold">ACTIVE USERS</p>
-        <p class="text-lg">{totalactiveusers}</p>
-      </div>
-      <div class="my-auto">
-        <FaUserCheck size={40} />
-      </div>
-    </div>
-  </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">ACTIVE USERS</p>
+              <p class="text-lg">{totalactiveusers}</p>
+            </div>
+            <div class="my-auto">
+              <FaUserCheck size={40} />
+            </div>
+          </div>
+        </div>
 
-  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-    <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-      <div class="my-auto">
-        <p class="font-bold">INACTIVE USERS</p>
-        <p class="text-lg">{totalinactiveusers}</p>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">INACTIVE USERS</p>
+              <p class="text-lg">{totalinactiveusers}</p>
+            </div>
+            <div class="my-auto">
+              <FaUserLock size={40} />
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="my-auto">
-        <FaUserLock size={40} />
-      </div>
-    </div>
-  </div>
-</div>
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
+
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
-            <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
+            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
 
-              {selectId.length > 0 &&
+
+              {selectId.length > 0 && (
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600"
+                  className="text-white  w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>
-              }
-
+              )}
               <button
-                //   onClick={() => setIsModalOpen(true)}
                 onClick={() => router.get(route('user.create'))}
-                className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
               >
                 Create
               </button>
@@ -99,12 +99,10 @@ export default function List(props) {
                 onSubmit={(values) => {
                   router.get(route('user.index'), { search: values.search }, { preserveState: true });
                 }}
-
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
-                    <div className="relative">
+                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                    <div className="relative w-full md:w-auto">
                       <Field
                         name="search"
                         type="text"
@@ -113,17 +111,19 @@ export default function List(props) {
                       />
                       <button
                         type="button"
-                        onClick={() => { setFieldValue('search', ''); router.get(route('user.index')) }}
+                        onClick={() => {
+                          setFieldValue('search', '');
+                          router.get(route('user.index'));
+                        }}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
                         ✖
                       </button>
                     </div>
 
-
                     <button
                       type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
                     >
                       Search
                     </button>
