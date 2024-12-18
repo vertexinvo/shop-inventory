@@ -43,7 +43,7 @@ const View = (props) => {
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
         const currentDateTime = new Date().toLocaleString();
- 
+
         printWindow.document.write(`
             <html>
                 <head>
@@ -128,13 +128,13 @@ const View = (props) => {
         <Authenticated auth={props.auth} errors={props.errors}
             header={
                 <>
-                <MdKeyboardBackspace
-                     size={20}
-                     className="mr-2 cursor-pointer"
-                     onClick={() => router.get(route('order.index'))}
-                     title="Back"
-                 />
-            <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id ? order.id : 'N/A'}</h2>
+                    <MdKeyboardBackspace
+                        size={20}
+                        className="mr-2 cursor-pointer"
+                        onClick={() => router.get(route('order.index'))}
+                        title="Back"
+                    />
+                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id ? order.id : 'N/A'}</h2>
                 </>}>
             <Head title="View Order" />
             <style>
@@ -232,6 +232,7 @@ const View = (props) => {
                             </p>
                             <p>Address: <span className="text-gray-500" >{order.address ? order.address : 'N/A'}</span></p>
                             <p>Email: <span className="text-gray-500">{order.email ? order.email : 'N/A'}</span></p>
+                            <p>Phone: <span className="text-gray-500">{order.phone ? order.phone : 'N/A'}</span></p>
                             <p>payment method: <span className="text-gray-500">{order.method ? order.method : 'N/A'}</span></p>
                             <p>Status: <span className="text-gray-500" >{order.status ? order.status : 'N/A'}</span></p>
                         </div>
@@ -249,9 +250,10 @@ const View = (props) => {
                     {/* Invoice Items */}
                     <div className="-mx-4 mt-2 flow-root sm:mx-0 py-4">
                         <div className="overflow-x-auto">
+                            {/* heading table */}
+                            <div className="text-gray-800 text-sm font-bold mb-4">Order Items</div>
                             <table className="min-w-full mb-8">
                                 <colgroup>
-                                    <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
                                     <col className="w-full sm:w-1/6" />
@@ -261,13 +263,12 @@ const View = (props) => {
                                     <tr >
                                         {/* <th scope="col" className="pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 whitespace-nowrap">Product Info</th> */}
                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Product Info</th>
-                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Order Info</th>
                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Price</th>
                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">QTY</th>
                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">Total</th>
                                     </tr>
                                 </thead>
-                              
+
                                 <tbody>
                                     {order.items.map((item) => (
                                         <tr key={item.id}>
@@ -279,15 +280,7 @@ const View = (props) => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class=" text-sm">
-                                                <div class="flex items-center cursor-pointer w-max">
-                                                    <div className='mt-3'>
-                                                        <p class="text-sm text-black ">Order Name : {order.name ? order.name : 'N/A'}</p>
-                                                        {<p class="text-xs text-gray-500 mt-0.5">Email :{order.email ? order.email : 'N/A'} </p>}
-                                                        {<p class="text-xs text-gray-500 mt-0.5">Phone :{order.phone ? order.phone : 'N/A'} </p>}
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            
                                             {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
                                             {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
 
@@ -298,21 +291,56 @@ const View = (props) => {
 
                                     ))}
                                 </tbody>
-                                {/* <tbody>
-                                    <tr>
-                                        <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">
-                                            <div className="flex items-center">
-                                                <div>
-                                                    <p className="font-semibold text-gray-900">{order.name}</p>
-                                                </div>
-                                            </div>
-                                            <div className="mt-2 sm:mt-0">
-                                                <p className="text-gray-500">{order.description}</p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody> */}
                             </table>
+
+                            {/* heading table */}
+                            {order.exchange_items.length > 0 && 
+                            <>
+                             <div className="text-gray-800 text-sm font-bold mb-4">Exchange Items</div>
+                             <table className="min-w-full mb-8">
+                                 <colgroup>
+                                     <col className="w-full sm:w-1/6" />
+                                     <col className="w-full sm:w-1/6" />
+                                     <col className="w-full sm:w-1/6" />
+                                     <col className="w-full sm:w-1/6" />
+                                 </colgroup>
+                                 <thead className="border-b border-gray-300 text-gray-900">
+                                     <tr >
+                                         {/* <th scope="col" className="pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 whitespace-nowrap">Product Info</th> */}
+                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Product Info</th>
+                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Price</th>
+                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">QTY</th>
+                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">Total</th>
+                                     </tr>
+                                 </thead>
+ 
+                                 <tbody>
+                                     {order.exchange_items.map((item) => (
+                                         <tr key={item.id}>
+                                             <td class=" text-sm">
+                                                 <div class="flex items-center cursor-pointer w-max">
+                                                     <div >
+                                                         <p class="text-sm text-black ">Name: {item.name ? item.name : 'N/A'} </p>
+                                                         { <p class="text-xs text-gray-500 mt-0.5">Model: {item.model ? item.model : 'N/A'}  </p>}
+                                                     </div>
+                                                 </div>
+                                             </td>
+                                           
+                                             {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
+                                             {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
+ 
+                                             <td  className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.purchase_price ? item.purchase_price: 'N/A'} </td>
+                                             <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.quantity ? item.quantity: 'N/A'}</td>
+                                             <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total ? order.total : 'N/A'}</td>
+                                         </tr>
+ 
+                                     ))}
+                                 </tbody>
+                             </table>
+                             </>
+                            }
+                           
+
                             <tfoot className="justify-content-right">
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Subtotal:</th>
@@ -366,7 +394,7 @@ const View = (props) => {
                 </div>
             </div>
 
-           
+
         </Authenticated>
     );
 };

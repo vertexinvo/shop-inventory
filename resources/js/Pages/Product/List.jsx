@@ -15,7 +15,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function List(props) {
   const { auth, stock, products } = props
-console.log(products)
+console.log(stock)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
