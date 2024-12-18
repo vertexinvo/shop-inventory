@@ -22,8 +22,6 @@ console.log(orders)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
-
-
   const [orderAmounts, setOrderAmounts] = useState({});
 
   const handleAmountChange = (e, orderId) => {
