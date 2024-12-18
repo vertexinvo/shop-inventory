@@ -319,7 +319,7 @@ class OrderController extends Controller
             'tax_id',
             'shipping_id',
             'order_date',
-
+            'exchange',
         ]);
         $order = Order::create($data);
 
@@ -335,11 +335,16 @@ class OrderController extends Controller
         }
 
         foreach ($request->exchange_items as $item) {
+            $data = $item;
             $item["is_exchange"] = true;
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
             unset($item['total']);
             $product = Product::create($item);
+
+            $data["product_id"] = $product->id;
+            $order->exchange_items()->create($data);
+
             $product->stock()->update([
                 'quantity' => $item['quantity'],
             ]);
@@ -379,7 +384,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
-      $order->load('items','user','tax','shipping','items.product','items.product.stock','exchangeproduct.stock');
+      $order->load('items','user','tax','shipping','items.product','items.product.stock','exchange_items','items.product.stock','items.product.categories');
         
         
         $searchuser = $request->searchuser ?? '';
@@ -403,7 +408,7 @@ class OrderController extends Controller
         $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
             $query->where('name', 'like', "%$searchitem%")
                   ->orWhere('identity_value', 'like', "%$searchitem%");
-        })->limit(2)->get();
+        })->get();
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
@@ -430,8 +435,11 @@ class OrderController extends Controller
         
 
         $taxs = tax::latest()->get();
+
         
-        return Inertia::render('Order/Add', compact('users', 'items', 'order_id', 'taxs', 'shippingrates','order'));
+        $default_selected_shippingrate =   $order->shipping ? ['value' => $order->shipping->id, 'label' => $order->shipping->area_name .' - '. $order->shipping->city_name] : [];
+         
+        return Inertia::render('Order/Add', compact('users', 'items', 'order_id', 'taxs', 'shippingrates','order','default_selected_shippingrate'));
     }
 
     /**
@@ -439,7 +447,162 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|max:255',
+            'address' => 'nullable|max:500',
+            'total' => 'required|numeric',
+            'payable_amount' => 'required|numeric',
+            'paid_amount' => 'required|numeric',
+            'discount' => 'nullable|numeric',
+            'items' => 'required|array',
+            'exchange_items' => 'nullable|array',
+            'exchange' => 'nullable|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return back();
+        }
+        $data = $request->only([
+            'name',
+            'email',
+            'phone',
+            'address',
+            'user_id',
+            'total',
+            'payable_amount',
+            'paid_amount',
+            'method',
+            'cheque_no',
+            'cheque_date',
+            'bank_name',
+            'bank_branch',
+            'bank_account',
+            'online_payment_link',
+            'extra_charges',
+            'shipping_charges',
+            'discount',
+            'tax',
+            'status',
+            'is_installment',
+            'installment_amount',
+            'installment_period',
+            'installment_count',
+            'installment_start_date',
+            'installment_end_date',
+            'tax_id',
+            'shipping_id',
+            'order_date',
+            'exchange',
+        ]);
+        $order->update($data);
+
+        $itemIds = []; // Track item IDs to clean up unused ones later
+
+        foreach ($request->items as $item) {
+            $orderItem = $order->items()->updateOrCreate(
+                ['product_id' => $item["data"]['id']], // Matching condition
+                [
+                    'name' => $item["data"]['name'],
+                    'price' => $item["data"]['selling_price'],
+                    'qty' => $item['quantity'],
+                    'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
+                    'status' => 'active'
+                ]
+            );
+            $itemIds[] = $orderItem->id; // Save updated item IDs
+
+             // Update product stock
+            $product = Product::find($item["data"]['id']);
+            $product->stock()->update([
+                'quantity' => $product->stock->quantity - $item['quantity'],
+            ]);
+        }
+        
+        // Remove items not in the current request
+        $order->items()->whereNotIn('id', $itemIds)->delete();
+
+        if (!empty($request->exchange_items)) {
+            // Collect the IDs of provided exchange items
+            $exchangeItemIds = [];
+            
+            foreach ($request->exchange_items as $item) {
+                if (!isset($item['id']) || !$item['id']) {
+                    // Create new exchange item if it doesn't have an ID
+                    $data = $item; 
+                    unset($item['total']);
+                    $item["selling_price"] = 0;
+                    $product = Product::create($item);
+        
+                    $data["product_id"] = $product->id;
+                    $order->exchange_items()->create($data);
+        
+                    // Update product stock
+                    $product->stock()->update([
+                        'quantity' => $item['quantity'],
+                    ]);
+        
+                    // Update stock log
+                    $stock = Stock::where('product_id', $product->id)->first();
+                    Stocklog::where('stock_id', $stock->id)->update([
+                        'quantity' => $item['quantity'],
+                    ]);
+                } else {
+                    // If the item has an ID, it's an existing exchange item
+                    $exchangeItem = $order->exchange_items()->find($item['id']);
+                    if ($exchangeItem) {
+                        $exchangeItem->update([
+                            'product_id' => $item['product_id'],
+                            'quantity' => $item['quantity'],
+                            // Update any other necessary fields
+                        ]);
+        
+                        // Update product stock
+                        $product = Product::find($item['product_id']);
+                        $product->stock()->update([
+                            'quantity' => $item['quantity'],
+                        ]);
+        
+                        // Update stock log
+                        $stock = Stock::where('product_id', $product->id)->first();
+                        Stocklog::where('stock_id', $stock->id)->update([
+                            'quantity' => $item['quantity'],
+                        ]);
+                    }
+                }
+                
+                // Add the exchange item ID to the tracking array
+                if (isset($item['id']) && $item['id']) {
+                    $exchangeItemIds[] = $item['id'];
+                }
+            }
+        
+            // Delete exchange items that are not in the request
+            $order->exchange_items()->whereNotIn('id', $exchangeItemIds)->delete();
+        }
+        else{
+            $order->exchange_items()->delete();
+            foreach ($request->items as $item) {
+                $product = Product::find($item["data"]['id']);
+                $product->stock()->delete();
+                $product->delete();
+            }
+        }
+
+        //update product stock quantity
+        foreach ($request->items as $item) {
+            $product = Product::find($item["data"]['id']);
+            $product->stock()->update([
+                'quantity' => $product->stock->quantity - $item['quantity'],
+            ]);
+        }
+
+    
+        session()->flash('message', 'Order updated successfully.');
+
+        return redirect()->route('order.index');
     }
 
     /**

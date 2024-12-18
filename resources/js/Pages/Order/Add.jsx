@@ -16,14 +16,14 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function Add(props) {
-  const { auth, users, items, order_id, taxs, shippingrates ,order} = props
+  const { auth, users, items, order_id, taxs, shippingrates ,order,default_selected_shippingrate} = props
 
   const [loading, setLoading] = useState(false);
 
   const [loading2, setLoading2] = useState(false);
   const [selectedItems, setSelectedItems] = useState(null);
 
-  const [selectedShippingrate, setSelectedShippingrate] = useState(null);
+  const [selectedShippingrate, setSelectedShippingrate] = useState(default_selected_shippingrate || null);
 
   const [loading3, setLoading3] = useState(false);
 
@@ -41,6 +41,17 @@ export default function Add(props) {
   };
 
   console.log(order);
+
+  const [orderItems, setOrderItems] = useState( 
+    order?.items.map((item) => {
+      return {
+        value: item.product_id,
+        data : item?.product,
+        quantity : item.qty,
+        label : item?.product?.name + " - " + item?.product?.model
+      };
+    })
+    || []);
 
   return (
     <AuthenticatedLayout
@@ -71,10 +82,10 @@ export default function Add(props) {
         bank_branch: order?.bank_branch || '',
         bank_account: order?.bank_account || '',
         online_payment_link: order?.online_payment_link || '',
-        extra_charges: order?.extra_charges ||  0,
-        shipping_charges: order?.shipping_charges ||  0,
-        discount:  order?.discount || 0,
-        tax:  order?.tax || 0,
+        extra_charges: parseFloat(order?.extra_charges) ||  0,
+        shipping_charges: parseFloat(order?.shipping_charges) ||  0,
+        discount:  parseFloat(order?.discount) || 0,
+        tax: order?.tax_fee || 0,
         is_installment: order?.is_installment === true && '1' ||  '0',
         installment_amount: order?.installment_amount || 0,
         installment_period:  order?.installment_period || '',
@@ -82,12 +93,12 @@ export default function Add(props) {
         installment_start_date: order?.installment_start_date || '',
         installment_end_date: order?.installment_end_date || '',
         user_id: order?.user_id || '',
-        items: [],
+        items:  orderItems || [],
         tax_id:  order?.tax_id || '',
         shipping_id:  order?.shipping_id || '',
         order_date: order?.order_date || new Date().toISOString().slice(0, 10),
         close: false,
-        exchange_items:  order?.exchangeproduct ||[],
+        exchange_items:  order?.exchange_items ||[],
         exchange:  order?.exchange || 0
       }}
         validationSchema={Yup.object({
@@ -176,6 +187,13 @@ export default function Add(props) {
 
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
+   
+          order ?
+            router.put(route('order.update', order.id), values, {
+              preserveScroll: true,
+              preserveState: true,
+          }) 
+            :
           router.post(route('order.store'), values, {
             onSuccess: () => {
               resetForm();
@@ -254,15 +272,20 @@ export default function Add(props) {
                               <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
                             </div>
                             <div className="flex items-center justify-start gap-1 ">
+                            {!order && 
                               <button onClick={save} className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
                                 Save
                               </button>
+                            }
+                           
                               <button onClick={saveAndClose} className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
                                 Save & Close
                               </button>
+                              
                               <button onClick={() => router.visit(route('order.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                                 Close
                               </button>
+                              
                             </div>
                           </div>
 
@@ -284,7 +307,7 @@ export default function Add(props) {
                                 setLoading(true); // Set loading to true before initiating the search
                                 setTimeout(() => {
                                   router.get(
-                                    route('order.create'),
+                                    order ? route('order.edit', order.id) :   route( 'order.create'),
                                     { searchuser: e },
                                     {
                                       preserveScroll: true,
@@ -353,7 +376,7 @@ export default function Add(props) {
                                 setLoading2(true); // Set loading to true before initiating the search
                                 setTimeout(() => {
                                   router.get(
-                                    route('order.create'),
+                                    order ? route('order.edit', order.id) :   route('order.create'),
                                     { searchitem: e },
                                     {
                                       preserveScroll: true,
@@ -398,10 +421,10 @@ export default function Add(props) {
                                     toast.error('Quantity must be greater than 0');
                                     return;
                                   }
-
+                              
                                   setSelectedItems(null)
                                   setFieldValue('items', [...values.items, selectedItems]);
-                                  console.log(values.items);
+                                  
                                 }} className="bg-black text-sm hover:bg-blue-dark text-white font-bold py-[11px] px-4  rounded-lg" type="button">
                                   Add Item
                                 </button>
@@ -783,7 +806,7 @@ export default function Add(props) {
                                 setLoading3(true); // Set loading to true before initiating the search
                                 setTimeout(() => {
                                   router.get(
-                                    route('order.create'),
+                                    order ? route('order.edit', order.id) :   route('order.create'),
                                     { searchshipping: e },
                                     {
                                       preserveScroll: true,

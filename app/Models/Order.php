@@ -45,7 +45,7 @@ class Order extends Model
         'exchange'
     ];
 
-
+    protected $appends = ['tax_fee']; 
    
 
 
@@ -78,5 +78,9 @@ class Order extends Model
         return $this->belongsTo(ShippingRate::class);
     }
 
- 
+    //get tax into tax_fee
+    public function getTaxFeeAttribute()
+    {
+        return  $this->tax;
+    }
 }
