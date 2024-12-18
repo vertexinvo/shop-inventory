@@ -12,6 +12,7 @@ import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
 import { MdKeyboardBackspace } from "react-icons/md";
+import { toast } from 'react-toastify';
 
 
 export default function List(props) {
@@ -122,16 +123,16 @@ export default function List(props) {
                 <option value="pending">Pending</option>
                 <option value="completed">Completed</option>
                 <option value="cancelled">Cancelled</option>
-
               </select>
+
               {selectId.length > 0 && (
-                      <button
-                        onClick={() => setIsBulkDeleteModalOpen(true)}
-                        className="text-white w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
-                      >
-                        Bulk Delete
-                      </button>
-                    )}
+                <button
+                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                  className="text-white w-auto sm:w-1/6 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                >
+                  Bulk Delete
+                </button>
+              )}
               <button
                 onClick={() => router.get(route('order.instantorder'))}
                 className="text-white w-auto sm:w-1/5 py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
@@ -180,18 +181,18 @@ export default function List(props) {
                     >
                       Search
                     </button>
-                   
+
 
                   </Form>
 
                 )}
 
               </Formik>
-              
+
 
             </div>
           </div>
-          
+
 
           <div className="overflow-x-auto">
             <div class="font-[sans-serif] overflow-x-auto">
@@ -415,22 +416,41 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
-                        <button onClick={() => setIsStatusModalOpen(order)}>
-                          {order.status === "pending" ? (
-                            <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
-                            > {order.status || 'N/A'}<FaPen className="ms-1" />
-                            </span>) : order.status === "completed" ? (
-                              <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
-                              >{order.status || 'N/A'}<FaPen className="ms-1" />
-                              </span>
-                            ) : order.status === "cancel" && (
-                              <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
-                              >{order.status || 'N/A'}<FaPen className="ms-1" />
-                              </span>
-                            )}
+                        {/* if status is cancel so cant click on this button cancel status */}
+                        {/* {order.status === "cancel" ? (
+                          <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                          >{order.status || 'N/A'}
+                          </span>
+                        ) : (
+                          <button onClick={() => setIsStatusModalOpen(order)}>
+                            <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                            >{order.status || 'N/A'}
+                            </span>
+                          
+                          </button>
+                        )} */}
+                        <button
+                          onClick={() => {
+                            if (order.status === "cancel") {
+                              toast.error("You can't change the status because it is already canceled.");
+                            } else {
+                              setIsStatusModalOpen(order);
+                            }
+                          }}
+                          className={`${order.status === "pending"
+                              ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+                              : order.status === "completed"
+                                ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                                : order.status === "cancel"
+                                  ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                                  : ""
+                            }`}
+                        >
+                          {order.status || "N/A"}
+                          {order.status !== "cancel" && <FaPen className="ms-1" />}
                         </button>
-
                       </td>
+
 
 
                       <td class="p-4 flex items-center gap-2">
@@ -594,7 +614,8 @@ export default function List(props) {
                   <option value="completed">Completed</option>
                   <option value="cancel">Cancel</option>
                 </Field>
-
+                {/* if cancel selected show messamge you sure want to cancel and cant change status */}
+                {values.status === 'cancel' && <div className="text-red-600 text-sm mt-1">You sure want to cancel and cant change status</div>}
                 <ErrorMessage name="status" component="div" className="text-red-600 text-sm mt-1" />
               </div>
 

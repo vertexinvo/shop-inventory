@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 function RecentOrder({ recentOrder }) {
     return (
-        <div class="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
+        <div class="mt-4 mx-4 bg-white ">
             <div className='flex justify-between items-center'>
                 <p class="text-xl font-semibold leading-tight text-gray-800 mb-2">
                     Recent Orders

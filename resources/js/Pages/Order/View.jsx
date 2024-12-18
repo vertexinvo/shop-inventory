@@ -69,9 +69,9 @@ const View = (props) => {
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-left text-sm mb-4">
-                            <div>Invoice #: <span class="font-semibold">INV-${order.id}</span></div>
-                            <div>Date: <span class="font-semibold">${currentDateTime}</span></div>
-                            <div>Customer: <span class="font-semibold">${order.name}</span></div>
+                            <div>Invoice #: <span class="font-semibold">INV-${order.id ? order.id : 'N/A'}</span></div>
+                            <div>Date: <span class="font-semibold">${currentDateTime || 'N/A'}</span></div>
+                            <div>Customer: <span class="font-semibold">${order.name || 'N/A'}</span></div>
                         </div>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
@@ -84,9 +84,9 @@ const View = (props) => {
                             </div>
                             ${order.items.map(item => `
                                 <div class="grid grid-cols-3 border-b border-gray-200 py-1">
-                                    <div class="truncate">${item.product.name}</div>
-                                    <div class="text-center">${item.qty}</div>
-                                    <div class="text-right">Rs. ${item.price}</div>
+                                    <div class="truncate">${item.product.name ? item.product.name : 'N/A'}</div>
+                                    <div class="text-center">${item.qty ? item.qty : 'N/A'}</div>
+                                    <div class="text-right">Rs. ${item.price ? item.price : 'N/A'}</div>
                                 </div>
                             `).join('')}
                         </div>
@@ -94,15 +94,15 @@ const View = (props) => {
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-right text-sm">
-                            <div>Subtotal: <span class="font-semibold">Rs. ${order.total}</span></div>
-                            <div>Discount: <span class="font-semibold">Rs. ${order.discount}</span></div>
-                            <div>Exchange: <span class="font-semibold">Rs. ${order.exchange || '0.00'}</span></div>
-                            <div>Tax: <span class="font-semibold">Rs. ${order.tax || '0.00'}</span></div>
-                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping || '0.00'}</span></div>
-                            <div>Extra Charges: <span class="font-semibold">Rs. ${order.extra_charges || '0.00'}</span></div>
+                            <div>Subtotal: <span class="font-semibold">Rs. ${order.total ? order.total : '0.00'}</span></div>
+                            <div>Discount: <span class="font-semibold">Rs. ${order.discount ? order.discount : '0.00'}</span></div>
+                            <div>Exchange: <span class="font-semibold">Rs. ${order.exchange ? order.exchange : '0.00'}</span></div>
+                            <div>Tax: <span class="font-semibold">Rs. ${order.tax ? order.tax : '0.00'}</span></div>
+                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping ? order.shipping : '0.00'}</span></div>
+                            <div>Extra Charges: <span class="font-semibold">Rs. ${order.extra_charges ? order.extra_charges : '0.00'}</span></div>
                             <div class="border-t border-dashed border-gray-300 my-2"></div>
 
-                            <div class="font-bold">Total: <span class="text-lg">Rs.  ${order.payable_amount}</span></div>
+                            <div class="font-bold">Total: <span class="text-lg">Rs.  ${order.payable_amount ? order.payable_amount : '0.00'}</span></div>
                         </div>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
@@ -134,7 +134,7 @@ const View = (props) => {
                      onClick={() => router.get(route('order.index'))}
                      title="Back"
                  />
-            <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id}</h2>
+            <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id ? order.id : 'N/A'}</h2>
                 </>}>
             <Head title="View Order" />
             <style>
@@ -274,7 +274,7 @@ const View = (props) => {
                                             <td class=" text-sm">
                                                 <div class="flex items-center cursor-pointer w-max">
                                                     <div >
-                                                        <p class="text-sm text-black ">Name : {item.product.name}</p>
+                                                        <p class="text-sm text-black ">Name : {item.product.name ? item.product.name : 'N/A'}</p>
                                                         {item.product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{item.product.model ? item.product.model : 'N/A'} </p>}
                                                     </div>
                                                 </div>

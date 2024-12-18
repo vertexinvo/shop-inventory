@@ -170,12 +170,12 @@ export default function List(props) {
             <td class=" text-sm">
               <div class="flex items-center cursor-pointer w-max">
                 <div class="ml-4 ">
-                  <p class="text-sm text-black ">{brand.name}</p>
+                  <p class="text-sm text-black ">{brand.name ? brand.name : 'N/A'}</p>
                 </div>
               </div>
             </td>
             <td class="py-2 px-4 border-b text-left whitespace-nowrap overflow-hidden text-ellipsis max-w-[150px]">
-              {brand.description}
+              {brand.description ? brand.description : 'N/A'}
             </td>
             
            
