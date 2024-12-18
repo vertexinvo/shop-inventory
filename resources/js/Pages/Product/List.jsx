@@ -15,7 +15,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function List(props) {
   const { auth, stock, products } = props
-
+console.log(products)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -270,7 +270,6 @@ export default function List(props) {
                           <input type="checkbox" onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })} class="sr-only peer" checked={product?.stock?.status || false} />
                           <div
                             class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black">
-
                           </div>
                         </label>
                       </td>

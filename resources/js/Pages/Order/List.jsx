@@ -17,7 +17,7 @@ import { toast } from 'react-toastify';
 
 export default function List(props) {
   const { auth, orders, pendingCount, completedCount, total } = props
-
+console.log(orders)
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -213,6 +213,9 @@ export default function List(props) {
                         </svg>
                       </label>
                     </th>
+                    <th class="pl-4 text-left text-sm font-semibold ">
+                      INV-ID
+                    </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Order Info
                     </th>
@@ -300,6 +303,10 @@ export default function List(props) {
                             />
                           </svg>
                         </label>
+                      </td>
+
+                      <td class="pl-4 text-sm text-black">
+                        {order.id || 'N/A'}
                       </td>
                       <td class="text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
@@ -604,7 +611,7 @@ export default function List(props) {
         >
           {({ isSubmitting, handleSubmit, setFieldValue, values }) => (
             <Form className="bg-white p-2 mt-2 mb-2 w-full max-w-lg mx-auto flex flex-col items-center">
-              <h2 className="text-lg font-bold mb-4">Change Status</h2>
+              <h2 className="text-lg font-bold mb-4">Order Status</h2>
 
 
               <div className="relative z-0 w-full mb-5 group">
