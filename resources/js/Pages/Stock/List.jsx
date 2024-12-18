@@ -30,7 +30,7 @@ export default function List(props) {
           <MdKeyboardBackspace
             size={20}
             className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('dashboard'))}
+            onClick={() => router.get(route('product.index'))}
             title="Back"
           /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Manage Stock</h2>
         </>}
