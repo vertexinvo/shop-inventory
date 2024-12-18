@@ -14,6 +14,7 @@ class Exchangeitem extends Model
         'order_id',
         'product_id',
         'name',
+        'model',
         'identity_type',
         'identity_value',
         'purchase_price',

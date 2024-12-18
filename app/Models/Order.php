@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Eliseekn\LaravelMetrics\HasMetrics;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Order extends Model
 {
-    use HasFactory, HasMetrics;
+    use HasFactory, HasMetrics, SoftDeletes;
 
     protected $fillable = [ 
         

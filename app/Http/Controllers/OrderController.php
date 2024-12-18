@@ -45,6 +45,21 @@ class OrderController extends Controller
         $order = Order::findOrFail($id);
         $order->status = $request->status;
         $order->save();
+
+        if($request->status == 'cancel'){
+            foreach ($order->items as $item) {
+                $product_id = $item->product_id;
+                $stock = Stock::where('product_id', $product_id)->first();
+                
+                if ($stock) {
+                    $newqty = $stock->quantity + $item->qty;
+                    $stock->update([
+                        'quantity' => $newqty
+                    ]);
+                }
+            }
+        }
+
         session()->flash('message', 'Status updated successfully');
         return back();
     }
@@ -576,6 +591,16 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        session()->flash('message', 'Order deleted successfully.');
+        return redirect()->route('order.index');
+    }
+
+    public function bulkdestroy(Request $request)
+    {
+        $ids = explode(',', $request->ids);
+        Order::whereIn('id', $ids)->delete();
+        session()->flash('message', 'Order deleted successfully');
+        return back();
     }
 }
