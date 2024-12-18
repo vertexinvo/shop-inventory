@@ -499,109 +499,75 @@ class OrderController extends Controller
         ]);
         $order->update($data);
 
-        $itemIds = []; // Track item IDs to clean up unused ones later
+
+        
+        foreach ($order->items as $item) {
+            $product_id = $item->product_id;
+            $stock = Stock::where('product_id', $product_id)->first();
+            
+            if ($stock) {
+                $newqty = $stock->quantity + $item->qty;
+                $stock->update([
+                    'quantity' => $newqty
+                ]);
+            }
+        }
+
+        $order->items()->delete();
+        
+        foreach ($request->items as $item) {
+            $order->items()->create([
+                'product_id' => $item["data"]['id'],
+                'name' => $item["data"]['name'],
+                'price' => $item["data"]['selling_price'],
+                'qty' => $item['quantity'],
+                'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
+                'status'=> 'active'
+            ]);
+        }
 
         foreach ($request->items as $item) {
-            $orderItem = $order->items()->updateOrCreate(
-                ['product_id' => $item["data"]['id']], // Matching condition
-                [
-                    'name' => $item["data"]['name'],
-                    'price' => $item["data"]['selling_price'],
-                    'qty' => $item['quantity'],
-                    'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
-                    'status' => 'active'
-                ]
-            );
-            $itemIds[] = $orderItem->id; // Save updated item IDs
-
-             // Update product stock
             $product = Product::find($item["data"]['id']);
             $product->stock()->update([
                 'quantity' => $product->stock->quantity - $item['quantity'],
             ]);
         }
         
-        // Remove items not in the current request
-        $order->items()->whereNotIn('id', $itemIds)->delete();
 
-        if (!empty($request->exchange_items)) {
-            // Collect the IDs of provided exchange items
-            $exchangeItemIds = [];
-            
+        $exchangeItemsIds = [];
+
+        if ($request->exchange_items) {
             foreach ($request->exchange_items as $item) {
-                if (!isset($item['id']) || !$item['id']) {
-                    // Create new exchange item if it doesn't have an ID
-                    $data = $item; 
+                if(!isset($item["id"])){                  
+                    $data = $item;
+                    $item["is_exchange"] = true;
+                    $item["selling_price"] = $item["purchase_price"];
+                    $item["exchange_order_id"] = $order->id;
                     unset($item['total']);
-                    $item["selling_price"] = 0;
                     $product = Product::create($item);
-        
+
                     $data["product_id"] = $product->id;
                     $order->exchange_items()->create($data);
-        
-                    // Update product stock
+
                     $product->stock()->update([
                         'quantity' => $item['quantity'],
                     ]);
-        
-                    // Update stock log
                     $stock = Stock::where('product_id', $product->id)->first();
                     Stocklog::where('stock_id', $stock->id)->update([
                         'quantity' => $item['quantity'],
                     ]);
-                } else {
-                    // If the item has an ID, it's an existing exchange item
-                    $exchangeItem = $order->exchange_items()->find($item['id']);
-                    if ($exchangeItem) {
-                        $exchangeItem->update([
-                            'product_id' => $item['product_id'],
-                            'quantity' => $item['quantity'],
-                            // Update any other necessary fields
-                        ]);
-        
-                        // Update product stock
-                        $product = Product::find($item['product_id']);
-                        $product->stock()->update([
-                            'quantity' => $item['quantity'],
-                        ]);
-        
-                        // Update stock log
-                        $stock = Stock::where('product_id', $product->id)->first();
-                        Stocklog::where('stock_id', $stock->id)->update([
-                            'quantity' => $item['quantity'],
-                        ]);
-                    }
-                }
-                
-                // Add the exchange item ID to the tracking array
-                if (isset($item['id']) && $item['id']) {
-                    $exchangeItemIds[] = $item['id'];
-                }
-            }
-        
-            // Delete exchange items that are not in the request
-            $order->exchange_items()->whereNotIn('id', $exchangeItemIds)->delete();
-        }
-        else{
-            $order->exchange_items()->delete();
-            foreach ($request->items as $item) {
-                $product = Product::find($item["data"]['id']);
-                $product->stock()->delete();
-                $product->delete();
+                    //push items in exchangeItemsIds 
+                    $exchangeItemsIds[] = $product->id;
+                }else{
+                    $exchangeItemsIds[] = $item["product_id"];
+                }          
             }
         }
+        //delete all exchange items of this order where not in exchangeItemsIds
+        $order->exchange_items()->whereNotIn('product_id', $exchangeItemsIds)->delete();
+        Product::whereNotIn('id', $exchangeItemsIds)->where('exchange_order_id', $order->id)->delete();
 
-        //update product stock quantity
-        foreach ($request->items as $item) {
-            $product = Product::find($item["data"]['id']);
-            $product->stock()->update([
-                'quantity' => $product->stock->quantity - $item['quantity'],
-            ]);
-        }
-
-    
         session()->flash('message', 'Order updated successfully.');
-
         return redirect()->route('order.index');
     }
 

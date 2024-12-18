@@ -18,12 +18,12 @@ class BrandService{
     public function createBrand($request){
         $validator = Validator::make($request->all(), [
             'name' => 'required|unique:brands,name',
-            'description' => 'required',
+            'description' => 'nullable',
         ]);
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+            return false;
         }
         $data = $request->all();
         $brand = Brand::create($data);
