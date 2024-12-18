@@ -54,17 +54,37 @@ export default function List(props) {
           <div class="flex flex-row  w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
               <p class="font-bold">STOCK STATUS</p>
-              <label className="relative cursor-pointer">
-                <input type="checkbox" onChange={() => router.put(route('product.status', stocks.id), {}, { preserveScroll: true })} className="sr-only peer" checked={stocks?.status|| false}/>
-                <div class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black">                
-                  
+              <label class="relative cursor-pointer inline-flex items-center">
+                <input
+                  type="checkbox"
+                  onChange={() => router.put(route('product.status', stocks.id), {}, { preserveScroll: true })}
+                  class="sr-only peer"
+                  checked={stocks?.status || false}
+                />
+
+                <p class="text-lg flex items-center space-x-2">
+                  {stocks.status ?
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                      IN STOCK
+                    </span>
+                    :
+                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                      OUT OF STOCK
+                    </span>
+                  }
+                </p>
+
+                <div
+                  class="w-8 h-4 flex items-center bg-gray-300 rounded-full ml-2 peer peer-checked:bg-black">
+                  <div
+                    class="w-3 h-3 bg-white border border-gray-300 rounded-full transform transition-all peer-checked:translate-x-4 translate-x-0">
+                  </div>
                 </div>
               </label>
-              <p class="text-lg flex  ">
-
-                {stocks.status ? <span class="bg-green-100 text-green-800 text-xs font-medium me-2 mt-1 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">IN STOCK</span>
-                  : <span class="bg-red-100 text-red-800 text-xs font-medium me-2 mt-1 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">OUT OF STOCK</span>}</p>
             </div>
+
+
+
             <div class="my-auto">
               <TbStatusChange size={40} />
             </div>
@@ -100,9 +120,9 @@ export default function List(props) {
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
-        <div className="flex flex-col md:flex-row justify-left items-center mt-2 mb-4">
+          <div className="flex flex-col md:flex-row justify-left items-center mt-2 mb-4">
 
-          <div className="flex flex-col md:flex-row w-full  space-y-2 md:space-y-0 md:space-x-2">
+            <div className="flex flex-col md:flex-row w-full  space-y-2 md:space-y-0 md:space-x-2">
 
               {selectId.length > 0 &&
                 <button
