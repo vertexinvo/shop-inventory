@@ -250,96 +250,152 @@ const View = (props) => {
                     {/* Invoice Items */}
                     <div className="-mx-4 mt-2 flow-root sm:mx-0 py-4">
                         <div className="overflow-x-auto">
-                            {/* heading table */}
-                            <div className="text-gray-800 text-sm font-bold mb-4">Order Items</div>
-                            <table className="min-w-full mb-8">
-                                <colgroup>
-                                    <col className="w-full sm:w-1/6" />
-                                    <col className="w-full sm:w-1/6" />
-                                    <col className="w-full sm:w-1/6" />
-                                    <col className="w-full sm:w-1/6" />
-                                </colgroup>
-                                <thead className="border-b border-gray-300 text-gray-900">
-                                    <tr >
-                                        {/* <th scope="col" className="pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 whitespace-nowrap">Product Info</th> */}
-                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Product Info</th>
-                                        <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Price</th>
-                                        <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">QTY</th>
-                                        <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">Total</th>
-                                    </tr>
-                                </thead>
 
-                                <tbody>
-                                    {order.items.map((item) => (
-                                        <tr key={item.id}>
-                                            <td class=" text-sm">
-                                                <div class="flex items-center cursor-pointer w-max">
-                                                    <div >
-                                                        <p class="text-sm text-black ">Name : {item.product.name ? item.product.name : 'N/A'}</p>
-                                                        {item.product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{item.product.model ? item.product.model : 'N/A'} </p>}
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            
-                                            {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
-                                            {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
+                            <div className="order-items-section">
+                                <div className="text-gray-800 text-sm font-bold mb-4">Order Items</div>
+                                <div className="overflow-x-auto">
+                                    <table className="min-w-full table-auto mb-8 border-collapse border border-gray-300">
+                                        <colgroup>
+                                            <col className="w-full sm:w-1/3" />
+                                            <col className="w-full sm:w-1/6" />
+                                            <col className="w-full sm:w-1/6" />
+                                            <col className="w-full sm:w-1/6" />
+                                        </colgroup>
+                                        <thead className="border-b border-gray-300 bg-gray-100 text-gray-900">
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    className="px-3 py-2 text-left text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                >
+                                                    Product Info
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-3 py-2 text-left text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                >
+                                                    Price
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-3 py-2 text-right text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                >
+                                                    QTY
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className="px-3 py-2 text-right text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                >
+                                                    Total
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {order.items.map((item) => (
+                                                <tr key={item.id} className="border-b border-gray-300 hover:bg-gray-50">
+                                                    <td className="px-3 py-2 text-sm text-gray-700">
+                                                        <div className="flex items-start">
+                                                            <div>
+                                                                <p className="font-medium text-black">
+                                                                    Name: {item.product.name || "N/A"}
+                                                                </p>
+                                                                {item.product.model && (
+                                                                    <p className="text-xs text-gray-500 mt-1">
+                                                                        Model: {item.product.model || "N/A"}
+                                                                    </p>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td className="px-3 py-2 text-sm text-gray-700">
+                                                        Rs. {item.price || "N/A"}
+                                                    </td>
+                                                    <td className="px-3 py-2 text-right text-sm text-gray-700">
+                                                        {item.qty || "N/A"}
+                                                    </td>
+                                                    <td className="px-3 py-2 text-right text-sm text-gray-700">
+                                                        Rs. {order.total || "N/A"}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
 
-                                            <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.price ? item.price : 'N/A'}</td>
-                                            <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.qty ? item.qty : 'N/A'}</td>
-                                            <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total ? order.total : 'N/A'}</td>
-                                        </tr>
+                            {/* Exchange Items */}
 
-                                    ))}
-                                </tbody>
-                            </table>
+                            {order.exchange_items.length > 0 && (
+                                <div className="exchange-items-section">
+                                    <div className="text-gray-800 text-sm font-bold mb-4">Exchange Items</div>
+                                    <div className="overflow-x-auto">
+                                        <table className="min-w-full table-auto mb-8 border-collapse border border-gray-300">
+                                            <colgroup>
+                                                <col className="w-full sm:w-1/3" />
+                                                <col className="w-full sm:w-1/6" />
+                                                <col className="w-full sm:w-1/6" />
+                                                <col className="w-full sm:w-1/6" />
+                                            </colgroup>
+                                            <thead className="border-b border-gray-300 bg-gray-100 text-gray-900">
+                                                <tr>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-3 py-2 text-left text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                    >
+                                                        Product Info
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-3 py-2 text-left text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                    >
+                                                        Price
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-3 py-2 text-right text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                    >
+                                                        QTY
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="px-3 py-2 text-right text-sm font-semibold text-gray-900 whitespace-nowrap"
+                                                    >
+                                                        Total
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {order.exchange_items.map((item) => (
+                                                    <tr key={item.id} className="border-b border-gray-300 hover:bg-gray-50">
+                                                        <td className="px-3 py-2 text-sm text-gray-700">
+                                                            <div className="flex items-start">
+                                                                <div>
+                                                                    <p className="font-medium text-black">
+                                                                        {item.name || "N/A"}
+                                                                    </p>
+                                                                    <p className="text-xs text-gray-500 mt-1">
+                                                                        Model: {item.model || "N/A"}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td className="px-3 py-2 text-sm text-gray-700">
+                                                            Rs. {item.purchase_price || "N/A"}
+                                                        </td>
+                                                        <td className="px-3 py-2 text-right text-sm text-gray-700">
+                                                            {item.quantity || "N/A"}
+                                                        </td>
+                                                        <td className="px-3 py-2 text-right text-sm text-gray-700">
+                                                            Rs. {order.total || "N/A"}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            )}
 
-                            {/* heading table */}
-                            {order.exchange_items.length > 0 && 
-                            <>
-                             <div className="text-gray-800 text-sm font-bold mb-4">Exchange Items</div>
-                             <table className="min-w-full mb-8">
-                                 <colgroup>
-                                     <col className="w-full sm:w-1/6" />
-                                     <col className="w-full sm:w-1/6" />
-                                     <col className="w-full sm:w-1/6" />
-                                     <col className="w-full sm:w-1/6" />
-                                 </colgroup>
-                                 <thead className="border-b border-gray-300 text-gray-900">
-                                     <tr >
-                                         {/* <th scope="col" className="pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0 whitespace-nowrap">Product Info</th> */}
-                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Product Info</th>
-                                         <th scope="col" className="hidden px-3 py-2 text-left text-sm font-semibold text-gray-900 sm:table-cell whitespace-nowrap">Price</th>
-                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">QTY</th>
-                                         <th scope="col" className="pl-3 pr-4 py-2 text-right text-sm font-semibold text-gray-900 sm:pr-0 whitespace-nowrap">Total</th>
-                                     </tr>
-                                 </thead>
- 
-                                 <tbody>
-                                     {order.exchange_items.map((item) => (
-                                         <tr key={item.id}>
-                                             <td class=" text-sm">
-                                                 <div class="flex items-center cursor-pointer w-max">
-                                                     <div >
-                                                         <p class="text-sm text-black ">Name: {item.name ? item.name : 'N/A'} </p>
-                                                         { <p class="text-xs text-gray-500 mt-0.5">Model: {item.model ? item.model : 'N/A'}  </p>}
-                                                     </div>
-                                                 </div>
-                                             </td>
-                                           
-                                             {/* <td className="pl-4 py-2 pr-3 text-left text-sm text-gray-500 sm:pl-0 whitespace-nowrap">{item.product.name}</td> */}
-                                             {/* <td className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">{item.product.description ? item.product.description : 'N/A'}</td> */}
- 
-                                             <td  className="hidden px-3 py-2 text-left text-sm text-gray-500 sm:table-cell">Rs. {item.purchase_price ? item.purchase_price: 'N/A'} </td>
-                                             <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{item.quantity ? item.quantity: 'N/A'}</td>
-                                             <td className="pl-3 pr-4 py-2 text-right text-sm text-gray-500 sm:pr-0">{order.total ? order.total : 'N/A'}</td>
-                                         </tr>
- 
-                                     ))}
-                                 </tbody>
-                             </table>
-                             </>
-                            }
-                           
+
 
                             <tfoot className="justify-content-right">
                                 <tr>
