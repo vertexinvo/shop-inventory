@@ -40,7 +40,7 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function (Request $request) {
 
-    $totalOrder = Order::count();
+    $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
         $query->where('quantity', '>', 0);
     })->count();
@@ -66,10 +66,14 @@ Route::get('/dashboard', function (Request $request) {
         $period = array_map(fn($date) => Carbon::parse(trim($date))->toDateString(), explode('~', $period, 2));
     }
 
-    $groupedDataLabels = LaravelMetrics::query(Order::query())->dateColumn('order_date')->labelColumn('order_date')->trends();
+    $groupedDataLabels = LaravelMetrics::query(Order::query()->whereNotIn('status', ['cancel']))->dateColumn('order_date')->labelColumn('order_date')->trends();
+  
 
     $trend = Metrics::trends(
-        Order::metrics()->dateColumn('order_date')->fillMissingData(),
+        Order::metrics()
+        ->dateColumn('order_date')
+        // check where status is not cancel
+        ->fillMissingData(),
         $period,
         $groupedDataLabels["labels"],
         'order_date'

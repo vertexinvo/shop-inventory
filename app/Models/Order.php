@@ -4,14 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Eliseekn\LaravelMetrics\HasMetrics;
+
+use Eliseekn\LaravelMetrics\LaravelMetrics;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Order extends Model
 {
-    use HasFactory, HasMetrics, SoftDeletes;
+    use HasFactory, SoftDeletes;
 
+    public static function metrics(): LaravelMetrics
+    {
+        $parent = get_called_class();
+
+        return LaravelMetrics::query($parent::query()->whereNotIn('status', ['cancel']));
+    }
+ 
     protected $fillable = [ 
         
         'name',
@@ -48,7 +56,6 @@ class Order extends Model
 
     protected $appends = ['tax_fee']; 
    
-
 
     public function user()
     {
