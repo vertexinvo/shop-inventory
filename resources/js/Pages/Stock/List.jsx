@@ -74,13 +74,8 @@ export default function List(props) {
                   }
                 </p>
 
-                <div
-                  class="w-8 h-4 flex items-center bg-gray-300 rounded-full ml-2 peer peer-checked:bg-black">
-                  <div
-                    class="w-3 h-3 bg-white border border-gray-300 rounded-full transform transition-all peer-checked:translate-x-4 translate-x-0">
-                  </div>
-                </div>
-              </label>
+                <div class="relative w-9 h-5 bg-white  bg-gray-300    rounded-full peer dark:bg-black peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-gray-700 after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-700 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-black"></div>
+                </label>
             </div>
 
 

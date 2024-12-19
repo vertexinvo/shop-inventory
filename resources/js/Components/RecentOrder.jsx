@@ -117,8 +117,8 @@ function RecentOrder({ recentOrder }) {
                                                         ) : link.active ? (
                                                             // Active page button
                                                             <button
-                                                                className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                                                aria-current="page"
+                                                            className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                                            aria-current="page"
                                                             >
                                                                 {link.label}
                                                             </button>
@@ -130,7 +130,7 @@ function RecentOrder({ recentOrder }) {
                                                             >
                                                                 {link.label}
                                                             </button>
-                                                        )}
+                                                        )} 
                                                     </li>
                                                 );
                                             });
@@ -138,7 +138,7 @@ function RecentOrder({ recentOrder }) {
 
 
                                     <li>
-                                        <button onClick={() => recentOrder.links[recentOrder.links.length - 1].url && window.location.assign(recentOrder.links[recentOrder.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                                        <button onClick={() => recentOrder.links[recentOrder.links.length - 1].url && window.location.assign(recentOrder.links[recentOrder.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg  focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                                             <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                                                 <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                             </svg>

@@ -111,13 +111,12 @@ export default function Dashboard(props) {
           <RecentOrder recentOrder={latestOrder} />
         </div>
       </div>
-
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div className=" bg-white p-4 rounded-lg shadow-md">
+      <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
         <SupplierBalance suppliers={supplierBalanceRecord} />
         
         </div>
-        <div className=" bg-white p-4 rounded-lg shadow-md">
+        <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
         <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} />
       </div>
     </div>
