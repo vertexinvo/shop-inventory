@@ -46,13 +46,12 @@ export default function Add(props) {
                     initialValues={{
                         quantity: '',
                         type: '',
-                        is_supplier: '0',  
-                        supplier_invoice_no: '',   
-                        remarks: '', 
+                        is_supplier: '0',
+                        supplier_invoice_no: '',
+                        remarks: '',
                         datetime: '',
                         supplier_invoice_no: '',
                         product_id: product_id
-
                     }}
                     validationSchema={Yup.object({
                         quantity: Yup.number().min(1).required('Quantity is required'),
