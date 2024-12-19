@@ -249,7 +249,7 @@ export default function List(props) {
 
 
                       <td class="p-4 flex items-center gap-2">
-                        <button onClick={() => router.get(route('stocklog.edit', stocklogs.data[index].id))} title="Edit">
+                        <button onClick={() => { router.get(route('stocklog.edit', product.id), { product_id: stocks.product_id })}} type='button' title="Edit">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                             viewBox="0 0 348.882 348.882">
                             <path

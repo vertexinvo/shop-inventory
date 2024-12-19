@@ -85,11 +85,12 @@ class StocklogController extends Controller
      * Show the form for editing the specified resource.
      */
 
-public function edit($id)
+public function edit($id, Request $request)
 {
     $stocklogs = Stocklog::findOrFail($id);
     $suppliers = Supplier::all();
-    return Inertia::render('Stock/Edit', compact('stocklogs', 'suppliers'));
+    $product_id = $request->product_id;
+    return Inertia::render('Stock/Edit', compact('stocklogs', 'suppliers', 'product_id'));
 }
     /**
      * Update the specified resource in storage.

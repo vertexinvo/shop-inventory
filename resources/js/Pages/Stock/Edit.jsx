@@ -27,7 +27,7 @@ export default function Add(props) {
                     <MdKeyboardBackspace
                         size={20}
                         className="mr-2 cursor-pointer"
-                        onClick={() => router.get(route('stock.index'), { product_id: product_id })}
+                        onClick={() => router.get(route('stock.index'),{product_id:product_id})}
                         title="Back"
                     /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Stock Log</h2>
                 </>}
@@ -194,7 +194,7 @@ export default function Add(props) {
                           Save & Close
                            </button> */}
                                                         <button
-                                                            onClick={() => router.get(route('stock.index'), { product_id: product_id })}
+                                                             onClick={() => router.get(route('stock.index'),{product_id:product_id})}
                                                             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
                                                             type="button"
                                                         >

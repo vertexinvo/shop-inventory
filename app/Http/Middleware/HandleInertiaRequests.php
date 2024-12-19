@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\Session;
@@ -14,12 +15,15 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+    protected Setting $setting;
 
     /**
      * Determine the current asset version.
      */
     public function version(Request $request): string|null
     {
+        
+        
         return parent::version($request);
     }
 
@@ -30,11 +34,16 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $this->setting = Setting::first();
+
         $message = Session::get('message');
         $error = Session::get('error');
         
         Session::forget(['message', 'error']); 
 
+
+       
+        //Change APP_NAME to APP_NAME value replace by $this->setting->site_name
         return [
             ...parent::share($request),
             'auth' => [
@@ -44,6 +53,8 @@ class HandleInertiaRequests extends Middleware
                 'message' => $message,
                 'error' => $error,
             ],
+            'setting' => $this->setting,
+            'name' => $this->setting->site_name,
         ];
     }
 }
