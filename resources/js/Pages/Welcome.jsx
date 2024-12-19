@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link } from '@inertiajs/react';
+
 import { motion } from 'framer-motion';
 
 
@@ -104,8 +106,8 @@ const App = () => {
         <div className="hidden lg:flex items-center gap-6 ">
           <a href="#about" className="text-lg hover:text-gray-500">About</a>
           <a href="#services" className="text-lg hover:text-gray-500">Services</a>
-          <button className="px-4 py-2 border rounded-lg border-black hover:bg-black hover:text-white">Login</button>
-        </div>
+          <Link href={route('login')}><button className="px-4 py-2 border rounded-lg border-black hover:bg-black hover:text-white">Login </button></Link>
+                </div>
         <div className="lg:hidden" onClick={toggleMobileMenu}>
           <img src={isMobileMenuOpen ? '/images/close.svg' : '/images/menu.svg'} alt="Menu" />
         </div>
@@ -117,14 +119,14 @@ const App = () => {
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>      
           </ul>
-          <button className="mt-6 px-4 py-2 border rounded-lg border-black" >Login</button>
+         <Link href={route('login')}><button className="mt-6 px-4 py-2 border rounded-lg border-black" >Login</button></Link> 
         </div>
       )}
       <div className="flex flex-col lg:flex-row items-center gap-8 py-12">
         <SlideInFromLeft className="lg:w-1/2">
           <h2 className="text-4xl font-bold mb-4">Streamline Your Inventory Management</h2>
           <p className="text-lg">Optimize operations, reduce costs, and improve efficiency with Inventory Pro.</p>
-          <button className="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Learn More</button>
+          <a href="#services"><button  className="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Learn More</button></a>
         </SlideInFromLeft>
         <SlideInFromRight className="lg:w-1/2">
           <img  src='/images/services/8.jpg' alt="Inventory Management" />

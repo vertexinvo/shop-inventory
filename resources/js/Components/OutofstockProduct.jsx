@@ -127,8 +127,8 @@ function OutofstockProduct({outOfStockProductrecord}) {
                         ) : link.active ? (
                             // Active page button
                             <button
-                                className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-blue-600 dark:bg-gray-100 border border-r-0 border-blue-600 dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                aria-current="page"
+                            className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                            aria-current="page"
                             >
                                 {link.label}
                             </button>
