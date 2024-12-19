@@ -84,19 +84,9 @@ class StocklogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-//     public function edit(Request $request ,$id)
-// {
-// dd($request->all());
-//     $supplierinvoice = Supplierinvoice::findOrFail($id);
-//     $suppliers = Supplier::all();
-//     $supplierinvoices = Supplierinvoice::where('supplier_id', $supplierinvoice->supplier_id)->get();
-//     $product_id = $request->get('product_id', $supplierinvoice->product_id); 
-//     return Inertia::render('Stock/Edit', compact('supplierinvoice', 'suppliers', 'supplierinvoices', 'product_id'));
-// }
 
 public function edit($id)
 {
-    
     $stocklogs = Stocklog::findOrFail($id);
     $suppliers = Supplier::all();
     return Inertia::render('Stock/Edit', compact('stocklogs', 'suppliers'));

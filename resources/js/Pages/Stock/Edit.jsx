@@ -43,12 +43,12 @@ export default function Add(props) {
                                     <Formik
                                         enableReinitialize
                                         initialValues={{
-                                            quantity: stocklogs.quantity,
+                                            quantity: stocklogs.quantity || '',
                                             type: stocklogs.type,
-                                            is_supplier: stocklogs.is_supplier,
-                                            datetime: stocklogs.datetime,
-                                            supplier_invoice_no: stocklogs.supplier_invoice_no,
-                                            remarks: stocklogs.remarks,
+                                            is_supplier: stocklogs.is_supplier || '',
+                                            datetime: stocklogs.datetime || '',
+                                            supplier_invoice_no: stocklogs.supplier_invoice_no || '',
+                                            remarks: stocklogs.remarks || '',
 
                                         }}
                                         validationSchema={Yup.object({

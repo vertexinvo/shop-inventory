@@ -51,12 +51,7 @@ class StockController extends Controller
      */
     public function edit(Stock $stock)
     {
-        // $stocklogs = Stocklog::where('stock_id', $stocks->id)->latest()->paginate(10);
-
-        // $stocklogs = Stocklog::where('stock_id', $stock->id)->latest()->paginate(10);
-        // $stock = Stock::find($stock->id);
-
-        // return Inertia::render('Stock/Edit', compact('stock', 'stocklogs'));
+        
     }
 
     /**
