@@ -38,6 +38,11 @@ class DomainDatabaseSwitcher
                 'username' => env('DB_CELLTECH_USERNAME'),
                 'password' => env('DB_CELLTECH_PASSWORD'),
             ],
+            'inventorysystem.vertexinvo.io' => [
+                'database' => env('DB_VERTEXINVO_DATABASE'),
+                'username' => env('DB_VERTEXINVO_USERNAME'),
+                'password' => env('DB_VERTEXINVO_PASSWORD'),
+            ],
         ];
    
         if (array_key_exists($domain, $domainToDatabase)) {
