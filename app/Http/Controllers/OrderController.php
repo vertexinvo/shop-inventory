@@ -34,7 +34,7 @@ class OrderController extends Controller
         }
         $orders = $orders->paginate(10);
 
-        $total = Order::count();
+        $total = Order::where('status','!=', 'cancel')->count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
         
