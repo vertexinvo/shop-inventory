@@ -152,7 +152,7 @@ function RecentOrder({ recentOrder }) {
                 :
                 <div className="flex justify-center items-center h-64">
                     <p className="text-center text-gray-600 text-lg font-medium">
-                        No Out of Stock Order
+                        No Recent Orders
                     </p>
                 </div>
             }
