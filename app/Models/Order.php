@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 use Eliseekn\LaravelMetrics\LaravelMetrics;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
+use App\Models\Supplierinvoice;
+use App\Models\Product;
+use App\Models\Item;
+use App\Models\tax;
 
 class Order extends Model
 {
@@ -78,7 +81,7 @@ class Order extends Model
 
     public function tax()
     {
-        return $this->belongsTo(Tax::class);
+        return $this->belongsTo(tax::class);
     }
 
     public function shipping()
