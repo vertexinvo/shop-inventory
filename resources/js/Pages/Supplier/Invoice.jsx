@@ -95,16 +95,15 @@ export default function List(props) {
         </div>
       </div>
 
-
+ 
 
 
       <div className="flex flex-col px-4  mt-2 mx-auto w-full">
         <div className="w-full ">
 
-          <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
-
-            <div className="flex flex-col md:flex-row space-x-0 md:space-x-2">
-
+        <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+                      <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+                     
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -115,21 +114,21 @@ export default function List(props) {
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
 
-                  <Form className="flex flex-col md:flex-row space-x-0 md:space-x-2 mt-2 md:mt-0">
+                            <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
                     <button
                       onClick={() => setIsNewSupplierInvoiceModel(true)}
                       className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                     >
                       Create Invoice
-                    </button>
-                    <div className="relative">
+                    </button> 
+                   <div className="relative w-full md:w-auto">
 
                       <Field
                         name="search"
                         type="text"
                         placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                      />
+                        className=" py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
+                        />
                       <button
                         type="button"
                         onClick={() => { setFieldValue('search', ''); router.get(route('supplier.invoices')) }}
@@ -699,6 +698,8 @@ export default function List(props) {
         onClose={() => setIsStatusModalOpen(null)}
         maxWidth="2xl"
       >
+        
+
         <Formik
           initialValues={{
             status: isStatusModalOpen?.status || 'pending',
@@ -718,7 +719,7 @@ export default function List(props) {
 
         >
           {({ isSubmitting, handleSubmit, setFieldValue, values }) => (
-            <Form className="bg-white p-2 mt-2 mb-2 w-full max-w-lg mx-auto flex flex-col items-center">
+            <Form className="bg-white p-2 mt-2 mb-2 w-full max-w-lg mx-auto flex flex-col items-center justify-between">
               <h2 className="text-lg font-bold mb-4">Change Status</h2>
 
 

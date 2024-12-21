@@ -87,7 +87,6 @@ export default function List(props) {
          
           {/*  */}
             <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
-          
                       <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
                         <select
                           name="filter"
@@ -134,6 +133,9 @@ export default function List(props) {
                                   name="search"
                                   type="text"
                                   placeholder="Search..."
+                                  
+                                            
+                                          
                                   className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
                                 />
                                 <button

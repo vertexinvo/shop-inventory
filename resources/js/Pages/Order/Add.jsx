@@ -259,299 +259,188 @@ export default function Add(props) {
 
                 <div className={`w-full ${values.items.length > 0 ? 'col-span-2' : 'col-span-3'}`}>
 
-                  <div className="font-sans antialiased bg-grey-lightest">
-
-
+                <div className="font-sans antialiased bg-grey-lightest">
                     <div className="w-full bg-grey-lightest">
                       <div className="container mx-auto py-3 px-5">
-                        <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
-
-                          <div className="w-full flex items-center justify-between mb-5">
-                            <div className='flex items-center gap-2'>
-                              <label className="block text-grey-darker text-lg font-bold" >Order#{order_id}</label>
-                              <Field name="order_date" type="date" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5" />
+                        <div className="w-full  mx-auto bg-white rounded shadow p-5 sm:p-8 md:p-10">
+                          {/* Header Section */}
+                          <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
+                            <div className=" flex items-center gap-2 mb-4 md:mb-0 w-full sm:w-auto">
+                              <label className="block text-grey-darker text-lg font-bold">Order#{order_id}</label>
+                              <Field
+                                name="order_date"
+                                type="date"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                              />
                             </div>
-                            <div className="flex items-center justify-start gap-1 ">
-                            {!order && 
-                              <button onClick={save} className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                            <div className="flex flex-col sm:flex-row items-center justify-start gap-2 w-full sm:w-auto">
+                              <button
+                                onClick={save}
+                                className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+                                type="button"
+                              >
                                 Save
                               </button>
-                            }
-                           
-                              <button onClick={saveAndClose} className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
+                              <button
+                                onClick={saveAndClose}
+                                className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+                                type="button"
+                              >
                                 Save & Close
                               </button>
-                              
-                              <button onClick={() => router.visit(route('order.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
+                              <button
+                                onClick={() => router.visit(route("order.index"))}
+                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+                                type="button"
+                              >
                                 Close
                               </button>
-                              
                             </div>
                           </div>
 
 
+                          {/* Customer Selection Section */}
                           <div className="mb-4">
-
-
-
-                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Customer (Existing)</label>
+                            <label className="block text-grey-darker text-sm mb-2">Select Customer (Existing)</label>
                             <Select
                               onChange={(e) => {
-                                setFieldValue('user_id', e.value);
-                                setFieldValue('name', e.name);
-                                setFieldValue('email', e.email);
-                                setFieldValue('phone', e.phone);
-                                setFieldValue('address', e.address);
+                                setFieldValue("user_id", e.value);
+                                setFieldValue("name", e.name);
+                                setFieldValue("email", e.email);
+                                setFieldValue("phone", e.phone);
+                                setFieldValue("address", e.address);
                               }}
                               onInputChange={(e) => {
-                                setLoading(true); // Set loading to true before initiating the search
+                                setLoading(true);
                                 setTimeout(() => {
                                   router.get(
-                                    order ? route('order.edit', order.id) :   route( 'order.create'),
+                                    route("order.instantorder"),
                                     { searchuser: e },
                                     {
                                       preserveScroll: true,
                                       preserveState: true,
                                     }
                                   );
-                                  setLoading(false); // Turn off loading after the search is triggered
+                                  setLoading(false);
                                 }, 1000);
                               }}
                               isSearchable={true}
-                              isLoading={loading} // Dynamically set the loading state
+                              isLoading={loading}
                               value={users.find((option) => option.value === values.user_id)}
                               options={users}
                               className="basic-single"
                               classNamePrefix="select"
                               styles={customStyles}
                             />
-
                           </div>
 
-                          <div className="flex mb-4">
-
-                            <div className="w-1/2 mr-1">
-                              <label className="block text-grey-darker text-sm  mb-2" >Customer Name</label>
-                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer name" />
+                          {/* Customer Details Section */}
+                          <div className="flex flex-col sm:flex-row mb-4 gap-2">
+                            <div className="w-full sm:w-1/2">
+                              <label className="block text-grey-darker text-sm mb-2">Customer Name</label>
+                              <Field
+                                name="name"
+                                className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
+                                type="text"
+                                placeholder="Enter Customer name"
+                              />
                               <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
-                            <div className="w-1/2 mr-1">
-                              <label className="block text-grey-darker text-sm  mb-2" >Customer Email</label>
-                              <Field name="email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer email" />
+                            <div className="w-full sm:w-1/2">
+                              <label className="block text-grey-darker text-sm mb-2">Customer Email</label>
+                              <Field
+                                name="email"
+                                className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
+                                type="text"
+                                placeholder="Enter Customer email"
+                              />
                               <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
                           </div>
-                          <div className="flex mb-4">
 
-                            <div className="w-1/2 mr-1">
-                              <label className="block text-grey-darker text-sm  mb-2" >Customer Phone</label>
-                              <Field name="phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer phone" />
-                              <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
-                            </div>
-                            <div className="w-1/2 mr-1">
-                              <label className="block text-grey-darker text-sm  mb-2" >Customer Address</label>
-                              <Field name="address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer address" />
-                              <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
-                            </div>
-                          </div>
-
-
+                          {/* Items Section */}
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
-                            <Field name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" as="select">
-                              <option value="">Select Status</option>
-                              <option value="pending">Pending</option>
-                              <option value="completed">Completed</option>
-                            </Field>
-                            <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Items</label>
+                            <label className="block text-grey-darker text-sm mb-2">Select Items</label>
                             <Select
-                              onChange={(e) => {
-                                setSelectedItems(e);
-                              }}
+                              onChange={(e) => setSelectedItems(e)}
                               onInputChange={(e) => {
-                                setLoading2(true); // Set loading to true before initiating the search
+                                setLoading2(true);
                                 setTimeout(() => {
                                   router.get(
-                                    order ? route('order.edit', order.id) :   route('order.create'),
-                                    { searchitem: e },
+                                    route("order.instantorder"),
+                                    { searchitem: e, searchid: user?.id || "" },
                                     {
                                       preserveScroll: true,
                                       preserveState: true,
                                     }
                                   );
-                                  setLoading2(false); // Turn off loading after the search is triggered
+                                  setLoading2(false);
                                 }, 1000);
                               }}
                               isSearchable={true}
-                              isLoading={loading2} // Dynamically set the loading state
+                              isLoading={loading2}
                               value={items.find((option) => option.value === selectedItems?.value)}
                               options={items}
                               className="basic-single"
                               classNamePrefix="select"
                               styles={customStyles}
                             />
-                            <ErrorMessage name="items" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-
+                          {/* Selected Items Section */}
                           {selectedItems && (
-                            <div className="flex  ">
-                              <div className="w-1/2 mr-1">
-                                <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })} placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" />
+                            <div className="flex flex-col sm:flex-row gap-2">
+                              <div className="w-full sm:w-1/2">
+                                <input
+                                  type="number"
+                                  value={selectedItems?.quantity}
+                                  onChange={(e) =>
+                                    setSelectedItems({ ...selectedItems, quantity: e.target.value })
+                                  }
+                                  placeholder="Enter Quantity"
+                                  className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
+                                />
                               </div>
-                              <div className="w-1/2 mr-1">
-                                <button onClick={() => {
-
-                                  if (selectedItems?.quantity > selectedItems?.data?.stock?.quantity) {
-                                    toast.error('Quantity exceeds stock quantity');
-                                    return
-                                  }
-
-                                  //check if already added check by product id
-                                  if (values.items.find(item => item.data.id === selectedItems?.data?.id)) {
-                                    toast.error('Item already added');
-                                    return
-                                  }
-
-                                  if (selectedItems?.quantity <= 0) {
-                                    toast.error('Quantity must be greater than 0');
-                                    return;
-                                  }
-                              
-                                  setSelectedItems(null)
-                                  setFieldValue('items', [...values.items, selectedItems]);
-                                  
-                                }} className="bg-black text-sm hover:bg-blue-dark text-white font-bold py-[11px] px-4  rounded-lg" type="button">
+                              <div className="w-full sm:w-1/2">
+                                <button
+                                  onClick={() => {
+                                    if (selectedItems?.quantity > selectedItems?.data?.stock?.quantity) {
+                                      toast.error("Quantity exceeds stock quantity");
+                                      return;
+                                    }
+                                    if (values.items.find((item) => item.data.id === selectedItems?.data?.id)) {
+                                      toast.error("Item already added");
+                                      return;
+                                    }
+                                    if (selectedItems?.quantity <= 0) {
+                                      toast.error("Quantity must be greater than 0");
+                                      return;
+                                    }
+                                    setSelectedItems(null);
+                                    setFieldValue("items", [...values.items, selectedItems]);
+                                  }}
+                                  className="bg-black text-sm hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg"
+                                  type="button"
+                                >
                                   Add Item
                                 </button>
                               </div>
                             </div>
                           )}
 
-                          {selectedItems && (
-                            <div className='my-5'>
-
-
-                              <div className="">
-                                <div class="font-[sans-serif] ">
-                                  <table class="min-w-full bg-white">
-                                    <thead class="whitespace-nowrap">
-                                      <tr class="odd:bg-gray-50">
-
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Product Info
-                                        </th>
-                                        <td class=" text-sm">
-                                          <div class="flex items-center cursor-pointer w-max">
-                                            {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
-                                            <div class="ml-4 ">
-                                              <p class="text-sm text-black ">Name : {selectedItems?.data?.name}</p>
-                                              {selectedItems?.data?.model && <p class="text-xs text-gray-500 mt-0.5">Model :{selectedItems?.data?.model} </p>}
-                                              {selectedItems?.data?.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.identity_type}:{selectedItems?.data?.identity_value} </p>}
-                                            </div>
-                                          </div>
-                                        </td>
-                                      </tr>
-
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Purchase price
-                                        </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.purchase_price || 'N/A'}
-                                        </td>
-                                      </tr>
-
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Selling price
-                                        </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.selling_price || 'N/A'}
-                                        </td>
-                                      </tr>
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Warranty period
-                                        </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                                          {selectedItems?.data?.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.warranty_period} - {selectedItems?.data?.warranty_type} </p>)}
-                                        </td>
-                                      </tr>
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Is Borrow
-                                        </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                                          {selectedItems?.data?.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
-                                            <ul class="list-disc">
-                                              {selectedItems?.data?.shop_name && <li>Name: {selectedItems?.data?.shop_name}</li>}
-                                              {selectedItems?.data?.shop_address && <li>Address: {selectedItems?.data?.shop_address}</li>}
-                                              {selectedItems?.data?.shop_phone && <li>Phone: {selectedItems?.data?.shop_phone}</li>}
-                                              {selectedItems?.data?.shop_email && <li>Email: {selectedItems?.data?.shop_email}</li>}
-                                            </ul>
-                                          </p>)}
-                                        </td>
-                                      </tr>
-
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Stock  Quantity
-                                        </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.stock?.quantity || 0}
-                                        </td>
-                                      </tr>
-
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Stock Status
-                                        </th>
-                                        <td class="p-4">
-                                          {selectedItems?.data?.stock?.status ? <p class="text-xs text-gray-500 mt-0.5">Available</p> : <p class="text-xs text-gray-500 mt-0.5">Not Available</p>}
-                                        </td>
-                                      </tr>
-
-                                      <tr class="odd:bg-gray-50">
-                                        <th class="p-4 text-left text-sm font-semibold text-black">
-                                          Supplier Invoice
-                                        </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                                          {selectedItems?.data?.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.supplier_invoice_no}</p>)}
-                                        </td>
-
-                                      </tr>
-                                    </thead>
-
-
-                                  </table>
-
-                                </div>
-
-                              </div>
-
-
-                            </div>
-
-                          )}
-
-
-
-
-
-
-
-
-
+                          {/* Table Section */}
+                          <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white">
+                              <thead className="bg-gray-50">
+                                <tr>
+                                  <th className="p-4 text-left text-sm font-semibold text-black">Product Info</th>
+                                  <td className="p-4 text-sm">...</td>
+                                </tr>
+                                {/* Other rows */}
+                              </thead>
+                            </table>
+                          </div>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -836,235 +725,250 @@ export default function Add(props) {
                   </div>
 
 
-                  <div className="font-sans antialiased bg-grey-lightest">
-
-
-                    <div className="w-full bg-grey-lightest">
-                      <div className="container mx-auto py-3 px-5">
-                        <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
-
-
-                          <div className="w-full flex items-center justify-between mb-2">
-                            <label className="block text-grey-darker text-lg font-bold mb-2" >Exchange</label>
-                            {values.exchange_items.length > 0 && exchangeItems === null && <button type='button'
-                              onClick={() => {
-                                setExchangeItems({ name: '', model: '', identity_type: 'none', identity_value: '', purchase_price: '', quantity: '1', total: '' })
-                              }}
-                              className='text-sm font-semibold text-black dark:text-white leading-tight underline'>Add Item</button>}
-
-                          </div>
-
-                          <div class="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-lg bg-clip-border">
-                            <div class="overflow-x-auto">
-                              <table class="min-w-full text-left table-auto">
-                                <thead>
-                                  <tr>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Name</p>
-                                    </th>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Model</p>
-                                    </th>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Identity*</p>
-                                    </th>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Purchase Price*</p>
-                                    </th>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Quantity*</p>
-                                    </th>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500">Total</p>
-                                    </th>
-                                    <th class="p-4 border-b border-slate-300 bg-slate-50">
-                                      <p class="block text-xs sm:text-sm font-normal leading-none text-slate-500"></p>
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {values.exchange_items.length === 0 && exchangeItems === null && (
-                                    <tr class="hover:bg-slate-50">
-                                      <td colspan="7" class="p-4 border-b border-slate-200 text-center">
-                                        <p class="block text-sm text-slate-800">
-                                          No Exchange Item! &nbsp;
-                                          <button
-                                            type="button"
-                                            onClick={() => {
-                                              setExchangeItems({ name: '', model: '', identity_type: 'none', identity_value: '', purchase_price: '', quantity: '1', total: '' });
-                                            }}
-                                            className="text-sm font-semibold text-black dark:text-white leading-tight underline"
-                                          >
-                                            Add Item
-                                          </button>
-                                        </p>
-                                      </td>
-                                    </tr>
-                                  )}
-
-                                  {exchangeItems && (
-                                    <tr class="hover:bg-slate-50">
-                                      <td class="p-4 border-b border-slate-200">
-                                        <input
-                                          type="text"
-                                          value={exchangeItems.name}
-                                          onChange={(e) => setExchangeItems({ ...exchangeItems, name: e.target.value })}
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                        />
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <input
-                                          type="text"
-                                          value={exchangeItems.model}
-                                          onChange={(e) => setExchangeItems({ ...exchangeItems, model: e.target.value })}
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                        />
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200 flex items-center gap-2">
-                                        <select
-                                          value={exchangeItems.identity_type}
-                                          onChange={(e) => setExchangeItems({ ...exchangeItems, identity_type: e.target.value })}
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                        >
-                                          <option value="none">None</option>
-                                          <option value="imei">IMEI</option>
-                                          <option value="serial">Serial</option>
-                                          <option value="sku">SKU</option>
-                                        </select>
-                                        {exchangeItems.identity_type !== 'none' && (
-                                          <input
-                                            type="text"
-                                            value={exchangeItems.identity_value}
-                                            onChange={(e) => setExchangeItems({ ...exchangeItems, identity_value: e.target.value })}
-                                            class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                          />
-                                        )}
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <input
-                                          type="text"
-                                          value={exchangeItems.purchase_price}
-                                          onChange={(e) => {
-                                            const newPurchasePrice = e.target.value;
-                                            setExchangeItems({
-                                              ...exchangeItems,
-                                              purchase_price: newPurchasePrice,
-                                              total: newPurchasePrice * exchangeItems.quantity,
-                                            });
-                                          }}
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                        />
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <input
-                                          type="number"
-                                          value={exchangeItems.quantity }
-                                          onChange={(e) => {
-                                            const newQuantity = e.target.value;
-                                            setExchangeItems({
-                                              ...exchangeItems,
-                                              quantity: newQuantity,
-                                              total: newQuantity * exchangeItems.purchase_price,
-                                            });
-                                          }}
-                                          class="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                        />
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <input
-                                          type="text"
-                                          disabled
-                                          value={exchangeItems.total}
-                                          class="bg-gray-200 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                                        />
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            if (
-                                              exchangeItems.name !== '' &&
-                                              exchangeItems.purchase_price !== '' &&
-                                              exchangeItems.identity_type !== '' &&
-                                              exchangeItems.quantity !== '' &&
-                                              exchangeItems.total !== ''
-                                            ) {
-                                              setFieldValue('exchange_items', [...values.exchange_items, exchangeItems]);
-                                              setExchangeItems(null);
-                                            } else {
-                                              toast.error('Please fill in all required fields');
-                                            }
-                                          }}
-                                          className="text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight underline"
-                                        >
-                                          Add
-                                        </button>
-                                        &nbsp;
-                                        <button
-                                          type="button"
-                                          onClick={() => setExchangeItems(null)}
-                                          className="text-xs sm:text-sm font-semibold text-black dark:text-white leading-tight underline"
-                                        >
-                                          Cancel
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  )}
-
-                                  {values.exchange_items.map((exchange_item) => (
-                                    <tr class="hover:bg-slate-50">
-                                      <td class="p-4 border-b border-slate-200">
-                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.name}</p>
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.model || <span class="text-red-500">N/A</span>}</p>
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <p class="block text-xs sm:text-sm text-slate-800">
-                                          {exchange_item.identity_type}
-                                          {exchange_item.identity_value !== '' && ` : ${exchange_item.identity_value}`}
-                                        </p>
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.purchase_price}</p>
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.quantity}</p>
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200">
-                                        <p class="block text-xs sm:text-sm text-slate-800">{exchange_item.total}</p>
-                                      </td>
-                                      <td class="p-4 border-b border-slate-200 flex items-center gap-2">
-                                        <FaTrash
-                                          size={20}
-                                          color="red"
-                                          className="cursor-pointer"
-                                          onClick={() => {
-                                            const updatedExchangeItems = values.exchange_items.filter((item) => item !== exchange_item);
-                                            setFieldValue('exchange_items', updatedExchangeItems);
-
-                                            const totalAmount = updatedExchangeItems.reduce((total, item) => total + item.quantity * item.purchase_price, 0);
-                                            setFieldValue('exchange', totalAmount);
-                                          }}
-                                        />
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-
-
-
-
-
-
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
+                 <div className="font-sans antialiased bg-grey-lightest">
+                 
+                 
+                                     <div className="w-full bg-grey-lightest">
+                                       <div className="container mx-auto py-3 px-5">
+                                         <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-4 sm:p-6 lg:p-10">
+                                           <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4">
+                                             <label className="block text-grey-darker text-base sm:text-lg font-bold mb-2 sm:mb-0">Exchange</label>
+                                             {values.exchange_items.length > 0 && exchangeItems === null && (
+                                               <button
+                                                 type="button"
+                                                 onClick={() => {
+                                                   setExchangeItems({
+                                                     name: '',
+                                                     model: '',
+                                                     identity_type: 'none',
+                                                     identity_value: '',
+                                                     purchase_price: '',
+                                                     quantity: '1',
+                                                     total: '',
+                                                   });
+                                                 }}
+                                                 className="text-sm font-semibold text-black dark:text-white underline leading-tight"
+                                               >
+                                                 Add Item
+                                               </button>
+                                             )}
+                                           </div>
+                 
+                                           <div className="relative flex flex-col w-full h-full text-gray-700 bg-white shadow-md rounded-lg">
+                                             <div className="overflow-x-auto">
+                                               <table className="min-w-full text-left table-auto">
+                                                 <thead>
+                                                   <tr>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50">
+                                                       <p className="text-xs sm:text-sm font-normal text-slate-500">Name</p>
+                                                     </th>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50">
+                                                       <p className="text-xs sm:text-sm font-normal text-slate-500">Model</p>
+                                                     </th>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50">
+                                                       <p className="text-xs sm:text-sm font-normal text-slate-500">Identity*</p>
+                                                     </th>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50">
+                                                       <p className="text-xs sm:text-sm font-normal text-slate-500">Purchase Price*</p>
+                                                     </th>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50">
+                                                       <p className="text-xs sm:text-sm font-normal text-slate-500">Quantity*</p>
+                                                     </th>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50">
+                                                       <p className="text-xs sm:text-sm font-normal text-slate-500">Total</p>
+                                                     </th>
+                                                     <th className="p-2 sm:p-4 border-b border-slate-300 bg-slate-50"></th>
+                                                   </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                   {values.exchange_items.length === 0 && exchangeItems === null && (
+                                                     <tr className="hover:bg-slate-50">
+                                                       <td colSpan="7" className="p-4 border-b border-slate-200 text-center">
+                                                         <p className="text-sm text-slate-800">
+                                                           No Exchange Item! &nbsp;
+                                                           <button
+                                                             type="button"
+                                                             onClick={() => {
+                                                               setExchangeItems({
+                                                                 name: '',
+                                                                 model: '',
+                                                                 identity_type: 'none',
+                                                                 identity_value: '',
+                                                                 purchase_price: '',
+                                                                 quantity: '1',
+                                                                 total: '',
+                                                               });
+                                                             }}
+                                                             className="text-sm font-semibold text-black dark:text-white underline"
+                                                           >
+                                                             Add Item
+                                                           </button>
+                                                         </p>
+                                                       </td>
+                                                     </tr>
+                                                   )}
+                 
+                                                   {exchangeItems && (
+                                                     <tr className="hover:bg-slate-50">
+                                                       {/* Fields */}
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <input
+                                                           type="text"
+                                                           value={exchangeItems.name}
+                                                           onChange={(e) => setExchangeItems({ ...exchangeItems, name: e.target.value })}
+                                                           className="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                                         />
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <input
+                                                           type="text"
+                                                           value={exchangeItems.model}
+                                                           onChange={(e) => setExchangeItems({ ...exchangeItems, model: e.target.value })}
+                                                           className="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                                         />
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200 flex flex-col sm:flex-row items-center gap-2">
+                                                         <select
+                                                           value={exchangeItems.identity_type}
+                                                           onChange={(e) => setExchangeItems({ ...exchangeItems, identity_type: e.target.value })}
+                                                           className="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full sm:w-auto p-2.5"
+                                                         >
+                                                           <option value="none">None</option>
+                                                           <option value="imei">IMEI</option>
+                                                           <option value="serial">Serial</option>
+                                                           <option value="sku">SKU</option>
+                                                         </select>
+                                                         {exchangeItems.identity_type !== 'none' && (
+                                                           <input
+                                                             type="text"
+                                                             value={exchangeItems.identity_value}
+                                                             onChange={(e) => setExchangeItems({ ...exchangeItems, identity_value: e.target.value })}
+                                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                                           />
+                                                         )}
+                                                       </td>
+                                                       {/* Purchase Price */}
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <input
+                                                           type="text"
+                                                           value={exchangeItems.purchase_price}
+                                                           onChange={(e) => {
+                                                             const newPurchasePrice = e.target.value;
+                                                             setExchangeItems({
+                                                               ...exchangeItems,
+                                                               purchase_price: newPurchasePrice,
+                                                               total: newPurchasePrice * exchangeItems.quantity,
+                                                             });
+                                                           }}
+                                                           className="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                                         />
+                                                       </td>
+                                                       {/* Quantity */}
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <input
+                                                           type="number"
+                                                           value={exchangeItems.quantity}
+                                                           onChange={(e) => {
+                                                             const newQuantity = e.target.value;
+                                                             setExchangeItems({
+                                                               ...exchangeItems,
+                                                               quantity: newQuantity,
+                                                               total: newQuantity * exchangeItems.purchase_price,
+                                                             });
+                                                           }}
+                                                           className="bg-gray-50 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                                         />
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <input
+                                                           type="text"
+                                                           disabled
+                                                           value={exchangeItems.total}
+                                                           className="bg-gray-200 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+                                                         />
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200 flex items-center gap-2">
+                                                         <button
+                                                           type="button"
+                                                           onClick={() => {
+                                                             if (
+                                                               exchangeItems.name !== '' &&
+                                                               exchangeItems.purchase_price !== '' &&
+                                                               exchangeItems.identity_type !== '' &&
+                                                               exchangeItems.quantity !== '' &&
+                                                               exchangeItems.total !== ''
+                                                             ) {
+                                                               setFieldValue('exchange_items', [...values.exchange_items, exchangeItems]);
+                                                               setExchangeItems(null);
+                                                             } else {
+                                                               toast.error('Please fill in all required fields');
+                                                             }
+                                                           }}
+                                                           className="text-xs sm:text-sm font-semibold text-black dark:text-white underline"
+                                                         >
+                                                           Add
+                                                         </button>
+                                                         &nbsp;
+                                                         <button
+                                                           type="button"
+                                                           onClick={() => setExchangeItems(null)}
+                                                           className="text-xs sm:text-sm font-semibold text-black dark:text-white underline"
+                                                         >
+                                                           Cancel
+                                                         </button>
+                                                       </td>
+                                                     </tr>
+                                                   )}
+                                                   {/* Render Existing Items */}
+                                                   {values.exchange_items.map((exchange_item) => (
+                                                     <tr className="hover:bg-slate-50">
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <p className="text-xs sm:text-sm text-slate-800">{exchange_item.name}</p>
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <p className="text-xs sm:text-sm text-slate-800">{exchange_item.model || <span className="text-red-500">N/A</span>}</p>
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <p className="text-xs sm:text-sm text-slate-800">
+                                                           {exchange_item.identity_type}
+                                                           {exchange_item.identity_value !== '' && ` : ${exchange_item.identity_value}`}
+                                                         </p>
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <p className="text-xs sm:text-sm text-slate-800">{exchange_item.purchase_price}</p>
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <p className="text-xs sm:text-sm text-slate-800">{exchange_item.quantity}</p>
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <p className="text-xs sm:text-sm text-slate-800">{exchange_item.total}</p>
+                                                       </td>
+                                                       <td className="p-2 sm:p-4 border-b border-slate-200">
+                                                         <FaTrash
+                                                           size={20}
+                                                           color="red"
+                                                           className="cursor-pointer"
+                                                           onClick={() => {
+                                                             const updatedExchangeItems = values.exchange_items.filter((item) => item !== exchange_item);
+                                                             setFieldValue('exchange_items', updatedExchangeItems);
+                 
+                                                             const totalAmount = updatedExchangeItems.reduce((total, item) => total + item.quantity * item.purchase_price, 0);
+                                                             setFieldValue('exchange', totalAmount);
+                                                           }}
+                                                         />
+                                                       </td>
+                                                     </tr>
+                                                   ))}
+                                                 </tbody>
+                                               </table>
+                                             </div>
+                                           </div>
+                                         </div>
+                 
+                 
+                                       </div>
+                                     </div>
+                                   </div>
 
 
                 </div>
