@@ -44,13 +44,20 @@ export default function Add(props) {
 
   const [orderItems, setOrderItems] = useState( 
     order?.items.map((item) => {
+      // Update item?.product.selling_price by item.price
+      if (item?.product) {
+        item.product.selling_price = item.price; // Update selling_price
+      }
+    
+      // Return the transformed object
       return {
         value: item.product_id,
-        data : item?.product,
-        quantity : item.qty,
-        label : item?.product?.name + " - " + item?.product?.model
+        data: item?.product,
+        quantity: item.qty,
+        label: `${item?.product?.name} - ${item?.product?.model}`,
+        price: item.price,
       };
-    })
+    })    
     || []);
 
   return (
@@ -1026,7 +1033,6 @@ export default function Add(props) {
                                         {values.items.map((record, index) => (
 
 
-
                                           <tr class="odd:bg-gray-50">
 
                                             <td class=" text-sm">
@@ -1042,7 +1048,12 @@ export default function Add(props) {
 
 
                                             <td class="p-4 text-sm text-black">
-                                              {record?.data?.selling_price || 'N/A'}
+                                            <input type="number" name="selling_price" value={record?.data?.selling_price} className="appearance-none border rounded w-[100px] py-2 px-3 text-grey-darker"
+                                                min={0}
+                                                onChange={(e) => {
+                                                  setFieldValue(`items.${index}.data.selling_price`, e.target.value || 0);
+                                                }}
+                                              />
                                             </td>
 
 

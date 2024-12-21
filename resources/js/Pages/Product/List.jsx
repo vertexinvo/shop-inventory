@@ -2,7 +2,7 @@ import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
 
 import { FaWallet, FaEdit, FaBoxes } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router, usePage } from '@inertiajs/react';
@@ -307,7 +307,7 @@ console.log(stock)
                           </svg>
                         </button>
                         {product.identity_type !== 'imei' &&
-                          <FaBox className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={18} />
+                          <MdManageHistory  className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={22} />
                         }
                       </td>
                     </tr>

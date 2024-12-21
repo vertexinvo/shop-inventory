@@ -71,7 +71,7 @@ const View = (props) => {
                         <div class="text-left text-sm mb-4">
                             <div>Invoice #: <span class="font-semibold">INV-${order.id ? order.id : 'N/A'}</span></div>
                             <div>Date: <span class="font-semibold">${currentDateTime || 'N/A'}</span></div>
-                            <div>Customer: <span class="font-semibold">${order.name || 'N/A'}</span></div>
+                            <div>Customer: <span class="font-semibold">${order?.name || 'N/A'}</span></div>
                         </div>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
@@ -82,24 +82,24 @@ const View = (props) => {
                                 <div class="text-center">Qty</div>
                                 <div class="text-right">Price</div>
                             </div>
-                            ${order.items.map(item => `
+                           ${order?.items?.map(item => `
                                 <div class="grid grid-cols-3 border-b border-gray-200 py-1">
-                                    <div class="truncate">${item.product.name ? item.product.name : 'N/A'}</div>
-                                    <div class="text-center">${item.qty ? item.qty : 'N/A'}</div>
-                                    <div class="text-right">Rs. ${item.price ? item.price : 'N/A'}</div>
-                                </div>
+                                        <div class="truncate">${item.product?.name ? item.product?.name : 'N/A'}</div>
+                                        <div class="text-center">${item.qty ? item.qty : 'N/A'}</div>
+                                        <div class="text-right">Rs. ${item.price ? item.price : 'N/A'}</div>
+                                    </div>
                             `).join('')}
                         </div>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-right text-sm">
-                            <div>Subtotal: <span class="font-semibold">Rs. ${order.total ? order.total : '0.00'}</span></div>
-                            <div>Discount: <span class="font-semibold">Rs. ${order.discount ? order.discount : '0.00'}</span></div>
-                            <div>Exchange: <span class="font-semibold">Rs. ${order.exchange ? order.exchange : '0.00'}</span></div>
-                            <div>Tax: <span class="font-semibold">Rs. ${order.tax ? order.tax : '0.00'}</span></div>
-                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping ? order.shipping : '0.00'}</span></div>
-                            <div>Extra Charges: <span class="font-semibold">Rs. ${order.extra_charges ? order.extra_charges : '0.00'}</span></div>
+                            <div>Subtotal: <span class="font-semibold">Rs. ${ order.total || '0.00'}</span></div>
+                            <div>Discount: <span class="font-semibold">Rs. ${ order.discount || '0.00'}</span></div>
+                            <div>Exchange: <span class="font-semibold">Rs. ${ order.exchange || '0.00'}</span></div>
+                            <div>Tax: <span class="font-semibold">Rs. ${order.tax_fee || '0.00'}</span></div>
+                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping || '0.00'}</span></div>
+                            <div>Extra Charges: <span class="font-semibold">Rs. ${order.extra_charges || '0.00'}</span></div>
                             <div class="border-t border-dashed border-gray-300 my-2"></div>
 
                             <div class="font-bold">Total: <span class="text-lg">Rs.  ${order.payable_amount ? order.payable_amount : '0.00'}</span></div>
@@ -134,7 +134,7 @@ const View = (props) => {
                         onClick={() => router.get(route('order.index'))}
                         title="Back"
                     />
-                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # {order.id ? order.id : 'N/A'}</h2>
+                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # { order.id || 'N/A'}</h2>
                 </>}>
             <Head title="View Order" />
             <style>
@@ -226,22 +226,22 @@ const View = (props) => {
                     <div className="grid grid-cols-2 items-center mt-8">
                         <div>
                             {/* <p className="font-bold text-gray-800">Bill to:</p> */}
-                            <p>Bill to: <span className='text-gray-500'>{order.name ? order.name : 'N/A'}</span>
+                            <p>Bill to: <span className='text-gray-500'>{ order.name || 'N/A'}</span>
                                 {/* <br />
             {order.address}, {order.city}, {order.country} */}
                             </p>
-                            <p>Address: <span className="text-gray-500" >{order.address ? order.address : 'N/A'}</span></p>
-                            <p>Email: <span className="text-gray-500">{order.email ? order.email : 'N/A'}</span></p>
-                            <p>Phone: <span className="text-gray-500">{order.phone ? order.phone : 'N/A'}</span></p>
-                            <p>payment method: <span className="text-gray-500">{order.method ? order.method : 'N/A'}</span></p>
-                            <p>Status: <span className="text-gray-500" >{order.status ? order.status : 'N/A'}</span></p>
+                            <p>Address: <span className="text-gray-500" >{order.address || 'N/A'}</span></p>
+                            <p>Email: <span className="text-gray-500">{order.email || 'N/A'}</span></p>
+                            <p>Phone: <span className="text-gray-500">{order.phone || 'N/A'}</span></p>
+                            <p>payment method: <span className="text-gray-500">{order.method || 'N/A'}</span></p>
+                            <p>Status: <span className="text-gray-500" >{order.status || 'N/A'}</span></p>
                         </div>
                         <div className="text-right">
                             <p>
-                                Invoice number: <span className="text-gray-500">INV-{order.id ? order.id : 'N/A'}</span>
+                                Invoice number: <span className="text-gray-500">INV-{order.id || 'N/A'}</span>
                             </p>
                             <p>
-                                Invoice date: <span className="text-gray-500">{order.created_at ? order.created_at : 'N/A'}</span>
+                                Invoice date: <span className="text-gray-500">{order.order_date || 'N/A'}</span>
 
                             </p>
                         </div>
@@ -290,17 +290,17 @@ const View = (props) => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {order.items.map((item) => (
-                                                <tr key={item.id} className="border-b border-gray-300 hover:bg-gray-50">
+                                            {order.items.map((item,index) => (
+                                                <tr key={index} className="border-b border-gray-300 hover:bg-gray-50">
                                                     <td className="px-3 py-2 text-sm text-gray-700">
                                                         <div className="flex items-start">
                                                             <div>
                                                                 <p className="font-medium text-black">
-                                                                    Name: {item.product.name || "N/A"}
+                                                                    Name: {item.product?.name || "N/A"}
                                                                 </p>
                                                                 {item.product.model && (
                                                                     <p className="text-xs text-gray-500 mt-1">
-                                                                        Model: {item.product.model || "N/A"}
+                                                                        Model: {item.product?.model || "N/A"}
                                                                     </p>
                                                                 )}
                                                             </div>
@@ -324,7 +324,7 @@ const View = (props) => {
 
                             {/* Exchange Items */}
 
-                            {order.exchange_items.length > 0 && (
+                            {order?.exchange_items?.length > 0 && (
                                 <div className="exchange-items-section">
                                     <div className="text-gray-800 text-sm font-bold mb-4">Exchange Items</div>
                                     <div className="overflow-x-auto">
@@ -364,7 +364,7 @@ const View = (props) => {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {order.exchange_items.map((item) => (
+                                                {order?.exchange_items?.map((item) => (
                                                     <tr key={item.id} className="border-b border-gray-300 hover:bg-gray-50">
                                                         <td className="px-3 py-2 text-sm text-gray-700">
                                                             <div className="flex items-start">
@@ -400,42 +400,42 @@ const View = (props) => {
                             <tfoot className="justify-content-right">
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Subtotal:</th>
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. {order.total ? order.total : '0.00'} </td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs. {order.total || '0.00'} </td>
                                 </tr>
                                 <tr>
                                     {/* add delivery cgarges */}
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Delivery Charges:</th>
                                     <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">
-                                        Rs.{order.shipping_charges ? order.shipping_charges : '0.00'}
+                                        Rs.{order.shipping_charges || '0.00'}
                                     </td>
                                 </tr>
 
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Discount:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount ? order.discount : '0.00'}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.discount || '0.00'}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Exchange :</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.exchange ? order.exchange : '0.00'}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.exchange || '0.00'}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Extra Charges:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.extra_charges ? order.extra_charges : '0.00'}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.extra_charges || '0.00'}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Tax:</th>
 
-                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.tax ? order.tax : '0.00'}</td>
+                                    <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.tax_fee || '0.00'}</td>
                                 </tr>
 
 
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Total:</th>
 
-                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount ? order.payable_amount : '0.00'}</td>
+                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount || '0.00'}</td>
                                 </tr>
                             </tfoot>
                         </div>

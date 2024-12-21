@@ -242,7 +242,7 @@ class ProductController extends Controller
             'identity_value' => 'nullable',
             'warranty_type' => 'nullable',
             'is_warranty' => 'required',
-            'quantity' => 'required',
+            // 'quantity' => 'required',
             'supplier_invoice_no' => 'nullable|exists:supplierinvoices,invoice_no',
             'description' => 'nullable',
             'weight' => 'nullable',
@@ -262,7 +262,7 @@ class ProductController extends Controller
             }
         }
         
-        $data = $request->except(['categories', 'brands']);
+        $data = $request->except(['categories', 'brands','quantity']);
         $data['customfield'] = json_encode($request->customfield);
         $product->update($data);
         
@@ -281,10 +281,10 @@ class ProductController extends Controller
             $product->brands()->detach();
         }
         //manage stock
-        $product->stock()->create([
-            'quantity' => $request->quantity,
-            'status' => 1
-        ]);
+        // $product->stock()->create([
+        //     'quantity' => $request->quantity,
+        //     'status' => 1
+        // ]);
 
         session()->flash('message', 'Product updated successfully');
         return back();

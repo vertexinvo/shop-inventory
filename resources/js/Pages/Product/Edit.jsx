@@ -75,7 +75,7 @@ export default function Edit(props) {
             is_warranty : product?.is_warranty ? '1' : '0',
             categories: selectedCategories || [],
             brands: selectedBrands || [],
-            quantity: product?.quantity || 1,
+            // quantity: product?.quantity || 1,
             description: product?.description || '',
             supplier_invoice_no: product?.supplier_invoice_no || '', 
             weight: product?.weight || '',
@@ -88,11 +88,11 @@ export default function Edit(props) {
             specifications: Yup.string(),
             purchase_price: Yup.number().required('Purchase price is required'),
             selling_price: Yup.number().required('Selling price is required'),
-            quantity: Yup.number().when('identity_type', {
-                is: 'imei',
-                then: scheme=>scheme.required().max(1, 'Quantity must be less than or equal to 1').min(1, 'Quantity must be greater than or equal to 1') ,
-                otherwise: scheme=>scheme.optional()
-            }),
+            // quantity: Yup.number().when('identity_type', {
+            //     is: 'imei',
+            //     then: scheme=>scheme.required().max(1, 'Quantity must be less than or equal to 1').min(1, 'Quantity must be greater than or equal to 1') ,
+            //     otherwise: scheme=>scheme.optional()
+            // }),
             weight: Yup.number(),
             is_supplier: Yup.string().required('Is supplier is required'),
             
@@ -189,11 +189,11 @@ export default function Edit(props) {
                           <Field name="selling_price" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="selling_price" type="number" step="0.01" placeholder="Enter selling price" />
                           <ErrorMessage name="selling_price" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
-                      <div className="mb-4">
+                      {/* <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Quantity</label>
                           <Field name="quantity" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="quantity" type="number" min="1" placeholder="Enter quantity" />
                           <ErrorMessage name="quantity" component="div" className="text-red-500 text-xs mt-1" />
-                      </div>
+                      </div> */}
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Weight - (kg) (optional)</label>
                           <Field name="weight" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="weight" type="number" step="0.01" placeholder="Enter weight" />

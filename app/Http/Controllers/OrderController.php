@@ -391,7 +391,6 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         $order->load('items','user','tax','shipping','items.product','exchangeproduct','exchange_items');
-
         return Inertia::render('Order/View', compact('order'));
     }
 

@@ -469,7 +469,7 @@ export default function InstantOrder(props) {
                                       {/* Purchase Price */}
                                       <td className="p-2 sm:p-4 border-b border-slate-200">
                                         <input
-                                          type="text"
+                                          type="number"
                                           value={exchangeItems.purchase_price}
                                           onChange={(e) => {
                                             const newPurchasePrice = e.target.value;
@@ -500,7 +500,7 @@ export default function InstantOrder(props) {
                                       </td>
                                       <td className="p-2 sm:p-4 border-b border-slate-200">
                                         <input
-                                          type="text"
+                                          type="number"
                                           disabled
                                           value={exchangeItems.total}
                                           className="bg-gray-200 border border-gray-300 text-gray-900 text-xs sm:text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
