@@ -47,6 +47,7 @@ class HandleInertiaRequests extends Middleware
         if($this->setting && $this->setting->site_logo){
             Config::set('app.favicon', $this->setting->site_logo);
         }
+       
     
 
         return [

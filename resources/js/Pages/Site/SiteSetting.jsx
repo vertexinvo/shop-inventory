@@ -8,6 +8,8 @@ import { MdKeyboardBackspace } from "react-icons/md";
 export default function SiteSetting(props) {
   const { auth,setting } = props;
 
+  console
+
   return (
     <AuthenticatedLayout
       tax={auth.tax}
@@ -49,7 +51,7 @@ export default function SiteSetting(props) {
                       site_timezone: setting?.site_timezone || '',
                       site_language: setting?.site_language || '',
                       site_status: setting?.site_status || '',
-                      site_maintenance: setting?.site_maintenance || false,
+                      site_maintenance: setting?.site_maintenance === "1" && true || false,
                       site_maintenance_message: setting?.site_maintenance_message || '',
                     }}
                    
@@ -57,6 +59,7 @@ export default function SiteSetting(props) {
                       router.post(route('setting.update'), values);
                     }}
                   >
+                    {({ isSubmitting, resetForm, setSubmitting,values }) => (
                     <Form>
                       <div className="py-4 px-8">
                         {/* Fields */}
@@ -182,6 +185,7 @@ export default function SiteSetting(props) {
                               Maintenance Mode
                             </label>
                             <Field
+                              checked={values.site_maintenance == "1" ? true : false}
                               name="site_maintenance"
                               type="checkbox"
                               className="ml-2"
@@ -214,6 +218,7 @@ export default function SiteSetting(props) {
                         </div>
                       </div>
                     </Form>
+                    )}
                   </Formik>
                 </div>
               </div>

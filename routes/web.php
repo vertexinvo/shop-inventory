@@ -38,6 +38,8 @@ Route::get('/', function () {
     ]);
 });
 
+
+
 Route::get('/dashboard', function (Request $request) {
 
     $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
