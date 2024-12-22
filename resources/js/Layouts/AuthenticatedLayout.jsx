@@ -21,6 +21,10 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
     const user = usePage().props.auth.user;
 
+    const setting = usePage().props.setting;
+
+    console.log(setting);
+
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -50,7 +54,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                             <div className="flex">
                                 <div className="flex shrink-0 items-center gap-2">
                                     <Link href="/">
-                                        <img src="/images/logo2.png" className="block h-10 w-30 fill-current text-gray-800" />
+                                        <img src={ setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
                                     </Link>
 
                                 </div>

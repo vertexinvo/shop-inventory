@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
             Config::set('app.name', $this->setting->site_name);
         }
         if($this->setting && $this->setting->site_logo){
-            Config::set('app.favicon', $this->setting->site_logo);
+            Config::set('app.favicon', $this->setting->site_favicon);
         }
        
     
@@ -60,8 +60,7 @@ class HandleInertiaRequests extends Middleware
                 'error' => $error,
             ],
             'setting' => $this->setting,
-            'name' => Config::get('app.name'),
-            
+            'name' => Config::get('app.name'),   
         ];
     }
 }

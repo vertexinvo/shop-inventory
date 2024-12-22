@@ -6,9 +6,10 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function SiteSetting(props) {
-  const { auth,setting } = props;
+  const { auth,setting ,currencies} = props;
 
-  console
+  const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+
 
   return (
     <AuthenticatedLayout
@@ -39,8 +40,8 @@ export default function SiteSetting(props) {
                       site_name: setting?.site_name || '',
                       site_title: setting?.site_title || '',
                       site_description: setting?.site_description || '',
-                      site_logo: setting?.site_logo || '',
-                      site_icon: setting?.site_icon || '',
+                      site_logo: setting?.site_logo || null,
+                      site_icon: setting?.site_icon || null,
                       site_favicon: setting?.site_favicon || '',
                       site_email: setting?.site_email || '',
                       site_phone: setting?.site_phone || '',
@@ -54,12 +55,22 @@ export default function SiteSetting(props) {
                       site_maintenance: setting?.site_maintenance === "1" && true || false,
                       site_maintenance_message: setting?.site_maintenance_message || '',
                     }}
+                    validationSchema={Yup.object({
+                      site_name: Yup.string().required('Site name is required'),
+                      site_title: Yup.string().required('Site title is required'),
+                      site_icon: Yup.string().required('Site icon is required'),
+                      site_phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+                      site_email: Yup.string().email('Invalid email address').required('Email is required'),
+                      site_currency: Yup.string().required('Currency is required'),
+                      site_currency_symbol: Yup.string().required('Currency symbol is required'),
+                      site_currency_position: Yup.string().required('Currency name is required'),
+                    })}
                    
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
+                    onSubmit={(values, { setSubmitting, resetForm  }) => {
                       router.post(route('setting.update'), values);
                     }}
                   >
-                    {({ isSubmitting, resetForm, setSubmitting,values }) => (
+                    {({ isSubmitting, resetForm, setSubmitting,values,setFieldValue }) => (
                     <Form>
                       <div className="py-4 px-8">
                         {/* Fields */}
@@ -88,14 +99,7 @@ export default function SiteSetting(props) {
                               className="block w-full border rounded-md p-2 mt-1"
                             />
                           </div>
-                          <div>
-                            <label htmlFor="site_logo">Site Logo URL</label>
-                            <Field
-                              name="site_logo"
-                              className="block w-full border rounded-md p-2 mt-1"
-                            />
-                            <ErrorMessage name="site_logo" component="div" className="text-red-500 text-sm" />
-                          </div>
+                        
                           <div>
                             <label htmlFor="site_icon">Site Icon URL</label>
                             <Field
@@ -104,15 +108,7 @@ export default function SiteSetting(props) {
                             />
                             <ErrorMessage name="site_icon" component="div" className="text-red-500 text-sm" />
                           </div>
-                          <div>
-                            <label htmlFor="site_favicon">Upload Site Favicon</label>
-                            <Field
-                              name="site_favicon"
-                              type="file"
-                              className="block w-full border rounded-md p-2 mt-1"
-                            />
-                            <ErrorMessage name="site_favicon" component="div" className="text-red-500 text-sm" />
-                          </div>
+                          
                           <div>
                             <label htmlFor="site_email">Site Email</label>
                             <Field
@@ -128,6 +124,7 @@ export default function SiteSetting(props) {
                               name="site_phone"
                               className="block w-full border rounded-md p-2 mt-1"
                             />
+                            <ErrorMessage name="site_phone" component="div" className="text-red-500 text-sm" />
                           </div>
                           <div>
                             <label htmlFor="site_address">Site Address</label>
@@ -140,46 +137,44 @@ export default function SiteSetting(props) {
                           <div>
                             <label htmlFor="site_currency">Currency</label>
                             <Field
+                            as="select"
                               name="site_currency"
                               className="block w-full border rounded-md p-2 mt-1"
-                            />
+                              onChange={(e) => {
+                              
+                                const selectedCurrency = currencies.find((currency) => currency.cc === e.target.value);
+                                if (selectedCurrency) {
+                                  setFieldValue('site_currency', selectedCurrency.cc);
+                                  setFieldValue('site_currency_symbol', selectedCurrency.symbol);
+                                  setFieldValue('site_currency_position', selectedCurrency.name);
+                                }
+                              }}
+                            >
+                              {currencies.map((currency) => (
+                                <option key={currency} value={currency.cc}>{currency.cc} - {currency.symbol} - {currency.name}</option>
+                              ))}
+                              
+                            
+                            </Field>
                             <ErrorMessage name="site_currency" component="div" className="text-red-500 text-sm" />
                           </div>
                           <div>
                             <label htmlFor="site_currency_symbol">Currency Symbol</label>
                             <Field
+                            disabled
                               name="site_currency_symbol"
-                              className="block w-full border rounded-md p-2 mt-1"
+                              className="block w-full border rounded-md p-2 mt-1 disabled:bg-gray-200"
                             />
                           </div>
                           <div>
-                            <label htmlFor="site_currency_position">Currency Position</label>
+                            <label htmlFor="site_currency_position">Currency Name</label>
                             <Field
+                              disabled
                               name="site_currency_position"
-                              className="block w-full border rounded-md p-2 mt-1"
+                              className="block w-full border rounded-md p-2 mt-1 disabled:bg-gray-200"
                             />
                           </div>
-                          <div>
-                            <label htmlFor="site_timezone">Timezone</label>
-                            <Field
-                              name="site_timezone"
-                              className="block w-full border rounded-md p-2 mt-1"
-                            />
-                          </div>
-                          <div>
-                            <label htmlFor="site_language">Language</label>
-                            <Field
-                              name="site_language"
-                              className="block w-full border rounded-md p-2 mt-1"
-                            />
-                          </div>
-                          {/* <div>
-                            <label htmlFor="site_status">Site Status</label>
-                            <Field
-                              name="site_status"
-                              className="block w-full border rounded-md p-2 mt-1"
-                            />
-                          </div> */}
+                        
                           <div>
                             <label htmlFor="site_maintenance">
                               Maintenance Mode
@@ -207,6 +202,30 @@ export default function SiteSetting(props) {
                             />
                           </div>
                         </div>
+
+                        <div className='mt-4'>
+                          <img src={setting?.site_logo || '/images/logo.png'} alt="site logo" className="mb-2 w-20 h-20 rounded-full border border-black" />
+                          <label htmlFor="site_logo" >Upload Site Logo</label>
+                          <input
+                            type="file"
+                            name="site_logo"
+                            onChange={(event) => setFieldValue('site_logo', event.currentTarget.files[0])}
+                            className="block w-full border rounded-md p-2 mt-1"
+                          />
+                        </div>
+
+                        <div className='mt-4'>
+                        <img src={setting?.site_favicon || '/images/logo.png' } alt="site favicon logo" className="mb-2 w-20 h-20 rounded-full border border-black" />
+                          <label htmlFor="site_favicon" >Upload Site Favicon</label>
+                          <input
+                            type="file"
+                            name="site_favicon"
+                            onChange={(event) => setFieldValue('site_favicon', event.currentTarget.files[0])}
+                            className="block w-full border rounded-md p-2 mt-1"
+                          />
+                        </div>
+
+
 
                         <div className="flex items-center justify-start gap-1 mt-8">
                           <button
