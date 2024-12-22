@@ -203,24 +203,46 @@ export default function SiteSetting(props) {
                           </div>
                         </div>
 
-                        <div className='mt-4'>
-                          <img src={setting?.site_logo || '/images/logo.png'} alt="site logo" className="mb-2 w-20 h-20 rounded-full border border-black" />
-                          <label htmlFor="site_logo" >Upload Site Logo</label>
+                        <div className="mt-4">
+                          <img
+                            src={
+                              values.site_logo instanceof File
+                                ? URL.createObjectURL(values.site_logo)
+                                : setting?.site_logo || '/images/logo.png'
+                            }
+                            alt="site logo"
+                            className="mb-2 w-20 h-20 rounded-full border border-black"
+                          />
+                          <label htmlFor="site_logo">Upload Site Logo</label>
                           <input
                             type="file"
                             name="site_logo"
-                            onChange={(event) => setFieldValue('site_logo', event.currentTarget.files[0])}
+                            onChange={(event) => {
+                              const file = event.currentTarget.files[0];
+                              setFieldValue('site_logo', file);
+                            }}
                             className="block w-full border rounded-md p-2 mt-1"
                           />
                         </div>
 
-                        <div className='mt-4'>
-                        <img src={setting?.site_favicon || '/images/logo.png' } alt="site favicon logo" className="mb-2 w-20 h-20 rounded-full border border-black" />
-                          <label htmlFor="site_favicon" >Upload Site Favicon</label>
+                        <div className="mt-4">
+                          <img
+                            src={
+                              values.site_favicon instanceof File
+                                ? URL.createObjectURL(values.site_favicon)
+                                : setting?.site_favicon || '/images/logo.png'
+                            }
+                            alt="site favicon logo"
+                            className="mb-2 w-20 h-20 rounded-full border border-black"
+                          />
+                          <label htmlFor="site_favicon">Upload Site Favicon</label>
                           <input
                             type="file"
                             name="site_favicon"
-                            onChange={(event) => setFieldValue('site_favicon', event.currentTarget.files[0])}
+                            onChange={(event) => {
+                              const file = event.currentTarget.files[0];
+                              setFieldValue('site_favicon', file);
+                            }}
                             className="block w-full border rounded-md p-2 mt-1"
                           />
                         </div>

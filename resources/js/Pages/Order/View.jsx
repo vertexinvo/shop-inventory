@@ -1,6 +1,6 @@
 import React from 'react';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import Modal from '@/Components/Modal';
@@ -11,7 +11,10 @@ import { MdKeyboardBackspace } from "react-icons/md";
 const View = (props) => {
     const { order } = props;
 
-    console.log(order);
+    const setting = usePage().props.setting;
+
+    console.log("setting",setting);
+
     const generatePDF = () => {
         const input = document.getElementById('invoice');
         html2canvas(input, { scale: 2 }).then((canvas) => {
@@ -61,9 +64,9 @@ const View = (props) => {
                         <h1 class="text-2xl font-bold mb-4">Invoice</h1>
                         
                         <div class="text-sm text-gray-600 mb-4">
-                            <div>vertexInvo.com</div>
-                            <div>+92-3331325935</div>
-                            <div>sales@vertexInvo.com</div>
+                            <div>${setting.site_title || 'VERTEX INVO'}</div>
+                            <div>${setting.site_phone || 'N/A'}</div>
+                            <div>${setting.site_email || 'N/A'}</div>
                         </div>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
@@ -210,14 +213,12 @@ const View = (props) => {
                     <div className="grid grid-cols-2 items-center">
                         <div>
                             {/* Company logo */}
-                            <img src="/images/logo2.png" alt="company-logo" height="100" width="100" />
+                            <img src={  setting.site_logo ||  "/images/logo2.png"} alt="company-logo" height="100" width="100" />
                         </div>
                         <div className="text-right">
-                            <p>VERTEX INVO</p>
-                            <p className="text-gray-500 text-sm mt-1">vertexInvo.com</p>
-                            <p className="text-gray-500 text-sm">sales@vertexInvo.com</p>
-                            <p className="text-gray-500 text-sm mt-1">+92-3331325935</p>
-
+                            <p> {setting.site_title || 'VERTEX INVO'} </p>
+                            <p className="text-gray-500 text-sm mt-1"> {setting.site_phone || 'N/A'}</p>
+                            <p className="text-gray-500 text-sm">{setting.site_email || 'N/A'}</p>
                             {/* <p className="text-gray-500 text-sm mt-1">VAT: 8657671212</p> */}
                         </div>
                     </div>
