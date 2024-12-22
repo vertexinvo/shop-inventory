@@ -20,6 +20,10 @@ class DomainDatabaseSwitcher
     {
        
         $domain = $request->getHttpHost();// Get the domain name
+
+        $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
+
+        Config::set('app.url', $domainurl);
  
         // Map domains to their respective database configurations
         $domainToDatabase = [
