@@ -20,7 +20,7 @@ class SettingSeeder extends Seeder
             'site_currency' => 'PKR',
             'site_currency_symbol' => 'Rs.',
             'site_currency_position' => 'Pakistani rupee',
-            'site_maintainance' => 0,
+            'site_maintenance' => 0,
         ]);
     }
 }
