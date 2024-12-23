@@ -20,7 +20,7 @@ class ProductController extends Controller
 {
     $this->authorize('viewAny', Product::class);
     $search = $request->search ?? '';
-    $status = $request->status; 
+    $status = $request->status ?? ''; 
    
     // $dateRange = match ($filter) {
     //     'day' => now()->subDay(),
@@ -36,6 +36,8 @@ class ProductController extends Controller
             $query->where('name', 'like', "%$search%")
                   ->orWhere('model', 'like', "%$search%")
                   ->orWhere('identity_value', 'like', "%$search%");
+        })->whereHas('stock', function ($query) use ($status) {
+           $status !== '' &&  $query->where('status', $status);
         })
         // ->where('created_at', '>=', $dateRange) 
         ->latest();
@@ -50,7 +52,7 @@ class ProductController extends Controller
 
     $stock = Product::with('stock')->get();
 
-    return Inertia::render('Product/List', compact('products', 'stock'));
+    return Inertia::render('Product/List', compact('products', 'stock', 'status'));
 }
 
     

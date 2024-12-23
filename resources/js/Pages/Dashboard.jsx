@@ -41,18 +41,21 @@ export default function Dashboard(props) {
       <Head title="Dashboard" />
 
       <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-4">
-      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">TOTAL (ORDERS)</p>
-              <p className="text-lg">{totalOrder}</p>
-            </div>
-            <div className="my-auto">
-              <VscGraph size={40} />
-            </div>
+        <Link href={route('order.index')}>
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+              <div className="my-auto">
+                <p className="font-bold">TOTAL (ORDERS)</p>
+                <p className="text-lg">{totalOrder}</p>
+              </div>
+              <div className="my-auto">
+                <VscGraph size={40} />
+              </div>
             </div>
           </div>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+        </Link>
+        <Link href={route('product.index', { status: 1 })}>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL PRODUCT IN STOCK</p>
@@ -61,10 +64,11 @@ export default function Dashboard(props) {
             <div className="my-auto">
               <FaBoxOpen size={40} />
             </div>
-            </div>
           </div>
-        
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+        </div>
+        </Link>
+        <Link href={route('product.index', { status: 0 })}>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
@@ -74,8 +78,9 @@ export default function Dashboard(props) {
               <HiMiniArchiveBoxXMark size={40} />
             </div>
           </div>
-          </div>
         </div>
+        </Link>
+      </div>
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
         <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
@@ -112,14 +117,14 @@ export default function Dashboard(props) {
         </div>
       </div>
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-        <SupplierBalance suppliers={supplierBalanceRecord} />
-        
+        <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
+          <SupplierBalance suppliers={supplierBalanceRecord} />
+
         </div>
         <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-        <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} />
+          <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} />
+        </div>
       </div>
-    </div>
     </AuthenticatedLayout>
   );
 }

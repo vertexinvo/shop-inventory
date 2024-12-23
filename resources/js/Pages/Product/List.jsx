@@ -5,7 +5,7 @@ import { FaWallet, FaEdit, FaBoxes } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { FaBox } from "react-icons/fa";
 import FormatDate from '@/Helpers/FormatDate';
@@ -14,12 +14,16 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function List(props) {
-  const { auth, stock, products } = props
-console.log(stock)
+  const { auth, stock, products,status } = props
+  console.log(stock)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
+
+  // http://127.0.0.1:8000/dashboard/product?status=1 get status=1
+  // http://127.0.0.1:8000/dashboard/product?status=0 get status=0
+
 
   return (
     <AuthenticatedLayout
@@ -50,6 +54,7 @@ console.log(stock)
           </div>
         </div>
 
+        <Link href={route('product.index' , { status: 0 })}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -61,6 +66,7 @@ console.log(stock)
             </div>
           </div>
         </div>
+        </Link>
       </div>
 
 
@@ -73,16 +79,28 @@ console.log(stock)
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+              <select
+                name="filter"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                w-full md:w-[150px] p-2.5 pr-10 
+                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => router.get(route('product.index'), { status: e.target.value }, { preserveState: true })}
+                value={status}
+              >
+                <option value="">Select Status</option>
+                <option value="1">In Stock</option>
+                <option value="0">Out of Stock</option>
+              </select>
 
-
-            {selectId.length > 0 && (
-                      <button
-                        onClick={() => setIsBulkDeleteModalOpen(true)}
-                        className="text-white  w-full md:w-1/6  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
-                        >
-                        Bulk Delete
-                      </button>
-                    )}
+              {selectId.length > 0 && (
+                <button
+                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                  className="text-white  w-full md:w-1/6  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                >
+                  Bulk Delete
+                </button>
+              )}
               <button
                 onClick={() => router.get(route('product.create'))}
                 className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
@@ -124,7 +142,7 @@ console.log(stock)
                     >
                       Search
                     </button>
-                   
+
                   </Form>
                 )}
               </Formik>
@@ -307,7 +325,7 @@ console.log(stock)
                           </svg>
                         </button>
                         {product.identity_type !== 'imei' &&
-                          <MdManageHistory  className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={22} />
+                          <MdManageHistory className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={22} />
                         }
                       </td>
                     </tr>

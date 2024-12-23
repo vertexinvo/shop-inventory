@@ -89,7 +89,15 @@ function View(props) {
 
                             {/* Render each category in a separate card */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {Object.entries(groupedPermissions).map(([item, actions]) => (
+                                {Object.entries(groupedPermissions).map(([item, actions]) =>
+                                
+                            {   
+                                if(item === 'Exchangeitem' || item === 'Item' || item === 'Setting') {
+                                    return null
+                                }
+                              
+                             return   (
+
                                     <div key={item} className="my-4">
                                         <div className="bg-white rounded-lg shadow-md p-4">
                                             {/* Category Header */}
@@ -99,6 +107,7 @@ function View(props) {
                                                     checked={actions.every(({ permission }) => selectedPermissions.includes(permission))}
                                                     onChange={() => {
                                                         const allPermissions = actions.map(({ permission }) => permission);
+                                                        
                                                         const allSelected = allPermissions.every((perm) => selectedPermissions.includes(perm));
                                                         setSelectedPermissions((prev) =>
                                                             allSelected
@@ -123,7 +132,9 @@ function View(props) {
                                             ))}
                                         </div>
                                     </div>
-                                ))}
+                                )
+                            }
+                                )}
                             </div>
                         </div>
 
