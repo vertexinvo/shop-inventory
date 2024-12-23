@@ -36,7 +36,6 @@ console.log(orders)
     );
   }
 
-
   return (
     <AuthenticatedLayout
       Order={auth.Order}

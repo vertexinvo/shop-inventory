@@ -21,7 +21,7 @@ class SupplierController extends Controller
         $this->authorize('viewAny', Supplier::class);
         $totalSuppliers = Supplier::count();
         $search = $request->search ?? '';
-        $status = $request->status;
+        $status = $request->status ?? '';
         // total_amount_pending > 0
         $suppliersQuery = Supplier::where('person_name', 'like', "%$search%")
         ->orWhere('code', 'like', "%$search%")
@@ -32,7 +32,7 @@ class SupplierController extends Controller
         $suppliers = $suppliersQuery->get()->makeVisible('total_amount_pending');
         
         // Filter the suppliers based on the status
-        if ($status) {
+        if ($status !== '') {
             $suppliers = $suppliers->filter(function ($supplier) use ($status) {
                 if ($status === 'pending') {
                     return $supplier->total_amount_pending > 0;
@@ -69,7 +69,7 @@ class SupplierController extends Controller
       
        
 
-        return Inertia::render('Supplier/List', compact('totalSuppliers','suppliers','totalPendingAmount','totalPaidAmount'));
+        return Inertia::render('Supplier/List', compact('totalSuppliers','suppliers','totalPendingAmount','totalPaidAmount','status'));
     }
 
     /**

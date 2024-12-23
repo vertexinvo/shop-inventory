@@ -1,10 +1,10 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
 import { FaWallet, FaEdit } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdPending } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { BiCopy } from 'react-icons/bi';
 import { toast } from 'react-toastify';
@@ -15,7 +15,7 @@ import { VscGraph } from 'react-icons/vsc';
 import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function List(props) {
-  const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers } = props
+  const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers,status } = props
   console.log(totalSuppliers)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -41,6 +41,7 @@ export default function List(props) {
       <Head title="Supplier" />
 
       <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 mt-10">
+        <Link href={route('supplier.index')}>
   <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
     <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
       <div class="my-auto">
@@ -52,7 +53,8 @@ export default function List(props) {
       </div>
     </div>
   </div>
-
+</Link>
+<Link href={route('supplier.index', { status: 'pending' })}>
   <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
     <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
       <div class="my-auto">
@@ -64,7 +66,8 @@ export default function List(props) {
       </div>
     </div>
   </div>
-
+</Link>
+<Link href={route('supplier.index', { status: 'completed' })}>
   <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
     <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
       <div class="my-auto">
@@ -76,6 +79,7 @@ export default function List(props) {
       </div>
     </div>
   </div>
+</Link>
 </div>
 
 
@@ -95,6 +99,7 @@ export default function List(props) {
                                           dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
+                          value={status}
                         >
                           <option value="">Select Status</option>
                           <option value="pending">Pending</option>
