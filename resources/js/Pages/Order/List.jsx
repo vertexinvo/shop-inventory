@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import React, { useState, useEffect } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total } = props
+  const { auth, orders, pendingCount, completedCount, total,status } = props
 console.log(orders)
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -64,6 +64,7 @@ console.log(orders)
       </div> */}
 
       <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+        <Link href={route('order.index')}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -75,7 +76,9 @@ console.log(orders)
             </div>
           </div>
         </div>
+        </Link>
 
+        <Link href={route('order.index', { status: 'pending' })}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -87,7 +90,8 @@ console.log(orders)
             </div>
           </div>
         </div>
-
+        </Link>
+        <Link href={route('order.index', { status: 'completed' })}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -99,6 +103,7 @@ console.log(orders)
             </div>
           </div>
         </div>
+        </Link>
       </div>
 
 
@@ -116,6 +121,7 @@ console.log(orders)
                                 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => router.get(route('order.index'), { status: e.target.value }, { preserveState: true })}
+                value={status}
               >
                 <option value="">Select Status</option>
                 <option value="pending">Pending</option>

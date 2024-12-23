@@ -25,12 +25,12 @@ class OrderController extends Controller
         $this->authorize('viewAny', Order::class);
        
         $search = $request->search ?? '';
-        $status = $request->status; 
+        $status = $request->status ?? ''; 
         $orders = Order::where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                   ->orWhere('id', 'like', "%$search%");
         })->latest();
-        if($status){
+        if($status !== ''){
             $orders = $orders->where('status', $status);
         }
         $orders = $orders->paginate(10);
@@ -39,7 +39,7 @@ class OrderController extends Controller
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
         
-        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total'));
+        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status'));
     }
 
     public function changestatus(Request $request, $id){

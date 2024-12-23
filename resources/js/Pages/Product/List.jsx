@@ -87,7 +87,7 @@ export default function List(props) {
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => router.get(route('product.index'), { status: e.target.value }, { preserveState: true })}
                 value={status}
-              >
+              >status
                 <option value="">Select Status</option>
                 <option value="1">In Stock</option>
                 <option value="0">Out of Stock</option>
