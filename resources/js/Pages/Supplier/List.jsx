@@ -67,7 +67,7 @@ export default function List(props) {
     </div>
   </div>
 </Link>
-<Link href={route('supplier.index', { status: 'completed' })}>
+<Link href={route('supplier.index', { status: 'paid' })}>
   <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
     <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
       <div class="my-auto">
@@ -103,9 +103,8 @@ export default function List(props) {
                         >
                           <option value="">Select Status</option>
                           <option value="pending">Pending</option>
-                          <option value="completed">Completed</option>
-                          <option value="cancelled">Cancelled</option>
-          
+                          <option value="paid">Paid</option>
+                        
                         </select>
                         {selectId.length > 0 && (
                                 <button
