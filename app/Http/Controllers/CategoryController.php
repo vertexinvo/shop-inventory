@@ -17,6 +17,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Category::class);
         $categories = CategoryService::getAllCategories();
         return Inertia::render('Category/List', compact('categories'));
     }
@@ -26,6 +27,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Category::class);
         $categories = Category::all();
         return Inertia::render('Category/Add', compact('categories'));
     }
@@ -35,6 +37,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Category::class);
         $response = CategoryService::createCategory($request);
         return $response ? session()->flash('message', 'Brand created successfully') : back();
     }
@@ -52,6 +55,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        $this->authorize('update', $category);
         $categories = Category::all();
         $category = Category::with('parent')->find($category->id);
         return Inertia::render('Category/Edit', compact('category', 'categories'));
@@ -62,6 +66,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $this->authorize('update', $category);
         $response = CategoryService::updateCategory($request, $category);
         return $response ? session()->flash('message', 'Brand created successfully') : back();
     }
@@ -71,6 +76,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        $this->authorize('delete', $category);
         $category = Category::find($category->id);
         $category->delete();
         return redirect()->back()->with('message', 'Category deleted successfully');
@@ -78,6 +84,7 @@ class CategoryController extends Controller
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Category::class);
         Category::whereIn('id', explode(',', $request->ids))->delete();
         session()->flash('message', 'Category deleted successfully');
         return back();

@@ -18,6 +18,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
 {
+    $this->authorize('viewAny', Product::class);
     $search = $request->search ?? '';
     $status = $request->status; 
    
@@ -59,6 +60,7 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Product::class);
         $categorydata = Category::all(['id', 'name'] );
 
         $categories = $categorydata->map(function ($item) {
@@ -105,6 +107,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        $this->authorize('create', Product::class);
   
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -171,6 +174,7 @@ class ProductController extends Controller
      */
     public function edit(String $id)
     {
+        $this->authorize('update', Product::class);
         $product = Product::find($id); 
         $categorydata = Category::all(['id', 'name'] );
 
@@ -213,6 +217,7 @@ class ProductController extends Controller
     public function status(Request $request, string $id)
     {
         $product = Product::with('stock')->find($id);
+        $this->authorize('update', $product);
         $product->stock()->update(['status' => !$product->stock->status]);
         session()->flash('message', 'Product status updated successfully');
         return back();
@@ -224,6 +229,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        $this->authorize('update', $product);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'model' => 'nullable',
@@ -295,6 +301,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $this->authorize('delete', $product);
        $product = Product::find($product->id);
        $product->delete();
        return redirect()->back()->with('message', 'Product deleted successfully');
@@ -303,6 +310,7 @@ class ProductController extends Controller
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Product::class);
         $ids = explode(',', $request->ids);
         Product::whereIn('id', $ids)->delete();
         session()->flash('message', 'Product deleted successfully');

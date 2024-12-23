@@ -29,6 +29,7 @@ class SupplierinvoiceController extends Controller
     }
     public function changestatus(Request $request, $id){
         $supplierinvoice = Supplierinvoice::findOrFail($id);
+        $this->authorize('update', $supplierinvoice);
         $supplierinvoice->status = $request->status;
         $supplierinvoice->save();
         session()->flash('message', 'Status updated successfully');
@@ -37,6 +38,7 @@ class SupplierinvoiceController extends Controller
 
     public function amountupdate(Request $request, $id){
         $supplierinvoice = Supplierinvoice::findOrFail($id);
+        $this->authorize('update', $supplierinvoice);
         $supplierinvoice->paid_amount = $request->paid_amount;
         if($supplierinvoice->paid_amount >= $supplierinvoice->total_payment){
             $supplierinvoice->status = 'paid';
@@ -79,6 +81,7 @@ class SupplierinvoiceController extends Controller
      */
     public function store(StoreSupplierinvoiceRequest $request)
     {
+        $this->authorize('create', Supplierinvoice::class);
         // supplier_code : "",
         //          invoice_no: "",
         //          invoice_date: "",

@@ -18,6 +18,7 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Supplier::class);
         $totalSuppliers = Supplier::count();
         $search = $request->search ?? '';
         $status = $request->status;
@@ -76,6 +77,7 @@ class SupplierController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Supplier::class);
         // $code = session('code') ?? '';
         $code = '';
         if($request->code){
@@ -89,6 +91,7 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
+        $this->authorize('create', Supplier::class);
         $validator = Validator::make($request->all(), [
             'person_name' => 'required',
             'contact' => 'required',
@@ -115,6 +118,7 @@ class SupplierController extends Controller
     //     return Inertia::render('Supplier/Invoice', compact('supplier','suppliers'));
     // }
     public function invoices(Request $request, $id) {
+        $this->authorize('viewAny', Supplierinvoice::class);
         $suppliers = Supplier::findOrFail($id);
 
         $search = $request->input('search', '');
@@ -163,6 +167,7 @@ class SupplierController extends Controller
      */
     public function edit( Request $request, Supplier $supplier)
     {
+        $this->authorize('update', $supplier);
         // $code = session('code') ?? '';
         $code = '';
         if($request->code){
@@ -176,6 +181,7 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
+        $this->authorize('update', $supplier);
         $validator = Validator::make($request->all(), [
             'person_name' => 'required',
             'contact' => 'required',
@@ -198,6 +204,7 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
+        $this->authorize('delete', $supplier);
         $supplier->delete();
         session()->flash('message', 'Supplier deleted successfully');
         return back();
@@ -206,6 +213,7 @@ class SupplierController extends Controller
     
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Supplier::class);
         $ids = explode(',', $request->ids);
         Supplier::whereIn('id', $ids)->delete();
         session()->flash('message', 'Supplier deleted successfully');

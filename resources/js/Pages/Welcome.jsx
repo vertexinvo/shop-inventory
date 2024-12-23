@@ -97,7 +97,9 @@ const App = () => {
   ];
 
   return (
+    
     <div className="font-sans max-w-[1440px] mx-auto px-6 lg:px-12 py-8">
+
       <div className="flex justify-between items-center py-4">
         <div className="flex items-center gap-2">
           <img src='/images/logo2.png' alt="Inventory" className="h-8" />

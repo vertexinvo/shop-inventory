@@ -15,6 +15,7 @@ class ShippingRateController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', ShippingRate::class);
         $search = $request->input('search', '');
 
         $shippingrates = ShippingRate::where('area_name', 'like', "%$search%")
@@ -28,6 +29,7 @@ class ShippingRateController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', ShippingRate::class);
         return Inertia::render('Shippingrate/Add');
     }
 
@@ -36,6 +38,7 @@ class ShippingRateController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', ShippingRate::class);
         // dd($request->all());
        $validator = Validator::make($request->all(), [
         'area_name' => 'required',
@@ -64,6 +67,7 @@ class ShippingRateController extends Controller
     public function edit(String $id)
     {
         $shippingrate = ShippingRate::find($id);
+        $this->authorize('update', $shippingrate);
         return Inertia::render('Shippingrate/Edit', compact('shippingrate'));
     }
 
@@ -83,6 +87,7 @@ class ShippingRateController extends Controller
             return redirect()->back();
            }
         $shippingrate = ShippingRate::find($id);
+        $this->authorize('update', $shippingrate);
         $shippingrate->update($request->all());
         return redirect()->back()->with('message', 'Shipping rate updated successfully');
     }
@@ -93,11 +98,13 @@ class ShippingRateController extends Controller
     public function destroy($id)
     {
         $shippingrate = ShippingRate::find($id);
+        $this->authorize('delete', $shippingrate);
         $shippingrate->delete();
         return redirect()->back()->with('message', 'Shipping rate deleted successfully');
     }
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', ShippingRate::class);
         $ids = explode(',', $request->ids);
         ShippingRate::whereIn('id', $ids)->delete();
         session()->flash('message', 'Shipping rate deleted successfully');

@@ -18,6 +18,7 @@ class PermissionSeeder extends Seeder
         //get all models
         $models = app('files')->allFiles(app_path('Models'));
         foreach ($models as $model) {
+            $permssions[] = ['name' => 'viewAny '.$model->getBasename('.php'), 'guard_name' => 'web'];
             $permssions[] = ['name' => 'view '.$model->getBasename('.php'), 'guard_name' => 'web'];
             $permssions[] = ['name' => 'create '.$model->getBasename('.php'), 'guard_name' => 'web'];
             $permssions[] = ['name' => 'update '.$model->getBasename('.php'), 'guard_name' => 'web'];

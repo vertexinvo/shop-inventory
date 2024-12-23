@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::middleware(['auth'])->prefix('dashboard')->group(function () {
+Route::middleware(['auth','isSuperAdmin'])->prefix('dashboard')->group(function () {
     Route::resource('role', RoleController::class);   
     Route::put('role/{id}/updatePermission', [RoleController::class, 'updatePermission'])->name('role.updatePermission');
 });

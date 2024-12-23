@@ -16,6 +16,7 @@ class TaxController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', tax::class);
     $search = $request->input('search', '');
 
     $taxs = Tax::where('name', 'like', "%$search%")
@@ -28,6 +29,7 @@ class TaxController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', tax::class);
         return Inertia::render('Tax/Add');
     }
 
@@ -36,6 +38,7 @@ class TaxController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', tax::class);
         
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -63,7 +66,8 @@ class TaxController extends Controller
      */
     public function edit($id)
     {
-        $tax = tax::find($id);  
+        $tax = tax::find($id); 
+        $this->authorize('update', $tax); 
         return Inertia::render('Tax/Edit',compact('tax'));
     }
 
@@ -72,6 +76,7 @@ class TaxController extends Controller
      */
     public function update(Request $request, tax $tax)
     {
+        $this->authorize('update', $tax);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'cost' => 'required',
@@ -90,6 +95,7 @@ class TaxController extends Controller
      */
     public function destroy(tax $tax)
     {
+        $this->authorize('delete', $tax);
         $tax = tax::find($tax->id);
         $tax->delete();
         return redirect()->back()->with('message', 'Tax deleted successfully');
@@ -97,6 +103,7 @@ class TaxController extends Controller
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', tax::class);
         $ids = explode(',', $request->ids);
         tax::whereIn('id', $ids)->delete();
         session()->flash('message', 'Tax deleted successfully');

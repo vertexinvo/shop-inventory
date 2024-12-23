@@ -16,6 +16,7 @@ class BrandController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', Brand::class);
         $brands = BrandService::getAllBrands();
         return Inertia::render('Brand/List', compact('brands'));
     }
@@ -25,6 +26,7 @@ class BrandController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Brand::class);
         return Inertia::render('Brand/Add');
     }
 
@@ -33,6 +35,7 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Brand::class);
         $response = BrandService::createBrand($request);
         if($response){
             session()->flash('message', 'Brand created successfully');
@@ -54,6 +57,7 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
+        $this->authorize('update', $brand);
         return Inertia::render('Brand/Edit', compact('brand'));
     }
 
@@ -62,6 +66,7 @@ class BrandController extends Controller
      */
     public function update(Request $request,Brand $brand)
     {
+        $this->authorize('update', $brand);
         $response = BrandService::updateBrand($request, $brand);
         if($response){
             session()->flash('message', 'Brand updated successfully');
@@ -74,12 +79,14 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
+        $this->authorize('delete', $brand);
         $brand->delete();
         return redirect()->back()->with('message', 'Brand deleted successfully');
     }
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Brand::class);
         $bulkdestroy = Brand::whereIn('id', explode(',', $request->ids))->delete();
         session()->flash('message', 'Brand deleted successfully');
         return back();

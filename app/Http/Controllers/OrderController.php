@@ -22,6 +22,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Order::class);
        
         $search = $request->search ?? '';
         $status = $request->status; 
@@ -42,7 +43,9 @@ class OrderController extends Controller
     }
 
     public function changestatus(Request $request, $id){
+
         $order = Order::findOrFail($id);
+        $this->authorize('update', $order);
         $order->status = $request->status;
         $order->save();
 
@@ -66,6 +69,7 @@ class OrderController extends Controller
 
     public function amountupdate(Request $request, $id){
         $order = Order::findOrFail($id);
+        $this->authorize('update', $order);
         $order->paid_amount = $request->paid_amount;
         if($order->paid_amount >= $order->payable_amount){
             $order->status = 'completed';
@@ -81,6 +85,7 @@ class OrderController extends Controller
 
     public function instantorder(Request $request)
     {
+        $this->authorize('create', Order::class);
         $searchuser = $request->searchuser ?? '';
        
         $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
@@ -134,6 +139,7 @@ class OrderController extends Controller
 
     public function instantorderstore(Request $request)
     {
+        $this->authorize('create', Order::class);
    
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -225,6 +231,7 @@ class OrderController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Order::class);
         $searchuser = $request->searchuser ?? '';
         $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
             $query->where('name', 'like', "%$searchuser%")
@@ -285,6 +292,7 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
+        $this->authorize('create', Order::class);
       
         $validator = Validator::make($request->all(), [
             'name' => 'required',
@@ -390,6 +398,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        $this->authorize('view', $order);
         $order->load('items','user','tax','shipping','items.product','exchangeproduct','exchange_items');
         return Inertia::render('Order/View', compact('order'));
     }
@@ -399,6 +408,7 @@ class OrderController extends Controller
      */
     public function edit(Order $order)
     {
+        $this->authorize('update', $order);
         if($order->status === 'cancel'){
             return abort(403);
         }
@@ -467,6 +477,7 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
+        $this->authorize('update', $order);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|max:255',
@@ -596,6 +607,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
+        $this->authorize('delete', $order);
         $order->delete();
         session()->flash('message', 'Order deleted successfully.');
         return redirect()->route('order.index');
@@ -603,6 +615,7 @@ class OrderController extends Controller
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Order::class);
         $ids = explode(',', $request->ids);
         Order::whereIn('id', $ids)->delete();
         session()->flash('message', 'Order deleted successfully');

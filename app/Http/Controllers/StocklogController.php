@@ -28,6 +28,7 @@ class StocklogController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Stocklog::class);
         $suppliers = Supplier::all();
 
         $supplierinvoices = [];
@@ -55,6 +56,7 @@ class StocklogController extends Controller
      */
     public function store(StoreStocklogRequest $request)
     {
+        $this->authorize('create', Stocklog::class);
         $validator = Validator::make($request->all(), [
             'quantity' => 'required',
             'type' => 'required|in:addition,removal,adjustment',
@@ -105,6 +107,7 @@ public function edit($id, Request $request)
      */
     public function destroy(Stocklog $stocklog)
     {
+        $this->authorize('delete', $stocklog);
         $stocklog->delete();
         session()->flash('message', 'Stock log deleted successfully');
         return back();
@@ -112,6 +115,7 @@ public function edit($id, Request $request)
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Stocklog::class);
         $ids = explode(',', $request->ids);
         Stocklog::whereIn('id', $ids)->delete();
         session()->flash('message', 'Stock log deleted successfully');

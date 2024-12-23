@@ -249,7 +249,8 @@ export default function List(props) {
 
 
                       <td class="p-4 flex items-center gap-2">
-                        <button onClick={() => { router.get(route('stocklog.edit', product.id), { product_id: stocks.product_id })}} type='button' title="Edit">
+
+                        {/* <button onClick={() => { router.get(route('stocklog.edit', product.id), { product_id: stocks.product_id })}} type='button' title="Edit">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
                             viewBox="0 0 348.882 348.882">
                             <path
@@ -259,7 +260,8 @@ export default function List(props) {
                               d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
                               data-original="#000000" />
                           </svg>
-                        </button>
+                        </button> */}
+
                         <button onClick={() => setIsDeleteModalOpen(product)} title="Delete">
                           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
                             <path

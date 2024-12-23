@@ -16,6 +16,7 @@ class CustomerController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', User::class);
         $users = UserService::getAllUser($request, 'customer');
 
         $totalcustomers = $users->count();
@@ -31,6 +32,7 @@ class CustomerController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
         return Inertia::render('Customer/Add');
     }
 
@@ -39,6 +41,7 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|unique:users',
@@ -73,6 +76,7 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
+        $this->authorize('update', User::class);
         $user = User::find($id); 
         return Inertia::render('Customer/Edit',compact('user'));
     }
@@ -82,6 +86,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $this->authorize('update', User::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|unique:users,email,'.$id,
@@ -104,6 +109,7 @@ class CustomerController extends Controller
 
     public function status(Request $request, string $id)
     {
+        $this->authorize('update', User::class);
         $user = User::find($id);
         $user->status = !$user->status;
         $user->save();
@@ -114,6 +120,7 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
+        $this->authorize('delete', User::class);
        $user = User::find($id);
         $user->delete();
         session()->flash('message', 'Customer deleted successfully');
@@ -122,6 +129,7 @@ class CustomerController extends Controller
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', User::class);
         $ids = explode(',', $request->ids);
         User::whereIn('id', $ids)->delete();
         session()->flash('message', 'Customer deleted successfully');
