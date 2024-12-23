@@ -76,8 +76,9 @@ class CustomerController extends Controller
      */
     public function edit(string $id)
     {
-        $this->authorize('update', User::class);
+    
         $user = User::find($id); 
+        $this->authorize('update', $user);
         return Inertia::render('Customer/Edit',compact('user'));
     }
 
@@ -86,7 +87,7 @@ class CustomerController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $this->authorize('update', User::class);
+      
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|unique:users,email,'.$id,
@@ -101,6 +102,7 @@ class CustomerController extends Controller
         }
         $data = $request->all();
         $user = User::find($id);
+        $this->authorize('update', $user);
         $user->update($data);
         session()->flash('message', 'Customer updated successfully');
         return back();
@@ -109,8 +111,9 @@ class CustomerController extends Controller
 
     public function status(Request $request, string $id)
     {
-        $this->authorize('update', User::class);
+        
         $user = User::find($id);
+        $this->authorize('update', $user);
         $user->status = !$user->status;
         $user->save();
     }
@@ -120,8 +123,8 @@ class CustomerController extends Controller
      */
     public function destroy(string $id)
     {
-        $this->authorize('delete', User::class);
        $user = User::find($id);
+        $this->authorize('delete', $user);
         $user->delete();
         session()->flash('message', 'Customer deleted successfully');
         return back();

@@ -131,14 +131,14 @@ console.log(orders)
               {selectId.length > 0 && (
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white  w-full md:w-1/6  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                  className="text-white  w-full md:w-64 lg:w-80 py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>
               )}
               <button
                 onClick={() => router.get(route('order.instantorder'))}
-                className="text-white w-auto sm:w-1/5 py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+                className="text-white w-full md:w-64 lg:w-96  py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
               >
                 Instant Order
               </button>
@@ -164,7 +164,7 @@ console.log(orders)
                         name="search"
                         type="text"
                         placeholder="Search..."
-                        className="py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
+                        className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
                       />
                       <button
                         type="button"

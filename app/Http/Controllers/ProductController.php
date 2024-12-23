@@ -176,8 +176,8 @@ class ProductController extends Controller
      */
     public function edit(String $id)
     {
-        $this->authorize('update', Product::class);
         $product = Product::find($id); 
+        $this->authorize('update', $product);
         $categorydata = Category::all(['id', 'name'] );
 
         $categories = $categorydata->map(function ($item) {

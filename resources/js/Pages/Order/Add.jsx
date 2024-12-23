@@ -267,190 +267,298 @@ export default function Add(props) {
                 <div className={`w-full ${values.items.length > 0 ? 'col-span-2' : 'col-span-3'}`}>
 
                 <div className="font-sans antialiased bg-grey-lightest">
-                    <div className="w-full bg-grey-lightest">
-                      <div className="container mx-auto py-3 px-5">
-                        <div className="w-full  mx-auto bg-white rounded shadow p-5 sm:p-8 md:p-10">
-                          {/* Header Section */}
-                          <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
-                            <div className=" flex items-center gap-2 mb-4 md:mb-0 w-full sm:w-auto">
-                              <label className="block text-grey-darker text-lg font-bold">Order#{order_id}</label>
-                              <Field
-                                name="order_date"
-                                type="date"
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
-                              />
-                            </div>
-                            <div className="flex flex-col sm:flex-row items-center justify-start gap-2 w-full sm:w-auto">
-                              <button
-                                onClick={save}
-                                className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
-                                type="button"
-                              >
-                                Save
-                              </button>
-                              <button
-                                onClick={saveAndClose}
-                                className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
-                                type="button"
-                              >
-                                Save & Close
-                              </button>
-                              <button
-                                onClick={() => router.visit(route("order.index"))}
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
-                                type="button"
-                              >
-                                Close
-                              </button>
-                            </div>
-                          </div>
 
 
-                          {/* Customer Selection Section */}
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm mb-2">Select Customer (Existing)</label>
-                            <Select
-                              onChange={(e) => {
-                                setFieldValue("user_id", e.value);
-                                setFieldValue("name", e.name);
-                                setFieldValue("email", e.email);
-                                setFieldValue("phone", e.phone);
-                                setFieldValue("address", e.address);
-                              }}
-                              onInputChange={(e) => {
-                                setLoading(true);
-                                setTimeout(() => {
-                                  router.get(
-                                    route("order.instantorder"),
-                                    { searchuser: e },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading(false);
-                                }, 1000);
-                              }}
-                              isSearchable={true}
-                              isLoading={loading}
-                              value={users.find((option) => option.value === values.user_id)}
-                              options={users}
-                              className="basic-single"
-                              classNamePrefix="select"
-                              styles={customStyles}
-                            />
-                          </div>
+<div className="w-full bg-grey-lightest">
+  <div className="container mx-auto py-3 px-5">
+    <div className="w-full lg:w-full mx-auto bg-white rounded shadow p-10">
 
-                          {/* Customer Details Section */}
-                          <div className="flex flex-col sm:flex-row mb-4 gap-2">
-                            <div className="w-full sm:w-1/2">
-                              <label className="block text-grey-darker text-sm mb-2">Customer Name</label>
-                              <Field
-                                name="name"
-                                className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
-                                type="text"
-                                placeholder="Enter Customer name"
-                              />
-                              <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
-                            </div>
-                            <div className="w-full sm:w-1/2">
-                              <label className="block text-grey-darker text-sm mb-2">Customer Email</label>
-                              <Field
-                                name="email"
-                                className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
-                                type="text"
-                                placeholder="Enter Customer email"
-                              />
-                              <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
-                            </div>
-                          </div>
+      <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
+        <div className="flex items-center gap-2 mb-4 md:mb-0">
+          <label className="block text-grey-darker text-lg font-bold">Order#{order_id}</label>
+          <Field
+            name="order_date"
+            type="date"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-black focus:border-black block w-full p-2.5"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row items-center justify-start gap-2 w-full sm:w-auto">
+          <button
+            onClick={save}
+            className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+            type="button"
+          >
+            Save
+          </button>
+          <button
+            onClick={saveAndClose}
+            className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+            type="button"
+          >
+            Save & Close
+          </button>
+          <button
+            onClick={() => router.visit(route("order.index"))}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
+            type="button"
+          >
+            Close
+          </button>
+        </div>
+      </div>
 
-                          {/* Items Section */}
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm mb-2">Select Items</label>
-                            <Select
-                              onChange={(e) => setSelectedItems(e)}
-                              onInputChange={(e) => {
-                                setLoading2(true);
-                                setTimeout(() => {
-                                  router.get(
-                                    route("order.instantorder"),
-                                    { searchitem: e, searchid: user?.id || "" },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading2(false);
-                                }, 1000);
-                              }}
-                              isSearchable={true}
-                              isLoading={loading2}
-                              value={items.find((option) => option.value === selectedItems?.value)}
-                              options={items}
-                              className="basic-single"
-                              classNamePrefix="select"
-                              styles={customStyles}
-                            />
-                          </div>
 
-                          {/* Selected Items Section */}
-                          {selectedItems && (
-                            <div className="flex flex-col sm:flex-row gap-2">
-                              <div className="w-full sm:w-1/2">
-                                <input
-                                  type="number"
-                                  value={selectedItems?.quantity}
-                                  onChange={(e) =>
-                                    setSelectedItems({ ...selectedItems, quantity: e.target.value })
-                                  }
-                                  placeholder="Enter Quantity"
-                                  className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
-                                />
-                              </div>
-                              <div className="w-full sm:w-1/2">
-                                <button
-                                  onClick={() => {
-                                    if (selectedItems?.quantity > selectedItems?.data?.stock?.quantity) {
-                                      toast.error("Quantity exceeds stock quantity");
-                                      return;
-                                    }
-                                    if (values.items.find((item) => item.data.id === selectedItems?.data?.id)) {
-                                      toast.error("Item already added");
-                                      return;
-                                    }
-                                    if (selectedItems?.quantity <= 0) {
-                                      toast.error("Quantity must be greater than 0");
-                                      return;
-                                    }
-                                    setSelectedItems(null);
-                                    setFieldValue("items", [...values.items, selectedItems]);
-                                  }}
-                                  className="bg-black text-sm hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg"
-                                  type="button"
-                                >
-                                  Add Item
-                                </button>
-                              </div>
-                            </div>
-                          )}
+      <div className="mb-4">
 
-                          {/* Table Section */}
-                          <div className="overflow-x-auto">
-                            <table className="min-w-full bg-white">
-                              <thead className="bg-gray-50">
-                                <tr>
-                                  <th className="p-4 text-left text-sm font-semibold text-black">Product Info</th>
-                                  <td className="p-4 text-sm">...</td>
-                                </tr>
-                                {/* Other rows */}
-                              </thead>
-                            </table>
-                          </div>
+
+
+        <label className="block text-grey-darker text-sm  mb-2 " for="shop_name">Select Customer (Existing)</label>
+        <Select
+          onChange={(e) => {
+            setFieldValue('user_id', e.value);
+            setFieldValue('name', e.name);
+            setFieldValue('email', e.email);
+            setFieldValue('phone', e.phone);
+            setFieldValue('address', e.address);
+          }}
+          onInputChange={(e) => {
+            setLoading(true); // Set loading to true before initiating the search
+            setTimeout(() => {
+              router.get(
+                route('order.instantorder'),
+                { searchuser: e },
+                {
+                  preserveScroll: true,
+                  preserveState: true,
+                }
+              );
+              setLoading(false); // Turn off loading after the search is triggered
+            }, 1000);
+          }}
+          isSearchable={true}
+          isLoading={loading} // Dynamically set the loading state
+          value={users.find((option) => option.value === values.user_id)}
+          options={users}
+          className="basic-single "
+          classNamePrefix="select "
+          styles={customStyles}
+
+        />
+
+      </div>
+
+      <div className="flex mb-4">
+
+        <div className="w-1/2 mr-1">
+          <label className="block text-grey-darker text-sm  mb-2" >Customer Name</label>
+          <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer name" />
+          <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
+        </div>
+        <div className="w-1/2 mr-1">
+          <label className="block text-grey-darker text-sm  mb-2" >Customer Email</label>
+          <Field name="email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer email" />
+          <ErrorMessage name="email" component="div" className="text-red-500 text-xs mt-1" />
+        </div>
+      </div>
+      <div className="flex mb-4">
+
+        <div className="w-1/2 mr-1">
+          <label className="block text-grey-darker text-sm  mb-2" >Customer Phone</label>
+          <Field name="phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer phone" />
+          <ErrorMessage name="phone" component="div" className="text-red-500 text-xs mt-1" />
+        </div>
+        <div className="w-1/2 mr-1">
+          <label className="block text-grey-darker text-sm  mb-2" >Customer Address</label>
+          <Field name="address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Customer address" />
+          <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
+        </div>
+      </div>
+
+
+      <div className="mb-4">
+        <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Items</label>
+        <Select
+          onChange={(e) => {
+            setSelectedItems(e);
+          }}
+          onInputChange={(e) => {
+            setLoading2(true); // Set loading to true before initiating the search
+            setTimeout(() => {
+              router.get(
+                route('order.instantorder'),
+                { searchitem: e, searchid: user?.id || '' },
+                {
+                  preserveScroll: true,
+                  preserveState: true,
+                }
+              );
+              setLoading2(false); // Turn off loading after the search is triggered
+            }, 1000);
+          }}
+          isSearchable={true}
+          isLoading={loading2} // Dynamically set the loading state
+          value={items.find((option) => option.value === selectedItems?.value)}
+          options={items}
+          className="basic-single"
+          classNamePrefix="select"
+          styles={customStyles}
+        />
+        <ErrorMessage name="items" component="div" className="text-red-500 text-xs mt-1" />
+      </div>
+
+
+      {selectedItems && (
+        <div className="flex  ">
+          <div className="w-1/2 mr-1">
+            <input type="number" value={selectedItems?.quantity} onChange={(e) => setSelectedItems({ ...selectedItems, quantity: e.target.value })} placeholder='Enter Quantity' className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" />
+          </div>
+          <div className="w-1/2 mr-1">
+            <button onClick={() => {
+
+              if (selectedItems?.quantity > selectedItems?.data?.stock?.quantity) {
+                toast.error('Quantity exceeds stock quantity');
+                return
+              }
+
+              //check if already added check by product id
+              if (values.items.find(item => item.data.id === selectedItems?.data?.id)) {
+                toast.error('Item already added');
+                return
+              }
+
+              if (selectedItems?.quantity <= 0) {
+                toast.error('Quantity must be greater than 0');
+                return;
+              }
+
+              setSelectedItems(null)
+              setFieldValue('items', [...values.items, selectedItems]);
+              console.log(values.items);
+            }} className="bg-black text-sm hover:bg-blue-dark text-white font-bold py-[11px] px-4  rounded-lg" type="button">
+              Add Item
+            </button>
+          </div>
+        </div>
+      )}
+
+      {selectedItems && (
+        <div className='my-5'>
+
+
+          <div className="">
+            <div class="font-[sans-serif] ">
+              <table class="min-w-full bg-white">
+                <thead class="whitespace-nowrap">
+                  <tr class="odd:bg-gray-50">
+
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Product Info
+                    </th>
+                    <td class=" text-sm">
+                      <div class="flex items-center cursor-pointer w-max">
+                        {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
+                        <div class="ml-4 ">
+                          <p class="text-sm text-black ">Name : {selectedItems?.data?.name}</p>
+                          {selectedItems?.data?.model && <p class="text-xs text-gray-500 mt-0.5">Model :{selectedItems?.data?.model} </p>}
+                          {selectedItems?.data?.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.identity_type}:{selectedItems?.data?.identity_value} </p>}
                         </div>
                       </div>
-                    </div>
-                  </div>
+                    </td>
+                  </tr>
+
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Purchase price
+                    </th>
+                    <td class="p-4 text-sm text-black">
+                      {selectedItems?.data?.purchase_price || 'N/A'}
+                    </td>
+                  </tr>
+
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Selling price
+                    </th>
+                    <td class="p-4 text-sm text-black">
+                      {selectedItems?.data?.selling_price || 'N/A'}
+                    </td>
+                  </tr>
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Warranty period
+                    </th>
+                    <td class="p-4 text-sm text-black">
+                      {selectedItems?.data?.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+                      {selectedItems?.data?.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.warranty_period} - {selectedItems?.data?.warranty_type} </p>)}
+                    </td>
+                  </tr>
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Is Borrow
+                    </th>
+                    <td class="p-4 text-sm text-black">
+                      {selectedItems?.data?.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+                      {selectedItems?.data?.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
+                        <ul class="list-disc">
+                          {selectedItems?.data?.shop_name && <li>Name: {selectedItems?.data?.shop_name}</li>}
+                          {selectedItems?.data?.shop_address && <li>Address: {selectedItems?.data?.shop_address}</li>}
+                          {selectedItems?.data?.shop_phone && <li>Phone: {selectedItems?.data?.shop_phone}</li>}
+                          {selectedItems?.data?.shop_email && <li>Email: {selectedItems?.data?.shop_email}</li>}
+                        </ul>
+                      </p>)}
+                    </td>
+                  </tr>
+
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Stock  Quantity
+                    </th>
+                    <td class="p-4 text-sm text-black">
+                      {selectedItems?.data?.stock?.quantity || 0}
+                    </td>
+                  </tr>
+
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Stock Status
+                    </th>
+                    <td class="p-4">
+                      {selectedItems?.data?.stock?.status ? <p class="text-xs text-gray-500 mt-0.5">Available</p> : <p class="text-xs text-gray-500 mt-0.5">Not Available</p>}
+                    </td>
+                  </tr>
+
+                  <tr class="odd:bg-gray-50">
+                    <th class="p-4 text-left text-sm font-semibold text-black">
+                      Supplier Invoice
+                    </th>
+                    <td class="p-4 text-sm text-black">
+                      {selectedItems?.data?.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+                      {selectedItems?.data?.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.supplier_invoice_no}</p>)}
+                    </td>
+
+                  </tr>
+                </thead>
+
+
+              </table>
+
+            </div>
+
+          </div>
+
+
+        </div>
+
+      )}
+
+
+
+
+    </div>
+
+  </div>
+</div>
+</div>
 
                   <div className="font-sans antialiased bg-grey-lightest">
 
