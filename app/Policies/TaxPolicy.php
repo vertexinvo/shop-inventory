@@ -13,7 +13,6 @@ class TaxPolicy
      */
     public function viewAny(User $user)
     {
-        dd($user->hasPermissionTo('viewAny tax'));
         return $user->hasPermissionTo('viewAny tax')
             ? Response::allow()
             : Response::deny('You do not have permission to view taxes.');
