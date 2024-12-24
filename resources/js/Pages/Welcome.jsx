@@ -106,7 +106,7 @@ const App = () => {
           {/* <h1 className="font-bold text-xl">VertexInvo</h1> */}
         </div>
         <div className="hidden lg:flex items-center gap-6 ">
-          <a href="#about" className="text-lg hover:text-gray-500">About</a>
+
           <a href="#services" className="text-lg hover:text-gray-500">Services</a>
           <Link href={route('login')}><button className="px-4 py-2 border rounded-lg border-black hover:bg-black hover:text-white">Login </button></Link>
                 </div>
@@ -128,7 +128,7 @@ const App = () => {
         <SlideInFromLeft className="lg:w-1/2">
           <h2 className="text-4xl font-bold mb-4">Streamline Your Inventory Management</h2>
           <p className="text-lg">Optimize operations, reduce costs, and improve efficiency with Inventory Pro.</p>
-          <a href="#services"><button  className="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Learn More</button></a>
+          <a href="https://vertexinvo.com"><button  className="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Learn More</button></a>
         </SlideInFromLeft>
         <SlideInFromRight className="lg:w-1/2">
           <img  src='/images/services/8.jpg' alt="Inventory Management" />

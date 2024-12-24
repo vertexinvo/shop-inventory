@@ -17,8 +17,8 @@ class BrandService{
 
     public function createBrand($request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:brands,name',
-            'description' => 'nullable',
+            'name' => 'required|string|max:255|unique:brands,name',
+            'description' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
