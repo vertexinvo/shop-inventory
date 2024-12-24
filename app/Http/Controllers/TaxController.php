@@ -16,8 +16,6 @@ class TaxController extends Controller
      */
     public function index(Request $request)
     {
-         $user = auth()->user();
-        dd($user->hasPermissionTo('viewAny tax'));
         $this->authorize('viewAny', tax::class);
     $search = $request->input('search', '');
 
