@@ -69,7 +69,7 @@ class TaxPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, tax $tax): bool
+    public function restore(User $user, tax $tax)
     {
         //
     }
@@ -77,7 +77,7 @@ class TaxPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, tax $tax): bool
+    public function forceDelete(User $user, tax $tax)
     {
         //
     }
