@@ -13,6 +13,7 @@ import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { MdKeyboardBackspace } from "react-icons/md";
+import './product.css'
  
 export default function Edit(props) {
   const { auth , categories , brands,code,invoicecode,product,selectedCategories,selectedBrands } = props
@@ -572,15 +573,15 @@ export default function Edit(props) {
             >
                 {({ isSubmitting, values, errors,setFieldValue, }) => { 
                     
-                    const generateCode =  () => {
-                        router.post(route('supplier.generatecode'),{}, {
-                           onSuccess: (response) => {
-                               setFieldValue('code', code);
-                           },
-                           preserveScroll: true,
-                           preserveState: true
-                       });
-                    }
+                    const generateCode = () => {
+                                     router.get(route('product.create'), { code: true }, {
+                                       onSuccess: (response) => {
+                                         setFieldValue('code', response.props.code);
+                                       },
+                                       preserveScroll: true,
+                                       preserveState: true
+                                     });
+                                   }
                     
                     return (
                 <Form>
@@ -708,15 +709,15 @@ export default function Edit(props) {
             >
                 {({ isSubmitting, values, errors,setFieldValue, }) => { 
                     
-                    const generateInvoiceNo =  () => {
-                        router.post(route('supplier-invoice.generateinvoicecode'),{}, {
-                           onSuccess: (response) => {
-                               setFieldValue('invoice_no', invoicecode);
-                           },
-                           preserveScroll: true,
-                           preserveState: true
-                       });
-                    }
+                     const generateInvoiceNo = () => {
+                                    router.get(route('product.create'), { invoicecode: true }, {
+                                      onSuccess: (response) => {
+                                        setFieldValue('invoice_no', response.props.invoicecode);
+                                      },
+                                      preserveScroll: true,
+                                      preserveState: true
+                                    });
+                                  }
                     
                     return (
                 <Form>

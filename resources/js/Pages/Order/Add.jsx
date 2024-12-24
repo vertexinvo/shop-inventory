@@ -13,6 +13,7 @@ import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { MdKeyboardBackspace } from "react-icons/md";
+import './order.css'
 
 
 export default function Add(props) {

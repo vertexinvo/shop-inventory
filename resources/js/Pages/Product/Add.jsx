@@ -13,6 +13,7 @@ import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { MdKeyboardBackspace } from "react-icons/md";
+import './product.css'
 
 export default function Add(props) {
   const { auth, categories, brands, code, invoicecode, suppliers, supplierinvoices } = props
