@@ -24,7 +24,7 @@ class CategoryService{
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+            return false;
         }
         $data = $request->all();
         $category = Category::create($data);
@@ -41,7 +41,7 @@ class CategoryService{
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
-            return redirect()->back();
+            return false;
         }
         $data = $request->all();
         $category = Category::find($category->id)->update($data);
