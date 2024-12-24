@@ -406,13 +406,12 @@ class OrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Order $order)
+    public function edit(Order $order, Request $request)
     {
         $this->authorize('update', $order);
         if($order->status === 'cancel'){
             return abort(403);
         }
-
 
       $order->load('items','user','tax','shipping','items.product','items.product.stock','exchange_items','items.product.stock','items.product.categories');
         
