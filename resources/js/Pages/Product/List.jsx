@@ -263,7 +263,10 @@ export default function List(props) {
                       <td class=" text-sm">
                         <div class="flex items-center cursor-pointer w-max">
                           {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
-                          <div class="ml-4 ">
+                          <div class="ml-4 " onClick={() =>{ 
+                          router.get(route('product.edit', product.id))
+
+                        }}>
                             <p class="text-sm text-black ">Name : {product.name}</p>
                             {product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{product.model} </p>}
                             {product.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
