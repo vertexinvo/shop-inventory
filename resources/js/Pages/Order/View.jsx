@@ -101,7 +101,7 @@ const View = (props) => {
                             <div>Discount: <span class="font-semibold">Rs. ${ order.discount || '0.00'}</span></div>
                             <div>Exchange: <span class="font-semibold">Rs. ${ order.exchange || '0.00'}</span></div>
                             <div>Tax: <span class="font-semibold">Rs. ${order.tax_fee || '0.00'}</span></div>
-                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping || '0.00'}</span></div>
+                            <div>Shipping: <span class="font-semibold">Rs. ${order.shipping_charges || '0.00'}</span></div>
                             <div>Extra Charges: <span class="font-semibold">Rs. ${order.extra_charges || '0.00'}</span></div>
                             <div class="border-t border-dashed border-gray-300 my-2"></div>
 
