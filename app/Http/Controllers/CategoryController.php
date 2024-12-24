@@ -39,7 +39,7 @@ class CategoryController extends Controller
     {
         $this->authorize('create', Category::class);
         $response = CategoryService::createCategory($request);
-        return $response ? session()->flash('message', 'Brand created successfully') : back();
+        return $response ? session()->flash('message', 'Category created successfully') : back();
     }
 
     /**
@@ -68,7 +68,7 @@ class CategoryController extends Controller
     {
         $this->authorize('update', $category);
         $response = CategoryService::updateCategory($request, $category);
-        return $response ? session()->flash('message', 'Brand created successfully') : back();
+        return $response ? session()->flash('message', 'Category updated successfully') : back();
     }
 
     /**
