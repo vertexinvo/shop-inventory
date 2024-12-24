@@ -598,7 +598,13 @@ class OrderController extends Controller
         Product::whereNotIn('id', $exchangeItemsIds)->where('exchange_order_id', $order->id)->delete();
 
         session()->flash('message', 'Order updated successfully.');
-        return redirect()->route('order.index');
+        if($request->close){
+            return redirect()->route('order.index');
+        }
+        else{
+            return back();
+        }
+        
     }
 
     /**

@@ -60,7 +60,7 @@ class HandleInertiaRequests extends Middleware
                 'error' => $error,
             ],
             'setting' => $this->setting,
-            'name' => Config::get('app.name'),   
+            'name' => Config::get('app.name'), 
         ];
     }
 }

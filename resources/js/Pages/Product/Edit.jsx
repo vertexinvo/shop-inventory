@@ -41,7 +41,8 @@ export default function Edit(props) {
             <MdKeyboardBackspace
                  size={20}
                  className="mr-2 cursor-pointer"
-                 onClick={() => router.get(route('product.index'))}
+                //  router back
+                 onClick={() => window.history.back()}
                  title="Back"
              />
        <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Product</h2>
