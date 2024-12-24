@@ -37,8 +37,8 @@ class BrandService{
     public function updateBrand($request,$brand){
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:brands,name,'.$brand->id,
-            'description' => 'required',
+            'name' => 'required|string|max:255|unique:brands,name,'.$brand->id,
+            'description' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
