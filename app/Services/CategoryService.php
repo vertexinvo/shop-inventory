@@ -17,8 +17,8 @@ class CategoryService{
     public function createCategory($request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,name',
-            'description' => 'nullable|max:50',
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:1000',
             'parent_id' => 'nullable',
         ]);
 
@@ -34,8 +34,8 @@ class CategoryService{
     public function updateCategory($request, $category)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories,name,' . $category->id,
-            'description' =>  'nullable|max:50',
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'description' =>  'nullable|string|max:1000',
             'parent_id' => 'nullable',
         ]);
 

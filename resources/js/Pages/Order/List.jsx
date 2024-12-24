@@ -46,7 +46,7 @@ console.log(orders)
             className="mr-2 cursor-pointer"
             onClick={() => router.get(route('dashboard'))}
             title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>
+          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">View Order</h2>
         </>}
     >
       <Head title="Order" />
@@ -667,7 +667,7 @@ console.log(orders)
 
       <ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these products?" onConfirm={() => {
 
-        router.post(route('product.bulkdestroy'), { ids: selectId.join(',') }, {
+        router.post(route('order.bulkdestroy'), { ids: selectId.join(',') }, {
           onSuccess: () => {
             setIsBulkDeleteModalOpen(false);
             setSelectId([]);
