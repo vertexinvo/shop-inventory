@@ -174,7 +174,7 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(String $id)
+    public function edit(String $id, Request $request)
     {
         $product = Product::find($id); 
         $this->authorize('update', $product);
@@ -210,8 +210,18 @@ class ProductController extends Controller
             ];
         });
 
-        $code = session('code') ?? '';
-        $invoicecode = session('invoiceCode') ?? '';
+        
+        $code =  '';
+        if($request->code){
+            $supplier = new SupplierController();
+            $code = $supplier->generateCode();
+        }
+        $invoicecode =  '';
+        if($request->invoicecode){
+            $supplierinvoice = new SupplierinvoiceController();
+            $invoicecode = $supplierinvoice->generateInvoiceCode();
+        }
+
 
         return Inertia::render('Product/Edit',compact('product','categories', 'brands', 'code', 'invoicecode', 'selectedCategories', 'selectedBrands'));
     }

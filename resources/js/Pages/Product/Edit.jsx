@@ -574,7 +574,7 @@ export default function Edit(props) {
                 {({ isSubmitting, values, errors,setFieldValue, }) => { 
                     
                     const generateCode = () => {
-                                     router.get(route('product.create'), { code: true }, {
+                                     router.get(route('product.edit', product.id), { code: true }, {
                                        onSuccess: (response) => {
                                          setFieldValue('code', response.props.code);
                                        },
@@ -710,7 +710,7 @@ export default function Edit(props) {
                 {({ isSubmitting, values, errors,setFieldValue, }) => { 
                     
                      const generateInvoiceNo = () => {
-                                    router.get(route('product.create'), { invoicecode: true }, {
+                                    router.get(route('product.edit',product.id), { invoicecode: true }, {
                                       onSuccess: (response) => {
                                         setFieldValue('invoice_no', response.props.invoicecode);
                                       },
@@ -740,7 +740,7 @@ export default function Edit(props) {
                 type="text"
                 placeholder="Enter invoice no"
               />
-               <RiAiGenerate  onClick={()=>generateInvoiceNo()} size={40} color="black" />
+               <RiAiGenerate type='button' onClick={()=>generateInvoiceNo()} size={40} color="black" />
               </div>
               <ErrorMessage
                 name="invoice_no"
