@@ -6,13 +6,14 @@ use App\Models\User;
 use App\Models\tax;
 use Illuminate\Auth\Access\Response;
 
-class taxPolicy
+class TaxPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user)
     {
+        dd($user->hasPermissionTo('viewAny tax'));
         return $user->hasPermissionTo('viewAny tax')
             ? Response::allow()
             : Response::deny('You do not have permission to view taxes.');
