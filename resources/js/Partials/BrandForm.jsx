@@ -14,10 +14,10 @@ function BrandForm(props) {
                            name: Yup.string().required('Name is required'),
                            description: Yup.string()
                              
-                             .test('word-limit', 'Description cannot exceed 50 words', (value) => {
+                             .test('word-limit', 'Description cannot exceed 1000 words', (value) => {
                                if (!value) return true;
                                const wordCount = value.trim().split(/\s+/).length;
-                               return wordCount <= 50;
+                               return wordCount <= 1000;
                              }),
      
                          })}
