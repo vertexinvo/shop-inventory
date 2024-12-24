@@ -6,7 +6,7 @@ use App\Models\User;
 use App\Models\tax;
 use Illuminate\Auth\Access\Response;
 
-class TaxPolicy
+class taxPolicy
 {
     /**
      * Determine whether the user can view any models.

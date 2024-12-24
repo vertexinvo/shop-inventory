@@ -16,8 +16,7 @@ class TaxController extends Controller
      */
     public function index(Request $request)
     {
-       $policy =  $this->authorize('viewAny', tax::class);
-        dd($policy);
+        $this->authorize('viewAny', tax::class);
     $search = $request->input('search', '');
 
     $taxs = Tax::where('name', 'like', "%$search%")
