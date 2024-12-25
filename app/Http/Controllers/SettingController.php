@@ -72,5 +72,38 @@ class SettingController extends Controller
 
         session()->flash('message', 'Setting updated successfully');
         return back();
-    }   
+    } 
+    
+    
+    public function exportDatabase()
+    {
+        $dbHost = env('DB_HOST'); // Database host
+        $dbName = env('DB_DATABASE'); // Database name
+        $dbUser = env('DB_USERNAME'); // Database username
+        $dbPass = env('DB_PASSWORD'); // Database password
+    
+        // Path for the backup file
+        $fileName = 'backup_' . date('Y_m_d_His') . '.sql';
+        $filePath = storage_path("app/{$fileName}");
+    
+        // Command to export the database
+        $command = "mysqldump --host={$dbHost} --user={$dbUser} --password={$dbPass} {$dbName} > {$filePath}";
+    
+        try {
+            // Execute the command
+            exec($command);
+    
+            // Check if the file was created
+            if (file_exists($filePath)) {
+                // Download the file and delete it after sending
+                return response()->download($filePath)->deleteFileAfterSend(true);
+            } else {
+                return response()->json(['error' => 'Database export failed. File not created.'], 500);
+            }
+        } catch (\Exception $e) {
+            // Handle any errors
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+    
 }
