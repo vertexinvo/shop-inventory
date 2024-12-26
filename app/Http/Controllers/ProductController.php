@@ -100,8 +100,10 @@ class ProductController extends Controller
             $invoicecode = $supplierinvoice->generateInvoiceCode();
         }
 
+        $categories_object_model = Category::all();
+
         
-        return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode','suppliers','supplierinvoices'));
+        return Inertia::render('Product/Add', compact('categories', 'brands', 'code', 'invoicecode','suppliers','supplierinvoices','categories_object_model'));
     }
 
     /**
@@ -222,8 +224,9 @@ class ProductController extends Controller
             $invoicecode = $supplierinvoice->generateInvoiceCode();
         }
 
+        $categories_object_model = Category::all();
 
-        return Inertia::render('Product/Edit',compact('product','categories', 'brands', 'code', 'invoicecode', 'selectedCategories', 'selectedBrands'));
+        return Inertia::render('Product/Edit',compact('product','categories', 'brands', 'code', 'invoicecode', 'selectedCategories', 'selectedBrands','categories_object_model'));
     }
 
     public function status(Request $request, string $id)

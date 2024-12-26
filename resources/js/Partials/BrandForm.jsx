@@ -7,7 +7,7 @@ import { router } from '@inertiajs/react';
 
 
 function BrandForm(props) {
-  const { brand } = props
+  const { brand,cancelBtnAccToModel, cancelOnClick } = props
   return (
     <Formik enableReinitialize initialValues={{ name: brand?.name || '', description: brand?.description || '' }}
       validationSchema={Yup.object({
@@ -23,9 +23,9 @@ function BrandForm(props) {
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         brand ?
-          router.put(route('brand.update', brand.id), values, { onSuccess: () => resetForm(), preserveState: false, replace: true })
+          router.put(route('brand.update', brand.id), values, { onSuccess: () => resetForm(), preserveState: true, preserveScroll: true })
           :
-          router.post(route('brand.store'), values, { onSuccess: () => resetForm(), preserveState: false, replace: true })
+          router.post(route('brand.store'), values, { onSuccess: () => resetForm(), preserveState: true, preserveScroll: true })
 
       }}
     >
@@ -59,7 +59,7 @@ function BrandForm(props) {
               <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
                 Save
               </button>
-              <button onClick={() => router.get(route('brand.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
+              <button onClick={() => cancelBtnAccToModel ? cancelOnClick() : router.get(route('brand.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                 Close
               </button>
             </div>

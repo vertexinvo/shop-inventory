@@ -6,8 +6,8 @@ import { toast } from 'react-toastify';
 import { router } from '@inertiajs/react';
 
 
-function BrandForm(props) {
-    const { categories, category } = props
+function CategoryForm(props) {
+    const { categories, category ,cancelBtnAccToModel , cancelOnClick} = props
     return (
         <Formik enableReinitialize initialValues={{ name: category?.name || '', description: category?.description || '', parent_id: category?.parent_id || '' }}
             validationSchema={Yup.object({
@@ -21,9 +21,9 @@ function BrandForm(props) {
             })}
             onSubmit={(values, { setSubmitting, resetForm }) => {
                 category ?
-                 router.put(route('category.update', category.id), values, { onSuccess: () => resetForm(), preserveState: false, replace: true }) 
+                 router.put(route('category.update', category.id), values, { onSuccess: () => resetForm(), preserveState: true, preserveScroll: true }) 
                  :
-                 router.post(route('category.store'), values, { onSuccess: () => resetForm(), preserveState: false, replace: true });
+                 router.post(route('category.store'), values, { onSuccess: () => resetForm(), preserveState: true, preserveScroll: true });
             }}
         >
 
@@ -70,10 +70,9 @@ function BrandForm(props) {
                             <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
                                 Save
                             </button>
-                            {/* <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
-              Save & Close
-              </button> */}
-                            <button onClick={() => router.get(route('category.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
+                           
+                      
+                            <button onClick={() => cancelBtnAccToModel ? cancelOnClick() : router.get(route('category.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                                 Close
                             </button>
                         </div>
@@ -84,4 +83,4 @@ function BrandForm(props) {
     )
 }
 
-export default BrandForm
+export default CategoryForm

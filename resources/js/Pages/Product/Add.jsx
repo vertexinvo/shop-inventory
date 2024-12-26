@@ -14,12 +14,15 @@ import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { MdKeyboardBackspace } from "react-icons/md";
 import './product.css'
+import CategoryForm from '@/Partials/CategoryForm';
+import BrandForm from '@/Partials/BrandForm';
 
 export default function Add(props) {
-  const { auth, categories, brands, code, invoicecode, suppliers, supplierinvoices } = props
+  const { auth, categories, brands, code, invoicecode, suppliers, supplierinvoices,categories_object_model } = props
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
-
+  const [isCategoryModel, setIsCategoryModel] = useState(false);
+  const [isBrandModel, setIsBrandModel] = useState(false);
   const [notremember, setNotRemember] = useState(false);
 
   const [supplierId, setSupplierId] = useState('');
@@ -174,7 +177,11 @@ export default function Add(props) {
 
 
                           <div className="mb-4 ">
-                            <label className="block   text-grey-darker text-sm font-bold mb-2" for="categories">Select Category (optional)</label>
+                           
+                            <div className="flex items-center justify-start gap-2 mt-2 mb-2">
+                            <label className="block   text-grey-darker text-sm font-bold " for="categories">Select Category (optional)</label>
+                              <button type='button' onClick={() => setIsCategoryModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new category</button>
+                            </div>
                             <Select
                               onChange={(e) => {
                                 setFieldValue("categories", e.map((item) => item.value));
@@ -187,9 +194,15 @@ export default function Add(props) {
                               styles={customStyles}
                             />
                             <ErrorMessage name="categories" component="div" className="text-red-500 text-xs mt-1" />
+                            
                           </div>
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="brands">Select Brand  (optional)</label>
+                           
+                            <div className="flex items-center justify-start gap-2 mt-2 mb-2">
+                              <label className="block text-grey-darker text-sm font-bold " for="brands">Select Brand  (optional)</label>
+                              <button type='button' onClick={() => setIsBrandModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new brand</button>
+                            
+                            </div>
                             <Select
                               onChange={(e) => {
                                 setFieldValue("brands", e.map((item) => item.value));
@@ -202,6 +215,7 @@ export default function Add(props) {
                               styles={customStyles}
                             />
                             <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
+                          
                           </div>
 
 
@@ -996,6 +1010,36 @@ export default function Add(props) {
                 )
               }}
             </Formik>
+          </div>
+        </div>
+      </Modal>
+
+
+
+      <Modal show={isCategoryModel} onClose={() => setIsCategoryModel(false)}>
+        <div className="overflow-y-auto max-h-[80vh]">
+          <div className="flex justify-center p-10">
+            <div className="text-2xl font-medium text-[#5d596c] ">
+              Create Category
+            </div>
+          </div>
+
+          <div className="px-10 mb-5">
+              <CategoryForm categories={categories_object_model} cancelBtnAccToModel={true} cancelOnClick={() => setIsCategoryModel(false)} />
+          </div>
+        </div>
+      </Modal>
+
+      <Modal show={isBrandModel} onClose={() => setIsBrandModel(false)}>
+        <div className="overflow-y-auto max-h-[80vh]">
+          <div className="flex justify-center p-10">
+            <div className="text-2xl font-medium text-[#5d596c] ">
+              Create Brand
+            </div>
+          </div>
+
+          <div className="px-10 mb-5">
+              <BrandForm cancelBtnAccToModel={true} cancelOnClick={() => setIsBrandModel(false)} />
           </div>
         </div>
       </Modal>
