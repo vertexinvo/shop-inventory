@@ -170,7 +170,7 @@ export default function Setting(props) {
            
         </div>
         <div className="w-full scale-100">
-          <a href={route('setting.db')} download={route('setting.db')} className="w-full">
+          <a href={route('setting.db')}  className="w-full">
             <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
               <div className="items-center">
                 <div className="flex justify-center mt-2">
