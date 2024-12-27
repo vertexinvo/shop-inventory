@@ -773,7 +773,12 @@ export default function InstantOrder(props) {
 
 
                                             <td class="p-4 text-sm text-black">
-                                              {record?.data?.selling_price || 'N/A'}
+                                            <input type="number" name="selling_price" value={record?.data?.selling_price} className="appearance-none border rounded w-[100px] py-2 px-3 text-grey-darker"
+                                                min={0}
+                                                onChange={(e) => {
+                                                  setFieldValue(`items.${index}.data.selling_price`, e.target.value || 0);
+                                                }}
+                                              />
                                             </td>
 
 
