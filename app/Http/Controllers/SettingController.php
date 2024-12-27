@@ -6,8 +6,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
-use Spatie\Backup\Config\Config;
-use Spatie\Backup\Tasks\Backup\BackupJobFactory;
+use Spatie\DbDumper\Databases\MySql;
 
 class SettingController extends Controller
 {
@@ -76,29 +75,30 @@ class SettingController extends Controller
         session()->flash('message', 'Setting updated successfully');
         return back();
     } 
+
     
+    public function exportDatabase()
+    {
+        $databaseName = env('DB_DATABASE');
+        $userName = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
+        $host = env('DB_HOST');
     
-   
-public function exportDatabase()
-{
-    try {
-        // Trigger a database backup using the configuration array
-        $backupJob = BackupJobFactory::createFromConfig(new Config(config('backup')));
-        $backupJob->run();
-
-        // Get the latest backup file path
-        $disk = Storage::disk(config('backup.destination.disks')[0]);
-        $files = $disk->files('Laravel');
-        $latestFile = collect($files)->last();
-
-        if ($latestFile) {
-            // Serve the backup file as a download
-            return response()->download($disk->path($latestFile));
-        }
-
-        return response()->json(['error' => 'No backup file found'], 500);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
+        // Define the file name and path
+        $fileName = 'database_backup.sql';
+        $filePath = storage_path($fileName);
+    
+        // Dump the database to the specified file
+        MySql::create()
+            ->setDbName($databaseName)
+            ->setUserName($userName)
+            ->setPassword($password)
+            ->setHost($host)
+            ->dumpToFile($filePath);
+    
+        // Return the file as a download
+        return response()->download($filePath)->deleteFileAfterSend(true);
     }
-}
+    
+
 }
