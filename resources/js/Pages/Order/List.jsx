@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total,status } = props
+  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search } = props
 console.log(orders)
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -513,7 +513,7 @@ console.log(orders)
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url,{ status: status || '' , searchuserid: searchuserid || '',search:search || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -567,7 +567,7 @@ console.log(orders)
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}`+ `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -580,7 +580,7 @@ console.log(orders)
 
 
                     <li>
-                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url+ `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>

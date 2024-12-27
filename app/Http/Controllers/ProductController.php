@@ -52,7 +52,7 @@ class ProductController extends Controller
 
     $stock = Product::with('stock')->get();
 
-    return Inertia::render('Product/List', compact('products', 'stock', 'status'));
+    return Inertia::render('Product/List', compact('products', 'stock', 'status','search'));
 }
 
     

@@ -69,7 +69,7 @@ class SupplierController extends Controller
       
        
 
-        return Inertia::render('Supplier/List', compact('totalSuppliers','suppliers','totalPendingAmount','totalPaidAmount','status'));
+        return Inertia::render('Supplier/List', compact('totalSuppliers','suppliers','totalPendingAmount','totalPaidAmount','status','search'));
     }
 
     /**

@@ -26,6 +26,8 @@ class OrderController extends Controller
        
         $search = $request->search ?? '';
         $status = $request->status ?? ''; 
+        $searchuserid = $request->searchuserid ?? '';
+
         $orders = Order::where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                   ->orWhere('id', 'like', "%$search%");
@@ -33,13 +35,16 @@ class OrderController extends Controller
         if($status !== ''){
             $orders = $orders->where('status', $status);
         }
+        if($searchuserid !== ''){
+            $orders = $orders->where('user_id', $searchuserid);
+        }
         $orders = $orders->paginate(10);
 
         $total = Order::where('status','!=', 'cancel')->count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
         
-        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status'));
+        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search'));
     }
 
     public function changestatus(Request $request, $id){

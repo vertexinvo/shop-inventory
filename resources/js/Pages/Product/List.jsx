@@ -14,7 +14,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 
 
 export default function List(props) {
-  const { auth, stock, products,status } = props
+  const { auth, stock, products,status,search } = props
   console.log(stock)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -40,8 +40,9 @@ export default function List(props) {
         </>}
     >
       <Head title="Product" />
-
+    
       <div class="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3">
+      <Link href={route('product.index' )}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -53,6 +54,8 @@ export default function List(props) {
             </div>
           </div>
         </div>
+        </Link>
+        
 
         <Link href={route('product.index' , { status: 0 })}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
@@ -363,7 +366,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url,{ status: status || '', search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -417,7 +420,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url)}
+                                  onClick={() => link.url && window.location.assign(link.url+ `&status=${status || ''}` + `&search=${search || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -430,7 +433,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url+ `&status=${status || ''}` + `&search=${search || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
