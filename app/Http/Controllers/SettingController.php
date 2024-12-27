@@ -79,10 +79,10 @@ class SettingController extends Controller
     
     public function exportDatabase()
     {
-        $databaseName = env('DB_DATABASE');
-        $userName = env('DB_USERNAME');
-        $password = env('DB_PASSWORD');
-        $host = env('DB_HOST');
+        $databaseName = config('database.connections.mysql.database');
+        $userName = config('database.connections.mysql.username');
+        $password = config('database.connections.mysql.password');
+        $host = config('database.connections.mysql.host');
     
         // Define the file name and path
         $fileName = 'database_backup.sql';
