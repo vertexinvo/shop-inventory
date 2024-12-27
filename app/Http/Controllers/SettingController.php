@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Setting;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
@@ -84,19 +85,18 @@ class SettingController extends Controller
         $password = config('database.connections.mysql.password');
         $host = config('database.connections.mysql.host');
     
-        // Define the file name and path
-        $fileName = 'database_backup.sql';
+        $timestamp = Carbon::now()->format('Y-m-d_H-i-s');
+        $domainName = request()->getHttpHost();
+        $fileName = "{$domainName}_backup_{$timestamp}.sql";     
         $filePath = storage_path($fileName);
     
-        // Dump the database to the specified file
         MySql::create()
             ->setDbName($databaseName)
             ->setUserName($userName)
             ->setPassword($password)
             ->setHost($host)
             ->dumpToFile($filePath);
-    
-        // Return the file as a download
+
         return response()->download($filePath)->deleteFileAfterSend(true);
     }
     
