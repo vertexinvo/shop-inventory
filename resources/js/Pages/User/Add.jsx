@@ -45,7 +45,7 @@ export default function List(props) {
                       role: Yup.string().required('Role is required'),
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                      router.post(route('user.store'), values, { onSuccess: () => resetForm() });
+                      router.post(route('user.store'), values, { preserveState: true, preserveScroll: true, onSuccess: () => resetForm() });
                     }}
                   >
                     <Form>

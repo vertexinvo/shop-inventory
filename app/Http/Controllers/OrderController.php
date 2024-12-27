@@ -144,7 +144,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|max:255',
+            'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
             'address' => 'nullable|max:500',
             'total' => 'required|numeric',
             'payable_amount' => 'required|numeric',
@@ -297,7 +297,7 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|max:255',
+            'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
             'address' => 'nullable|max:500',
             'total' => 'required|numeric',
             'payable_amount' => 'required|numeric',
@@ -478,9 +478,9 @@ class OrderController extends Controller
     {
         $this->authorize('update', $order);
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|max:255',
+            'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
             'address' => 'nullable|max:500',
             'total' => 'required|numeric',
             'payable_amount' => 'required|numeric',

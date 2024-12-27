@@ -45,8 +45,8 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'nullable|email|unique:users',
-            'phone' => 'nullable',
-            'address' => 'nullable',
+            'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
+            'address' => 'nullable|string|max:1000',
 
           
         ]);
@@ -89,10 +89,10 @@ class CustomerController extends Controller
     {
       
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'nullable|email|unique:users,email,'.$id,
-            'phone' => 'nullable',
-            'address' => 'nullable',
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255|unique:users,email,'.$id,
+            'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
+            'address' => 'nullable|string|max:1000',
             
         ]);
 
