@@ -53,7 +53,7 @@ function SupplierBalance({suppliers}) {
           </tr>
         </thead>
 
-        <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+        <tbody class="bg-white divide-y dark:divide-gray-700  ">
 
           {suppliers.data.length === 0 && (
             <tr>
@@ -64,7 +64,7 @@ function SupplierBalance({suppliers}) {
           )}
         {suppliers.data.map((item, index) => (
          
-         <tr class="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400">
+         <tr class="bg-gray-50   hover:bg-gray-100   text-gray-700  ">
 
 
 
@@ -109,7 +109,7 @@ function SupplierBalance({suppliers}) {
       </table>
 
     </div>
-    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing {suppliers.from} - {suppliers.to} of {suppliers.total} </span>
               <span class="col-span-2"></span>
             

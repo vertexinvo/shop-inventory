@@ -42,7 +42,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Roles
                   </span>
                 </div>
@@ -62,7 +62,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Categories
                   </span>
                 </div>
@@ -82,7 +82,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Brands
                   </span>
                 </div>
@@ -104,7 +104,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     User Management
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Tax
                   </span>
                 </div>
@@ -142,7 +142,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Shipping Charges
                   </span>
                 </div>
@@ -160,7 +160,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Site Setting
                   </span>
                 </div>
@@ -179,7 +179,7 @@ export default function Setting(props) {
               </div>
               <div className="flex flex-col items-center pb-5">
                 <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
                     Backup Database
                   </span>
                 </div>

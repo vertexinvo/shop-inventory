@@ -863,7 +863,7 @@ export default function Add(props) {
                                     total: '',
                                   });
                                 }}
-                                className="text-sm font-semibold text-black dark:text-white underline leading-tight"
+                                className="text-sm font-semibold text-black   underline leading-tight"
                               >
                                 Add Item
                               </button>
@@ -915,7 +915,7 @@ export default function Add(props) {
                                                 total: '',
                                               });
                                             }}
-                                            className="text-sm font-semibold text-black dark:text-white underline"
+                                            className="text-sm font-semibold text-black   underline"
                                           >
                                             Add Item
                                           </button>
@@ -1020,7 +1020,7 @@ export default function Add(props) {
                                               toast.error('Please fill in all required fields');
                                             }
                                           }}
-                                          className="text-xs sm:text-sm font-semibold text-black dark:text-white underline"
+                                          className="text-xs sm:text-sm font-semibold text-black   underline"
                                         >
                                           Add
                                         </button>
@@ -1028,7 +1028,7 @@ export default function Add(props) {
                                         <button
                                           type="button"
                                           onClick={() => setExchangeItems(null)}
-                                          className="text-xs sm:text-sm font-semibold text-black dark:text-white underline"
+                                          className="text-xs sm:text-sm font-semibold text-black   underline"
                                         >
                                           Cancel
                                         </button>

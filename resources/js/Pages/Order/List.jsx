@@ -54,7 +54,7 @@ console.log(orders)
 
 
       {/* <div className='flex justify-end px-5 py-2 mx-4 '>
-        <select name="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  w-[150px] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="">
+        <select name="" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  w-[150px] p-2.5  " id="">
           <option value="day">Day</option>
           <option value="week">Week</option>
           <option value="month">Month</option>
@@ -117,7 +117,7 @@ console.log(orders)
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                                 w-full md:w-[150px] p-2.5 pr-10 
-                                dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                    
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => router.get(route('order.index'), { status: e.target.value }, { preserveState: true })}
                 value={status}
@@ -432,12 +432,12 @@ console.log(orders)
                       <td class="p-4 text-sm text-black">
                         {/* if status is cancel so cant click on this button cancel status */}
                         {/* {order.status === "cancel" ? (
-                          <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                          <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                           >{order.status || 'N/A'}
                           </span>
                         ) : (
                           <button onClick={() => setIsStatusModalOpen(order)}>
-                            <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                            <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                             >{order.status || 'N/A'}
                             </span>
                           
@@ -452,11 +452,11 @@ console.log(orders)
                             }
                           }}
                           className={`${order.status === "pending"
-                              ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+                              ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                               : order.status === "completed"
-                                ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                                ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                                 : order.status === "cancel"
-                                  ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300"
+                                  ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                                   : ""
                             }`}
                         >
@@ -504,7 +504,7 @@ console.log(orders)
               </table>
 
             </div>
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing {orders.from} - {orders.to} of {orders.total} </span>
               <span class="col-span-2"></span>
 
@@ -639,7 +639,7 @@ console.log(orders)
               <div className="flex justify-end space-x-2 mt-4">
                 <button
                   type="submit"
-                  className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="text-white bg-black hover:bg-gray-600 dark:bg-white   dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
                   Save
                 </button>

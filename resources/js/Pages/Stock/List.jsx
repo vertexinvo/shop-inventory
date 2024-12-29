@@ -64,11 +64,11 @@ export default function List(props) {
 
                 <p class="text-lg flex items-center space-x-2">
                   {stocks.status ?
-                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                    <span class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded  ">
                       IN STOCK
                     </span>
                     :
-                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                    <span class="bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded  ">
                       OUT OF STOCK
                     </span>
                   }
@@ -281,7 +281,7 @@ export default function List(props) {
               </table>
 
             </div>
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing {stocklogs.from} - {stocklogs.to} of {stocklogs.total} </span>
               <span class="col-span-2"></span>
 

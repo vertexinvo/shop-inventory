@@ -216,10 +216,10 @@ export default function List(props) {
                       <td className="p-4 text-sm text-black">
                         <button onClick={() => setIsStatusModalOpen(item)}>
                           {item.status === "pending" ? (
-                            <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300"
+                            <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                             > {item.status || 'N/A'}<FaPen className="ms-1" />
                             </span>) : item.status === "paid" && (
-                              <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300"
+                              <span className="flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
                               >{item.status || 'N/A'}<FaPen className="ms-1" />
                               </span>
                             )}
@@ -234,7 +234,7 @@ export default function List(props) {
 
 
 
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing {supplier.from} - {supplier.to} of {supplier.total} </span>
               <span class="col-span-2"></span>
 
@@ -737,7 +737,7 @@ export default function List(props) {
               <div className="flex justify-end space-x-2 mt-4">
                 <button
                   type="submit"
-                  className="text-white bg-black hover:bg-gray-600 dark:bg-white dark:hover:bg-gray-700 dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="text-white bg-black hover:bg-gray-600 dark:bg-white   dark:text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
                   Save
                 </button>

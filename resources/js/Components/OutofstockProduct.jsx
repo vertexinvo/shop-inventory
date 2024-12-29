@@ -29,11 +29,11 @@ function OutofstockProduct({outOfStockProductrecord}) {
               <th class="px-4 py-3">Status</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
+          <tbody class="bg-white divide-y dark:divide-gray-700  ">
         
     
             {outOfStockProductrecord.data.map((product) => (
-               <tr class="bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-900 text-gray-700 dark:text-gray-400">
+               <tr class="bg-gray-50   hover:bg-gray-100   text-gray-700  ">
                 <td class=" text-sm">
                   <div class="flex items-center cursor-pointer w-max">
                   {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
@@ -72,7 +72,7 @@ function OutofstockProduct({outOfStockProductrecord}) {
           </tbody>
         </table>
       </div>
-      <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+      <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
                   <span class="flex items-center col-span-3"> Showing {outOfStockProductrecord.from} - {outOfStockProductrecord.to} of {outOfStockProductrecord.total} </span>
                   <span class="col-span-2"></span>
                 

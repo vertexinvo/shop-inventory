@@ -96,7 +96,7 @@ export default function List(props) {
                           name="filter"
                           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                                           w-full md:w-[150px] p-2.5  pr-10  
-                                          dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
+                                              
                                           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                           onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
                           value={status}
@@ -343,7 +343,7 @@ export default function List(props) {
               </table>
 
             </div>
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing {suppliers.from} - {suppliers.to} of {suppliers.total} </span>
               <span class="col-span-2"></span>
 
