@@ -10,6 +10,8 @@ Route::middleware(['auth'])->prefix('dashboard')->controller(OrderController::cl
     Route::post('order/instantorder', 'instantorderstore')->name('order.instantorderstore');
     Route::put('order/{id}/changestatus', 'changestatus')->name('order.changeStatus');
     Route::put('order/{id}/amountupdate', 'amountupdate')->name('order.amountupdate');
+    Route::get('order/csv/csvexport', [OrderController::class, 'csvExport'])->name('order.csvexport');
+
 
 });
 

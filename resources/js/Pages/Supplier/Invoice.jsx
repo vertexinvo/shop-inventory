@@ -12,6 +12,8 @@ import { RiAiGenerate } from 'react-icons/ri';
 import { FaPen } from "react-icons/fa";
 import { IoIosSave } from 'react-icons/io';
 import { MdKeyboardBackspace } from 'react-icons/md';
+import { SiMicrosoftexcel } from "react-icons/si";
+
 
 
 
@@ -45,19 +47,19 @@ export default function List(props) {
     <AuthenticatedLayout
       Product={auth.Product}
       header={
-    <>
-     <MdKeyboardBackspace
-          size={20}
-          className="mr-2 cursor-pointer"
-          onClick={() => router.get(route('supplier.index'))}
-          title="Back"
-      />
+        <>
+          <MdKeyboardBackspace
+            size={20}
+            className="mr-2 cursor-pointer"
+            onClick={() => router.get(route('supplier.index'))}
+            title="Back"
+          />
           <h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier #{suppliers.code}</h2>
 
-    
-    </>  
-  
-    }
+
+        </>
+
+      }
     >
       <Head title="Invoice" />
 
@@ -95,15 +97,15 @@ export default function List(props) {
         </div>
       </div>
 
- 
+
 
 
       <div className="flex flex-col px-4  mt-2 mx-auto w-full">
         <div className="w-full ">
 
-        <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
-                      <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-                     
+          <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -114,21 +116,21 @@ export default function List(props) {
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
 
-                            <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
                     <button
                       onClick={() => setIsNewSupplierInvoiceModel(true)}
                       className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
                     >
                       Create Invoice
-                    </button> 
-                   <div className="relative w-full md:w-auto">
+                    </button>
+                    <div className="relative w-full md:w-auto">
 
                       <Field
                         name="search"
                         type="text"
                         placeholder="Search..."
                         className=" py-2 px-4 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                        />
+                      />
                       <button
                         type="button"
                         onClick={() => { setFieldValue('search', ''); router.get(route('supplier.invoices', suppliers.id)); }}
@@ -145,6 +147,16 @@ export default function List(props) {
                     >
                       Search
                     </button>
+
+                    <a
+                      href={route('supplierinvoices.csvexport')}
+                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+                    >
+                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                        Export CSV File
+                      </span>
+                    </a>
 
                   </Form>
                 )}
@@ -243,7 +255,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => supplier.links[0].url ? router.get(supplier.links[0].url,{ search: search||'' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => supplier.links[0].url ? router.get(supplier.links[0].url, { search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -310,7 +322,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => supplier.links[supplier.links.length - 1].url && window.location.assign(supplier.links[supplier.links.length - 1].url+ `&search=${search || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => supplier.links[supplier.links.length - 1].url && window.location.assign(supplier.links[supplier.links.length - 1].url + `&search=${search || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -698,7 +710,7 @@ export default function List(props) {
         onClose={() => setIsStatusModalOpen(null)}
         maxWidth="2xl"
       >
-        
+
 
         <Formik
           initialValues={{

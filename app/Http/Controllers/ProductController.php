@@ -55,6 +55,104 @@ class ProductController extends Controller
     return Inertia::render('Product/List', compact('products', 'stock', 'status','search'));
 }
 
+
+
+public function csvExport(Request $request)
+{
+    // Fetch all products from the database with their attributes and categories
+    $products = Product::with(['categories'])->get();
+    
+    // Define the headers for the CSV file
+    $headers = [
+        "Content-type"        => "text/csv",
+        "Content-Disposition" => "attachment; filename=products.csv",
+        "Pragma"              => "no-cache",
+        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        "Expires"             => "0"
+    ];
+    
+    // Define the columns for the CSV file
+    $columns = [
+        'Name',
+        'Model',
+        'Specifications',
+        'Purchase Price',
+        'Selling Price',
+        'Warranty Period',
+        'Is Borrow',
+        'Shop Name',
+        'Shop Address',
+        'Shop Phone',
+        'Shop Email',
+        'Identity Type',
+        'Identity Value',
+        'Warranty Type',
+        'Is Warranty',
+        'Supplier Invoice No',
+        'Description',
+        'Weight',
+        'Is Supplier',
+        'Customfield',
+        'Is Exchange',
+        'Exchange Remarks',
+        'Is Return',
+        'Return Remarks',
+        'Exchange Order Id',
+    ];
+    
+    // Create a callback to stream the CSV content
+    $callback = function() use ($products, $columns) {
+        $file = fopen('php://output', 'w');
+        
+        // Write the column headers
+        fputcsv($file, $columns);
+        
+        // Write product data to the CSV
+        foreach ($products as $product) {
+           
+            $categories = $product->categories->map(function ($category) {
+                return $category->name; 
+            });
+            $categoriesString = implode('; ', $categories->toArray()); // Convert array to string
+            
+            fputcsv($file, [
+                $product->name,
+                $product->model,
+                $product->specifications,
+                $product->purchase_price,
+                $product->selling_price,
+                $product->warranty_period,
+                $product->is_borrow,
+                $product->shop_name,
+                $product->shop_address,
+                $product->shop_phone,
+                $product->shop_email,
+                $product->identity_type,
+                $product->identity_value,
+                $product->warranty_type,
+                $product->is_warranty,
+                $product->supplier_invoice_no,
+                $product->description,
+                $product->weight,
+                $product->is_supplier,
+                $product->customfield,
+                $product->is_exchange,
+                $product->exchange_remarks,
+                $product->is_return,
+                $product->return_remarks,
+                $product->exchange_order_id,
+              
+              
+            ]);
+        }
+        
+        fclose($file);
+    };
+    
+    // Return the streamed CSV file as a download
+    return response()->stream($callback, 200, $headers);
+}
+
     
 
     /**

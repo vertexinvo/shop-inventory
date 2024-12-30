@@ -26,6 +26,39 @@ class CustomerController extends Controller
         return Inertia::render('Customer/List', compact('users', 'totalcustomers', 'totalactivecus', 'totalinactivecus'));
     }
 
+    public function csvExport(Request $request)
+    {
+            $customers = UserService::getAllUser($request, 'customer');
+            $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=customers.csv",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+        $columns = [
+            'name',
+            'email',
+            'status',
+            'phone',
+            'address',
+        ];
+        $callback = function() use ($customers, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+            foreach ($customers as $customer) {
+                fputcsv($file, [
+                    $customer->name,
+                    $customer->email,
+                    $customer->status,
+                    $customer->phone,
+                    $customer->address
+                ]);
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
 
     /**
      * Show the form for creating a new resource.

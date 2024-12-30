@@ -11,10 +11,11 @@ import { FaBox } from "react-icons/fa";
 import FormatDate from '@/Helpers/FormatDate';
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { MdKeyboardBackspace } from "react-icons/md";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 
 export default function List(props) {
-  const { auth, stock, products,status,search } = props
+  const { auth, stock, products, status, search } = props
   console.log(stock)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -40,35 +41,35 @@ export default function List(props) {
         </>}
     >
       <Head title="Product" />
-    
-      <div class="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3">
-      <Link href={route('product.index' )}>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL PRODUCTS</p>
-              <p class="text-lg">0</p>
-            </div>
-            <div class="my-auto">
-              <FaBoxes size={40} />
-            </div>
-          </div>
-        </div>
-        </Link>
-        
 
-        <Link href={route('product.index' , { status: 0 })}>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
-              <p class="text-lg">0</p>
-            </div>
-            <div class="my-auto">
-              <HiMiniArchiveBoxXMark size={40} />
+      <div class="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3">
+        <Link href={route('product.index')}>
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TOTAL PRODUCTS</p>
+                <p class="text-lg">0</p>
+              </div>
+              <div class="my-auto">
+                <FaBoxes size={40} />
+              </div>
             </div>
           </div>
-        </div>
+        </Link>
+
+
+        <Link href={route('product.index', { status: 0 })}>
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
+                <p class="text-lg">0</p>
+              </div>
+              <div class="my-auto">
+                <HiMiniArchiveBoxXMark size={40} />
+              </div>
+            </div>
+          </div>
         </Link>
       </div>
 
@@ -146,18 +147,28 @@ export default function List(props) {
                       Search
                     </button>
 
+                    <a
+                      href={route('product.csvexport')}
+                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+                    >
+                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                        Export CSV File
+                      </span>
+                    </a>
+
                   </Form>
                 )}
               </Formik>
 
-              
+
 
               <div class="inline-flex rounded-md shadow-sm" role="group">
                 <Link href={route('brand.index')} class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
                   Brands
                 </Link>
-               
-                <Link href={route('category.index')}  class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
+
+                <Link href={route('category.index')} class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
                   Categories
                 </Link>
               </div>
@@ -266,10 +277,10 @@ export default function List(props) {
                       <td class=" text-sm">
                         <div class="flex items-center cursor-pointer w-max">
                           {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
-                          <div class="ml-4 " onClick={() =>{ 
-                          router.get(route('product.edit', product.id))
+                          <div class="ml-4 " onClick={() => {
+                            router.get(route('product.edit', product.id))
 
-                        }}>
+                          }}>
                             <p class="text-sm text-black ">Name : {product.name}</p>
                             {product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{product.model} </p>}
                             {product.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
@@ -323,7 +334,7 @@ export default function List(props) {
 
 
                       <td class="p-4 flex items-center gap-2">
-                        <button onClick={() =>{ 
+                        <button onClick={() => {
                           router.get(route('product.edit', product.id))
 
                         }} title="Edit">
@@ -366,7 +377,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url,{ status: status || '', search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: status || '', search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -420,7 +431,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url+ `&status=${status || ''}` + `&search=${search || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -433,7 +444,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url+ `&status=${status || ''}` + `&search=${search || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>

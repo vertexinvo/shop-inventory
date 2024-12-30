@@ -47,6 +47,90 @@ class OrderController extends Controller
         return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search'));
     }
 
+
+    public function csvExport(Request $request)
+{
+    $orders = Order::all();
+    $headers = [
+        "Content-type"        => "text/csv",
+        "Content-Disposition" => "attachment; filename=orders.csv",
+        "Pragma"              => "no-cache",
+        "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+        "Expires"             => "0"
+    ];
+    $columns = [
+        'Name',
+        'Email',
+        'Phone',
+        'Address',
+        'User Id',
+        'Total',
+        'Payable Amount',
+        'Paid Amount',
+        'Method',
+        'Cheque No',
+        'Cheque Date',
+        'Bank Name',
+        'Bank Branch',
+        'Bank Account',
+        'Online Payment Link',
+        'Extra Charges',
+        'Shipping Charges',
+        'Discount',
+        'Tax',
+        'Status',
+        'Is Installment',
+        'Installment Amount',
+        'Installment Period',
+        'Installment Count',
+        'Installment Start Date',
+        'Installment End Date',
+        'Tax Id',
+        'Shipping Id',
+        'Order Date',
+        'Exchange'
+    ];
+    $callback = function() use ($orders, $columns) {
+        $file = fopen('php://output', 'w');
+        fputcsv($file, $columns);
+        foreach ($orders as $order) {
+            fputcsv($file, [
+                $order->name,
+                $order->email,
+                $order->phone,
+                $order->address,
+                $order->user_id,
+                $order->total,
+                $order->payable_amount,
+                $order->paid_amount,
+                $order->method,
+                $order->cheque_no,
+                $order->cheque_date,
+                $order->bank_name,
+                $order->bank_branch,
+                $order->bank_account,
+                $order->online_payment_link,
+                $order->extra_charges,
+                $order->shipping_charges, 
+                $order->discount,
+                $order->tax,
+                $order->status,
+                $order->is_installment,
+                $order->installment_amount,
+                $order->installment_period,
+                $order->installment_count,
+                $order->installment_start_date,
+                $order->installment_end_date,
+                $order->tax_id,
+                $order->shipping_id,
+                $order->order_date,
+                $order->exchange
+            ]);
+        }
+        fclose($file);
+    };
+    return response()->stream($callback, 200, $headers);
+}
     public function changestatus(Request $request, $id){
 
         $order = Order::findOrFail($id);

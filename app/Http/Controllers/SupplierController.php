@@ -44,6 +44,9 @@ class SupplierController extends Controller
             })->values(); // Reset collection indices with ->values()
         }
 
+
+        
+
     // Manually paginate the filtered collection
     $currentPage = LengthAwarePaginator::resolveCurrentPage();
     $perPage = 10;
@@ -71,6 +74,102 @@ class SupplierController extends Controller
 
         return Inertia::render('Supplier/List', compact('totalSuppliers','suppliers','totalPendingAmount','totalPaidAmount','status','search'));
     }
+
+
+    public function csvExportInvoices(Request $request)
+    {
+        $supplierinvoices = SupplierInvoice::all();
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=supplierinvoices.csv",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+        $columns = [
+        'supplier_id',
+        'invoice_no',
+        'invoice_date',
+        'due_date',
+        'total_payment',
+        'status',
+        'method',
+        'cheque_no',
+        'cheque_date',
+        'bank_name',
+        'bank_branch',
+        'bank_account',
+        'online_payment_link',
+        'payment_proof',
+        'note',
+        ];
+        $callback = function() use ($supplierinvoices, $columns) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, $columns);
+            foreach ($supplierinvoices as $supplierinvoice) {
+                fputcsv($file, [
+                    $supplierinvoice->supplier_id,
+                    $supplierinvoice->invoice_no,
+                    $supplierinvoice->invoice_date,
+                    $supplierinvoice->due_date,
+                    $supplierinvoice->total_payment,
+                    $supplierinvoice->status,
+                    $supplierinvoice->method,
+                    $supplierinvoice->cheque_no,
+                    $supplierinvoice->cheque_date,
+                    $supplierinvoice->bank_name,
+                    $supplierinvoice->bank_branch,
+                    $supplierinvoice->bank_account,
+                    $supplierinvoice->online_payment_link,
+                    $supplierinvoice->payment_proof,
+                    $supplierinvoice->note
+                ]);
+            }
+            fclose($file);
+        };
+        return response()->stream($callback, 200, $headers);
+    }
+        public function csvExport(Request $request)
+        {
+            $suppliers = Supplier::all();
+            $headers = [
+                "Content-type"        => "text/csv",
+                "Content-Disposition" => "attachment; filename=suppliers.csv",
+                "Pragma"              => "no-cache",
+                "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+                "Expires"             => "0"
+            ];
+            $columns = [
+            'person_name',
+            'contact',
+            'email',
+            'address',
+            'code',
+            'total_supplierinvoices',
+            'total_amount_paid',
+            'total_amount_pending',
+            'total_amount'
+            ];
+            $callback = function() use ($suppliers, $columns) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, $columns);
+                foreach ($suppliers as $supplier) {
+                    fputcsv($file, [
+                        $supplier->person_name,
+                        $supplier->contact,
+                        $supplier->email,
+                        $supplier->address,
+                        $supplier->code,                    
+                        $supplier->total_supplierinvoices,
+                        $supplier->total_amount_paid,
+                        $supplier->total_amount_pending,
+                        $supplier->total_amount
+                    ]);
+                }
+                fclose($file);
+            };
+            return response()->stream($callback, 200, $headers);
+        }
 
     /**
      * Show the form for creating a new resource.

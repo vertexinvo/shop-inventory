@@ -13,6 +13,8 @@ import './order.css'
 import { IoIosSave } from "react-icons/io";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { toast } from 'react-toastify';
+import { SiMicrosoftexcel } from "react-icons/si";
+
 
 
 export default function List(props) {
@@ -184,6 +186,22 @@ console.log(orders)
                     >
                       Search
                     </button>
+                    {/* <button
+                      type="submit"
+                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                    >
+                      <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                      Export Excel
+                    </button> */}
+                    <a
+                                href={route('order.csvexport')}
+                                className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+                            >
+                                <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                                    <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                                    Export CSV File
+                                </span>
+                            </a>
 
 
                   </Form>
