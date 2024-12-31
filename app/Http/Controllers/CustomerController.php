@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\UserService;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Validator;
 
@@ -19,10 +20,10 @@ class CustomerController extends Controller
         $this->authorize('viewAny', User::class);
         $users = UserService::getAllUser($request, 'customer');
 
-        $totalcustomers = $users->count();
-        $totalactivecus = $users->where('status', '1')->count();
-        $totalinactivecus = $users->where('status', '0')->count();
-        // dd($totalactivecus);
+        $totalcustomers = User::role('customer')->count();
+        $totalactivecus = User::where('status', '1')->count();
+        $totalinactivecus = User::where('status', '0')->count();
+
         return Inertia::render('Customer/List', compact('users', 'totalcustomers', 'totalactivecus', 'totalinactivecus'));
     }
 
@@ -93,6 +94,8 @@ class CustomerController extends Controller
         $user = User::create($data);
         $user->assignRole('customer');
         session()->flash('message', 'Customer created successfully');
+        UserService::forgetCache($request->search ?? '', 'customer');
+
         return back();
     }
 
@@ -138,6 +141,7 @@ class CustomerController extends Controller
         $this->authorize('update', $user);
         $user->update($data);
         session()->flash('message', 'Customer updated successfully');
+        UserService::forgetCache($request->search ?? '', 'customer');
         return back();
     
     }
@@ -149,6 +153,7 @@ class CustomerController extends Controller
         $this->authorize('update', $user);
         $user->status = !$user->status;
         $user->save();
+        UserService::forgetCache($request->search ?? '', 'customer');
     }
 
     /**
@@ -160,6 +165,7 @@ class CustomerController extends Controller
         $this->authorize('delete', $user);
         $user->delete();
         session()->flash('message', 'Customer deleted successfully');
+        UserService::forgetCache('', 'customer');
         return back();
     }
 
@@ -169,6 +175,7 @@ class CustomerController extends Controller
         $ids = explode(',', $request->ids);
         User::whereIn('id', $ids)->delete();
         session()->flash('message', 'Customer deleted successfully');
+        UserService::forgetCache($request->search ?? '', 'customer');
         return back();
     }
 }

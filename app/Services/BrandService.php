@@ -5,6 +5,7 @@ use App\Models\Brand;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
  
 
@@ -12,7 +13,10 @@ class BrandService{
 
     public function getAllBrands()
     {
-        return Brand::latest()->paginate(10);
+        return Cache::remember('all_brands', 60, function () {
+            return Brand::latest()->paginate(10);
+        });
+       
     }
 
     public function createBrand($request){
@@ -27,6 +31,8 @@ class BrandService{
         }
         $data = $request->all();
         $brand = Brand::create($data);
+
+        Cache::forget('all_brands');
         
         if($brand){
             return true;
@@ -47,6 +53,8 @@ class BrandService{
         }
         $data = $request->all();
         $brand = Brand::find($brand->id)->update($data);
+
+        Cache::forget('all_brands');
         if($brand){
             return true;
         }

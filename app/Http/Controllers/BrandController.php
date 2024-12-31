@@ -8,6 +8,7 @@ use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 class BrandController extends Controller
 {
@@ -81,6 +82,7 @@ class BrandController extends Controller
     {
         $this->authorize('delete', $brand);
         $brand->delete();
+        Cache::forget('all_brands');
         return redirect()->back()->with('message', 'Brand deleted successfully');
     }
 
@@ -89,6 +91,7 @@ class BrandController extends Controller
         $this->authorize('bulkdelete', Brand::class);
         $bulkdestroy = Brand::whereIn('id', explode(',', $request->ids))->delete();
         session()->flash('message', 'Brand deleted successfully');
+        Cache::forget('all_brands');
         return back();
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Facades\CategoryService;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -79,6 +80,7 @@ class CategoryController extends Controller
         $this->authorize('delete', $category);
         $category = Category::find($category->id);
         $category->delete();
+        Cache::forget('all_categories');
         return redirect()->back()->with('message', 'Category deleted successfully');
     }
 
@@ -87,6 +89,7 @@ class CategoryController extends Controller
         $this->authorize('bulkdelete', Category::class);
         Category::whereIn('id', explode(',', $request->ids))->delete();
         session()->flash('message', 'Category deleted successfully');
+        Cache::forget('all_categories');
         return back();
     }
 }

@@ -18,10 +18,8 @@ class UserController extends Controller
     {
         $users =  UserService::getAllUser($request, null, ['superadmin', 'customer']);
 
-        $totalusers = $users->count();
-        $totalactiveusers = $users->where('status', '1')->count();
-        $totalinactiveusers = $users->where('status', '0')->count();
-        return Inertia::render('User/List' , compact('users', 'totalusers', 'totalactiveusers', 'totalinactiveusers'));
+  
+        return Inertia::render('User/List' , compact('users'));
     }
 
     /**
@@ -56,6 +54,9 @@ class UserController extends Controller
         $user = User::create($data);
         $user->assignRole($request->role);
         session()->flash('message', 'User created successfully');
+        
+        UserService::forgetCache($request->search ?? '', null, ['superadmin', 'customer']);
+
         return back();
     }
 
@@ -96,6 +97,8 @@ class UserController extends Controller
         $user->update($data);
         $user->syncRoles($request->role);
         session()->flash('message', 'User updated successfully');
+        UserService::forgetCache($request->search ?? '', null, ['superadmin', 'customer']);
+
         return back();
     }
 
@@ -104,6 +107,9 @@ class UserController extends Controller
         $user = User::find($id);
         $user->status = !$user->status;
         $user->save();
+        UserService::forgetCache($request->search ?? '', null, ['superadmin', 'customer']);
+
+       
     }
 
     /**
@@ -116,6 +122,8 @@ class UserController extends Controller
         })->find($id);
         $user->delete();
         session()->flash('message', 'User deleted successfully');
+        UserService::forgetCache('', null, ['superadmin', 'customer']);
+
         return back();
     }
 
@@ -127,6 +135,8 @@ class UserController extends Controller
             $query->where('name', 'superadmin');
         })->delete();
         session()->flash('message', 'User deleted successfully');
+        UserService::forgetCache($request->search ?? '', null, ['superadmin', 'customer']);
+
         return back();
     }
 }
