@@ -23,7 +23,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
     const setting = usePage().props.setting;
 
-    console.log(setting);
+
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -43,9 +43,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
     return (
-
         <>
-
             <ToastContainer />
             <div className="min-h-screen bg-gray-100">
                 <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">

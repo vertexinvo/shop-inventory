@@ -23,11 +23,9 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $this->authorize('viewAny', Order::class);
-       
         $search = $request->search ?? '';
         $status = $request->status ?? ''; 
         $searchuserid = $request->searchuserid ?? '';
-
         $orders = Order::where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                   ->orWhere('id', 'like', "%$search%");
@@ -39,12 +37,12 @@ class OrderController extends Controller
             $orders = $orders->where('user_id', $searchuserid);
         }
         $orders = $orders->paginate(10);
-
         $total = Order::where('status','!=', 'cancel')->count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
-        
-        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search'));
+        // i have to get the total paid_amount of each order
+        $totalPaidAmount = Order::where('status', 'completed')->sum('paid_amount');
+        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount'));
     }
 
 

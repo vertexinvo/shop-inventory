@@ -14,12 +14,14 @@ import { IoIosSave } from "react-icons/io";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { toast } from 'react-toastify';
 import { SiMicrosoftexcel } from "react-icons/si";
+import { MdOutlinePayments } from "react-icons/md";
+
 
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search } = props
-console.log(orders)
+  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search ,totalPaidAmount} = props
+console.log(totalPaidAmount)
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -105,6 +107,19 @@ console.log(orders)
           </div>
         </div>
         </Link>
+        {/* <Link href={route('order.index', { status: 'completed' })}> */}
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">PAID AMOUNT</p>
+              <p class="text-lg">{totalPaidAmount}</p>
+            </div>
+            <div class="my-auto">
+              <MdOutlinePayments  size={40} />
+            </div>
+          </div>
+        </div>
+        {/* </Link> */}
       </div>
 
 

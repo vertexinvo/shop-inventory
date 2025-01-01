@@ -30,18 +30,12 @@ use Eliseekn\LaravelMetrics\Enums\Period;
 
 Route::get('/', function () {
 
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return Inertia::render('Welcome' );
 });
 
 
 
 Route::get('/dashboard', function (Request $request) {
-
     $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
         $query->where('quantity', '>', 0);
@@ -83,7 +77,7 @@ Route::get('/dashboard', function (Request $request) {
 
  
     return Inertia::render('Dashboard',compact('trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
-})->name('dashboard');
+})->name('dashboard')->middleware(['auth']);
 
 
 
