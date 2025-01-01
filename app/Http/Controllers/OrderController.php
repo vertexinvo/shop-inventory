@@ -44,7 +44,24 @@ class OrderController extends Controller
         $totalPendingAmount = Order::where('status', 'pending')->get()->sum(function ($order) {
             return $order->payable_amount - $order->paid_amount;
         });
-        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount'));
+        $monthlyTotalPaidAmount = Order::where('status', 'completed')
+        ->whereMonth('order_date', now()->month)->sum('paid_amount');
+
+        $monthlyTotalPendingAmount = Order::where('status', 'pending')
+        ->whereMonth('order_date', now()->month)->get()
+        ->sum(function ($order) {
+        return $order->payable_amount - $order->paid_amount;
+        });
+
+        $yearlyTotalPaidAmount = Order::where('status', 'completed')
+        ->whereYear('order_date', now()->year)->sum('paid_amount');
+
+        $yearlyTotalPendingAmount = Order::where('status', 'pending')
+        ->whereYear('order_date', now()->year)->get()
+        ->sum(function ($order) {
+        return $order->payable_amount - $order->paid_amount;
+    });
+    return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
     }
 
 

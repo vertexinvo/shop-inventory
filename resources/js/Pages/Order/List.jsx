@@ -22,8 +22,8 @@ import { FaMoneyBills } from "react-icons/fa6";
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search ,totalPaidAmount,totalPendingAmount} = props
-console.log(totalPendingAmount)
+  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search ,totalPaidAmount,totalPendingAmount,monthlyTotalPaidAmount,monthlyTotalPendingAmount,yearlyTotalPaidAmount,yearlyTotalPendingAmount} = props
+console.log(totalPendingAmount);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -113,7 +113,7 @@ console.log(totalPendingAmount)
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
-              <p class="font-bold">ORDER COMPLETED AMOUNT</p>
+              <p class="font-bold">TOTAL COMPLETED AMOUNT</p>
               <p class="text-lg">{totalPaidAmount}</p>
             </div>
             <div class="my-auto">
@@ -125,8 +125,52 @@ console.log(totalPendingAmount)
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
-              <p class="font-bold">ORDER PENDING AMOUNT</p>
+              <p class="font-bold">TOTAL PENDING AMOUNT</p>
               <p class="text-lg">{parseFloat(totalPendingAmount).toFixed(2)}</p>
+            </div>
+            <div class="my-auto">
+              <FaMoneyBills size={40} />
+            </div>
+          </div>
+        </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">MONTHLY COMPLETED AMOUNT</p>
+              <p class="text-lg">{parseFloat(monthlyTotalPaidAmount).toFixed(2)}</p>
+            </div>
+            <div class="my-auto">
+              <FaMoneyBills size={40} />
+            </div>
+          </div>
+        </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">MONTHLY PENDING AMOUNT</p>
+              <p class="text-lg">{parseFloat(monthlyTotalPendingAmount).toFixed(2)}</p>
+            </div>
+            <div class="my-auto">
+              <FaMoneyBills size={40} />
+            </div>
+          </div>
+        </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">YEARLY COMPLETED AMOUNT</p>
+              <p class="text-lg">{parseFloat(yearlyTotalPaidAmount).toFixed(2)}</p>
+            </div>
+            <div class="my-auto">
+              <FaMoneyBills size={40} />
+            </div>
+          </div>
+        </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">YEARLY PENDING AMOUNT</p>
+              <p class="text-lg">{parseFloat(yearlyTotalPendingAmount).toFixed(2)}</p>
             </div>
             <div class="my-auto">
               <FaMoneyBills size={40} />
@@ -266,6 +310,9 @@ console.log(totalPendingAmount)
                     <th class="pl-4 text-left text-sm font-semibold ">
                       INV-ID
                     </th>
+                    <th class="pl-4 text-left text-sm font-semibold ">
+                      Order Date
+                    </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Order Info
                     </th>
@@ -359,6 +406,14 @@ console.log(totalPendingAmount)
                       <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
                         {order.id || 'N/A'}
                         </button>
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
+                        <div class="flex items-center cursor-pointer w-max">
+                          <div class="ml-4">
+                            <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
+                          </div>
+                        </div>
                       </td>
                       <td class="text-sm text-black">
                       <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
