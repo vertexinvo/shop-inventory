@@ -15,13 +15,15 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { toast } from 'react-toastify';
 import { SiMicrosoftexcel } from "react-icons/si";
 import { MdOutlinePayments } from "react-icons/md";
+import { FaMoneyBills } from "react-icons/fa6";
+
 
 
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search ,totalPaidAmount} = props
-console.log(totalPaidAmount)
+  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search ,totalPaidAmount,totalPendingAmount} = props
+console.log(totalPendingAmount)
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -107,11 +109,11 @@ console.log(totalPaidAmount)
           </div>
         </div>
         </Link>
-        {/* <Link href={route('order.index', { status: 'completed' })}> */}
+  
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
-              <p class="font-bold">PAID AMOUNT</p>
+              <p class="font-bold">ORDER COMPLETED AMOUNT</p>
               <p class="text-lg">{totalPaidAmount}</p>
             </div>
             <div class="my-auto">
@@ -119,7 +121,19 @@ console.log(totalPaidAmount)
             </div>
           </div>
         </div>
-        {/* </Link> */}
+      
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+            <div class="my-auto">
+              <p class="font-bold">ORDER PENDING AMOUNT</p>
+              <p class="text-lg">{parseFloat(totalPendingAmount).toFixed(2)}</p>
+            </div>
+            <div class="my-auto">
+              <FaMoneyBills size={40} />
+            </div>
+          </div>
+        </div>
+       
       </div>
 
 

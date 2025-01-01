@@ -40,9 +40,9 @@ class OrderController extends Controller
         $total = Order::where('status','!=', 'cancel')->count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
-        // i have to get the total paid_amount of each order
         $totalPaidAmount = Order::where('status', 'completed')->sum('paid_amount');
-        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount'));
+        $totalPendingAmount = Order::where('status', 'pending')->sum('payable_amount') - Order::where('status', 'pending')->sum('paid_amount') ;
+        return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount'));
     }
 
 
