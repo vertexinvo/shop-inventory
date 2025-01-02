@@ -60,7 +60,7 @@ class OrderController extends Controller
         ->whereYear('order_date', now()->year)->get()
         ->sum(function ($order) {
         return $order->payable_amount - $order->paid_amount;
-    });
+        });
     return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
     }
 
