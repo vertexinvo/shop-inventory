@@ -52,7 +52,7 @@ console.log(totalPendingAmount);
             className="mr-2 cursor-pointer"
             onClick={() => router.get(route('dashboard'))}
             title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">View Order</h2>
+          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>
         </>}
     >
       <Head title="Order" />
@@ -362,7 +362,7 @@ console.log(totalPendingAmount);
                   {orders.data.length === 0 && (
                     <tr>
                       <td colSpan="12" className="p-4 text-center">
-                        No products found.
+                        No order found.
                       </td>
                     </tr>
                   )}
