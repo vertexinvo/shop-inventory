@@ -49,10 +49,10 @@ export default function Edit(props) {
                  onClick={() => window.history.back()}
                  title="Back"
              />
-       <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Product</h2>
+       <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Purchase</h2>
             </>}
       >
-          <Head title="Product" />
+          <Head title="Purchase" />
 
           <div className="flex flex-col px-4  mt-10 mx-auto w-full">
           <div className="w-full ">

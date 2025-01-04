@@ -51,10 +51,10 @@ export default function InstantOrder(props) {
             onClick={() => router.get(route('order.index'))}
             title="Back"
           />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Order</h2>
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Sale</h2>
         </>}
     >
-      <Head title="Instant Order" />
+      <Head title="Instant Sale" />
       <Formik enableReinitialize initialValues={{
         name: user?.name || '',
         email: user?.email || '',

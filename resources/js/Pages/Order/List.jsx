@@ -52,10 +52,10 @@ console.log(totalPendingAmount);
             className="mr-2 cursor-pointer"
             onClick={() => router.get(route('dashboard'))}
             title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Order</h2>
+          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Sale</h2>
         </>}
     >
-      <Head title="Order" />
+      <Head title="Sale" />
 
 
 
@@ -215,13 +215,13 @@ console.log(totalPendingAmount);
                 onClick={() => router.get(route('order.instantorder'))}
                 className="text-white w-full md:w-64 lg:w-96  py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
               >
-                Instant Order
+                Instant Sale
               </button>
               <button
                 onClick={() => router.get(route('order.create'))}
                 className="text-white  py-2 px-4 rounded-lg bg-black hover:bg-gray-600  "
               >
-                Create
+                Add&nbsp;Sale
               </button>
 
 

@@ -137,9 +137,9 @@ const View = (props) => {
                         onClick={() => router.get(route('order.index'))}
                         title="Back"
                     />
-                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Order # { order.id || 'N/A'}</h2>
+                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Sale # { order.id || 'N/A'}</h2>
                 </>}>
-            <Head title="View Order" />
+            <Head title="View Sale" />
             <style>
                 {`
                     @media print {

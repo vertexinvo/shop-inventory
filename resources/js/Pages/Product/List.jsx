@@ -37,10 +37,10 @@ export default function List(props) {
             onClick={() => router.get(route('dashboard'))}
             title="Back"
           />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Product</h2>
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Purchase</h2>
         </>}
     >
-      <Head title="Product" />
+      <Head title="Purchase" />
 
       <div class="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3">
         <Link href={route('product.index')}>

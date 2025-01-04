@@ -70,10 +70,10 @@ export default function Add(props) {
             className="mr-2 cursor-pointer"
             onClick={() => router.get(route('order.index'))}
             title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight"> {order ? 'Edit Order' : 'Add Order'}</h2>
+          /><h2 className="font-semibold text-xl text-gray-800 leading-tight"> {order ? 'Edit Sale' : 'Add Sale'}</h2>
         </>}
     >
-      <Head title="Order" />
+      <Head title="Sale" />
       <Formik enableReinitialize initialValues={{
         name: order?.name || '',
         email: order?.email || '',
