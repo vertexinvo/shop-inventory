@@ -86,6 +86,9 @@ public function csvstore(Request $request)
 
                 array_shift($data);
                 foreach ($data as $row) {
+
+                    $request->quantity = intval($row[11]) ? intval($row[11]) : 0;
+
                     $tempproduct = [
                         'name' => $row[0],
                         'model' => $row[1],
@@ -94,7 +97,7 @@ public function csvstore(Request $request)
                         'purchase_price' => intval($row[4]) ? intval($row[4]) : 0,
                         'selling_price' => intval($row[5]) ? intval($row[5]) : 0,
                         'warranty_type' => $row[6] ?: '',
-                        'warranty_period' => $row[7] ?: '',
+                        'warranty_period' => intval($row[7]) ? intval($row[7]) : null,
                         'identity_type' => $row[8] ?: '',
                         'identity_value' => $row[9] ?: '',
                         'weight' => floatval($row[10]) ? floatval($row[10]) : 0,
@@ -102,26 +105,32 @@ public function csvstore(Request $request)
                     ];
                 
                     // Create the product
-                    $product = Product::create($tempproduct);
-                
-                    // Handle categories (field index 12)
-                    if (isset($row[12]) && !empty($row[12])) {
-                        $categories = explode(',', $row[12]);
-                        foreach ($categories as $category) {
-                            $category = trim($category);
-                            $cate = Category::firstOrCreate(['name' => $category]);
-                            $product->categories()->attach($cate);
+                    try{
+                        $product = Product::create($tempproduct);
+                    
+                        // Handle categories (field index 12)
+                        if (isset($row[12]) && !empty($row[12])) {
+                            $categories = explode(',', $row[12]);
+                            foreach ($categories as $category) {
+                                $category = trim($category);
+                                $cate = Category::firstOrCreate(['name' => $category]);
+                                $product->categories()->attach($cate);
+                            }
                         }
-                    }
-                
-                    // Handle brands (field index 13)
-                    if (isset($row[13]) && !empty($row[13])) {
-                        $brands = explode(',', $row[13]);
-                        foreach ($brands as $brand) {
-                            $brand = trim($brand);
-                            $brandEntry = Brand::firstOrCreate(['name' => $brand]); // Assuming you have a Brand model
-                            $product->brands()->attach($brandEntry); // Assuming Product has a brands relationship
+                    
+                        // Handle brands (field index 13)
+                        if (isset($row[13]) && !empty($row[13])) {
+                            $brands = explode(',', $row[13]);
+                            foreach ($brands as $brand) {
+                                $brand = trim($brand);
+                                $brandEntry = Brand::firstOrCreate(['name' => $brand]); // Assuming you have a Brand model
+                                $product->brands()->attach($brandEntry); // Assuming Product has a brands relationship
+                            }
                         }
+                    }catch(\Exception $e){
+                        unlink($fullPath);
+                        session()->flash('error', $e->getMessage());
+                        return redirect()->back();
                     }
                 }
                 unlink($fullPath);  
