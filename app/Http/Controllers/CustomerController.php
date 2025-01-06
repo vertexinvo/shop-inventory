@@ -21,8 +21,8 @@ class CustomerController extends Controller
         $users = UserService::getAllUser($request, 'customer');
 
         $totalcustomers = User::role('customer')->count();
-        $totalactivecus = User::where('status', '1')->count();
-        $totalinactivecus = User::where('status', '0')->count();
+        $totalactivecus = User::role('customer')->where('status', '1')->count();
+        $totalinactivecus = User::role('customer')->where('status', '0')->count();
 
         return Inertia::render('Customer/List', compact('users', 'totalcustomers', 'totalactivecus', 'totalinactivecus'));
     }

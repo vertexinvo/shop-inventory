@@ -87,6 +87,7 @@ export default function List(props) {
                   <dt class="text-sm font-medium text-gray-500">Contact:</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.contact || 'N/A'}</dd>
                 </div>
+                
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt class="text-sm font-medium text-gray-500">Address:</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.address || 'N/A'}</dd>
@@ -97,15 +98,10 @@ export default function List(props) {
         </div>
       </div>
 
-
-
-
       <div className="flex flex-col px-4  mt-2 mx-auto w-full">
         <div className="w-full ">
-
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -181,6 +177,7 @@ export default function List(props) {
                     <th className="p-4 text-left text-sm font-semibold text-black">Cheque No</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Cheque Date</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Bank Name</th>
+                    <th className="p-4 text-left text-sm font-semibold text-black">Note</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Status</th>
                   </tr>
                 </thead>
@@ -225,6 +222,7 @@ export default function List(props) {
                       <td className="p-4 text-sm text-black">{item.cheque_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.bank_name || 'N/A'}</td>
+                      <td className="p-4 text-sm text-black">{item.note || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">
                         <button onClick={() => setIsStatusModalOpen(item)}>
                           {item.status === "pending" ? (
@@ -352,6 +350,7 @@ export default function List(props) {
               invoice_date: "",
               due_date: "",
               total_payment: "",
+              paid_amount: "",
               status: "",
               method: "",
               cheque_no: "",
@@ -371,6 +370,7 @@ export default function List(props) {
                 total_payment: Yup.number().required(
                   "Total Pending Payment is required"
                 ),
+                paid_amount: Yup.number().required("Paid Amount is required"),
                 status: Yup.string().required("Status is required"),
                 method: Yup.string().required("Method is required"),
                 cheque_no: Yup.string().when("method", {
@@ -497,6 +497,24 @@ export default function List(props) {
                       />
                       <ErrorMessage
                         name="total_payment"
+                        component="div"
+                        className="text-red-500 text-xs mt-1"
+                      />
+                    </div>
+
+                    {/* paid amount */}
+                    <div className="mb-4">
+                      <label className="block text-grey-darker text-sm mb-2">
+                        Paid Amount
+                      </label>
+                      <Field
+                        name="paid_amount"
+                        className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
+                        type="number"
+                        placeholder="Enter paid amount"
+                      />
+                      <ErrorMessage
+                        name="paid_amount"
                         component="div"
                         className="text-red-500 text-xs mt-1"
                       />

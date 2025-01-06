@@ -16,6 +16,7 @@ class Supplierinvoice extends Model
         'invoice_date',
         'due_date',
         'total_payment',
+        'paid_amount',
         'status',
         'method',
         'cheque_no',
