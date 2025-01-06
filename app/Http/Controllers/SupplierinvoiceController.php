@@ -20,6 +20,8 @@ class SupplierinvoiceController extends Controller
         //
     }
 
+    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -161,8 +163,10 @@ class SupplierinvoiceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Supplierinvoice $supplierinvoice)
+    public function destroy($id)
     {
-        //
+        $supplierinvoice = Supplierinvoice::findOrFail($id);
+        $supplierinvoice->delete();
+        session()->flash('message', 'Supplier invoice deleted successfully');
     }
 }

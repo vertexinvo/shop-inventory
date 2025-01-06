@@ -25,6 +25,7 @@ export default function List(props) {
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
 
   const [supplierInvoiceAmounts, setSupplierInvoiceAmounts] = useState({});
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
 
   const handleAmountChange = (e, orderId) => {
     const updatedAmount = e.target.value;
@@ -87,7 +88,7 @@ export default function List(props) {
                   <dt class="text-sm font-medium text-gray-500">Contact:</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.contact || 'N/A'}</dd>
                 </div>
-                
+
                 <div class="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                   <dt class="text-sm font-medium text-gray-500">Address:</dt>
                   <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{suppliers.address || 'N/A'}</dd>
@@ -179,6 +180,7 @@ export default function List(props) {
                     <th className="p-4 text-left text-sm font-semibold text-black">Bank Name</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Note</th>
                     <th className="p-4 text-left text-sm font-semibold text-black">Status</th>
+                    <th className="p-4 text-left text-sm font-semibold text-black">Action</th>
                   </tr>
                 </thead>
 
@@ -199,7 +201,7 @@ export default function List(props) {
                       <td className="p-4 text-sm text-black">{item.total_payment || 'N/A'}</td>
 
                       <td className="p-4 text-sm text-black">
-                        {/* <div className="flex items-center w-[130px] ">
+                        <div className="flex items-center w-[130px] ">
                           <input
                             name="phone"
                             className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
@@ -211,12 +213,11 @@ export default function List(props) {
                           <IoIosSave
                             className="ml-2 cursor-pointer"
                             size={30}
-                            onClick={() => handleSaveAmount(item.id)} // Save the updated amount
+                            onClick={async() => await router.put(route('supplier-invoice.amountupdate', item.id), { paid_amount: supplierInvoiceAmounts[item.id] || item.paid_amount || 0 })} // Save the updated amount
                           />
-                        </div> */}
-                        {item.paid_amount || 'N/A'}
+                        </div>
+                        {/* {item.paid_amount || 'N/A'} */}
                       </td>
-
                       <td className="p-4 text-sm text-black">{item.outstanding || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.method || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_no || 'N/A'}</td>
@@ -233,6 +234,18 @@ export default function List(props) {
                               >{item.status || 'N/A'}<FaPen className="ms-1" />
                               </span>
                             )}
+                        </button>
+                      </td>
+
+                      <td className="p-4 text-sm text-black">
+                        <button onClick={() => setIsDeleteModalOpen(item)} title="Delete">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
+                            <path
+                              d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                              data-original="#000000" />
+                            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                              data-original="#000000" />
+                          </svg>
                         </button>
                       </td>
 
@@ -782,8 +795,17 @@ export default function List(props) {
             </Form>
           )}
         </Formik>
-
       </Modal>
+
+
+      <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
+
+        router.delete(route('supplier-invoice.destroy', isDeleteModalOpen?.id), {
+          preserveScroll: true,
+          preserveState: true,
+        })
+        setIsDeleteModalOpen(null)
+      }} />
     </AuthenticatedLayout>
   );
 }
