@@ -8,5 +8,6 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::put('product/status/{id}', [ProductController::class, 'status'])->name('product.status');
     Route::get('product/csv/csvexport', [ProductController::class, 'csvExport'])->name('product.csvexport');
     Route::post('product/bulkdestroy', [ProductController::class, 'bulkdestroy'])->name('product.bulkdestroy');
+    Route::post('/product/csvstore', [ProductController::class, 'csvstore'])->name('product.csvstore');
 });
 

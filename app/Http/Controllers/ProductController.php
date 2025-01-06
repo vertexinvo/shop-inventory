@@ -56,6 +56,90 @@ class ProductController extends Controller
 }
 
 
+public function csvstore(Request $request)
+{
+
+    $this->authorize('create', Product::class);
+
+    $file = $request->file('file');
+
+    if ($file) {
+        // Store the file in storage/app/productscvs
+        $path = $file->storeAs('productscvs', $file->getClientOriginalName(), 'public');
+
+        if ($path) {
+            // Construct the full path to the stored file
+            $fullPath = storage_path('app/public/' . $path);
+
+            // Check if the file exists before attempting to read
+            if (file_exists($fullPath)) {
+                // Read the CSV data into an array
+                $data = array_map('str_getcsv', file($fullPath));
+
+                if (
+                    $data[0] != ['name', 'model', 'specifications', 'description', 'purchase_price', 'selling_price', 'warranty_type', 'warranty_period', 'identity_type', 'identity_value', 'weight', 'quantity','categories', 'brands']
+                ) {
+                    unlink($fullPath);
+                    session()->flash('error', 'Invalid CSV/EXCEL file');
+                    return redirect()->back();
+                }
+
+                array_shift($data);
+                foreach ($data as $row) {
+                    $tempproduct = [
+                        'name' => $row[0],
+                        'model' => $row[1],
+                        'specifications' => $row[2] ?: '',
+                        'description' => $row[3] ?: '',
+                        'purchase_price' => intval($row[4]) ? intval($row[4]) : 0,
+                        'selling_price' => intval($row[5]) ? intval($row[5]) : 0,
+                        'warranty_type' => $row[6] ?: '',
+                        'warranty_period' => $row[7] ?: '',
+                        'identity_type' => $row[8] ?: '',
+                        'identity_value' => $row[9] ?: '',
+                        'weight' => floatval($row[10]) ? floatval($row[10]) : 0,
+                        // 'quantity' => intval($row[11]) ? intval($row[11]) : 0,
+                    ];
+                
+                    // Create the product
+                    $product = Product::create($tempproduct);
+                
+                    // Handle categories (field index 12)
+                    if (isset($row[12]) && !empty($row[12])) {
+                        $categories = explode(',', $row[12]);
+                        foreach ($categories as $category) {
+                            $category = trim($category);
+                            $cate = Category::firstOrCreate(['name' => $category]);
+                            $product->categories()->attach($cate);
+                        }
+                    }
+                
+                    // Handle brands (field index 13)
+                    if (isset($row[13]) && !empty($row[13])) {
+                        $brands = explode(',', $row[13]);
+                        foreach ($brands as $brand) {
+                            $brand = trim($brand);
+                            $brandEntry = Brand::firstOrCreate(['name' => $brand]); // Assuming you have a Brand model
+                            $product->brands()->attach($brandEntry); // Assuming Product has a brands relationship
+                        }
+                    }
+                }
+                unlink($fullPath);  
+                session()->flash('message', 'Records created successfully!');
+                return redirect()->back();
+            } else {
+                session()->flash('error', 'File could not be found after upload.');
+                return redirect()->back();
+            }
+        }
+    } else {
+        session()->flash('error', 'File not found.');
+        return redirect()->back();
+    }
+
+}
+
+
 
 public function csvExport(Request $request)
 {
