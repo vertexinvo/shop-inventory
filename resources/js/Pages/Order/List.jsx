@@ -22,8 +22,8 @@ import { FaMoneyBills } from "react-icons/fa6";
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total,status,searchuserid,search ,totalPaidAmount,totalPendingAmount,monthlyTotalPaidAmount,monthlyTotalPendingAmount,yearlyTotalPaidAmount,yearlyTotalPendingAmount} = props
-console.log(totalPendingAmount);
+  const { auth, orders, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
+  console.log(totalPendingAmount);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -70,46 +70,46 @@ console.log(totalPendingAmount);
 
       <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
         <Link href={route('order.index')}>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL ORDERS</p>
-              <p class="text-lg">{total}</p>
-            </div>
-            <div class="my-auto">
-              <VscGraph size={40} />
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TOTAL ORDERS</p>
+                <p class="text-lg">{total}</p>
+              </div>
+              <div class="my-auto">
+                <VscGraph size={40} />
+              </div>
             </div>
           </div>
-        </div>
         </Link>
 
         <Link href={route('order.index', { status: 'pending' })}>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">PENDING ORDERS</p>
-              <p class="text-lg">{pendingCount}</p>
-            </div>
-            <div class="my-auto">
-              <FaBoxOpen size={40} />
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">PENDING ORDERS</p>
+                <p class="text-lg">{pendingCount}</p>
+              </div>
+              <div class="my-auto">
+                <FaBoxOpen size={40} />
+              </div>
             </div>
           </div>
-        </div>
         </Link>
         <Link href={route('order.index', { status: 'completed' })}>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">COMPLETED ORDERS</p>
-              <p class="text-lg">{completedCount}</p>
-            </div>
-            <div class="my-auto">
-              <PiListChecksFill size={40} />
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">COMPLETED ORDERS</p>
+                <p class="text-lg">{completedCount}</p>
+              </div>
+              <div class="my-auto">
+                <PiListChecksFill size={40} />
+              </div>
             </div>
           </div>
-        </div>
         </Link>
-  
+
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -117,11 +117,11 @@ console.log(totalPendingAmount);
               <p class="text-lg">{totalPaidAmount}</p>
             </div>
             <div class="my-auto">
-              <MdOutlinePayments  size={40} />
+              <MdOutlinePayments size={40} />
             </div>
           </div>
         </div>
-      
+
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
             <div class="my-auto">
@@ -177,7 +177,7 @@ console.log(totalPendingAmount);
             </div>
           </div>
         </div>
-       
+
       </div>
 
 
@@ -202,7 +202,7 @@ console.log(totalPendingAmount);
                 <option value="completed">Completed</option>
                 <option value="cancel">Cancelled</option>
               </select>
- 
+
               {selectId.length > 0 && (
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
@@ -267,14 +267,14 @@ console.log(totalPendingAmount);
                       Export Excel
                     </button> */}
                     <a
-                                href={route('order.csvexport')}
-                                className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-                            >
-                                <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                                    <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                                    Export CSV File
-                                </span>
-                            </a>
+                      href={route('order.csvexport')}
+                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+                    >
+                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                        Export CSV File
+                      </span>
+                    </a>
 
 
                   </Form>
@@ -403,8 +403,8 @@ console.log(totalPendingAmount);
                       </td>
 
                       <td class="pl-4 text-sm text-black cursor-pointer">
-                      <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
-                        {order.id || 'N/A'}
+                        <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
+                          {order.id || 'N/A'}
                         </button>
                       </td>
 
@@ -416,13 +416,13 @@ console.log(totalPendingAmount);
                         </div>
                       </td>
                       <td class="text-sm text-black">
-                      <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4 ">
-                            <p class="text-sm text-black ">Order Name : {order.name}</p>
-                            {order.email && <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
+                        <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
+                          <div class="flex items-center cursor-pointer w-max">
+                            <div class="ml-4 ">
+                              <p class="text-sm text-black ">Order Name : {order.name}</p>
+                              {order.email && <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
+                            </div>
                           </div>
-                        </div>
                         </button>
                       </td>
 
@@ -554,12 +554,12 @@ console.log(totalPendingAmount);
                             }
                           }}
                           className={`${order.status === "pending"
-                              ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                              : order.status === "completed"
-                                ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                                : order.status === "cancel"
-                                  ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                                  : ""
+                            ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
+                            : order.status === "completed"
+                              ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
+                              : order.status === "cancel"
+                                ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
+                                : ""
                             }`}
                         >
                           {order.status || "N/A"}
@@ -570,16 +570,16 @@ console.log(totalPendingAmount);
 
 
                       <td class="p-4 flex items-center gap-2">
-                        <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
-                          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="w-6 bi bi-eye">
+                        <button  type='button' onClick={() => router.get(route('order.show', { id: order.id }))} className="flex items-center space-x-2 bg-blue-500 rounded text-white px-2 py-1" >
+                          <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="w-6 fill-black" fill="currentColor" class="w-6 bi bi-eye">
                             <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
                             <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
                           </svg>
+                          <span class="text-white hover:text-black">View</span>
                         </button>
-                        {order.status !== "cancel" && 
-                        <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
-                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-black hover:fill-gray-700"
-                            viewBox="0 0 348.882 348.882">
+                        {order.status !== "cancel" &&
+                          <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type="button" className="flex items-center space-x-2 bg-green-500 rounded text-white px-2 py-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black " viewBox="0 0 348.882 348.882">
                             <path
                               d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
                               data-original="#000000" />
@@ -587,17 +587,18 @@ console.log(totalPendingAmount);
                               d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
                               data-original="#000000" />
                           </svg>
+                          <span className="text-white hover:text-black">Edit</span>
                         </button>
+                        
                         }
-                        <button onClick={() => setIsDeleteModalOpen(order)} title="Delete">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
-                            <path
-                              d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                              data-original="#000000" />
-                            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                              data-original="#000000" />
+                        <button onClick={() => setIsDeleteModalOpen(order)} title="Delete" className="flex items-center space-x-2 bg-red-500 rounded text-white px-2 py-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 24 24">
+                            <path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" />
+                            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z" />
                           </svg>
+                          <span className="text-white hover:text-black">Delete</span>
                         </button>
+
                       </td>
                     </tr>
                   ))}
@@ -615,7 +616,7 @@ console.log(totalPendingAmount);
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url,{ status: status || '' , searchuserid: searchuserid || '',search:search || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -669,7 +670,7 @@ console.log(totalPendingAmount);
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}`+ `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -682,7 +683,7 @@ console.log(totalPendingAmount);
 
 
                     <li>
-                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url+ `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
