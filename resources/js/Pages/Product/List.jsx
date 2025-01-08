@@ -398,7 +398,7 @@ export default function List(props) {
                           </svg>
                           <span className="text-white hover:text-black">Edit</span>
                         </button>
-                        <button onClick={() => setIsDeleteModalOpen(product)} title="Delete" className="flex items-center space-x-2 bg-green-500 rounded text-white px-2 py-1">
+                        <button onClick={() => setIsDeleteModalOpen(product)} title="Delete" className="flex items-center space-x-2 bg-red-500 rounded text-white px-2 py-1">
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 24 24">
                             <path
                               d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
@@ -411,7 +411,7 @@ export default function List(props) {
                         {product.identity_type !== 'imei' &&
                           // <MdManageHistory className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={22} />
                           <button 
-                          className="flex items-center space-x-2 bg-red-500 rounded text-white px-2 py-1"
+                          className="flex items-center space-x-2 bg-green-500 rounded text-white px-2 py-1"
                           onClick={() => router.get(route('stock.index'), { product_id: product.id })} 
                           title="Stock"
                         >

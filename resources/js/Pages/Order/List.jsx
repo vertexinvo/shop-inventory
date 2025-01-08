@@ -412,21 +412,21 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
+                        <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))}>  
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4">
                             <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
                           </div>
                         </div>
+                        </button>
                       </td>
                       <td class="text-sm text-black">
-                        <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))} >
                           <div class="flex items-center cursor-pointer w-max">
                             <div class="ml-4 ">
                               <p class="text-sm text-black ">Order Name : {order.name}</p>
                               {order.email && <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
                             </div>
                           </div>
-                        </button>
                       </td>
 
                       <td class="p-4 text-sm text-black">

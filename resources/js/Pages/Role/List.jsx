@@ -88,7 +88,7 @@ function List(props) {
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
-                                                                className="w-5 h-5 fill-current text-white"
+                                                                className="w-5 h-5 fill-black text-white"
                                                                 viewBox="0 0 348.882 348.882"
                                                             >
                                                                 <path
@@ -110,7 +110,7 @@ function List(props) {
                                                         >
                                                             <svg
                                                                 xmlns="http://www.w3.org/2000/svg"
-                                                                className="w-5 h-5 fill-current text-white"
+                                                                className="w-5 h-5 fill-black text-white"
                                                                 viewBox="0 0 24 24"
                                                             >
                                                                 <path
@@ -124,7 +124,7 @@ function List(props) {
                                                             className="flex items-center space-x-2 bg-gray-500 hover:bg-gray-600 rounded text-white px-3 py-2"
                                                         >
                                                             <Link href={route('role.show', item.id)} className="flex items-center space-x-2">
-                                                                <CiSettings className="w-5 h-5 cursor-pointer text-white" />
+                                                                <CiSettings className="w-5 h-5 cursor-pointer text-black" />
                                                                 <span className="text-sm">Settings</span>
                                                             </Link>
                                                         </button>
