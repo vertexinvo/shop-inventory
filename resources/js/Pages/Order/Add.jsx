@@ -189,9 +189,9 @@ export default function Add(props) {
           }),
           items: Yup.array().min(1, 'At least one item is required'),
           order_date: Yup.date().required('Order date is required'),
-          paid_amount: Yup.number()
-            .min(0, 'Paid amount must be a positive number')
-            .required('Paid amount is required'),
+          // paid_amount: Yup.number()
+          //   .min(0, 'Paid amount must be a positive number')
+          //   .required('Paid amount is required'),
 
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
@@ -237,11 +237,11 @@ export default function Add(props) {
             handleSubmit();
           };
 
-          useEffect(() => {
-            if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
-              setFieldValue('paid_amount', values.payable_amount);
-            }
-          }, [values.payable_amount, values.tax_id, values.shipping_id]);
+          // useEffect(() => {
+          //   if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
+          //     setFieldValue('paid_amount', values.payable_amount);
+          //   }
+          // }, [values.payable_amount, values.tax_id, values.shipping_id]);
 
 
 
@@ -322,20 +322,20 @@ export default function Add(props) {
                                 setFieldValue('phone', e.phone);
                                 setFieldValue('address', e.address);
                               }}
-                              onInputChange={(e) => {
-                                setLoading(true); // Set loading to true before initiating the search
-                                setTimeout(() => {
-                                  router.get(
-                                    route('order.instantorder'),
-                                    { searchuser: e },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading(false); // Turn off loading after the search is triggered
-                                }, 1000);
-                              }}
+                              // onInputChange={(e) => {
+                              //   setLoading(true); // Set loading to true before initiating the search
+                              //   setTimeout(() => {
+                              //     router.get(
+                              //       route('order.instantorder'),
+                              //       { searchuser: e },
+                              //       {
+                              //         preserveScroll: true,
+                              //         preserveState: true,
+                              //       }
+                              //     );
+                              //     setLoading(false); // Turn off loading after the search is triggered
+                              //   }, 1000);
+                              // }}
                               isSearchable={true}
                               isLoading={loading} // Dynamically set the loading state
                               value={users.find((option) => option.value === values.user_id)}
@@ -382,20 +382,20 @@ export default function Add(props) {
                               onChange={(e) => {
                                 setSelectedItems(e);
                               }}
-                              onInputChange={(e) => {
-                                setLoading2(true); // Set loading to true before initiating the search
-                                setTimeout(() => {
-                                  router.get(
-                                    route('order.instantorder'),
-                                    { searchitem: e, searchid: user?.id || '' },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading2(false); // Turn off loading after the search is triggered
-                                }, 1000);
-                              }}
+                              // onInputChange={(e) => {
+                              //   setLoading2(true); // Set loading to true before initiating the search
+                              //   setTimeout(() => {
+                              //     router.get(
+                              //       route('order.instantorder'),
+                              //       { searchitem: e, searchid: user?.id || '' },
+                              //       {
+                              //         preserveScroll: true,
+                              //         preserveState: true,
+                              //       }
+                              //     );
+                              //     setLoading2(false); // Turn off loading after the search is triggered
+                              //   }, 1000);
+                              // }}
                               isSearchable={true}
                               isLoading={loading2} // Dynamically set the loading state
                               value={items.find((option) => option.value === selectedItems?.value)}
@@ -807,20 +807,20 @@ export default function Add(props) {
                                 setFieldValue('shipping_charges', e.fee);
 
                               }}
-                              onInputChange={(e) => {
-                                setLoading3(true); // Set loading to true before initiating the search
-                                setTimeout(() => {
-                                  router.get(
-                                    order ? route('order.edit', order.id) : route('order.create'),
-                                    { searchshipping: e },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading3(false); // Turn off loading after the search is triggered
-                                }, 1000);
-                              }}
+                              // onInputChange={(e) => {
+                              //   setLoading3(true); // Set loading to true before initiating the search
+                              //   setTimeout(() => {
+                              //     router.get(
+                              //       order ? route('order.edit', order.id) : route('order.create'),
+                              //       { searchshipping: e },
+                              //       {
+                              //         preserveScroll: true,
+                              //         preserveState: true,
+                              //       }
+                              //     );
+                              //     setLoading3(false); // Turn off loading after the search is triggered
+                              //   }, 1000);
+                              // }}
                               isSearchable={true}
                               isLoading={loading3} // Dynamically set the loading state
                               value={selectedShippingrate}
@@ -1247,14 +1247,14 @@ export default function Add(props) {
                                       <input
                                         type="number"
                                         value={
-                                          values.items.reduce(
+                                          (values.items.reduce(
                                             (total, item) => total + item.quantity * item.data.selling_price,
-                                            0
+                                            0 
                                           ) +
-                                          parseFloat(values.extra_charges || 0) +
+                                          (parseFloat(values.extra_charges || 0) +
                                           parseFloat(values.tax || 0) +
-                                          parseFloat(values.shipping_charges || 0) -
-                                          (values.exchange + parseFloat(values.discount || 0))
+                                          parseFloat(values.shipping_charges || 0))) -
+                                          ( parseFloat(values.exchange|| 0) + parseFloat(values.discount || 0))
                                         }
                                         className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
                                         disabled

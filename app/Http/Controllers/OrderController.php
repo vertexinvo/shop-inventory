@@ -213,10 +213,12 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
-            $query->where('name', 'like', "%$searchitem%")
-                  ->orWhere('identity_value', 'like', "%$searchitem%");
-        })->limit(2)->get();
+        // $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
+        //     $query->where('name', 'like', "%$searchitem%")
+        //           ->orWhere('identity_value', 'like', "%$searchitem%");
+        // })->limit(2)->get();
+        $itemrec = Product::with('stock', 'categories')->get();
+
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
@@ -261,6 +263,8 @@ class OrderController extends Controller
             'items' => 'required|array',
             'exchange_items' => 'nullable|array',
             'exchange' => 'nullable|numeric',
+            'extra_charges' => 'nullable|numeric',
+            'order_date' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -279,6 +283,7 @@ class OrderController extends Controller
             'user_id',
             'order_date',
             'exchange',
+            'extra_charges'
         ]);
         $order = Order::create($data);
 
@@ -341,10 +346,12 @@ class OrderController extends Controller
     {
         $this->authorize('create', Order::class);
         $searchuser = $request->searchuser ?? '';
-        $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
-            $query->where('name', 'like', "%$searchuser%")
-                  ->orWhere('phone', 'like', "%$searchuser%");
-        })->limit(6)->get();
+        // $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
+        //     $query->where('name', 'like', "%$searchuser%")
+        //           ->orWhere('phone', 'like', "%$searchuser%");
+        // })->limit(6)->get();
+        $userrec = User::role('customer')->where('status',true)->get();
+
         $users = $userrec->map(function ($item) {
             return [
                 'value' => $item->id,
@@ -358,10 +365,12 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
-            $query->where('name', 'like', "%$searchitem%")
-                  ->orWhere('identity_value', 'like', "%$searchitem%");
-        })->limit(2)->get();
+        // $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
+        //     $query->where('name', 'like', "%$searchitem%")
+        //           ->orWhere('identity_value', 'like', "%$searchitem%");
+        // })->limit(2)->get();
+        $itemrec = Product::with('stock', 'categories')->get();
+
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
@@ -373,7 +382,9 @@ class OrderController extends Controller
 
         $searchshipping = $request->searchshipping ?? '';
 
-        $shippingrec = ShippingRate::where('area_name', 'like', "%$searchshipping%")->limit(5)->get();
+        // $shippingrec = ShippingRate::where('area_name', 'like', "%$searchshipping%")->limit(5)->get();
+        $shippingrec = ShippingRate::get();
+
         $shippingrates = $shippingrec->map(function ($item) {
             return [
                 'value' => $item->id,

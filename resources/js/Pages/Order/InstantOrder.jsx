@@ -79,19 +79,20 @@ export default function InstantOrder(props) {
           address: Yup.string(),
           items: Yup.array().min(1, 'At least one item is required'),
           order_date: Yup.date().required('Order date is required'),
-          paid_amount: Yup.number()
-            .when('payable_amount', {
-              is: (payable_amount) => payable_amount !== undefined, // Check if payable_amount exists
-              then: (scheme) =>
-                scheme
-                  .max(Yup.ref('payable_amount'), 'Paid amount cannot exceed payable amount')
-                  .required('Paid amount is required'),
-              otherwise: (scheme) => scheme.optional(),
-            }),
+          // paid_amount: Yup.number()
+          //   .when('payable_amount', {
+          //     is: (payable_amount) => payable_amount !== undefined, // Check if payable_amount exists
+          //     then: (scheme) =>
+          //       scheme
+          //         .max(Yup.ref('payable_amount'), 'Paid amount cannot exceed payable amount')
+          //         .required('Paid amount is required'),
+          //     otherwise: (scheme) => scheme.optional(),
+          //   }),
 
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
-          console.log(values);
+          // show paid_amount error if paid_amount is less than payable_amount
+          
           router.post(route('order.instantorderstore'), values, {
             onSuccess: () => {
               resetForm();
@@ -126,11 +127,11 @@ export default function InstantOrder(props) {
             handleSubmit();
           };
 
-          useEffect(() => {
-            if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
-              setFieldValue('paid_amount', values.payable_amount);
-            }
-          }, [values.payable_amount, values]);
+          // useEffect(() => {
+          //   if (values.paid_amount === 0 || values.paid_amount < values.payable_amount) {
+          //     setFieldValue('paid_amount', values.payable_amount);
+          //   }
+          // }, [values.payable_amount, values]);
 
           useEffect(() => {
             if (values.exchange_items.length > 0) {
@@ -268,20 +269,20 @@ export default function InstantOrder(props) {
                               onChange={(e) => {
                                 setSelectedItems(e);
                               }}
-                              onInputChange={(e) => {
-                                setLoading2(true); // Set loading to true before initiating the search
-                                setTimeout(() => {
-                                  router.get(
-                                    route('order.instantorder'),
-                                    { searchitem: e, searchid: user?.id || '' },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading2(false); // Turn off loading after the search is triggered
-                                }, 1000);
-                              }}
+                              // onInputChange={(e) => {
+                              //   setLoading2(true); // Set loading to true before initiating the search
+                              //   setTimeout(() => {
+                              //     router.get(
+                              //       route('order.instantorder'),
+                              //       { searchitem: e, searchid: user?.id || '' },
+                              //       {
+                              //         preserveScroll: true,
+                              //         preserveState: true,
+                              //       }
+                              //     );
+                              //     setLoading2(false); // Turn off loading after the search is triggered
+                              //   }, 1000);
+                              // }}
                               isSearchable={true}
                               isLoading={loading2} // Dynamically set the loading state
                               value={items.find((option) => option.value === selectedItems?.value)}
@@ -863,14 +864,14 @@ export default function InstantOrder(props) {
                                       <input
                                         type="number"
                                         value={
-                                          values.items.reduce(
+                                          (values.items.reduce(
                                             (total, item) => total + item.quantity * item.data.selling_price,
-                                            0
+                                            0 
                                           ) +
-                                          parseFloat(values.extra_charges || 0) +
+                                          (parseFloat(values.extra_charges || 0) +
                                           parseFloat(values.tax || 0) +
-                                          parseFloat(values.shipping_charges || 0) -
-                                          (values.exchange + parseFloat(values.discount || 0))
+                                          parseFloat(values.shipping_charges || 0))) -
+                                          ( parseFloat(values.exchange|| 0) + parseFloat(values.discount || 0))
                                         }
                                         className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
                                         disabled
@@ -883,7 +884,7 @@ export default function InstantOrder(props) {
                                       <Field
                                         type="number"
                                         name="paid_amount"
-
+                                        step="0.01"
                                         className="appearance-none border rounded py-2 px-3 text-grey-darker"
                                       />
                                     </div>
