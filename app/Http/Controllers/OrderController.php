@@ -194,10 +194,12 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
         $searchuser = $request->searchuser ?? '';
        
-        $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
-            $query->where('name', 'like', "%$searchuser%")
-                  ->orWhere('phone', 'like', "%$searchuser%");
-        })->limit(6)->get();
+        // $userrec = User::role('customer')->where('status',true)->where(function ($query) use ($searchuser) {
+        //     $query->where('name', 'like', "%$searchuser%")
+        //           ->orWhere('phone', 'like', "%$searchuser%");
+        // })->limit(6)->get();
+        $userrec = User::role('customer')->where('status',true)->get();
+        
         $users = $userrec->map(function ($item) {
             return [
                 'value' => $item->id,

@@ -208,20 +208,20 @@ export default function InstantOrder(props) {
                                 setFieldValue('phone', e.phone);
                                 setFieldValue('address', e.address);
                               }}
-                              onInputChange={(e) => {
-                                setLoading(true); // Set loading to true before initiating the search
-                                setTimeout(() => {
-                                  router.get(
-                                    route('order.instantorder'),
-                                    { searchuser: e },
-                                    {
-                                      preserveScroll: true,
-                                      preserveState: true,
-                                    }
-                                  );
-                                  setLoading(false); // Turn off loading after the search is triggered
-                                }, 1000);
-                              }}
+                              // onInputChange={(e) => {
+                              //   setLoading(true); // Set loading to true before initiating the search
+                              //   setTimeout(() => {
+                              //     router.get(
+                              //       route('order.instantorder'),
+                              //       { searchuser: e },
+                              //       {
+                              //         preserveScroll: true,
+                              //         preserveState: true,
+                              //       }
+                              //     );
+                              //     setLoading(false); // Turn off loading after the search is triggered
+                              //   }, 1000);
+                              // }}
                               isSearchable={true}
                               isLoading={loading} // Dynamically set the loading state
                               value={users.find((option) => option.value === values.user_id)}
