@@ -266,6 +266,9 @@ export default function List(props) {
                       Is Exchange
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Other Info
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Action
                     </th>
                   </tr>
@@ -372,6 +375,12 @@ export default function List(props) {
                         {product.is_exchange === 1 && product.exchange_order_id !== null && (<a href={route('order.show', product.exchange_order_id)} class="text-xs text-blue-500 mt-0.5">Order# {product.exchange_order_id}</a>)}
                       </td>
 
+                      <td class="p-4 text-sm text-black">
+                       { product.customfield && JSON.parse(product.customfield).map((field, index) => (
+                          <p class="text-xs text-gray-500 mt-0.5" key={index}><span class="font-semibold"> {field.name} : </span>{field.value}</p>
+                        ))}
+                      </td>
+
 
                       <td class="p-4 flex items-center gap-2">
                         <button
@@ -387,7 +396,7 @@ export default function List(props) {
                               d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
                               data-original="#000000" />
                           </svg>
-                          <span className="text-white hover:text-black">View</span>
+                          <span className="text-white hover:text-black">Edit</span>
                         </button>
                         <button onClick={() => setIsDeleteModalOpen(product)} title="Delete" className="flex items-center space-x-2 bg-green-500 rounded text-white px-2 py-1">
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 24 24">

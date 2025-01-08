@@ -16,7 +16,7 @@ import { toast } from 'react-toastify';
 import { SiMicrosoftexcel } from "react-icons/si";
 import { MdOutlinePayments } from "react-icons/md";
 import { FaMoneyBills } from "react-icons/fa6";
-
+import { QRCode } from 'react-qrcode-logo';
 
 
 
@@ -350,6 +350,9 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      QRCode
+                    </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Action
@@ -565,6 +568,10 @@ export default function List(props) {
                           {order.status || "N/A"}
                           {order.status !== "cancel" && <FaPen className="ms-1" />}
                         </button>
+                      </td>
+
+                      <td >
+                      <QRCode  value={route('order.show', { id: order.id })} size={100} />
                       </td>
 
 

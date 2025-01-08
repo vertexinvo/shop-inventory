@@ -6,7 +6,7 @@ import html2canvas from 'html2canvas';
 import Modal from '@/Components/Modal';
 // Remove direct import of Printer, we'll use a more flexible approach
 import { MdKeyboardBackspace } from "react-icons/md";
-
+import { QRCode } from 'react-qrcode-logo';
 
 const View = (props) => {
     const { order } = props;
@@ -397,7 +397,7 @@ const View = (props) => {
                             )}
 
 
-
+                            <div className='flex justify-between'>
                             <tfoot className="justify-content-right">
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-normal text-gray-500 sm:table-cell sm:pl-0">Subtotal:</th>
@@ -439,6 +439,10 @@ const View = (props) => {
                                     <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount || '0.00'}</td>
                                 </tr>
                             </tfoot>
+                            <QRCode  value={route('order.show', { id: order.id })} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
+                            </div>
+
+                            
                         </div>
 
                     </div>
