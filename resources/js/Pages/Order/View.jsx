@@ -13,7 +13,7 @@ const View = (props) => {
 
     const setting = usePage().props.setting;
 
-    console.log("setting",setting);
+    console.log(order);
 
     const generatePDF = () => {
         const input = document.getElementById('invoice');
@@ -434,9 +434,14 @@ const View = (props) => {
 
 
                                 <tr>
-                                    <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Total:</th>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Grand Total:</th>
 
                                     <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Paid Amount:</th>
+
+                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.paid_amount || '0.00'}</td>
                                 </tr>
                             </tfoot>
                             <QRCode  value={route('order.show', { id: order.id })} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
