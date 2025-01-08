@@ -386,7 +386,7 @@ const View = (props) => {
                                                             {item.quantity || "N/A"}
                                                         </td>
                                                         <td className="px-3 py-2 text-right text-sm text-gray-700">
-                                                            Rs. {order.total || "N/A"}
+                                                            Rs. {item.total || "N/A"}
                                                         </td>
                                                     </tr>
                                                 ))}
