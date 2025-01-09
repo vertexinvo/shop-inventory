@@ -39,6 +39,7 @@ class Product extends Model
         'exchange_order_id',
         'type',
         'code',
+        'exchange_order_code',
     ];
 
 

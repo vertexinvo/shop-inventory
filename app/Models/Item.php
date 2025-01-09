@@ -18,7 +18,8 @@ class Item extends Model
         'price',
         'qty',
         'status',
-        'code'
+        'code',
+        'order_code',
     ];
 
     public function order()

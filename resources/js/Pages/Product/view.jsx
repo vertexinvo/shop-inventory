@@ -137,22 +137,7 @@ export default function View(props) {
             }),
            
           })}
-          onSubmit={(values, { setSubmitting, resetForm }) => {
-
-            //if values.brands array contain objects so only get value and set direclty in array
-            const extractAndValidateValues = (array) =>
-              Array.isArray(array) && array.length > 0
-                ? array
-                    .map((item) => (typeof item === 'object' && item.value ? item.value : item)) // Extract 'value' if object
-                    .filter((value) => value !== null && value !== undefined && value !== '') // Remove invalid values
-                : [];
-            
-            // Update brands and categories
-            values.brands = extractAndValidateValues(values.brands);
-            values.categories = extractAndValidateValues(values.categories);
-            
-            router.put(route('product.update', product.id), values, { onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
-          }}
+      
           >
 
             {({values, errors, touched, setFieldValue, isSubmitting }) => (
