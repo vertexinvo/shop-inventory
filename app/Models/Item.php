@@ -17,7 +17,8 @@ class Item extends Model
         'category',
         'price',
         'qty',
-        'status'
+        'status',
+        'code'
     ];
 
     public function order()

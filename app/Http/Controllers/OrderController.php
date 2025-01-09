@@ -296,7 +296,8 @@ class OrderController extends Controller
                 'price' => $item["data"]['selling_price'],
                 'qty' => $item['quantity'],
                 'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
-                'status'=> 'active'
+                'status'=> 'active',
+                'code' => $item["data"]['code']
             ]);
         }
 
@@ -312,6 +313,7 @@ class OrderController extends Controller
             $product =  Product::create($item);
 
             $data["product_id"] = $product->id;
+            $data["code"] = $product->code;
             $order->exchange_items()->create($data);
 
             $product->stock()->update([
@@ -476,7 +478,8 @@ class OrderController extends Controller
                 'price' => $item["data"]['selling_price'],
                 'qty' => $item['quantity'],
                 'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
-                'status'=> 'active'
+                'status'=> 'active',
+                'code' => $item["data"]['code']
             ]);
         }
 
@@ -490,6 +493,7 @@ class OrderController extends Controller
             $product = Product::create($item);
 
             $data["product_id"] = $product->id;
+            $data["code"] = $product->code;
             $order->exchange_items()->create($data);
 
             $product->stock()->update([

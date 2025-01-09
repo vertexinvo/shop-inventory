@@ -20,6 +20,7 @@ class Exchangeitem extends Model
         'purchase_price',
         'quantity',
         'total',
+        'code'
     ];
 
     public function order()

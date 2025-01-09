@@ -548,9 +548,7 @@ export default function View(props) {
                     
     
                       <div className="flex items-center justify-start gap-1 mt-8">
-                    <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                    Update
-                    </button>
+                 
                     <button  onClick={() => router.get(route('product.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                         Close
                     </button>

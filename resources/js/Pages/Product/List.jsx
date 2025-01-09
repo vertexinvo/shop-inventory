@@ -404,7 +404,7 @@ export default function List(props) {
                         {/* view button */}
                         
                         <button
-                          onClick={() => router.get(route('product.view',{ id: product.id }))}
+                          onClick={() => router.get(route('product.show', product.code || product.id))}
                           className=" flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1"
                           title="View"
                         >

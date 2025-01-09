@@ -360,14 +360,14 @@ public function csvExport(Request $request)
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($code)
     {
-        //
-    }
-    //view page show
-    public function view(string $id, Request $request)
-    {
-        $product = Product::find($id); 
+        $product = Product::where('code', $code)->first();
+
+        if ($product === null) {
+            $product = Product::where('id', $code)->firstOrFail();
+        }
+
         $this->authorize('update', $product);
         $categorydata = Category::all(['id', 'name'] );
 
@@ -405,6 +405,7 @@ public function csvExport(Request $request)
         
         return Inertia::render('Product/View',compact('product','categories', 'brands', 'selectedCategories', 'selectedBrands','categories_object_model'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
