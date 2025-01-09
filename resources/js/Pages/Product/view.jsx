@@ -49,7 +49,7 @@ export default function View(props) {
                  onClick={() => window.history.back()}
                  title="Back"
              />
-       <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Purchase</h2>
+       <h2 className="font-semibold text-xl text-gray-800 leading-tight">View Purchase</h2>
             </>}
       >
           <Head title="Purchase" />
@@ -161,7 +161,7 @@ export default function View(props) {
                       <div className="flex mb-4">
                           <div className="w-1/2 mr-1">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
-                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name"/>
+                              <Field name="name" className="readonly disabled appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="name" type="text" placeholder="Enter name"/>
                               <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
                           </div> 
                           <div className="w-1/2 mr-1">
