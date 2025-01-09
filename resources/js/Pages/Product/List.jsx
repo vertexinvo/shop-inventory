@@ -236,6 +236,9 @@ export default function List(props) {
                       </label>
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Purchase ID
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Product Info
                     </th>
 
@@ -319,6 +322,9 @@ export default function List(props) {
                             />
                           </svg>
                         </label>
+                      </td>
+                      <td class="p-4 text-sm text-black">
+                        {product?.code || 'N/A'}
                       </td>
                       <td class=" text-sm">
                         <div class="flex items-center cursor-pointer w-max">

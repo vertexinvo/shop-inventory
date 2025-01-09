@@ -520,8 +520,14 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show($code)
     {
+        $order = Order::where('code', $code)->first();
+
+        if ($order === null) {
+            $order = Order::where('id', $code)->firstOrFail();
+        }
+        
         $this->authorize('view', $order);
         $order->load('items','user','tax','shipping','items.product','exchangeproduct','exchange_items');
         return Inertia::render('Order/View', compact('order'));

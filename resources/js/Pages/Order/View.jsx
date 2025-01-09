@@ -432,7 +432,6 @@ const View = (props) => {
                                     <td className="pl-3 pr-6 text-right text-sm text-gray-500 sm:pr-0">Rs.{order.tax_fee || '0.00'}</td>
                                 </tr>
 
-
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Grand Total:</th>
 
@@ -444,7 +443,7 @@ const View = (props) => {
                                     <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.paid_amount || '0.00'}</td>
                                 </tr>
                             </tfoot>
-                            <QRCode  value={route('order.show', { id: order.id })} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
+                            <QRCode  value={route('order.show',order.code || order.id )} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
                             </div>
 
                             

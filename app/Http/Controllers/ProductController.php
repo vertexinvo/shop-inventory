@@ -364,6 +364,47 @@ public function csvExport(Request $request)
     {
         //
     }
+    //view page show
+    public function view(string $id, Request $request)
+    {
+        $product = Product::find($id); 
+        $this->authorize('update', $product);
+        $categorydata = Category::all(['id', 'name'] );
+
+        $categories = $categorydata->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name ,
+            ];
+        });
+
+        $selectedCategories = $product->categories->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name ,
+            ];
+        });
+
+        $branddata = Brand::all(['id', 'name'] );
+
+        $brands = $branddata->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name ,
+            ];
+        });
+
+        $selectedBrands = $product->brands->map(function ($item) {
+            return [
+                'value' => $item->id,
+                'label' => $item->name ,
+            ];
+        });
+        
+        $categories_object_model = Category::all();
+        
+        return Inertia::render('Product/View',compact('product','categories', 'brands', 'selectedCategories', 'selectedBrands','categories_object_model'));
+    }
 
     /**
      * Show the form for editing the specified resource.

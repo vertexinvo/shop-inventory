@@ -308,13 +308,13 @@ export default function List(props) {
                       </label>
                     </th>
                     <th class="pl-4 text-left text-sm font-semibold ">
-                      INV-ID
+                      Sale ID
                     </th>
                     <th class="pl-4 text-left text-sm font-semibold ">
-                      Order Date
+                      Sale Date
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
-                      Order Info
+                      Sale Info
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Phone
@@ -406,19 +406,19 @@ export default function List(props) {
                       </td>
 
                       <td class="pl-4 text-sm text-black cursor-pointer">
-                        <button onClick={() => router.get(route('order.edit', order.id))} title="Edit" type='button'>
-                          {order.id || 'N/A'}
+                        <button onClick={() => router.get(route('order.show', order.code || order.id ))} className='text-blue-600' title="Edit" type='button'>
+                          {order.code || order.id}
                         </button>
                       </td>
 
                       <td class="p-4 text-sm text-black">
-                        <button type='button' onClick={() => router.get(route('order.show', { id: order.id }))}>  
+                        
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4">
                             <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
                           </div>
                         </div>
-                        </button>
+                      
                       </td>
                       <td class="text-sm text-black">
                           <div class="flex items-center cursor-pointer w-max">
@@ -571,7 +571,7 @@ export default function List(props) {
                       </td>
 
                       <td >
-                      <QRCode  value={route('order.show', { id: order.id })} size={100} />
+                      <QRCode  value={route('order.show',order.code || order.id )} size={100} />
                       </td>
 
 
