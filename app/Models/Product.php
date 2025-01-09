@@ -62,7 +62,7 @@ class Product extends Model
     
         // Get the last sequential number and increment it
         $sequence = $lastProduct ? intval(substr($lastProduct->code, -4)) + 1 : 1;
-        $environment = env('APP_ENV');
+        $environment = env('APP_PLATFORM');
         
         // Pad the sequence with four leading zeros and return the formatted ID
         return 'PUR-' . $environment.'-'. $date . '-' . str_pad($sequence, 4, '0', STR_PAD_LEFT);
