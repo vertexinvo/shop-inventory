@@ -12,6 +12,6 @@ class RoleService
 {
     public function getAllRoles()
     {
-        return Role::whereNotIn('name', ['superadmin'])->latest()->paginate(10);
+        return Role::whereNotIn('name', ['superadmin','customer'])->latest()->paginate(10);
     }
 }
