@@ -322,8 +322,10 @@ export default function List(props) {
                           </svg>
                         </label>
                       </td>
-                      <td class="p-4 text-sm text-black">
+                      <td class="p-4 text-sm text-blue-600">
+                        <button onClick={() => router.get(route('product.show', product.code || product.id))} className='text-blue-600' title="Order" type='button'>
                         {product?.code || 'N/A'}
+                        </button>
                       </td>
                       <td class=" text-sm">
                         <div class="flex items-center cursor-pointer w-max">
@@ -405,7 +407,7 @@ export default function List(props) {
                         
                         <button
                           onClick={() => router.get(route('product.show', product.code || product.id))}
-                          className=" flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1"
+                          className=" flex items-center space-x-2 bg-yellow-500 text-white rounded px-4 py-1"
                           title="View"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 348.882 348.882">
