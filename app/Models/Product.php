@@ -37,6 +37,7 @@ class Product extends Model
         'is_return',
         'return_remarks',
         'exchange_order_id',
+        'type',
     ];
 
     public function categories()

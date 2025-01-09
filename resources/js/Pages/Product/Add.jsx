@@ -66,7 +66,7 @@ export default function Add(props) {
                     , identity_type: 'none', identity_value: '', warranty_type: 'none', is_warranty: '0',
                     categories: [],
                     brands: [], quantity: 1,
-                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: []
+                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type : 'new'
                   }}
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
@@ -74,6 +74,7 @@ export default function Add(props) {
                       specifications: Yup.string(),
                       purchase_price: Yup.number().required('Purchase price is required'),
                       selling_price: Yup.number().required('Selling price is required'),
+                      type: Yup.string().required('Type is required'),
                       quantity: Yup.number().when('identity_type', {
                         is: 'imei',
                         then: scheme => scheme.required().max(1, 'Quantity must be less than or equal to 1').min(1, 'Quantity must be greater than or equal to 1'),
@@ -218,6 +219,18 @@ export default function Add(props) {
                           
                           </div>
 
+                          <div className="mb-4">
+                               
+                               <label className="block text-grey-darker text-sm  mb-2" for="type">Type </label>
+                               <Field name="type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="type" as="select" >
+                                 <option value='new'>New</option>
+                                 <option value="used">Used</option>
+                               </Field>
+                               <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
+                            
+
+                           </div>
+
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2">
@@ -307,6 +320,7 @@ export default function Add(props) {
 
 
 
+                          
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
@@ -320,6 +334,9 @@ export default function Add(props) {
                             </div>
                             <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
+
+
+                        
 
                           {values.is_warranty === '1' && (
                             <>
@@ -344,6 +361,10 @@ export default function Add(props) {
 
                             </>
                           )}
+
+
+
+
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Borrow</label>
                             <div className="flex items-center">

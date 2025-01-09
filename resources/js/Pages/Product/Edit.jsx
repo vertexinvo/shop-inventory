@@ -86,7 +86,8 @@ export default function Edit(props) {
             supplier_invoice_no: product?.supplier_invoice_no || '', 
             weight: product?.weight || '',
             is_supplier: product?.is_supplier ? '1' : '0',
-            customfield: JSON.parse(product?.customfield) || []
+            customfield: JSON.parse(product?.customfield) || [],
+            type: product?.type || 'new'
           }}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
@@ -94,6 +95,7 @@ export default function Edit(props) {
             specifications: Yup.string(),
             purchase_price: Yup.number().required('Purchase price is required'),
             selling_price: Yup.number().required('Selling price is required'),
+            type: Yup.string().required('Type is required'),
             // quantity: Yup.number().when('identity_type', {
             //     is: 'imei',
             //     then: scheme=>scheme.required().max(1, 'Quantity must be less than or equal to 1').min(1, 'Quantity must be greater than or equal to 1') ,
@@ -114,7 +116,7 @@ export default function Edit(props) {
             shop_phone: Yup.string(),
             description: Yup.string(),
             shop_email: Yup.string().email('Invalid email address'),
-
+            
             identity_type: Yup.string().required('Identity type is required'),
             identity_value: Yup.string().when('identity_type', {
                 is: 'none',
@@ -248,6 +250,18 @@ export default function Edit(props) {
                                         />
                           <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
+
+                        <div className="mb-4">
+                                                     
+                                                     <label className="block text-grey-darker text-sm  mb-2" for="type">Type </label>
+                                                     <Field name="type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="type" as="select" >
+                                                       <option value='new'>New</option>
+                                                       <option value="used">Used</option>
+                                                     </Field>
+                                                     <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
+                                                  
+                      
+                                                 </div>
 
 
                       <div className="mb-4">

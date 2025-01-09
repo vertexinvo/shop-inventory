@@ -198,7 +198,7 @@ export default function List(props) {
                   ) : null}
 
                   {users.data.map((user, index) => (
-                    <tr key={user.id} class="odd:bg-gray-50">
+                    <tr key={user.id} class="odd:bg-gray-50 border-b border-gray-300">
                       <td className="pl-4 w-8">
                         <input
                           id={`checkbox-${user.id}`} // Unique id for each checkbox

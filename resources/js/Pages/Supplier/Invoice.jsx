@@ -167,20 +167,20 @@ export default function List(props) {
             <div className="font-[sans-serif] overflow-x-auto">
               <table className="min-w-full bg-white">
                 <thead className="whitespace-nowrap">
-                  <tr>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Invoice No</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Invoice Date</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Due Date</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Total Payment</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Paid Amount</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Outstanding</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Payment Method</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Cheque No</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Cheque Date</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Bank Name</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Note</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Status</th>
-                    <th className="p-4 text-left text-sm font-semibold text-black">Action</th>
+                  <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
+                    <th className="p-4 text-left text-sm font-semibold ">Invoice No</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Invoice Date</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Due Date</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Total Payment</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Paid Amount</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Outstanding</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Payment Method</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Cheque No</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Cheque Date</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Bank Name</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Note</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Status</th>
+                    <th className="p-4 text-left text-sm font-semibold ">Action</th>
                   </tr>
                 </thead>
 
@@ -188,13 +188,13 @@ export default function List(props) {
                   {supplier.data.length === 0 && (
                     <tr>
                       <td colSpan="12" className="p-4 text-center">
-                        No Supplier found.
+                        No Invoices found.
                       </td>
                     </tr>
                   )}
                   {supplier.data.map((item, index) => (
 
-                    <tr className={`${item?.total_payment < 0 ? 'bg-red-100' : ''}`}>
+                    <tr className={`${item?.paid_amount == 0 ? 'bg-red-100' : (item.total_payment - item.paid_amount) > 0 ? 'bg-yellow-100' : '' } border-b border-gray-300`} key={index}>
                       <td className="p-4 text-sm text-black">{item.invoice_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.invoice_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.due_date || 'N/A'}</td>
@@ -218,7 +218,7 @@ export default function List(props) {
                         </div>
                         {/* {item.paid_amount || 'N/A'} */}
                       </td>
-                      <td className="p-4 text-sm text-black">{item.outstanding || 'N/A'}</td>
+                      <td className="p-4 text-sm text-black">{item.total_payment - item.paid_amount}</td>
                       <td className="p-4 text-sm text-black">{item.method || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_no || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.cheque_date || 'N/A'}</td>

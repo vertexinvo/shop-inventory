@@ -285,6 +285,8 @@ class OrderController extends Controller
             'exchange',
             'extra_charges'
         ]);
+       
+   
         $order = Order::create($data);
 
         foreach ($request->items as $item) {
@@ -306,6 +308,7 @@ class OrderController extends Controller
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
             unset($item['total']);
+            $item['type'] = 'used';
             $product =  Product::create($item);
 
             $data["product_id"] = $product->id;
@@ -463,6 +466,7 @@ class OrderController extends Controller
             'order_date',
             'exchange',
         ]);
+
         $order = Order::create($data);
 
         foreach ($request->items as $item) {
@@ -482,6 +486,7 @@ class OrderController extends Controller
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
             unset($item['total']);
+            $item['type'] = 'used';
             $product = Product::create($item);
 
             $data["product_id"] = $product->id;

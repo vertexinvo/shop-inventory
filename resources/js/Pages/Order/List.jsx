@@ -372,7 +372,7 @@ export default function List(props) {
                   {orders.data.map((order, index) => (
 
 
-                    <tr className={`  ${order?.stock?.quantity === 0 || order?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50 border-b'}`}>
+                    <tr className={`  ${ (order.status === 'pending' && order.paid_amount == 0) ? 'bg-red-100' : (order.status === 'pending' && order.paid_amount < order.payable_amount) ? 'bg-yellow-100' : 'odd:bg-white even:bg-gray-50 border-b'}`}>
 
                       <td className="pl-4 w-8">
                         <input
@@ -423,7 +423,7 @@ export default function List(props) {
                       <td class="text-sm text-black">
                           <div class="flex items-center cursor-pointer w-max">
                             <div class="ml-4 ">
-                              <p class="text-sm text-black ">Order Name : {order.name}</p>
+                              <p class="text-sm text-black ">Customer Name : {order.name}</p>
                               {order.email && <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
                             </div>
                           </div>

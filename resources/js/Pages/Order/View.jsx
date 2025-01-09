@@ -189,7 +189,7 @@ const View = (props) => {
                 <div className="flex justify-end mb-4 no-print">
                     <button onClick={() => router.get(route('order.index'))}
 
-                        className="bg-black text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
+                        className="bg-red-500 text-white py-2 px-4 rounded shadow hover:bg-gray-600 transition duration-300"
                     >
                         Close
                     </button>
@@ -434,12 +434,12 @@ const View = (props) => {
 
 
                                 <tr>
-                                    <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Grand Total:</th>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Grand Total:</th>
 
                                     <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount || '0.00'}</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row" colSpan="6" className="hidden pl-4 py-2 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Paid Amount:</th>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Paid Amount:</th>
 
                                     <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.paid_amount || '0.00'}</td>
                                 </tr>

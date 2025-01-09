@@ -328,6 +328,7 @@ public function csvExport(Request $request)
             'weight' => 'nullable',
             'is_supplier' => 'required',
             'customfield' => 'nullable',
+            'type' => 'required',
         ]);
       
 
@@ -460,6 +461,7 @@ public function csvExport(Request $request)
             'weight' => 'nullable',
             'is_supplier' => 'required',
             'customfield' => 'nullable',
+            'type' => 'required',
         ]);
       
 

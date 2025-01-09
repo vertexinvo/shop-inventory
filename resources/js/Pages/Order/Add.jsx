@@ -773,7 +773,19 @@ export default function Add(props) {
 
 
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Tax</label>
+                            <div className="flex gap-4 items-center mb-2">
+                            <label className="block text-grey-darker text-sm   font-bold" >Select Tax</label>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFieldValue('tax', '');
+                                setFieldValue('tax_id', '');
+                              }}
+                              className="text-sm font-semibold text-red-500   underline leading-tight"
+                            >
+                              Reset
+                            </button>
+                            </div>
                             <Field
                               name="tax_id"
                               as="select"
@@ -798,10 +810,23 @@ export default function Add(props) {
 
 
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2 font-bold" >Select Shipping Cost</label>
+                            <div className="flex gap-4 items-center mb-2">
+                            <label className="block  text-sm font-bold" >Select Shipping Cost</label>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFieldValue('shipping_id', '');
+                                setFieldValue('shipping_charges', '');
+                                setSelectedShippingrate(null);
+                              }}
+                              className="text-sm font-semibold text-red-500   underline leading-tight"
+                            >
+                              Reset
+                            </button>
+                            </div>
                             <Select
                               onChange={(e) => {
-                                console.log(e);
+ 
                                 setSelectedShippingrate(e);
                                 setFieldValue('shipping_id', e.value);
                                 setFieldValue('shipping_charges', e.fee);

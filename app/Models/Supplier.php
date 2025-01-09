@@ -56,14 +56,18 @@ class Supplier extends Model
     public function getTotalAmountPaidAttribute(){
 
         //check by status paid
-        return $this->supplierinvoices()->where('status', 'paid')->sum('total_payment');
+        return $this->supplierinvoices()->sum('paid_amount');
 
     }
 
     public function getTotalAmountPendingAttribute(){
 
         //check by status pending
-        return $this->supplierinvoices()->where('status', 'pending')->sum('total_payment');
+        return $this->supplierinvoices()
+        ->get()
+        ->sum(function ($invoice) {
+            return $invoice->total_payment - $invoice->paid_amount;
+        });
 
     }
 
@@ -73,6 +77,8 @@ class Supplier extends Model
         return $this->supplierinvoices()->sum('total_payment');
 
     }
+
+    
 
     
 }

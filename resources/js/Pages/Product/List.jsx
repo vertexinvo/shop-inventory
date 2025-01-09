@@ -266,6 +266,9 @@ export default function List(props) {
                       Is Exchange
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Type
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Other Info
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -285,7 +288,7 @@ export default function List(props) {
                   )}
                   {products.data.map((product, index) => (
 
-                    <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}`}>
+                    <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'} border-b border-gray-300`}>
 
                       <td className="pl-4 w-8">
                         <input
@@ -376,9 +379,19 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
-                       { product.customfield && JSON.parse(product.customfield).map((field, index) => (
-                          <p class="text-xs text-gray-500 mt-0.5" key={index}><span class="font-semibold"> {field.name} : </span>{field.value}</p>
-                        ))}
+                        {`${product.type.charAt(0).toUpperCase()}${product.type.slice(1)}`}
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
+                      { 
+                        (product.customfield && product.customfield !== 'null' && product.customfield !== '' && JSON.parse(product.customfield).length > 0) ? 
+                        JSON.parse(product.customfield).map((field, index) => (
+                          <p className="text-xs text-gray-500 mt-0.5" key={index}>
+                            <span className="font-semibold">{field.name}:</span> {field.value}
+                          </p>
+                        )) : 
+                        'N/A'
+                      }
                       </td>
 
 
