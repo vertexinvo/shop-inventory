@@ -13,7 +13,7 @@ const View = (props) => {
 
     const setting = usePage().props.setting;
 
-    console.log(order);
+   
 
     const generatePDF = () => {
         const input = document.getElementById('invoice');
