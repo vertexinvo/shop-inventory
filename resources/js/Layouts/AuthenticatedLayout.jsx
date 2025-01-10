@@ -275,6 +275,12 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                     <span class="ms-3">Suppliers</span>
                                 </NavLink>
                             </li>
+                            <li>
+                                <NavLink href={route('expence.index')} active={route().current('expence.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                    <TbInvoice className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                    <span class="ms-3">Expence</span>
+                                </NavLink>
+                            </li>
                             {/* <li>
                                 <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
                                     <GoGraph className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />

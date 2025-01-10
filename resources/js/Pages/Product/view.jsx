@@ -62,8 +62,6 @@ export default function View(props) {
         <div className="w-full ">
 
           <div className="font-sans antialiased bg-grey-lightest">
-
-
             <div className="w-full bg-grey-lightest">
               <div className="container mx-auto py-3 px-5">
                 <div className="w-full lg:w-full mx-auto bg-white rounded shadow">

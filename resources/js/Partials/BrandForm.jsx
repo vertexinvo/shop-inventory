@@ -48,13 +48,6 @@ function BrandForm(props) {
               <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
             </div>
 
-
-
-
-
-
-
-
             <div className="flex items-center justify-start gap-1 mt-8">
               <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
                 Save

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Expance;
 use App\Http\Requests\StoreExpanceRequest;
 use App\Http\Requests\UpdateExpanceRequest;
+use Inertia\Inertia;
 
 class ExpanceController extends Controller
 {
@@ -13,7 +14,8 @@ class ExpanceController extends Controller
      */
     public function index()
     {
-        //
+        $expences = Expance::all();
+        return Inertia::render('Expence/List', compact('expences'));
     }
 
     /**
@@ -21,7 +23,8 @@ class ExpanceController extends Controller
      */
     public function create()
     {
-        //
+        
+        return Inertia::render('Expence/Add');
     }
 
     /**
@@ -45,7 +48,8 @@ class ExpanceController extends Controller
      */
     public function edit(Expance $expance)
     {
-        //
+        $expance = Expance::find($expance->id);
+        return Inertia::render('Expence/Edit', compact('expance'));
     }
 
     /**
