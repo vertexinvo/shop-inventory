@@ -403,7 +403,7 @@ public function csvExport(Request $request)
         
         $categories_object_model = Category::all();
         
-        return Inertia::render('Product/View',compact('product','categories', 'brands', 'selectedCategories', 'selectedBrands','categories_object_model'));
+        return Inertia::render('Product/view',compact('product','categories', 'brands', 'selectedCategories', 'selectedBrands','categories_object_model'));
     }
 
 
