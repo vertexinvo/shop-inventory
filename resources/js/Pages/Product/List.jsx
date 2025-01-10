@@ -324,7 +324,7 @@ export default function List(props) {
                       </td>
                       <td class="p-4 text-sm text-blue-600">
                         <button onClick={() => router.get(route('product.show', product.code || product.id))} className='text-blue-600' title="Order" type='button'>
-                        {product?.code || 'N/A'}
+                        {product?.code || product?.id}
                         </button>
                       </td>
                       <td class=" text-sm">
