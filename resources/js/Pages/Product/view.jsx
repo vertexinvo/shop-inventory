@@ -124,7 +124,7 @@ export default function View(props) {
                         otherwise: scheme => scheme.required()
                       }),
                       is_warranty: Yup.string().required('Is warranty is required'),
-                      //check warranty_type not equal to none if is_warranty is 1
+                      
                       warranty_type: Yup.string().when('is_warranty', {
                         is: '1',
                         then: scheme => scheme.required().notOneOf(['none'], 'Warranty type cannot be "none"'),
