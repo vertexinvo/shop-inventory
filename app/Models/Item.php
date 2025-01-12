@@ -25,7 +25,7 @@ class Item extends Model
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
+    } 
 
     public function product()
     {

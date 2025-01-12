@@ -41,7 +41,7 @@ export default function Add(props) {
     }),
   };
 
-  console.log(order);
+
 
   const [orderItems, setOrderItems] = useState(
     order?.items.map((item) => {

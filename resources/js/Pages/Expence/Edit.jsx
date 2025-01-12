@@ -12,17 +12,16 @@ export default function Edit(props) {
   const { auth, roles, expance } = props
   return (
     <AuthenticatedLayout
-      user={auth.expance}
       header={ <>
         <MdKeyboardBackspace
              size={20}
              className="mr-2 cursor-pointer"
-             onClick={() => router.get(route('expence.index'))}
+             onClick={() => router.get(route('expense.index'))}
              title="Back"
-         /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Expence</h2>
+         /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Expense</h2>
         </>}
     >
-      <Head title="User" />
+      <Head title="Expense" />
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
@@ -37,7 +36,7 @@ export default function Edit(props) {
 
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                      router.put(route('expence.update', user.id), values, { onSuccess: () => resetForm(), preserveScroll: true, preserveState: false, replace: true });
+                      router.put(route('expense.update', user.id), values, { onSuccess: () => resetForm(), preserveScroll: true, preserveState: false, replace: true });
                     }}
                   >
                     <Form>
@@ -88,7 +87,7 @@ export default function Edit(props) {
                           <button class="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
                           Update
                           </button>
-                          <button onClick={() => router.get(route('expence.index'))} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
+                          <button onClick={() => router.get(route('expense.index'))} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                             Close
                           </button>
                         </div>

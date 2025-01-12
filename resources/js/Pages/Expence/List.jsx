@@ -12,13 +12,12 @@ import { SiMicrosoftexcel } from "react-icons/si";
 export default function List(props) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
     const { auth, expences } = props
-    console.log(expences)
     const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
     const [selectId, setSelectId] = useState([]);
 
     return (
         <AuthenticatedLayout
-            user={auth.Expence}
+            user={auth}
             header={
                 <>
                     <MdKeyboardBackspace
@@ -27,10 +26,10 @@ export default function List(props) {
                         onClick={() => router.get(route('dashboard'))}
                         title="Back"
                     />
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">Expence</h2>
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">Expense</h2>
                 </>}
         >
-            <Head title="Expence" />
+            <Head title="Expense" />
             <div class="px-5 mx-4  py-5">
                 <div className="overflow-x-auto">
                     <div class="font-[sans-serif] overflow-x-auto">
@@ -83,7 +82,7 @@ export default function List(props) {
 
                                 {expences.length === 0 ? (
                                     <tr>
-                                        <td colSpan="5" className="p-4 text-center">
+                                        <td colSpan="9" className="p-4 text-center">
                                             No data available
                                         </td>
                                     </tr>
