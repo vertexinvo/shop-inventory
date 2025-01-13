@@ -105,3 +105,4 @@ require __DIR__.'/dashboard/shippingrate.php';
 require __DIR__.'/dashboard/stock.php';
 require __DIR__.'/dashboard/stocklog.php';
 require __DIR__.'/dashboard/expence.php';
+require __DIR__.'/dashboard/ledger.php';
