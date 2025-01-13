@@ -97,7 +97,6 @@ class Order extends Model
 
     public function items()
     {
-        dd($this);
         return $this->hasMany(Item::class);          
     }
     
