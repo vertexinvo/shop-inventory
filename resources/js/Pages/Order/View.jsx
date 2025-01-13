@@ -72,7 +72,7 @@ const View = (props) => {
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-left text-sm mb-4">
-                            <div>Invoice #: <span class="font-semibold">INV-${order.id ? order.id : 'N/A'}</span></div>
+                            <div>Invoice #: <span class="font-semibold">INV-${order.code || order.id}</span></div>
                             <div>Date: <span class="font-semibold">${currentDateTime || 'N/A'}</span></div>
                             <div>Customer: <span class="font-semibold">${order?.name || 'N/A'}</span></div>
                         </div>
@@ -137,7 +137,7 @@ const View = (props) => {
                         onClick={() => router.get(route('order.index'))}
                         title="Back"
                     />
-                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Sale # { order.id || 'N/A'}</h2>
+                    <h2 className=" font-semibold text-xl text-gray-800 leading-tight no-print">View Sale # { order.code || order.id}</h2>
                 </>}>
             <Head title="View Sale" />
             <style>
