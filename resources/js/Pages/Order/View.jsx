@@ -239,7 +239,7 @@ const View = (props) => {
                         </div>
                         <div className="text-right">
                             <p>
-                                Invoice number: <span className="text-gray-500">INV-{order.id || 'N/A'}</span>
+                                Invoice number: <span className="text-gray-500">INV-{ order.code || order.id}</span>
                             </p>
                             <p>
                                 Invoice date: <span className="text-gray-500">{order.order_date || 'N/A'}</span>
