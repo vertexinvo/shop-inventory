@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiLogOut } from "react-icons/bi";
 import ConfirmModal from '@/Components/ConfirmModal';
+import { MdFormatListBulleted } from "react-icons/md";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbInvoice } from "react-icons/tb";
 import { GoGraph } from "react-icons/go";
@@ -287,6 +288,12 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
                                     <GiExpense  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                     <span class="ms-3">Expense</span>
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                    <MdFormatListBulleted   className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                    <span class="ms-3">Ledger</span>
                                 </NavLink>
                             </li>
                             {/* <li>
