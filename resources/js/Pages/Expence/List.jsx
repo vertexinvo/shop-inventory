@@ -80,7 +80,7 @@ export default function List(props) {
 
                             <tbody class="whitespace-nowrap">
 
-                                {expences.length === 0 ? (
+                                {expences.data.length === 0 ? (
                                     <tr>
                                         <td colSpan="9" className="p-4 text-center">
                                             No data available
@@ -88,7 +88,7 @@ export default function List(props) {
                                     </tr>
                                 ) : null}
 
-                                {expences.map((user, index) => (
+                                {expences.data.map((user, index) => (
                                     <tr key={user.id} class="odd:bg-gray-50 border-b border-gray-300">
                                         <td className="pl-4 w-8">
                                             <input
@@ -171,10 +171,93 @@ export default function List(props) {
                         </table>
                     </div>
 
-                    <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
-                        <span class="flex items-center col-span-3"> Showing {expences.from} - {expences.to} of {expences.total} </span>
-                        <span class="col-span-2"></span>
-                    </div>
+                   <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
+                                <span class="flex items-center col-span-3"> Showing {expences.from} - {expences.to} of {expences.total} </span>
+                                <span class="col-span-2"></span>
+                  
+                                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                                  <nav aria-label="Table navigation">
+                                    <ul class="inline-flex items-center">
+                  
+                                      <li>
+                                        <button onClick={() => expences.links[0].url ? router.get(expences.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                                          <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                            <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                          </svg>
+                                        </button>
+                                      </li>
+                                      {(() => {
+                                        let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
+                                        const activeIndex = expences.links.findIndex((l) => l.active);
+                  
+                                        return expences.links
+                                          .slice(1, -1) // Exclude the first and last items
+                                          .filter((link, index, array) => {
+                                            const currentIndex = parseInt(link.label, 10); // Parse label as number
+                                            if (isNaN(currentIndex)) return true; // Always include non-numeric items like "..."
+                  
+                                            // Adjust range dynamically based on the active index
+                                            const rangeStart = Math.max(0, activeIndex - 2); // Start range around active
+                                            const rangeEnd = Math.min(array.length - 1, activeIndex + 2); // End range around active
+                  
+                                            // Show links within the range or first/last few
+                                            return (
+                                              index < 3 || // First 3 pages
+                                              index > array.length - 4 || // Last 3 pages
+                                              (index >= rangeStart && index <= rangeEnd) // Pages close to the active page
+                                            );
+                                          })
+                                          .map((link, index, array) => {
+                                            const currentIndex = parseInt(link.label, 10); // Parse label as a number
+                                            const isEllipsis =
+                                              !isNaN(currentIndex) &&
+                                              lastShownIndex !== -1 &&
+                                              currentIndex - lastShownIndex > 1; // Check for gaps
+                  
+                                            // Update lastShownIndex only for valid numeric labels
+                                            if (!isNaN(currentIndex)) {
+                                              lastShownIndex = currentIndex;
+                                            }
+                  
+                                            return (
+                                              <li key={index}>
+                                                {isEllipsis ? (
+                                                  <span className="px-3 py-1">...</span>
+                                                ) : link.active ? (
+                                                  // Active page button
+                                                  <button
+                                                    className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                                    aria-current="page"
+                                                  >
+                                                    {link.label}
+                                                  </button>
+                                                ) : (
+                                                  // Inactive link button
+                                                  <button
+                                                    onClick={() => link.url && window.location.assign(link.url)}
+                                                    className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                                  >
+                                                    {link.label}
+                                                  </button>
+                                                )}
+                                              </li>
+                                            );
+                                          });
+                                      })()}
+                  
+                  
+                                      <li>
+                                        <button onClick={() => expences.links[expences.links.length - 1].url && window.location.assign(expences.links[expences.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                                          <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                                            <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                          </svg>
+                                        </button>
+                                      </li>
+                                    </ul>
+                                  </nav>
+                                </span>
+                              </div>
+
                 </div>
             </div>
 

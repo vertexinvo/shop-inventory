@@ -14,7 +14,8 @@ class ExpanceController extends Controller
      */
     public function index()
     {
-        $expences = Expance::all();
+        abort(403, 'You are not authorized to access this page.');
+        $expences = Expance::latest()->paginate(10);
         return Inertia::render('Expence/List', compact('expences'));
     }
 
@@ -23,7 +24,7 @@ class ExpanceController extends Controller
      */
     public function create()
     {
-        
+        abort(403, 'You are not authorized to access this page.');
         return Inertia::render('Expence/Add');
     }
 
@@ -48,7 +49,7 @@ class ExpanceController extends Controller
      */
     public function edit(Expance $expance)
     {
-        $expance = Expance::find($expance->id);
+        abort(403, 'You are not authorized to access this page.');
         return Inertia::render('Expence/Edit', compact('expance'));
     }
 
