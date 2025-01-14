@@ -28,10 +28,14 @@ class User extends Authenticatable
         'status',
         'phone',
         'address',
+        'code',
     ];
 
     protected $appends = [
         'total_orders',
+        'total_orders_amount',
+        'total_orders_amount_paid',
+        'total_order_amount_pending',
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -53,6 +57,31 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($user) {
+            $user->code= self::generateUserId();
+        });
+    }
+
+    // Function to generate a unique purchase ID
+    public static function generateUserId()
+    {
+        $date = now()->format('Ymd'); // Format the current date as YYYYMMDD
+        $lastUser = self::whereDate('created_at', now()->toDateString())
+            ->orderBy('id', 'desc')
+            ->first();
+    
+        // Get the last sequential number and increment it
+        $sequence = $lastUser ? intval(substr($lastUser->code, -4)) + 1 : 1;
+        $environment = env('APP_PLATFORM');
+        
+        // Pad the sequence with four leading zeros and return the formatted ID
+        return 'USR-' . $environment.'-'. $date . '-' . str_pad($sequence, 4, '0', STR_PAD_LEFT);
+    }
+
    
     /**
      * Accessor for the user's first role name.
@@ -66,6 +95,20 @@ class User extends Authenticatable
 
     public function getTotalOrdersAttribute(){
         return $this->orders()->count();
+    }
+
+    public function getTotalOrdersAmountAttribute(){
+        return $this->orders()->sum('payable_amount');
+    }
+
+    public function getTotalOrdersAmountPaidAttribute(){
+        return $this->orders()->sum('paid_amount');
+    }
+
+    public function getTotalOrderAmountPendingAttribute(){
+        return $this->orders()->get()->sum(function ($order) {
+            return $order->payable_amount - $order->paid_amount;
+        });
     }
  
 }

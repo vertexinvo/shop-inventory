@@ -162,6 +162,7 @@ export default function List(props) {
                         </svg>
                       </label>
                     </th>
+                    <th class="p-4 text-left text-sm font-semibold ">User ID</th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Name
                     </th>
@@ -229,6 +230,7 @@ export default function List(props) {
                           </svg>
                         </label>
                       </td>
+                      <td class="p-4 text-sm">{user.code || user.id}</td>
                       <td class="p-4 text-sm">
                         <div class="flex items-center cursor-pointer w-max">
                           {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}

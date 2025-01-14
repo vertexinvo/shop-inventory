@@ -13,7 +13,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 export default function Sales(props) {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
-  const { auth, users, totalcustomers, totalactivecus, totalinactivecus } = props
+  const { auth, sales } = props
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
 
@@ -28,10 +28,10 @@ export default function Sales(props) {
             onClick={() => router.get(route('dashboard'))}
             title="Back"
           />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Ledger</h2>
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales Ledger</h2>
         </>}
     >
-      <Head title="Ledger" />
+      <Head title="Sales Ledger" />
       
 
       <div className="flex flex-col px-5  mt-10 mx-auto w-full">
@@ -41,26 +41,13 @@ export default function Sales(props) {
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
 
 
-              {selectId.length > 0 && (
-                <button
-                  onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white  w-full  md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
-                >
-                  Bulk Delete
-                </button>
-              )}
-              <button
-                onClick={() => router.get(route('customer.create'))}
-                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
-              >
-                Create
-              </button>
+             
 
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
                 onSubmit={(values) => {
-                  router.get(route('customer.index'), { search: values.search }, { preserveState: true });
+                  router.get(route('ledger.sales'), { search: values.search }, { preserveState: true });
                 }}
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
@@ -76,7 +63,7 @@ export default function Sales(props) {
                         type="button"
                         onClick={() => {
                           setFieldValue('search', '');
-                          router.get(route('customer.index'));
+                          router.get(route('ledger.sales'));
                         }}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
@@ -92,7 +79,7 @@ export default function Sales(props) {
                     </button>
 
                     <a
-                      // href={route('customer.csvexport')}
+                       href={route('ledger.sales.csvexport')}
                       className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'>
                       <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
                         <SiMicrosoftexcel className="mr-2 h-5 w-5" />
@@ -111,20 +98,8 @@ export default function Sales(props) {
               <table class="min-w-full bg-white">
                 <thead class="whitespace-nowrap">
                   <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                    <th class="pl-4 w-8">
-                      <input id="checkbox" type="checkbox" class="hidden peer"
-                        onChange={(e) => setSelectId(e.target.checked ? users.data.map((user) => user.id) : [])}
-                      // checked={selectId.length === users.data.length}
-                      />
-                      <label for="checkbox"
-                        class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                          <path
-                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            data-name="7-Check" data-original="#000000" />
-                        </svg>
-                      </label>
-                    </th>
+                   
+                    <th class="p-4 text-left text-sm font-semibold ">User ID</th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Person Info
                     </th>
@@ -146,67 +121,38 @@ export default function Sales(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Total Amount Pending
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
+                    {/* <th class="p-4 text-left text-sm font-semibold ">
                       Action
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
 
                 <tbody class="whitespace-nowrap">
 
-                  {/* {users.data.length === 0 ? ( */}
-                  {/* <tr>
+                  {sales.data.length === 0 ? (
+                  <tr>
                     <td colSpan="5" className="p-4 text-center">
                       No data available
                     </td>
-                  </tr> */}
-                  {/* ) : null} */}
+                  </tr> 
+                   ) : null} 
 
-                  {/* {users.data.map((user, index) => ( */}
+                   {sales.data.map((item, index) => ( 
                   <tr
                     //  key={user.id} 
                     class="odd:bg-gray-50 border-b border-gray-300">
-                    <td className="pl-4 w-8">
-                      <input
-                        // id={`checkbox-${user.id}`}  // Unique id for each checkbox
-                        type="checkbox"
-                        className="hidden peer"
-                      // value={user.id}
-                      // onChange={(e) => {
-                      //   if (e.target.checked) {
-                      //     setSelectId((prev) => [...prev, user.id]); // Add user ID to state
-                      //   } else {
-                      //     setSelectId((prev) => prev.filter((id) => id !== user.id)); // Remove user ID from state
-                      //   }
-                      // }}
-                      // checked={selectId.includes(user.id)} // Bind state to checkbox
-                      />
-                      <label
-                        // htmlFor={`checkbox-${user.id}`} // Match label with checkbox id
-                        className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-full fill-white"
-                          viewBox="0 0 520 520"
-                        >
-                          <path
-                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                          />
-                        </svg>
-                      </label>
-                    </td>
+                    
+                    <td class="p-4 text-sm">{item.code || item.id}</td>
                     <td class="p-4 text-sm">
                       <div class="flex items-center cursor-pointer w-max">
-                        <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" />
-                  
+                        
                         <div class="ml-4 ">    {/* persone name and email */}
-                            <p class="text-sm text-black ">Person Name :  {'N/A'}
+                            <p class="text-sm text-black ">Person Name :  { item.name || 'N/A'}
                               </p>
-                            {/* {item.email && */}
-                             <p class="text-xs text-gray-500 mt-0.5">Email :{'N/A'}
+                            {item.email &&
+                             <p class="text-xs text-gray-500 mt-0.5">Email :{  item.email || 'N/A'}
                               </p>
-                              {/* } */}
+                              } 
 
                           </div>     
                       </div>
@@ -214,22 +160,22 @@ export default function Sales(props) {
 
                    
 
-                    <td class="p-4 text-sm">{'N/A'}</td>{/* contact */}
-                    <td class="p-4 text-sm">{'N/A'}</td>{/* address */}
-                    <td class="p-4 text-sm">{0}</td>{/* total order */}
-                    <td class="p-4 text-sm">{0}</td>{/* total amount */}
-                    <td class="p-4 text-sm">{0}</td>{/* total amount paid */}
-                    <td class="p-4 text-sm">{0}</td>{/* total amount pending */}
-                    <td class="p-4 flex items-center gap-2">
+                    <td class="p-4 text-sm">{  item.phone || 'N/A'}</td>{/* contact */}
+                    <td class="p-4 text-sm">{ item.address || 'N/A'}</td>{/* address */}
+                    <td class="p-4 text-sm">{ item.total_orders || 0}</td>{/* total order */}
+                    <td class="p-4 text-sm">{item.total_orders_amount || 0}</td>{/* total amount */}
+                    <td class="p-4 text-sm">{item.total_orders_amount_paid || 0}</td>{/* total amount paid */}
+                    <td class="p-4 text-sm">{item.total_order_amount_pending || 0}</td>{/* total amount pending */}
+                    {/* <td class="p-4 flex items-center gap-2">
                       <button
                         onClick={() => router.get(route('supplier.invoices', item.id))} className="mr-4 flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1" title="View Invoice"
                       >
                         <LiaFileInvoiceSolid className="w-6 fill-black " size={25} />
-                        <span className="text-white hover:text-black">Invoice</span>
+                        <span className="text-white hover:text-black">Orders</span>
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
-                  {/* ))} */}
+                   ))} 
 
                 </tbody>
               </table>
@@ -237,7 +183,7 @@ export default function Sales(props) {
 
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing
-                {/* {users.from} - {users.to} of {users.total}  */}
+                {sales.from} - {sales.to} of {sales.total} 
               </span>
               <span class="col-span-2"></span>
 
@@ -247,18 +193,18 @@ export default function Sales(props) {
 
                     <li>
                       <button
-                      // onClick={() => users.links[0].url ? router.get(users.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous"
+                       onClick={() => sales.links[0].url ? router.get(sales.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous"
                       >
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
                       </button>
                     </li>
-                    {/* {(() => {
+                    {(() => {
                       let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
-                      const activeIndex = users.links.findIndex((l) => l.active);
+                      const activeIndex = sales.links.findIndex((l) => l.active);
 
-                      return users.links
+                      return sales.links
                         .slice(1, -1) // Exclude the first and last items
                         .filter((link, index, array) => {
                           const currentIndex = parseInt(link.label, 10); // Parse label as number
@@ -311,11 +257,11 @@ export default function Sales(props) {
                             </li>
                           );
                         });
-                    })()} */}
+                    })()}
 
 
                     <li>
-                      <button onClick={() => users.links[users.links.length - 1].url && window.location.assign(users.links[users.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => sales.links[sales.links.length - 1].url && window.location.assign(sales.links[sales.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>

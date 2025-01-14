@@ -23,7 +23,10 @@ class UserService{
             $query = User::with('roles')
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
-                        ->orWhere('email', 'like', "%$search%");
+                        ->orWhere('email', 'like', "%$search%")
+                        ->orWhere('phone', 'like', "%$search%")
+                        ->orWhere('code', 'like', "%$search%")
+                        ->orWhere('id', 'like', "%$search%");
                 });
 
             // Exclude users with specified roles
