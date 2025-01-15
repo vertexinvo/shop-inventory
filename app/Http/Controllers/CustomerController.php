@@ -29,6 +29,7 @@ class CustomerController extends Controller
 
     public function csvExport(Request $request)
     {
+        $this->authorize('viewAny', User::class);
             $customers = UserService::getAllUser($request, 'customer');
             $headers = [
             "Content-type"        => "text/csv",

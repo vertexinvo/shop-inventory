@@ -152,6 +152,7 @@ public function csvstore(Request $request)
 
 public function csvExport(Request $request)
 {
+    $this->authorize('viewAny', Product::class);
     // Fetch all products from the database with their attributes and categories
     $products = Product::with(['categories'])->get();
     

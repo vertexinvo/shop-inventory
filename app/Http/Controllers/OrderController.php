@@ -67,6 +67,7 @@ class OrderController extends Controller
 
     public function csvExport(Request $request)
 {
+    $this->authorize('viewAny', Order::class);
     $orders = Order::all();
     $headers = [
         "Content-type"        => "text/csv",
