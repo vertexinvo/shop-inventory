@@ -7,6 +7,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
 import { SiMicrosoftexcel } from "react-icons/si";
+import FormatDate from '@/Helpers/FormatDate';
 
 
 export default function List(props) {
@@ -30,17 +31,44 @@ export default function List(props) {
                 </>}
         >
             <Head title="Expense" />
+
+            
             <div class="px-5 mx-4  py-5">
+
+                   <div className="flex flex-col md:flex-row justify-start items-center mt-2 mb-4">
+                
+                            <div className="flex flex-col md:flex-row w-full md:justify-start space-y-2 md:space-y-0 md:space-x-2">
+                
+                
+                              {selectId.length > 0 && (
+                                <button
+                                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                                  className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                                >
+                                  Bulk Delete
+                                </button>
+                              )}
+                              <button
+                                onClick={() => router.get(route('expense.create'))}
+                                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+                              >
+                                Create
+                              </button>
+                
+                            
+                            </div>
+                          </div>
+                
                 <div className="overflow-x-auto">
                     <div class="font-[sans-serif] overflow-x-auto">
                         <table class="min-w-full bg-white">
                             <thead class="whitespace-nowrap">
                                 <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
                                     <th class="pl-4 w-8">
-                                        {/* <input id="checkbox" type="checkbox" class="hidden peer"
-                                            onChange={(e) => setSelectId(e.target.checked ? users.data.map((user) => user.id) : [])}
-                                            checked={selectId.length === users.data.length}
-                                        /> */}
+                                        <input id="checkbox" type="checkbox" class="hidden peer"
+                                            onChange={(e) => setSelectId(e.target.checked ? expences.data.map((user) => user.id) : [])}
+                                            checked={selectId.length === expences.data.length}
+                                        />
                                         <label for="checkbox"
                                             class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
@@ -73,6 +101,9 @@ export default function List(props) {
                                         Pending Amount
                                     </th>
                                     <th class="p-4 text-left text-sm font-semibold ">
+                                        User Info
+                                    </th>
+                                    <th class="p-4 text-left text-sm font-semibold ">
                                         Action
                                     </th>
                                 </tr>
@@ -88,25 +119,25 @@ export default function List(props) {
                                     </tr>
                                 ) : null}
 
-                                {expences.data.map((user, index) => (
-                                    <tr key={user.id} class="odd:bg-gray-50 border-b border-gray-300">
+                                {expences.data.map((expance, index) => (
+                                    <tr key={expance.id} class="odd:bg-gray-50 border-b border-gray-300">
                                         <td className="pl-4 w-8">
                                             <input
-                                                id={`checkbox-${user.id}`} // Unique id for each checkbox
+                                                id={`checkbox-${expance.id}`} // Unique id for each checkbox
                                                 type="checkbox"
                                                 className="hidden peer"
-                                                value={user.id}
+                                                value={expance.id}
                                                 onChange={(e) => {
                                                     if (e.target.checked) {
-                                                        setSelectId((prev) => [...prev, user.id]); // Add user ID to state
+                                                        setSelectId((prev) => [...prev, expance.id]); // Add user ID to state
                                                     } else {
-                                                        setSelectId((prev) => prev.filter((id) => id !== user.id)); // Remove user ID from state
+                                                        setSelectId((prev) => prev.filter((id) => id !== expance.id)); // Remove user ID from state
                                                     }
                                                 }}
-                                                checked={selectId.includes(user.id)} // Bind state to checkbox
+                                                checked={selectId.includes(expance.id)} // Bind state to checkbox
                                             />
                                             <label
-                                                htmlFor={`checkbox-${user.id}`} // Match label with checkbox id
+                                                htmlFor={`checkbox-${expance.id}`} // Match label with checkbox id
                                                 className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
                                             >
                                                 <svg
@@ -120,17 +151,35 @@ export default function List(props) {
                                                 </svg>
                                             </label>
                                         </td>
-                                        <td class="p-4 text-sm">{user.name || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{user.type || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{user.date_time || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{user.description || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{user.amount || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{user.status || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{user.pending_amount || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{expance.name || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{expance.type || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{FormatDate(expance.datetime) || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{expance.description?.substring(0, 50) + `...` || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{expance.amount || 0}</td>
+                                        <td class="p-4 text-sm">{expance.status || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{expance.pending_amount || 0}</td>
+                                        <td class="p-4 text-sm">{
+                                            expance.user ? (
+                                                <>
+                                                <p class="text-sm  leading-tight text-gray-800 mb-2">
+                                                      ID : {expance.user.code || expance.user.id}
+                                                    </p>
+                                                    <p class="text-sm  leading-tight text-gray-800 mb-2">
+                                                      Name : {expance.user.name || 'N/A'}
+                                                    </p>
+                                                    <p class="text-sm  leading-tight text-gray-800 mb-2">
+                                                       Email : {expance.user.email || 'N/A'}
+                                                    </p>
+                                                    <p class="text-sm  leading-tight text-gray-800 mb-2">
+                                                       Phone : {expance.user.phone || 'N/A'}
+                                                    </p>
+                                                </>
+                                            ): 'N/A'
+                                        }</td>
 
                                         <td class="p-4 flex items-center gap-2">
                                             <button
-                                                onClick={() => router.get(route('expence.edit', user.id))}
+                                                onClick={() => router.get(route('expense.edit', expance))}
                                                 title="Edit"
                                                 className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 rounded text-white px-3 py-2"
                                             >
@@ -146,7 +195,7 @@ export default function List(props) {
                                             </button>
 
                                             <button
-                                                onClick={() => setIsDeleteModalOpen(user)}
+                                                onClick={() => setIsDeleteModalOpen(expance)}
                                                 title="Delete"
                                                 className="flex items-center space-x-2 bg-red-500 hover:bg-red-600 rounded text-white px-3 py-2"
                                             >
@@ -260,6 +309,26 @@ export default function List(props) {
 
                 </div>
             </div>
+
+            <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
+
+router.delete(route('expense.destroy', isDeleteModalOpen.id), {
+  preserveScroll: true,
+  preserveState: true,
+})
+setIsDeleteModalOpen(null)
+}} />
+
+<ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these users?" onConfirm={() => {
+
+router.post(route('expense.bulkdestroy'), { ids: selectId.join(',') }, {
+  onSuccess: () => {
+    setIsBulkDeleteModalOpen(false);
+    setSelectId([]);
+  },
+});
+
+}} />
 
 
 

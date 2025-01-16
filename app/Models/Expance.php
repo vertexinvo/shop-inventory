@@ -13,9 +13,15 @@ class Expance extends Model
         'name',
         'type',
         'datetime',
-        'discription',
+        'description',
         'amount',
         'status',
-        'pending_amount'
+        'pending_amount',
+        'uid',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'uid');
+    }
 }
