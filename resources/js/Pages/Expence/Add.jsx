@@ -135,7 +135,7 @@ export default function Add(props) {
                                             </div>
                                             <div className="w-1/2 ml-1">
                                               <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="description">
-                                                Description
+                                                Description (Optional)
                                               </label>
                                               <Field
                                                 name="description"
@@ -166,7 +166,7 @@ export default function Add(props) {
                                             </div>
                                             <div className="w-1/2 ml-1">
                                               <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="pending_amount">
-                                                Pending Amount
+                                                Pending Amount (Optional)
                                               </label>
                                               <Field
                                                 name="pending_amount"
