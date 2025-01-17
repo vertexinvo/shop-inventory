@@ -74,9 +74,9 @@ class ExpanceController extends Controller
             'type' => 'required|string|in:rent,utilities,salary,miscellaneous',  // Type options for dropdown
             'datetime' => 'nullable|date',
             'description' => 'nullable|string|max:255',
-            'amount' => 'nullable|numeric',
+            'amount' => 'nullable|numeric|max:1000000000',
             'status' => 'required|in:paid,unpaid',  // Allowed values for status
-            'pending_amount' => 'nullable|numeric',
+            'pending_amount' => 'nullable|numeric|max:1000000000',
             'uid' => 'nullable|exists:users,id',  // Ensure the user exists
         ]);
 
@@ -127,9 +127,9 @@ class ExpanceController extends Controller
             'type' => 'required|string|in:rent,utilities,salary,miscellaneous',  // Type options for dropdown
             'datetime' => 'nullable|date',
             'description' => 'nullable|string|max:255',
-            'amount' => 'nullable|numeric',
+            'amount' => 'nullable|numeric|max:1000000000',
             'status' => 'required|in:paid,unpaid',  // Allowed values for status
-            'pending_amount' => 'nullable|numeric',
+            'pending_amount' => 'nullable|numeric|max:1000000000',
             'uid' => 'nullable|exists:users,id',  // Ensure the user exists
         ]);
     

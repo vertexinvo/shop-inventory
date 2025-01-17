@@ -253,10 +253,10 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
    
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
-            'address' => 'nullable|max:500',
+            'address' => 'nullable|string|max:500',
             'total' => 'required|numeric|max:1000000000',
             'payable_amount' => 'required|numeric|max:1000000000',
             'paid_amount' => 'required|numeric|max:1000000000',
@@ -420,10 +420,10 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
       
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
-            'address' => 'nullable|max:500',
+            'address' => 'nullable|string|max:500',
             'total' => 'required|numeric|max:1000000000',
             'payable_amount' => 'required|numeric|max:1000000000',
             'paid_amount' => 'required|numeric|max:1000000000',
@@ -616,7 +616,7 @@ class OrderController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
-            'address' => 'nullable|max:500',
+            'address' => 'nullable|string|max:500',
             'total' => 'required|numeric|max:1000000000',
             'payable_amount' => 'required|numeric|max:1000000000',
             'paid_amount' => 'required|numeric|max:1000000000',

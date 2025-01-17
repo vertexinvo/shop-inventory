@@ -41,8 +41,8 @@ class TaxController extends Controller
         $this->authorize('create', tax::class);
         
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'cost' => 'required',
+            'name' => 'required|string|max:255',
+            'cost' => 'required|numeric|max:1000000000',
         ]);
 
         if ($validator->fails()) {
@@ -78,8 +78,8 @@ class TaxController extends Controller
     {
         $this->authorize('update', $tax);
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'cost' => 'required',
+            'name' => 'required|string|max:255',
+            'cost' => 'required|numeric|max:1000000000',
         ]);
 
         if ($validator->fails()) {

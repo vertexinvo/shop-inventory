@@ -33,7 +33,7 @@ export default function List(props) {
         <div className="w-full ">
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
-            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+            <div className="flex flex-col md:flex-row w-full md:justify-start space-y-2 md:space-y-0 md:space-x-2">
 
 
               {selectId.length > 0 && (
@@ -51,7 +51,7 @@ export default function List(props) {
                 Create
               </button>
 
-              <Formik
+              {/* <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
                 onSubmit={(values) => {
@@ -88,7 +88,7 @@ export default function List(props) {
 
                   </Form>
                 )}
-              </Formik>
+              </Formik> */}
             </div>
           </div>
 
