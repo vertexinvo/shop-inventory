@@ -223,7 +223,7 @@ export default function Add(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount', totalAmount - (discount + values.exchange));
+            setFieldValue('payable_amount',  (totalAmount+parseFloat(values.extra_charges)+parseFloat(values.tax)+parseFloat(values.shipping_charges))  - (discount + values.exchange));
           }, [values.items, values.discount, setFieldValue, values.exchange]);
 
 

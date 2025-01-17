@@ -75,7 +75,7 @@ export default function InstantOrder(props) {
 
           name: Yup.string().required('Name is required'),
           email: Yup.string(),
-          phone: Yup.string(),
+          phone: Yup.string().required('Phone number is required'),
           address: Yup.string(),
           items: Yup.array().min(1, 'At least one item is required'),
           order_date: Yup.date().required('Order date is required'),
@@ -112,7 +112,7 @@ export default function InstantOrder(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount', totalAmount - (discount + values.exchange));
+            setFieldValue('payable_amount', (totalAmount+values.extra_charges) - (discount + values.exchange));
           }, [values.items, values.discount, setFieldValue, values.exchange]);
 
 

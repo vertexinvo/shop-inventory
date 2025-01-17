@@ -263,7 +263,7 @@ export default function List(props) {
                                         <td class="p-4 text-sm">{expance.name || 'N/A'}</td>
                                         <td class="p-4 text-sm">{expance.type || 'N/A'}</td>
                                         <td class="p-4 text-sm">{FormatDate(expance.datetime) || 'N/A'}</td>
-                                        <td class="p-4 text-sm">{expance.description?.substring(0, 50) + `...` || 'N/A'}</td>
+                                        <td class="p-4 text-sm">{ expance.description ? expance.description?.substring(0, 50) + `...` : 'N/A'}</td>
                                         <td class="p-4 text-sm">{expance.amount || 0}</td>
                                         <td class="p-4 text-sm">{expance.status || 'N/A'}</td>
                                         <td class="p-4 text-sm">{expance.pending_amount || 0}</td>

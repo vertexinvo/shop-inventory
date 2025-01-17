@@ -24,7 +24,7 @@ class ExpanceController extends Controller
         if($startdate && $enddate){
          $expences = $expences->whereBetween('datetime', [$startdate, $enddate]);
         }
-        $expences = $expences->orderBy('datetime', 'desc')->paginate(2);
+        $expences = $expences->orderBy('datetime', 'desc')->paginate(20);
 
             // Today's totals
         $today = now()->format('Y-m-d');
