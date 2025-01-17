@@ -5,16 +5,30 @@ import { Head, Link, router } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { MdKeyboardBackspace } from "react-icons/md";
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
-import { FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
+import { FaMoneyBills, FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
 import { SiMicrosoftexcel } from "react-icons/si";
 import FormatDate from '@/Helpers/FormatDate';
-
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css';
+import { DateRangePicker } from 'react-date-range';
+import Modal from '@/Components/Modal';
+import { set } from 'date-fns';
 
 export default function List(props) {
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
-    const { auth, expences } = props
+    const { auth, expences,startdate,enddate,todayTotal, todayPending, monthTotal, monthPending, yearTotal, yearPending } = props
     const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
     const [selectId, setSelectId] = useState([]);
+    const [daterangeModel, setDaterangeModel] = useState(false);
+
+    const [dateRange, setDateRange] = useState(
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+          }
+    )
+    
 
     return (
         <AuthenticatedLayout
@@ -31,6 +45,92 @@ export default function List(props) {
                 </>}
         >
             <Head title="Expense" />
+
+                  <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+                    
+                      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                        <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+                          <div class="my-auto">
+                            <p class="font-bold">TODAY'S TOTAL EXPENSE</p>
+                            <p class="text-lg">{todayTotal}</p>
+                          </div>
+                          <div class="my-auto">
+                            
+                          </div>
+                        </div>
+                      </div>
+                    
+            
+                    
+                      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                        <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+                          <div class="my-auto">
+                            <p class="font-bold">TODAY'S PENDING AMOUNT</p>
+                            <p class="text-lg">{todayPending}</p>
+                          </div>
+                          <div class="my-auto">
+                           
+                          </div>
+                        </div>
+                      </div>
+                   
+                    
+                      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                        <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+                          <div class="my-auto">
+                            <p class="font-bold">MONTH'S TOTAL EXPENSE</p>
+                            <p class="text-lg">{monthTotal}</p>
+                          </div>
+                          <div class="my-auto">
+                            
+                          </div>
+                        </div>
+                      </div>
+                    
+            
+                    
+                      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                        <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+                          <div class="my-auto">
+                            <p class="font-bold">MONTH'S PENDING AMOUNT</p>
+                            <p class="text-lg">{monthPending}</p>
+                          </div>
+                          <div class="my-auto">
+                           
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                        <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+                          <div class="my-auto">
+                            <p class="font-bold">YEAR'S PENDING AMOUNT</p>
+                            <p class="text-lg">{yearTotal}</p>
+                          </div>
+                          <div class="my-auto">
+                           
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                        <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+                          <div class="my-auto">
+                            <p class="font-bold">YEAR'S PENDING AMOUNT</p>
+                            <p class="text-lg">{yearPending}</p>
+                          </div>
+                          <div class="my-auto">
+                           
+                          </div>
+                        </div>
+                      </div>
+                   
+                    
+                    
+                   
+            
+               
+                  </div>
 
             
             <div class="px-5 mx-4  py-5">
@@ -54,6 +154,15 @@ export default function List(props) {
                               >
                                 Create
                               </button>
+
+                              
+                                {/* Date range filter button */}
+                                <button
+                                  onClick={() => setDaterangeModel(true)}
+                                  className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+                                >
+                                  Date Range Filter
+                                </button>
                 
                             
                             </div>
@@ -227,14 +336,13 @@ export default function List(props) {
                                 <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                                   <nav aria-label="Table navigation">
                                     <ul class="inline-flex items-center">
-                  
-                                      <li>
-                                        <button onClick={() => expences.links[0].url ? router.get(expences.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-                                          <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                                            <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                                          </svg>
-                                        </button>
-                                      </li>
+                                  <li>
+                                    <button onClick={() => expences.links[0].url ? router.get(expences.links[0].url+'&startdate='+startdate+'&enddate='+enddate) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                                      <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                                      </svg>
+                                    </button>
+                                  </li>
                                       {(() => {
                                         let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
                                         const activeIndex = expences.links.findIndex((l) => l.active);
@@ -283,7 +391,7 @@ export default function List(props) {
                                                 ) : (
                                                   // Inactive link button
                                                   <button
-                                                    onClick={() => link.url && window.location.assign(link.url)}
+                                                    onClick={() => link.url && window.location.assign(link.url+'&startdate='+startdate+'&enddate='+enddate)}
                                                     className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                                   >
                                                     {link.label}
@@ -296,7 +404,7 @@ export default function List(props) {
                   
                   
                                       <li>
-                                        <button onClick={() => expences.links[expences.links.length - 1].url && window.location.assign(expences.links[expences.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                                        <button onClick={() => expences.links[expences.links.length - 1].url && window.location.assign(expences.links[expences.links.length - 1].url+'&startdate='+startdate+'&enddate='+enddate)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                                           <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                                             <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                                           </svg>
@@ -319,6 +427,7 @@ router.delete(route('expense.destroy', isDeleteModalOpen.id), {
 setIsDeleteModalOpen(null)
 }} />
 
+
 <ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these users?" onConfirm={() => {
 
 router.post(route('expense.bulkdestroy'), { ids: selectId.join(',') }, {
@@ -329,6 +438,56 @@ router.post(route('expense.bulkdestroy'), { ids: selectId.join(',') }, {
 });
 
 }} />
+
+     <Modal
+        show={daterangeModel}
+        onClose={() => setDaterangeModel(false)}
+        maxWidth="2xl"
+      >
+           <div className="overflow-y-auto max-h-[80vh]">
+        <div className="flex justify-center p-10">
+          <div className="text-2xl font-medium text-[#5d596c] ">
+            Date Range
+          </div>
+        </div>
+        <div className="px-10 flex justify-center mb-5">
+          <div className="text-center">
+          <DateRangePicker
+            ranges={[dateRange]}
+            onChange={(item) => {
+                setDateRange(item.selection);
+            }}
+            className="w-96"
+        />
+          
+            <div className="flex justify-center gap-4 mt-5">
+              <button
+                type="button"
+                onClick={()=>{setDaterangeModel(false)}}
+                className="text-gray-500 bg-[#eaebec] hover:bg-[#eaebec] focus:ring-4 focus:ring-[#eaebec] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+
+                    // Ensure dateRange is available and has the correct values
+                    router.get(route('expense.index', {
+                        startdate: dateRange.startDate, 
+                        enddate: dateRange.endDate
+                    }));
+                }}
+                className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              >
+                Filter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </Modal>
 
 
 

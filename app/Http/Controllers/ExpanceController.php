@@ -15,10 +15,38 @@ class ExpanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expences = Expance::with('user')->orderBy('datetime', 'desc')->paginate(20);
-        return Inertia::render('Expence/List', compact('expences'));
+        $startdate = $request->startdate ?? '';
+        $enddate = $request->enddate ??'';
+  
+        $expences = Expance::with('user');
+        if($startdate && $enddate){
+         $expences = $expences->whereBetween('datetime', [$startdate, $enddate]);
+        }
+        $expences = $expences->orderBy('datetime', 'desc')->paginate(2);
+
+            // Today's totals
+        $today = now()->format('Y-m-d');
+        $todayTotal = Expance::whereDate('datetime', $today)->sum('amount');
+        $todayPending = Expance::whereDate('datetime', $today)->sum('pending_amount');
+
+        // This month's totals
+        $thisMonth = now()->format('Y-m');
+        $monthTotal = Expance::whereYear('datetime', now()->year)
+            ->whereMonth('datetime', now()->month)
+            ->sum('amount');
+        $monthPending = Expance::whereYear('datetime', now()->year)
+            ->whereMonth('datetime', now()->month)
+            ->sum('pending_amount');
+
+        // This year's totals
+        $yearTotal = Expance::whereYear('datetime', now()->year)->sum('amount');
+        $yearPending = Expance::whereYear('datetime', now()->year)->sum('pending_amount');
+
+
+
+        return Inertia::render('Expence/List', compact('expences', 'startdate', 'enddate', 'todayTotal', 'todayPending', 'monthTotal', 'monthPending', 'yearTotal', 'yearPending'));
     }
 
     /**

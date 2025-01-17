@@ -1,0 +1,1 @@
+function b(n){const t=new Date(n),o=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][t.getMonth()],a=t.getDate(),r=t.getFullYear();let e=t.getHours();const s=e>=12?"PM":"AM";e=e%12||12;const c=String(t.getMinutes()).padStart(2,"0");return`${o} ${a}, ${r}, ${e}:${c} ${s} (ET)`}export{b as F};
