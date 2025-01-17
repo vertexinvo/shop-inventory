@@ -17,6 +17,7 @@ class ExpanceController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize('viewAny', Expance::class);
         $startdate = $request->startdate ?? '';
         $enddate = $request->enddate ??'';
   
@@ -54,6 +55,7 @@ class ExpanceController extends Controller
      */
     public function create()
     {    
+        $this->authorize('create', Expance::class);
         $users = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'superadmin');
         })->get();
@@ -65,6 +67,7 @@ class ExpanceController extends Controller
      */
     public function store(StoreExpanceRequest $request)
     {
+        $this->authorize('create', Expance::class);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'type' => 'required|string|in:rent,utilities,salary,miscellaneous',  // Type options for dropdown
@@ -101,6 +104,7 @@ class ExpanceController extends Controller
     public function edit($id)
     {
         $expance = Expance::find($id);
+        $this->authorize('update', $expance);
         $users = User::whereDoesntHave('roles', function ($query) {
             $query->where('name', 'superadmin');
         })->get();
@@ -116,6 +120,7 @@ class ExpanceController extends Controller
         if(!$expance){
             return abort(404);
         }
+        $this->authorize('update', $expance);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'type' => 'required|string|in:rent,utilities,salary,miscellaneous',  // Type options for dropdown
@@ -144,6 +149,7 @@ class ExpanceController extends Controller
     public function destroy($id)
     {
         $expance = Expance::find($id);
+        $this->authorize('delete', $expance);
         $expance->delete();
         session()->flash('message', 'Expense deleted successfully');
         return back();
@@ -151,6 +157,7 @@ class ExpanceController extends Controller
 
     public function bulkdestroy(Request $request)
     {
+        $this->authorize('bulkdelete', Expance::class);
         $ids = explode(',', $request->ids);
         Expance::whereIn('id', $ids)->delete();
         session()->flash('message', 'Expense deleted successfully');

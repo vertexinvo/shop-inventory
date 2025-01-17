@@ -395,7 +395,7 @@ export default function Add(props) {
 
                               <div className="mb-4">
                                 <label className="block text-grey-darker text-sm  mb-2" for="shop_phone">Shop Phone</label>
-                                <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_phone" type="number" placeholder="Enter purchase price" />
+                                <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_phone" type="number" placeholder="Enter shop phone" />
                                 <ErrorMessage name="shop_phone" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
 
@@ -884,7 +884,7 @@ export default function Add(props) {
                       <>
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Cheque No (optional)
+                            Cheque No
                           </label>
                           <Field
                             name="cheque_no"
@@ -902,7 +902,7 @@ export default function Add(props) {
 
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Cheque Date (optional)
+                            Cheque Date
                           </label>
                           <Field
                             name="cheque_date"
