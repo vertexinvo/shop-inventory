@@ -40,6 +40,7 @@ class ExpanceController extends Controller
         $monthPending = Expance::whereYear('datetime', now()->year)
             ->whereMonth('datetime', now()->month)
             ->sum('pending_amount');
+            
 
         // This year's totals
         $yearTotal = Expance::whereYear('datetime', now()->year)->sum('amount');

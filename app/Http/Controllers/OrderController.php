@@ -257,14 +257,14 @@ class OrderController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
             'address' => 'nullable|max:500',
-            'total' => 'required|numeric',
-            'payable_amount' => 'required|numeric',
-            'paid_amount' => 'required|numeric',
-            'discount' => 'nullable|numeric',
+            'total' => 'required|numeric|max:1000000000',
+            'payable_amount' => 'required|numeric|max:1000000000',
+            'paid_amount' => 'required|numeric|max:1000000000',
+            'discount' => 'nullable|numeric|max:1000000000',
             'items' => 'required|array',
             'exchange_items' => 'nullable|array',
-            'exchange' => 'nullable|numeric',
-            'extra_charges' => 'nullable|numeric',
+            'exchange' => 'nullable|numeric|max:1000000000',
+            'extra_charges' => 'nullable|numeric|max:1000000000',
             'order_date' => 'required|date',
         ]);
 
@@ -424,13 +424,13 @@ class OrderController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
             'address' => 'nullable|max:500',
-            'total' => 'required|numeric',
-            'payable_amount' => 'required|numeric',
-            'paid_amount' => 'required|numeric',
-            'discount' => 'nullable|numeric',
+            'total' => 'required|numeric|max:1000000000',
+            'payable_amount' => 'required|numeric|max:1000000000',
+            'paid_amount' => 'required|numeric|max:1000000000',
+            'discount' => 'nullable|numeric|max:1000000000',
             'items' => 'required|array',
             'exchange_items' => 'nullable|array',
-            'exchange' => 'nullable|numeric',
+            'exchange' => 'nullable|numeric|max:1000000000',
         ]);
 
         if ($validator->fails()) {
@@ -617,13 +617,13 @@ class OrderController extends Controller
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
             'address' => 'nullable|max:500',
-            'total' => 'required|numeric',
-            'payable_amount' => 'required|numeric',
-            'paid_amount' => 'required|numeric',
-            'discount' => 'nullable|numeric',
+            'total' => 'required|numeric|max:1000000000',
+            'payable_amount' => 'required|numeric|max:1000000000',
+            'paid_amount' => 'required|numeric|max:1000000000',
+            'discount' => 'nullable|numeric|max:1000000000',
             'items' => 'required|array',
             'exchange_items' => 'nullable|array',
-            'exchange' => 'nullable|numeric',
+            'exchange' => 'nullable|numeric|max:1000000000',
         ]);
 
         if ($validator->fails()) {
