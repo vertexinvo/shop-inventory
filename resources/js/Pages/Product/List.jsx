@@ -15,7 +15,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 
 
 export default function List(props) {
-  const { auth, stock, products, status, search } = props
+  const { auth, stock, products, status, search ,totalstock,totalstockavailable,totalstocknotavailable} = props
   console.log(stock)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -62,7 +62,7 @@ export default function List(props) {
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
               <div class="my-auto">
                 <p class="font-bold">TOTAL PRODUCTS</p>
-                <p class="text-lg">0</p>
+                <p class="text-lg">{totalstock}</p>
               </div>
               <div class="my-auto">
                 <FaBoxes size={40} />
@@ -77,10 +77,25 @@ export default function List(props) {
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
               <div class="my-auto">
                 <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
-                <p class="text-lg">0</p>
+                <p class="text-lg">{totalstocknotavailable}</p>
               </div>
               <div class="my-auto">
                 <HiMiniArchiveBoxXMark size={40} />
+              </div>
+            </div>
+          </div>
+        </Link>
+
+
+        <Link href={route('product.index', { status: 1 })}>
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TOTAL PRODUCT IN STOCK</p>
+                <p class="text-lg">{totalstockavailable}</p>
+              </div>
+              <div class="my-auto">
+                <FaBox size={40} />
               </div>
             </div>
           </div>

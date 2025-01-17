@@ -52,7 +52,19 @@ class ProductController extends Controller
 
     $stock = Product::with('stock')->get();
 
-    return Inertia::render('Product/List', compact('products', 'stock', 'status','search'));
+    // total products
+
+    $totalstock = Product::with('stock')->whereHas('stock')->count();
+
+    $totalstockavailable = Product::with('stock')->whereHas('stock', function ($query) {
+        $query->where('status', true);
+    })->count();
+
+    $totalstocknotavailable = Product::with('stock')->whereHas('stock', function ($query) {
+        $query->where('status', false);
+    })->count();
+
+    return Inertia::render('Product/List', compact('products', 'stock', 'status','search','totalstock','totalstockavailable','totalstocknotavailable'));
 }
 
 
