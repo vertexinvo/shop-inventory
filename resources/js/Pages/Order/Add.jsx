@@ -581,7 +581,7 @@ export default function Add(props) {
 
                           </div>
 
-                          <div className="mb-4">
+                          {/* <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Installment</label>
                             <div className="flex items-center">
                               <label className="mr-4">
@@ -592,7 +592,7 @@ export default function Add(props) {
                               </label>
                             </div>
                             <ErrorMessage name="is_installment" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
+                          </div> */}
 
                           {values.is_installment == '1' && (
                             <>
