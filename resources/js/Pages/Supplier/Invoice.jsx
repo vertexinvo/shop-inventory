@@ -584,7 +584,7 @@ export default function List(props) {
                       <>
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Cheque No (optional)
+                            Cheque No
                           </label>
                           <Field
                             name="cheque_no"
@@ -602,7 +602,7 @@ export default function List(props) {
 
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Cheque Date (optional)
+                            Cheque Date
                           </label>
                           <Field
                             name="cheque_date"
@@ -624,7 +624,7 @@ export default function List(props) {
                       <>
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Bank Name (optional)
+                            Bank Name
                           </label>
                           <Field
                             name="bank_name"
@@ -642,7 +642,7 @@ export default function List(props) {
 
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Brank Brank (optional)
+                            Brank Brank
                           </label>
                           <Field
                             name="bank_branch"
@@ -659,7 +659,7 @@ export default function List(props) {
 
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Bank Account No (optional)
+                            Bank Account No
                           </label>
                           <Field
                             name="bank_account"
@@ -682,7 +682,7 @@ export default function List(props) {
                       <>
                         <div className="mb-4">
                           <label className="block text-grey-darker text-sm mb-2">
-                            Online payment link (optional)
+                            Online payment link
                           </label>
                           <Field
                             name="online_payment_link"
