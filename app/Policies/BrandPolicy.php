@@ -60,7 +60,7 @@ class BrandPolicy
 
     public function bulkdelete(User $user)
     {
-        return $user->hasPermissionTo('bulkdelete Brand')
+        return $user->hasPermissionTo('delete Brand')
             ? Response::allow()
             : Response::deny('You do not have permission to bulk delete brands.');
     }
