@@ -163,7 +163,7 @@ export default function InstantOrder(props) {
 
                           <div className="w-full flex flex-col md:flex-row items-start md:items-center justify-between mb-5">
                             <div className="flex items-center gap-2 mb-4 md:mb-0">
-                              <label className="block text-grey-darker text-lg font-bold">Order#{order_id}</label>
+                              <label className="block text-grey-darker text-lg font-bold">Order&nbsp;Date</label>
                               <Field
                                 name="order_date"
                                 type="date"
