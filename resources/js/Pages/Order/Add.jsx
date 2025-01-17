@@ -196,6 +196,8 @@ export default function Add(props) {
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
 
+          
+
           order ?
             router.put(route('order.update', order.id), values, {
               preserveScroll: true,
@@ -223,8 +225,8 @@ export default function Add(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount',  (totalAmount+parseFloat(values.extra_charges)+parseFloat(values.tax)+parseFloat(values.shipping_charges))  - (discount + values.exchange));
-          }, [values.items, values.discount, setFieldValue, values.exchange]);
+            setFieldValue('payable_amount',  (totalAmount+parseFloat(values.extra_charges)+parseFloat(values.tax)+parseFloat(values.shipping_charges))  - (discount +  parseFloat(values.exchange||0)));
+          }, [values.items, values.discount, setFieldValue, values.exchange, values.extra_charges, values.tax, values.shipping_charges]);
 
 
           const saveAndClose = () => {

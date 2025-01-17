@@ -112,8 +112,8 @@ export default function InstantOrder(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount', (totalAmount+values.extra_charges) - (discount + values.exchange));
-          }, [values.items, values.discount, setFieldValue, values.exchange]);
+            setFieldValue('payable_amount', (totalAmount+ parseFloat(values.extra_charges||0)) - (discount + parseFloat(values.exchange||0)));
+          }, [values.items, values.discount, setFieldValue, values.exchange, values.extra_charges, values.exchange_items]);
 
 
 
