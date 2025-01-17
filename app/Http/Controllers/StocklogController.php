@@ -58,9 +58,9 @@ class StocklogController extends Controller
     {
         $this->authorize('create', Stocklog::class);
         $validator = Validator::make($request->all(), [
-            'quantity' => 'required',
+            'quantity' => 'required|numeric|max:1000000000',
             'type' => 'required|in:addition,removal,adjustment',
-            'remarks' => 'nullable|max:1000',
+            'remarks' => 'nullable|string|max:1000',
             'supplier_invoice_no' => 'nullable|exists:supplierinvoices,invoice_no',
             'product_id' => 'required|exists:products,id',
             'datetime' => 'required',

@@ -41,8 +41,8 @@ class ShippingRateController extends Controller
         $this->authorize('create', ShippingRate::class);
         // dd($request->all());
        $validator = Validator::make($request->all(), [
-        'area_name' => 'required',
-        'fee' => 'required',
+        'area_name' => 'required|string|max:255',
+        'fee' => 'required|numeric|max:1000000000',
        ]);
 
        if ($validator->fails()) {
@@ -78,8 +78,8 @@ class ShippingRateController extends Controller
     {
        
         $validator = Validator::make($request->all(), [
-            'area_name' => 'required',
-            'fee' => 'required|numeric',
+            'area_name' => 'required|string|max:255',
+            'fee' => 'required|numeric|max:1000000000',
            ]);
 
            if ($validator->fails()) {
