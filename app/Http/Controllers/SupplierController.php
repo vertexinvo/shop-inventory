@@ -193,7 +193,7 @@ class SupplierController extends Controller
         $this->authorize('create', Supplier::class);
         $validator = Validator::make($request->all(), [
             'person_name' => 'required|string|max:255',
-            'contact' => 'required|string|max:255',
+            'contact' => 'required|max:255',
             'address' => 'nullable|string|max:1000',
             'email' => 'nullable|email|max:255',
             'code' => 'required|unique:suppliers,code',
@@ -283,7 +283,7 @@ class SupplierController extends Controller
         $this->authorize('update', $supplier);
         $validator = Validator::make($request->all(), [
             'person_name' => 'required|string|max:255',
-            'contact' => 'required|string|max:255',
+            'contact' => 'required|max:255',
             'address' => 'nullable|string|max:1000',
             'email' => 'nullable|email|max:255',
             'code' => 'required|unique:suppliers,code,' . $supplier->id,
