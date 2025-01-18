@@ -35,6 +35,8 @@ class ProductController extends Controller
         ->where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                   ->orWhere('model', 'like', "%$search%")
+                  ->orWhere('id', 'like', "%$search%")
+                  ->orWhere('code', 'like', "%$search%")
                   ->orWhere('identity_value', 'like', "%$search%");
         })->whereHas('stock', function ($query) use ($status) {
            $status !== '' &&  $query->where('status', $status);

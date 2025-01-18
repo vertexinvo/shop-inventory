@@ -28,6 +28,9 @@ class OrderController extends Controller
         $searchuserid = $request->searchuserid ?? '';
         $orders = Order::where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
+                    ->orWhere('code', 'like', "%$search%")
+                    ->orWhere('phone', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
                   ->orWhere('id', 'like', "%$search%");
         })->latest();
         if($status !== ''){
