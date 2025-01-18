@@ -11,8 +11,9 @@ import { BsGraphUp } from "react-icons/bs";
 import RecentOrder from '@/Components/RecentOrder';
 
 export default function Dashboard(props) {
-  const { auth, latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period } = props;
+  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period } = props;
 
+  console.log(auth);
   const [chartdata, setChartData] = useState({
     options: {
       chart: {
@@ -46,7 +47,7 @@ export default function Dashboard(props) {
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
                 <p className="font-bold">TOTAL (ORDERS)</p>
-                <p className="text-lg">{totalOrder}</p>
+                <p className="text-lg"> { auth.permissions.includes('viewAny Order') ?   totalOrder : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
                 <VscGraph size={40} />
@@ -59,7 +60,7 @@ export default function Dashboard(props) {
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL PRODUCT IN STOCK</p>
-              <p className="text-lg">{totalProductInStock}</p>
+              <p className="text-lg">{  auth.permissions.includes('viewAny Product') ? totalProductInStock : <p>No Access</p>}</p>
             </div>
             <div className="my-auto">
               <FaBoxOpen size={40} />
@@ -72,7 +73,7 @@ export default function Dashboard(props) {
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
             <div className="my-auto">
               <p className="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
-              <p className="text-lg">{totalProductOutofStock}</p>
+              <p className="text-lg">{ auth.permissions.includes('viewAny Product') ? totalProductOutofStock : <p>No Access</p>}</p>
             </div>
             <div className="my-auto">
               <HiMiniArchiveBoxXMark size={40} />
@@ -84,6 +85,7 @@ export default function Dashboard(props) {
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
         <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
+        {auth.permissions.includes('viewAny Order') ?  (<>
           <div className='flex justify-between items-center my-4'>
             <p className="text-xl font-semibold leading-tight text-gray-800 ">
               Sales
@@ -106,23 +108,35 @@ export default function Dashboard(props) {
               <option value="half_year">HALF YEAR</option>
             </select>
           </div>
-
+         
           <div id="chart">
             <Chart options={chartdata.options} series={chartdata.series} type="line" height={350} />
           </div>
+          </>)
+          : <p>You don't have permission to view this area</p>
+          }
         </div>
 
         <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          <RecentOrder recentOrder={latestOrder} />
+        {auth.permissions.includes('viewAny Order') ?  <RecentOrder recentOrder={latestOrder} /> :
+        <p>You don't have permission to view this area</p>
+        }
         </div>
       </div>
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          <SupplierBalance suppliers={supplierBalanceRecord} />
+         
+        {auth.permissions.includes('viewAny Supplier') ? <SupplierBalance suppliers={supplierBalanceRecord} />
+        : 
+        <p>You don't have permission to view this area</p>
+        }
 
         </div>
         <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} />
+          {auth.permissions.includes('viewAny Product') ? <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} /> : 
+          <p>You don't have permission to view this area</p>
+          }
+          
         </div>
       </div>
     </AuthenticatedLayout>

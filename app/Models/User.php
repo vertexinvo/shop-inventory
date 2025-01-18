@@ -94,19 +94,19 @@ class User extends Authenticatable
     }
 
     public function getTotalOrdersAttribute(){
-        return $this->orders()->count();
+        return $this->orders()->where('status', '!=', 'cancel')->count();
     }
 
     public function getTotalOrdersAmountAttribute(){
-        return $this->orders()->sum('payable_amount');
+        return $this->orders()->where('status', '!=', 'cancel')->sum('payable_amount');
     }
 
     public function getTotalOrdersAmountPaidAttribute(){
-        return $this->orders()->sum('paid_amount');
+        return $this->orders()->where('status', '!=', 'cancel')->sum('paid_amount');
     }
 
     public function getTotalOrderAmountPendingAttribute(){
-        return $this->orders()->get()->sum(function ($order) {
+        return $this->orders()->where('status', '!=', 'cancel')->get()->sum(function ($order) {
             return $order->payable_amount - $order->paid_amount;
         });
     }

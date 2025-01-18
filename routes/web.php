@@ -75,8 +75,9 @@ Route::get('/dashboard', function (Request $request) {
         'order_date'
     );
 
+
  
-    return Inertia::render('Dashboard',compact('trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('OrderviewAny','ProductviewAny','SupplierviewAny','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 

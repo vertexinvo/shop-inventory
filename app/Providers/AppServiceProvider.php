@@ -13,6 +13,8 @@ use App\Services\CategoryService;
 use App\Services\RoleService;
 use App\Services\StockService;
 use Illuminate\Support\ServiceProvider;
+use App\Models\Order;
+use App\Observers\OrderObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -47,5 +49,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Stocklog::observe(StocklogObserver::class);
         Product::observe(ProductObserver::class);
+        Order::observe(OrderObserver::class);
     }
 }
