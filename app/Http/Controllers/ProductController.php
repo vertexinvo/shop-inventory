@@ -50,7 +50,7 @@ class ProductController extends Controller
             });
         }
 
-        $products = $products->paginate(10);
+        $products = $products->paginate(50);
 
     $stock = Product::with('stock')->get();
 

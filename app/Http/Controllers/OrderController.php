@@ -39,7 +39,7 @@ class OrderController extends Controller
         if($searchuserid !== ''){
             $orders = $orders->where('user_id', $searchuserid);
         }
-        $orders = $orders->paginate(10);
+        $orders = $orders->paginate(50);
         $total = Order::where('status','!=', 'cancel')->count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
