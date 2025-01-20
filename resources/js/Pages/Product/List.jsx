@@ -256,6 +256,9 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Product Info
                     </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      Supplier Invoice
+                    </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Purchase price
@@ -277,9 +280,7 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Stock Status
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Supplier Invoice
-                    </th>
+                   
                     <th class="p-4 text-left text-sm font-semibold ">
                       Is Exchange
                     </th>
@@ -357,6 +358,11 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
+                        {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+                        {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{ product.supplier_invoice_no} - ({ product.supplier_name})</p>)}
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
                         {product.purchase_price || 'N/A'}
                       </td>
                       <td class="p-4 text-sm text-black">
@@ -390,10 +396,7 @@ export default function List(props) {
                         </label>
                       </td>
 
-                      <td class="p-4 text-sm text-black">
-                        {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
-                      </td>
+                   
 
                       <td class="p-4 text-sm text-black">
                         {product.is_exchange !== 1 && <p class="text-xs text-gray-500 mt-0.5">No</p>}

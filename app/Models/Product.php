@@ -42,6 +42,9 @@ class Product extends Model
         'exchange_order_code',
     ];
 
+    // appends supplier name
+    protected $appends = ['supplier_name'];
+
 
     // Automatically generate purchase ID when creating a new record
     protected static function boot()
@@ -88,5 +91,16 @@ class Product extends Model
     public function brands()
     {
         return $this->belongsToMany(Brand::class, 'brand_product', 'product_id', 'brand_id');
+    }
+
+    // supplier
+    public function supplierInvoice()
+    {
+        return $this->belongsTo(Supplierinvoice::class, 'supplier_invoice_no', 'invoice_no');
+    }
+
+    public function getSupplierNameAttribute()
+    {
+        return $this->supplierInvoice ? $this->supplierInvoice->supplier->person_name . ' - ' . $this->supplierInvoice->supplier->code : '';
     }
 }

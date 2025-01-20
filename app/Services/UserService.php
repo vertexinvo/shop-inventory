@@ -11,15 +11,16 @@ use Validator;
 
 class UserService{
 
-    public function getAllUser($request, $role=null, $excludeRoles = ['superadmin']) {
+    public function getAllUser($request, $role = null, $excludeRoles = ['superadmin'])
+    {
         $search = $request->search ?? '';
-
-        $cacheKey = $this->generateCacheKey($search, $role, $excludeRoles);
-
-        // Attempt to fetch from cache
-        return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($search, $role, $excludeRoles) {
+        $page = $request->input('page', 1); // Get the current page from the request, default is 1
     
-        
+        // Generate a unique cache key for each page
+        $cacheKey = $this->generateCacheKey($search, $role, $excludeRoles) . "_page_{$page}";
+    
+        // Attempt to fetch the paginated results from cache
+        return Cache::remember($cacheKey, now()->addMinutes(10), function () use ($search, $role, $excludeRoles) {
             $query = User::with('roles')
                 ->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%$search%")
@@ -28,24 +29,26 @@ class UserService{
                         ->orWhere('code', 'like', "%$search%")
                         ->orWhere('id', 'like', "%$search%");
                 });
-
+    
             // Exclude users with specified roles
             foreach ($excludeRoles as $excludeRole) {
                 $query->whereDoesntHave('roles', function ($query) use ($excludeRole) {
                     $query->where('name', $excludeRole);
                 });
             }
-
-            if($role){
+    
+            // Filter by role if provided
+            if ($role) {
                 $query->whereHas('roles', function ($query) use ($role) {
                     $query->where('name', $role);
                 });
             }
-
+    
             // Return the paginated results
             return $query->latest()->paginate(10);
         });
     }
+    
 
    // Forget cache by generating a consistent cache key
    public function forgetCache($search, $role = null, $excludeRoles = ['superadmin'])
