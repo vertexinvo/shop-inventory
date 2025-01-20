@@ -227,7 +227,7 @@ class OrderController extends Controller
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) ?? '',
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' ) ?? '',
                 'data' => $item,
                 'quantity' => 1
             ];
@@ -384,7 +384,7 @@ class OrderController extends Controller
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) ?? '',
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' ) ?? '',
                 'data' => $item,
                 'quantity' => 1
             ];
@@ -580,7 +580,7 @@ class OrderController extends Controller
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) ?? '',
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' )  ?? '',
                 'data' => $item,
                 'quantity' => 1
             ];
