@@ -80,7 +80,13 @@ class CategoryController extends Controller
         $this->authorize('delete', $category);
         $category = Category::find($category->id);
         $category->delete();
-        Cache::forget('all_categories');
+        
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        // Generate a unique cache key for the page
+        $cacheKey = "all_categories_page_{$page}";
+    
+        Cache::forget($cacheKey);
         return redirect()->back()->with('message', 'Category deleted successfully');
     }
 
@@ -89,7 +95,10 @@ class CategoryController extends Controller
         $this->authorize('bulkdelete', Category::class);
         Category::whereIn('id', explode(',', $request->ids))->delete();
         session()->flash('message', 'Category deleted successfully');
-        Cache::forget('all_categories');
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+        // Generate a unique cache key for the page
+        $cacheKey = "all_categories_page_{$page}";
+        Cache::forget($cacheKey);
         return back();
     }
 }

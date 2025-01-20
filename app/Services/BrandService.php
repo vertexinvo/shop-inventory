@@ -11,14 +11,19 @@ use Illuminate\Support\Facades\Validator;
 
 class BrandService{
 
-    public function getAllBrands()
+    public function getAllBrands($page = null)
     {
-        return Cache::remember('all_brands', 60, function () {
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        // Generate a unique cache key for the page
+        $cacheKey = "all_brands_page_{$page}";
+    
+        // Attempt to fetch the paginated results from cache
+        return Cache::remember($cacheKey, 60, function () {
             return Brand::latest()->paginate(10);
         });
-       
     }
-
+    
     public function createBrand($request){
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:brands,name',
@@ -32,7 +37,10 @@ class BrandService{
         $data = $request->all();
         $brand = Brand::create($data);
 
-        Cache::forget('all_brands');
+
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        Cache::forget('all_brands'."_page_{$page}");
         
         if($brand){
             return true;
@@ -54,7 +62,11 @@ class BrandService{
         $data = $request->all();
         $brand = Brand::find($brand->id)->update($data);
 
-        Cache::forget('all_brands');
+
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        Cache::forget('all_brands'."_page_{$page}");
+        
         if($brand){
             return true;
         }

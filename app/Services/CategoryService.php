@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\Cache;
 class CategoryService{
     public function getAllCategories()
     {
-        return Cache::remember('all_categories', 60, function () {
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        // Generate a unique cache key for the page
+        $cacheKey = "all_categories_page_{$page}";
+    
+        return Cache::remember($cacheKey, 60, function () {
             return Category::with('parent')->latest()->paginate(10);
         });
     }
@@ -32,7 +37,13 @@ class CategoryService{
         $data = $request->all();
         $category = Category::create($data);
 
-        Cache::forget('all_categories');
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        // Generate a unique cache key for the page
+        $cacheKey = "all_categories_page_{$page}";
+    
+
+        Cache::forget(  $cacheKey );
 
         return $category ? true : false;
     }
@@ -51,7 +62,12 @@ class CategoryService{
         $data = $request->all();
         $category = Category::find($category->id)->update($data);
 
-        Cache::forget('all_categories');
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        // Generate a unique cache key for the page
+        $cacheKey = "all_categories_page_{$page}";
+    
+        Cache::forget($cacheKey);
         
         return $category ? true : false;
     }

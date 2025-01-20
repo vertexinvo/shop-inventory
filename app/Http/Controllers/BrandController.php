@@ -82,7 +82,12 @@ class BrandController extends Controller
     {
         $this->authorize('delete', $brand);
         $brand->delete();
-        Cache::forget('all_brands');
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+    
+        // Generate a unique cache key for the page
+        $cacheKey = "all_brands_page_{$page}";
+    
+        Cache::forget($cacheKey);
         return redirect()->back()->with('message', 'Brand deleted successfully');
     }
 
@@ -91,7 +96,10 @@ class BrandController extends Controller
         $this->authorize('bulkdelete', Brand::class);
         $bulkdestroy = Brand::whereIn('id', explode(',', $request->ids))->delete();
         session()->flash('message', 'Brand deleted successfully');
-        Cache::forget('all_brands');
+        $page = $page ?? request()->input('page', 1); // Get the current page, default is 1
+        // Generate a unique cache key for the page
+        $cacheKey = "all_brands_page_{$page}";
+        Cache::forget($cacheKey);
         return back();
     }
 }

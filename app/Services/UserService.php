@@ -53,7 +53,9 @@ class UserService{
    // Forget cache by generating a consistent cache key
    public function forgetCache($search, $role = null, $excludeRoles = ['superadmin'])
    {
-       $cacheKey = $this->generateCacheKey($search, $role, $excludeRoles);
+       $page = request()->input('page', 1);
+
+       $cacheKey = $this->generateCacheKey($search, $role, $excludeRoles) . "_page_{$page}";
        Cache::forget($cacheKey);
    }
 
