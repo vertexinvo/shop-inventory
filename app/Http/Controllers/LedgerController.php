@@ -17,7 +17,7 @@ class LedgerController extends Controller
                 ->orWhere('phone', 'like', "%$search%")
                 ->orWhere('code', 'like', "%$search%")
                 ->orWhere('id', 'like', "%$search%");
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('created_at', 'desc')->paginate(50);
 
         return Inertia::render('Ledger/Sales', compact('sales'));
     }
