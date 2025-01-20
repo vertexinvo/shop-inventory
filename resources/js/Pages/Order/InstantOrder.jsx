@@ -357,6 +357,15 @@ export default function InstantOrder(props) {
 
                                       <tr class="odd:bg-gray-50">
                                         <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Purchase ID
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.code || selectedItems?.data?.id}
+                                        </td>
+                                      </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
                                           Purchase price
                                         </th>
                                         <td class="p-4 text-sm text-black">
@@ -372,6 +381,35 @@ export default function InstantOrder(props) {
                                           {selectedItems?.data?.selling_price || 'N/A'}
                                         </td>
                                       </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Supplier
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.supplier_name || 'N/A'}
+                                        </td>
+                                      </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Brands
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.brands.map((brand) => brand.name).join(', ') || 'N/A'}
+                                        </td>
+                                      </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Categories
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.categories.map((category) => category.name).join(', ') || 'N/A'}
+                                        </td>
+                                      </tr>
+
+
                                       <tr class="odd:bg-gray-50">
                                         <th class="p-4 text-left text-sm font-semibold text-black">
                                           Warranty period

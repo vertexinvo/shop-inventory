@@ -451,8 +451,9 @@ export default function Add(props) {
                               <div className="">
                                 <div class="font-[sans-serif] ">
                                   <table class="min-w-full bg-white">
-                                  <thead  className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100 border border-red-200' : ''} "whitespace-nowrap  "`}>
-                                  <tr class="odd:bg-gray-50">
+
+                                    <thead  className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100 border border-red-200' : ''} "whitespace-nowrap  "`}>
+                                      <tr class="odd:bg-gray-50">
 
                                         <th class="p-4 text-left text-sm font-semibold text-black">
                                           Product Info
@@ -466,6 +467,15 @@ export default function Add(props) {
                                               {selectedItems?.data?.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.identity_type}:{selectedItems?.data?.identity_value} </p>}
                                             </div>
                                           </div>
+                                        </td>
+                                      </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Purchase ID
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.code || selectedItems?.data?.id}
                                         </td>
                                       </tr>
 
@@ -486,6 +496,35 @@ export default function Add(props) {
                                           {selectedItems?.data?.selling_price || 'N/A'}
                                         </td>
                                       </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Supplier
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.supplier_name || 'N/A'}
+                                        </td>
+                                      </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Brands
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.brands.map((brand) => brand.name).join(', ') || 'N/A'}
+                                        </td>
+                                      </tr>
+
+                                      <tr class="odd:bg-gray-50">
+                                        <th class="p-4 text-left text-sm font-semibold text-black">
+                                          Categories
+                                        </th>
+                                        <td class="p-4 text-sm text-black">
+                                          {selectedItems?.data?.categories.map((category) => category.name).join(', ') || 'N/A'}
+                                        </td>
+                                      </tr>
+
+
                                       <tr class="odd:bg-gray-50">
                                         <th class="p-4 text-left text-sm font-semibold text-black">
                                           Warranty period
@@ -512,7 +551,9 @@ export default function Add(props) {
                                         </td>
                                       </tr>
 
-                                      <tr class="odd:bg-gray-50">
+                                      <tr className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100' : ''}`}>
+
+                                        {/* <tr class="odd:bg-gray-50"> */}
                                         <th class="p-4 text-left text-sm font-semibold text-black">
                                           Stock  Quantity
                                         </th>
@@ -546,7 +587,6 @@ export default function Add(props) {
                                   </table>
 
                                 </div>
-
                               </div>
 
 

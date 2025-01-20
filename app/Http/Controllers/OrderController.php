@@ -221,7 +221,8 @@ class OrderController extends Controller
         //     $query->where('name', 'like', "%$searchitem%")
         //           ->orWhere('identity_value', 'like', "%$searchitem%");
         // })->limit(2)->get();
-        $itemrec = Product::with('stock', 'categories')->get();
+        $itemrec = Product::with('stock', 'categories','brands')->get();
+
 
         $items = $itemrec->map(function ($item) {
             return [
@@ -378,7 +379,7 @@ class OrderController extends Controller
         //     $query->where('name', 'like', "%$searchitem%")
         //           ->orWhere('identity_value', 'like', "%$searchitem%");
         // })->limit(2)->get();
-        $itemrec = Product::with('stock', 'categories')->get();
+        $itemrec = Product::with('stock', 'categories', 'categories','brands')->get();
 
         $items = $itemrec->map(function ($item) {
             return [
@@ -572,7 +573,7 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock', 'categories')->where(function ($query) use ($searchitem) {
+        $itemrec = Product::with('stock', 'categories', 'categories','brands')->where(function ($query) use ($searchitem) {
             $query->where('name', 'like', "%$searchitem%")
                   ->orWhere('identity_value', 'like', "%$searchitem%");
         })->get();
