@@ -267,6 +267,12 @@ export default function List(props) {
                       Selling price
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Categories
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      Brands
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Warranty period
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -367,6 +373,12 @@ export default function List(props) {
                       </td>
                       <td class="p-4 text-sm text-black">
                         {product.selling_price || 'N/A'}
+                      </td>
+                      <td class="p-4 text-sm text-black">
+                        {product?.categories?.map((category) => category.name).join(', ') || 'N/A'}
+                      </td>
+                      <td class="p-4 text-sm text-black">
+                        {product?.brands?.map((brand) => brand.name).join(', ') || 'N/A'}
                       </td>
                       <td class="p-4 text-sm text-black">
                         {product.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
