@@ -110,6 +110,7 @@ public function csvstore(Request $request)
                         'description' => $row[3] ?: '',
                         'purchase_price' => intval($row[4]) ? intval($row[4]) : 0,
                         'selling_price' => intval($row[5]) ? intval($row[5]) : 0,
+                        'is_warranty' => $row[6] === 'days' || $row[6] === 'months' || $row[6] === 'years'  ? true : false,
                         'warranty_type' => $row[6] ?: '',
                         'warranty_period' => intval($row[7]) ? intval($row[7]) : null,
                         'identity_type' => $row[8] ?: '',

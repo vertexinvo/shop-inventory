@@ -107,11 +107,25 @@ export default function List(props) {
 
 
 
-      <div className="flex flex-col px-4  mt-10 mx-auto w-full">
+      <div className="flex flex-col px-4  mt-5 mx-auto w-full">
         <div className="w-full ">
 
+        <div
+  class="rounded-lg bg-white p-6 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
+  <h2 class="mb-5 text-3xl font-semibold">CSV Import Guide</h2>
+  <ul className='list-disc space-y-2'>
+        <li>Download the CSV template and fill in the required fields.</li>
+        <li>In the "warranty_type" column, values are "none" or "years" or "months" or "days".</li>
+        <li>In the "identity_type" column, values are "none" or "sku" or "serial" or "imei".</li>
+        <li>Upload the CSV file.</li>
+        <li>Click on the "Import" button.</li>
+        <li>After successful import, the products will be added to the database.</li>
+  </ul>
 
-          <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+</div>
+
+
+          <div className="flex flex-col md:flex-row justify-end items-center mt-5 mb-4">
 
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
               <select
@@ -230,6 +244,9 @@ export default function List(props) {
 
             </div>
           </div>
+
+
+          
 
           <div className="overflow-x-auto">
             <div class="font-[sans-serif] overflow-x-auto">
