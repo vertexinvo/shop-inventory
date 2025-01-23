@@ -378,7 +378,7 @@ public function csvExport(Request $request)
      */
     public function show($code)
     {
-        $product = Product::where('code', $code)->first();
+        $product = Product::with('stock')->where('code', $code)->first();
 
         if ($product === null) {
             $product = Product::where('id', $code)->firstOrFail();

@@ -313,6 +313,7 @@ class OrderController extends Controller
             $item["is_exchange"] = true;
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
+            $item["exchange_order_code"] = $order->code;
             unset($item['total']);
             $item['type'] = 'used';
             $product =  Product::create($item);
@@ -493,6 +494,7 @@ class OrderController extends Controller
             $item["is_exchange"] = true;
             $item["selling_price"] = $item["purchase_price"];
             $item["exchange_order_id"] = $order->id;
+            $item["exchange_order_code"] = $order->code;
             unset($item['total']);
             $item['type'] = 'used';
             $product = Product::create($item);
@@ -712,6 +714,7 @@ class OrderController extends Controller
                     $item["is_exchange"] = true;
                     $item["selling_price"] = $item["purchase_price"];
                     $item["exchange_order_id"] = $order->id;
+                    $item["exchange_order_code"] = $order->code;
                     unset($item['total']);
                     $product = Product::create($item);
 

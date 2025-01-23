@@ -122,8 +122,7 @@ export default function Add(props) {
             .min(0, 'Payable amount must be a positive number')
             .required('Payable amount is required'),
           paid_amount: Yup.number()
-            .min(0, 'Paid amount must be a positive number')
-            .required('Paid amount is required'),
+            .min(0, 'Paid amount must be a positive number'),
           method: Yup.string().required('Payment method is required'),
           cheque_no: Yup.string().when('method', {
             is: 'cheque',
@@ -153,40 +152,40 @@ export default function Add(props) {
           online_payment_link: Yup.string().url('Invalid URL'),
           extra_charges: Yup.number().min(0, 'Extra charges must be a positive number'),
           discount: Yup.number().min(0, 'Discount must be a positive number'),
-          tax: Yup.number().min(0, 'Tax must be a positive number'),
-          status: Yup.string().oneOf(['pending', 'completed', 'cancelled'], 'Invalid status').required('Status is required'),
-          is_installment: Yup.boolean(),
-          installment_amount: Yup.number().when('is_installment', {
-            is: true,
-            then: scheme => scheme.min(0, 'Installment amount must be a positive number').required('Installment amount is required'),
-            otherwise: scheme => scheme.optional()
-          }),
+          // tax: Yup.number().min(0, 'Tax must be a positive number'),
+          // status: Yup.string().oneOf(['pending', 'completed', 'cancelled'], 'Invalid status').required('Status is required'),
+          // is_installment: Yup.boolean(),
+          // installment_amount: Yup.number().when('is_installment', {
+          //   is: true,
+          //   then: scheme => scheme.min(0, 'Installment amount must be a positive number').required('Installment amount is required'),
+          //   otherwise: scheme => scheme.optional()
+          // }),
 
 
-          installment_period: Yup.string().when('is_installment', {
-            is: true,
-            then: scheme => scheme.required('Installment period is required'),
-            otherwise: scheme => scheme.optional()
-          }),
-          installment_count: Yup.number().when('is_installment', {
-            is: true,
-            then: scheme => scheme
-              .min(1, 'Installment count must be at least 1')
-              .required('Installment count is required'),
-            otherwise: scheme => scheme.optional()
-          }),
-          installment_start_date: Yup.date().when('is_installment', {
-            is: true,
-            then: scheme => scheme.required('Installment start date is required'),
-            otherwise: scheme => scheme.optional()
-          }),
-          installment_end_date: Yup.date().when('is_installment', {
-            is: true,
-            then: scheme => scheme
-              .min(Yup.ref('installment_start_date'), 'End date must be after start date')
-              .required('Installment end date is required'),
-            otherwise: scheme => scheme.optional()
-          }),
+          // installment_period: Yup.string().when('is_installment', {
+          //   is: true,
+          //   then: scheme => scheme.required('Installment period is required'),
+          //   otherwise: scheme => scheme.optional()
+          // }),
+          // installment_count: Yup.number().when('is_installment', {
+          //   is: true,
+          //   then: scheme => scheme
+          //     .min(1, 'Installment count must be at least 1')
+          //     .required('Installment count is required'),
+          //   otherwise: scheme => scheme.optional()
+          // }),
+          // installment_start_date: Yup.date().when('is_installment', {
+          //   is: true,
+          //   then: scheme => scheme.required('Installment start date is required'),
+          //   otherwise: scheme => scheme.optional()
+          // }),
+          // installment_end_date: Yup.date().when('is_installment', {
+          //   is: true,
+          //   then: scheme => scheme
+          //     .min(Yup.ref('installment_start_date'), 'End date must be after start date')
+          //     .required('Installment end date is required'),
+          //   otherwise: scheme => scheme.optional()
+          // }),
           items: Yup.array().min(1, 'At least one item is required'),
           order_date: Yup.date().required('Order date is required'),
           // paid_amount: Yup.number()
@@ -196,7 +195,7 @@ export default function Add(props) {
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
 
-          
+          console.log(values);
 
           order ?
             router.put(route('order.update', order.id), values, {
@@ -858,7 +857,7 @@ export default function Add(props) {
                               type="button"
                               onClick={() => {
                                 setFieldValue('shipping_id', '');
-                                setFieldValue('shipping_charges', '');
+                                setFieldValue('shipping_charges', 0);
                                 setSelectedShippingrate(null);
                               }}
                               className="text-sm font-semibold text-red-500   underline leading-tight"

@@ -429,7 +429,7 @@ export default function List(props) {
 
                       <td class="p-4 text-sm text-black">
                         {product.is_exchange !== 1 && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_exchange === 1 && product.exchange_order_id !== null && (<a href={route('order.show', product.exchange_order_id)} class="text-xs text-blue-500 mt-0.5">Order# {product.exchange_order_id}</a>)}
+                        {product.is_exchange === 1  && (<a href={route('order.show', product.exchange_order_code || product.exchange_order_id )} class="text-xs text-blue-500 mt-0.5">Order# { product.exchange_order_code || product.exchange_order_id}</a>)}
                       </td>
 
                       <td class="p-4 text-sm text-black">

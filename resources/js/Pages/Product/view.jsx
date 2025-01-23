@@ -83,7 +83,7 @@ export default function View(props) {
                     is_warranty: product?.is_warranty ? '1' : '0',
                     categories: selectedCategories || [],
                     brands: selectedBrands || [],
-                    // quantity: product?.quantity || 1,
+                    quantity: product?.stock?.quantity || 0,
                     description: product?.description || '',
                     supplier_invoice_no: product?.supplier_invoice_no || '',
                     weight: product?.weight || '',
@@ -184,11 +184,13 @@ export default function View(props) {
                             <Field readOnly name="selling_price" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker bg-gray-100 cursor-not-allowed" id="selling_price" type="number" step="0.01" placeholder="Enter selling price" />
                             <ErrorMessage name="selling_price" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
-                          {/* <div className="mb-4">
+                          <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Quantity</label>
-                          <Field name="quantity" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="quantity" type="number" min="1" placeholder="Enter quantity" />
+                          <Field name="quantity" disabled className="appearance-none border rounded w-full py-2 px-3 text-grey-darker bg-gray-100 cursor-not-allowed" id="quantity" type="number" min="1" placeholder="Enter quantity" />
                           <ErrorMessage name="quantity" component="div" className="text-red-500 text-xs mt-1" />
-                      </div> */}
+                      </div>
+
+
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Weight - (kg) (optional)</label>
                             <Field readOnly name="weight" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker bg-gray-100 cursor-not-allowed" id="weight" type="number" step="0.01" placeholder="Enter weight" />
@@ -250,6 +252,8 @@ export default function View(props) {
 
 
                           </div>
+
+                          
 
 
                           <div className="mb-4">
