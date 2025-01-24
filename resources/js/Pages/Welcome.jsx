@@ -3,9 +3,13 @@ import { Link } from '@inertiajs/react';
 
 import { motion } from 'framer-motion';
 import AnimatedSlider from '@/Components/AnimatedSlider';
+import PlanModal from '@/Components/PlanModal';
+import Drawer from 'react-modern-drawer'
+import 'react-modern-drawer/dist/index.css'
 
 
 const GrowIn = ({ children, className }) => {
+
   const variants = {
     hidden: { opacity: 0, scale: 0.8 },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.7 } }
@@ -69,6 +73,23 @@ const App = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  const getDrawerWidth = () => {
+    if (window.innerWidth < 640) {
+      return '100%'; // Full width for mobile
+    } else if (window.innerWidth >= 640 && window.innerWidth < 1024) {
+      return '50%'; // 50% width for tablets
+    } else if (window.innerWidth >= 1024) {
+      return '30%'; // 30% width for larger screens
+    }
+    return '100%'; // Default fallback
+  };
+
+  const [isOpen, setIsOpen] = React.useState(false)
+  const toggleDrawer = () => {
+    setIsOpen((prevState) => !prevState)
+  }
+
 
   const services = [
     {
@@ -155,6 +176,12 @@ const App = () => {
         <AnimatedSlider />
       </div>
 
+
+
+
+
+
+
       <section className='py-12' >
         <div class="py-8 px-8 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">
@@ -191,12 +218,17 @@ const App = () => {
                   <span>Free updates: <span class="font-semibold">6 months</span></span>
                 </li>
               </ul>
-              <Link href="https://api.whatsapp.com/send?phone=03353604836" class="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Get started</Link>
+              <button class="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse" onClick={toggleDrawer}>More</button>
             </div>
-            <div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
+            <div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow-lg dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white relative">
+              <div class="absolute top-0 right-1/20 px-4 py-3 rounded-b-lg bg-red-600 text-white text-xs shadow-lg z-10">
+                POPULAR
+              </div>
               <h3 class="mb-4 text-2xl font-semibold">Company</h3>
               <p class="font-light text-gray-500 sm:text-lg dark:text-gray-400">Relevant for multiple users, extended & premium support.</p>
               <div class="flex justify-center items-baseline my-8">
+
+
                 <span class="mr-2 text-5xl font-extrabold">$99</span>
                 <span class="text-gray-500 dark:text-gray-400">/month</span>
               </div>
@@ -222,7 +254,7 @@ const App = () => {
                   <span>Free updates: <span class="font-semibold">24 months</span></span>
                 </li>
               </ul>
-              <Link href="https://wa.me/03353604836" class="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Get started</Link>
+              <button class="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse" onClick={toggleDrawer}>More</button>
             </div>
             <div class="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
               <h3 class="mb-4 text-2xl font-semibold">Enterprise</h3>
@@ -253,7 +285,7 @@ const App = () => {
                   <span>Free updates: <span class="font-semibold">36 months</span></span>
                 </li>
               </ul>
-              <Link href="https://wa.me/03353604836" class="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse">Get started</Link>
+              <button class="mt-6 px-6 py-2 bg-black text-white rounded-lg  hover:animate-pulse" onClick={toggleDrawer}>More</button>
             </div>
           </div>
         </div>
@@ -268,6 +300,124 @@ const App = () => {
           <img src='/images/bomb.svg' alt="bomb" />
         </div>
       </div>
+
+
+
+      <Drawer
+        open={isOpen}
+        onClose={toggleDrawer}
+        direction="right"
+        style={{
+          width: getDrawerWidth(),
+          maxWidth: '30%',
+          transition: 'all 0.3s ease',
+          overflow: 'hidden',
+        }}
+      >
+        <div className="flex flex-col h-full">
+          <div className="relative flex items-center justify-center p-6 pt-2 bg-gray-100 rounded-l-lg">
+            <div className="absolute right-4 top-4">
+              <button
+                onClick={toggleDrawer}
+                className="text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div className="text-center">
+              <h3 className="mb-8 text-2xl font-semibold">Starter</h3>
+              <h2 className="font-bold text-4xl sm:text-5xl md:text-6xl">$98</h2>
+              <span className="text-sm sm:text-base md:text-lg text-gray-800">Per month</span>
+              <p className="mt-5 text-sm sm:text-base md:text-lg">
+                This plan is suitable for individual developers working on small projects.
+              </p>
+            </div>
+          </div>
+
+          <div className="p-6 bg-white flex-1 overflow-auto sm:p-8">
+            <h2 className="font-bold text-2xl mb-2">Plan Details</h2>
+            <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-6">
+              This plan is suitable for individual developers working on small projects.
+            </p>
+            <ul role="list" className="text-left">
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300">
+                <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base sm:text-lg md:text-xl font-medium text-gray-800">Individual configuration</span>
+              </li>
+
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300">
+                <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base sm:text-lg md:text-xl font-medium text-gray-800">No setup or hidden fees</span>
+              </li>
+
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300">
+                <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base sm:text-lg md:text-xl font-medium text-gray-800">Team size: <span className="font-semibold">1 developer</span></span>
+              </li>
+
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300">
+                <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base sm:text-lg md:text-xl font-medium text-gray-800">Premium support: <span className="font-semibold">6 months</span></span>
+              </li>
+
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300">
+                <svg className="h-5 w-5 text-green-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base sm:text-lg md:text-xl font-medium text-gray-800">Free updates: <span className="font-semibold">6 months</span></span>
+              </li>
+
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300 text-gray-500 line-through">
+                <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base font-normal">Complete documentation</span>
+              </li>
+
+              <li className="flex items-center space-x-4 hover:bg-gray-50 p-3 rounded-md transition-all duration-300 text-gray-500 line-through">
+                <svg className="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+                <span className="text-base font-normal">24×7 phone & email support</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="p-6 border-t bg-gray-50 rounded-b-lg">
+            <button className="px-6 py-3 w-full bg-black text-white rounded-lg hover:scale-105 transition-transform">
+              Get Started
+            </button>
+          </div>
+        </div>
+      </Drawer>
+
+
+
+
+
+
+
       <footer className="py-8 text-center border-t">
         <p>&copy; 2024 VetexInvo. All rights reserved.</p>
       </footer>
