@@ -33,12 +33,6 @@ class DomainDatabaseSwitcher
                 'password' => env('DB_SHOPA_PASSWORD'),
                 'host' => env('DB_SHOPA_HOST'),
             ],
-            'localhost:8001' => [
-                'database' => env('DB_SHOPB_DATABASE'),
-                'username' => env('DB_SHOPB_USERNAME'),
-                'password' => env('DB_SHOPB_PASSWORD'),
-                'host' => env('DB_SHOPB_HOST'),
-            ],
             'celltech.vertexinvo.io' => [
                 'database' => env('DB_CELLTECH_DATABASE'),
                 'username' => env('DB_CELLTECH_USERNAME'),
@@ -50,6 +44,12 @@ class DomainDatabaseSwitcher
                 'username' => env('DB_VERTEXINVO_USERNAME'),
                 'password' => env('DB_VERTEXINVO_PASSWORD'),
                 'host' => env('DB_VERTEXINVO_HOST'),
+            ],
+            'solinvo.vertexinvo.io' => [
+                'database' => env('DB_SOLINVO_DATABASE'),
+                'username' => env('DB_SOLINVO_USERNAME'),
+                'password' => env('DB_SOLINVO_PASSWORD'),
+                'host' => env('DB_SOLINVO_HOST'),
             ],
         ];
    
