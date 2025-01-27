@@ -124,7 +124,7 @@ const App = () => {
 
       <div className="flex justify-between items-center py-4">
         <div className="flex items-center gap-2">
-          <img src='/images/logo2.png' alt="Inventory" className="h-8" />
+          <img src='/images/solinvo.png' alt="Inventory" className="h-10" />
           {/* <h1 className="font-bold text-xl">VertexInvo</h1> */}
         </div>
         <div className="hidden lg:flex items-center gap-6 ">

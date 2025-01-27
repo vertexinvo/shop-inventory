@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 import { FaWallet, FaEdit, FaBoxes, FaFileDownload } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
-import { GiTwoCoins } from 'react-icons/gi';
+import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
@@ -15,7 +15,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 
 
 export default function List(props) {
-  const { auth, stock, products, status, search ,totalstock,totalstockavailable,totalstocknotavailable} = props
+  const { auth, stock, products, status, search ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock} = props
   console.log(stock)
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -61,7 +61,7 @@ export default function List(props) {
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
               <div class="my-auto">
-                <p class="font-bold">TOTAL PRODUCTS</p>
+                <p class="font-bold">TOTAL PRODUCT</p>
                 <p class="text-lg">{totalstock}</p>
               </div>
               <div class="my-auto">
@@ -70,6 +70,18 @@ export default function List(props) {
             </div>
           </div>
         </Link>
+
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TOTAL ITEMS IN STOCK</p>
+                <p class="text-lg">{totaliteminstock}</p>
+              </div>
+              <div class="my-auto">
+                <FaBoxes  size={40} />
+              </div>
+            </div>
+          </div>
 
 
         <Link href={route('product.index', { status: 0 })}>
@@ -100,6 +112,25 @@ export default function List(props) {
             </div>
           </div>
         </Link>
+
+      
+      
+
+
+    
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TOTAL STOCK VALUE</p>
+                <p class="text-lg">{totalStockValue}</p>
+              </div>
+              <div class="my-auto">
+                <GiMoneyStack  size={40} />
+              </div>
+            </div>
+          </div>
+
+        
 
 
       </div>

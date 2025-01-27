@@ -59,14 +59,21 @@ class ProductController extends Controller
     $totalstock = Product::with('stock')->whereHas('stock')->count();
 
     $totalstockavailable = Product::with('stock')->whereHas('stock', function ($query) {
-        $query->where('status', true);
+        $query->where('status', true)->where('quantity', '>', 0);
     })->count();
 
     $totalstocknotavailable = Product::with('stock')->whereHas('stock', function ($query) {
-        $query->where('status', false);
+        $query->where('status', false)->orWhere('quantity', 0);
     })->count();
 
-    return Inertia::render('Product/List', compact('products', 'stock', 'status','search','totalstock','totalstockavailable','totalstocknotavailable'));
+    $totalStockValue = Product::with('stock')->whereHas('stock')->get()->sum(function ($product) {
+        return $product->purchase_price * $product->stock->quantity;
+    });
+
+    $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
+
+
+    return Inertia::render('Product/List', compact('products','totaliteminstock', 'stock', 'status','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
 }
 
 

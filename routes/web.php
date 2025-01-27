@@ -38,15 +38,16 @@ Route::get('/', function () {
 Route::get('/dashboard', function (Request $request) {
     $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
-        $query->where('quantity', '>', 0);
+        $query->where('quantity', '>', 0)->orWhere('status', true);
     })->count();
+
     $totalProductOutofStock = Product::whereHas('stock', function ($query) {
-        $query->where('quantity', 0);
+        $query->where('quantity', 0)->orWhere('status', false);
     })->count();
 
 
     $outOfStockProductrecord = Product::whereHas('stock', function ($query) {
-        $query->where('quantity', 0);
+        $query->where('quantity', 0)->orWhere('status', false);
     })->with('categories', 'stock', 'brands')->latest()->paginate(6);
 
 
