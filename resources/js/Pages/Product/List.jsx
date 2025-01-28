@@ -684,7 +684,6 @@ export default function List(props) {
 
       }} />
 
-
 <Modal
   show={isPrintQRModalOpen}
   onClose={() => setIsPrintQRModalOpen(false)}
@@ -694,13 +693,13 @@ export default function List(props) {
     <h1 className="text-2xl font-bold mb-4">Purchases QR Codes</h1>
   </div>
 
-  <div>
-    <div
-      id="printable-content"
-      className="grid grid-cols-4 gap-4 max-h-[70vh] overflow-auto p-4" // Scrollable in modal
-    >
+  <div
+    className="overflow-y-auto max-h-[75vh] px-4" // Ensure scrollable content in the modal
+    id="printable-content"
+  >
+    <div className="grid grid-cols-5 gap-4 print:grid-cols-3 print:gap-2"> {/* Dynamic grid */}
       {products.data
-        .filter((product) => selectId.includes(product.id)) // Show only selected products
+        .filter((product) => selectId.includes(product.id))
         .map((product, index) => (
           <div
             key={index}
@@ -708,66 +707,65 @@ export default function List(props) {
           >
             <QRCode
               value={product.code || product.id}
-              size={150} // Adjusted size for better layout
+              size={150}
               logoOpacity={0.8}
             />
-            <div className="mt-2">{product.code || product.id}</div>
+            <div className="mt-2 text-sm font-medium">
+              {product.code || product.id}
+            </div>
           </div>
         ))}
     </div>
+  </div>
 
-    <div className="mt-4 text-center">
-      <button
-        onClick={() => window.print()}
-        className="ml-2 bg-black text-white py-2 px-4 mb-4 rounded shadow hover:bg-gray-600 transition duration-300"
-      >
-        Print
-      </button>
-      <button
-        onClick={() => setIsPrintQRModalOpen(false)}
-        className="ml-2 bg-red-500 text-white py-2 px-4 mb-4 rounded shadow hover:bg-red-600 transition duration-300"
-      >
-        Close
-      </button>
-    </div>
+  <div className="mt-4 text-center">
+    <button
+      onClick={() => window.print()}
+      className="ml-2 bg-black text-white py-2 px-4 mb-4 rounded shadow hover:bg-gray-600 transition duration-300"
+    >
+      Print
+    </button>
+    <button
+      onClick={() => setIsPrintQRModalOpen(false)}
+      className="ml-2 bg-red-500 text-white py-2 px-4 mb-4 rounded shadow hover:bg-red-600 transition duration-300"
+    >
+      Close
+    </button>
   </div>
 
   <style jsx global>{`
-    @media print {
-      body {
-        font-size: 12px;
-      }
+    // @media print {
+    //   /* Adjust font size for print */
+    //   body {
+    //     font-size: 12px;
+    //   }
 
-      #printable-content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 columns per row */
-        gap: 20px;
-        padding: 20px;
-      }
+    //   #printable-content {
+    //     display: grid;
+    //     grid-template-columns: repeat(3, 1fr); /* Use fewer columns for better spacing on print */
+    //     gap: 10px;
+    //     padding: 20px;
+    //   }
 
-      #printable-content > div {
-        width: 50%;
-        page-break-inside: avoid;
-        text-align: center;
-      }
+    //   .flex {
+    //     display: block;
+    //     text-align: center;
+    //     page-break-inside: avoid; /* Ensure QR codes don't split across pages */
+    //   }
 
-      .hide-print {
-        display: none;
-      }
+    //   .mt-2 {
+    //     margin-top: 5px;
+    //   }
 
-      .break-inside-avoid {
-        page-break-inside: avoid; /* Prevents breaking items across pages */
-      }
+    //   .hide-print,
+    //   button {
+    //     display: none; /* Hide modal buttons */
+    //   }
 
-      button {
-        display: none; /* Hides buttons during printing */
-      }
-
-      @page {
-        size: A4; /* Ensures proper page size */
-        margin: 20mm; /* Adjust the print margin */
-      }
-    }
+    //   .break-inside-avoid {
+    //     page-break-inside: avoid; /* Prevent breaking inside individual QR code blocks */
+    //   }
+    // }
   `}</style>
 </Modal>
 
