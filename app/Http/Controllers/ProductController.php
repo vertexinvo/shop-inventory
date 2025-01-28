@@ -21,6 +21,8 @@ class ProductController extends Controller
     $this->authorize('viewAny', Product::class);
     $search = $request->search ?? '';
     $status = $request->status ?? ''; 
+    $brand = $request->brand ?? '';
+    $category = $request->category ?? '';
    
     // $dateRange = match ($filter) {
     //     'day' => now()->subDay(),
@@ -40,6 +42,12 @@ class ProductController extends Controller
                   ->orWhere('identity_value', 'like', "%$search%");
         })->whereHas('stock', function ($query) use ($status) {
            $status !== '' &&  $query->where('status', $status);
+        })
+        ->whereHas('brands', function ($query) use ($brand) {
+            $brand !== '' &&  $query->where('name', $brand);
+        })
+        ->whereHas('categories', function ($query) use ($category) {
+            $category !== '' &&  $query->where('name', $category);
         })
         // ->where('created_at', '>=', $dateRange) 
         ->latest();
@@ -72,8 +80,10 @@ class ProductController extends Controller
 
     $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
 
+    $brands = Brand::latest()->get();
+    $categories = Category::latest()->get();
 
-    return Inertia::render('Product/List', compact('products','totaliteminstock', 'stock', 'status','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
+    return Inertia::render('Product/List', compact( 'brands', 'categories','products','totaliteminstock', 'stock','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
 }
 
 

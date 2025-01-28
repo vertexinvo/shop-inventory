@@ -9,9 +9,10 @@ import { FaBoxOpen } from "react-icons/fa6";
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { BsGraphUp } from "react-icons/bs";
 import RecentOrder from '@/Components/RecentOrder';
+import { GiMoneyStack } from 'react-icons/gi';
 
 export default function Dashboard(props) {
-  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period } = props;
+  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock } = props;
 
   console.log(auth);
   const [chartdata, setChartData] = useState({
@@ -68,6 +69,20 @@ export default function Dashboard(props) {
           </div>
         </div>
         </Link>
+        <Link href={route('product.index', { status: 1 })}>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
+            <div className="my-auto">
+              <p className="font-bold">TOTAL ITEMS IN STOCK</p>
+              <p className="text-lg">{  auth.permissions.includes('viewAny Product') ? totaliteminstock : <p>No Access</p>}</p>
+            </div>
+            <div className="my-auto">
+              <FaBoxOpen size={40} />
+            </div>
+          </div>
+        </div>
+        </Link>
+
         <Link href={route('product.index', { status: 0 })}>
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
@@ -81,6 +96,21 @@ export default function Dashboard(props) {
           </div>
         </div>
         </Link>
+
+        <Link href={route('product.index')}>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
+            <div className="my-auto">
+              <p className="font-bold">TOTAL STOCK VALUE</p>
+              <p className="text-lg">{ auth.permissions.includes('viewAny Product') ? totalStockValue : <p>No Access</p>}</p>
+            </div>
+            <div className="my-auto">
+              <GiMoneyStack size={40} />
+            </div>
+          </div>
+        </div>
+        </Link>
+        
       </div>
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">

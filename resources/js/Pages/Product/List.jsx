@@ -12,11 +12,13 @@ import FormatDate from '@/Helpers/FormatDate';
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { SiMicrosoftexcel } from "react-icons/si";
+import Dropdown from '@/Components/Dropdown';
 
 
 export default function List(props) {
-  const { auth, stock, products, status, search ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock} = props
-  console.log(stock)
+  const { auth, stock, products ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock,categories,brands} = props
+  const { url } = usePage();
+  const params = new URLSearchParams(url.split('?')[1]);
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
@@ -39,6 +41,8 @@ export default function List(props) {
       }
     }
   };
+
+
 
   return (
     <AuthenticatedLayout
@@ -153,6 +157,31 @@ export default function List(props) {
         <li>After successful import, the products will be added to the database.</li>
   </ul>
 
+  <div className='flex items-center space-x-2 mt-5'>
+  <a
+                      href='/productexample.csv'
+                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+                      download={'productexample.csv'}
+                    >
+                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                        <FaFileDownload className="mr-2 h-5 w-5" />
+                        Download&nbsp;CSV&nbsp;Template
+                      </span>
+                    </a>
+                    <label className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'>
+                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                        Import CSV File
+                        <input
+                          type="file"
+                          accept=".csv"
+                          onChange={handleFileSelect}
+                          className="hidden"
+                        />
+                      </span>
+                    </label>
+  </div>
+
 </div>
 
 
@@ -166,12 +195,46 @@ export default function List(props) {
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => router.get(route('product.index'), { status: e.target.value }, { preserveState: true })}
-                value={status}
-              >status
+                value={params.get('status') || ''}
+              >
                 <option value="">Select Status</option>
                 <option value="1">In Stock</option>
                 <option value="0">Out of Stock</option>
               </select>
+
+              <select
+                name="filter"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                w-full md:w-[150px] p-2.5 pr-10 
+                                    
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => router.get(route('product.index'), { category: e.target.value , status: params.get('status'), brand: params.get('brand') , search: params.get('search') }, { preserveState: true , preserveScroll: true})}
+                value={params.get('category') || ''}
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                <option value={category.name}>{category.name}</option>
+                ))} 
+                
+              </select>
+
+              <select
+                name="filter"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                w-full md:w-[150px] p-2.5 pr-10 
+                                    
+                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => router.get(route('product.index'), { brand: e.target.value, category: params.get('category'), status: params.get('status'), search: params.get('search') }, { preserveState: true, preserveScroll: true })}
+               value={params.get('brand') || ''}
+              >
+                <option value="">Select Brand</option>
+                {brands.map((brand) => (
+                <option value={brand.name}>{brand.name}</option>
+                ))}
+                
+              </select>
+
+              
 
               {selectId.length > 0 && (
                 <button
@@ -190,9 +253,12 @@ export default function List(props) {
 
               <Formik
                 enableReinitialize
-                initialValues={{ search: '' }}
+                initialValues={{ search: params.get('search') || '' }}
                 onSubmit={(values) => {
-                  router.get(route('product.index'), { search: values.search }, { preserveState: true });
+                  router.get(route('product.index'), { search: values.search , status: params.get('status'), brand: params.get('brand'), category: params.get('category') }, {
+                    preserveState: true,
+                    preserveScroll: true,
+                  });
                 }}
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
@@ -232,28 +298,7 @@ export default function List(props) {
                         Export CSV File
                       </span>
                     </a>
-                    <a
-                      href='/productexample.csv'
-                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-                      download={'productexample.csv'}
-                    >
-                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                        <FaFileDownload className="mr-2 h-5 w-5" />
-                        Download&nbsp;CSV&nbsp;Template
-                      </span>
-                    </a>
-                    <label className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'>
-                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                        Import CSV File
-                        <input
-                          type="file"
-                          accept=".csv"
-                          onChange={handleFileSelect}
-                          className="hidden"
-                        />
-                      </span>
-                    </label>
+                 
 
                   </Form>
                 )}
@@ -279,7 +324,7 @@ export default function List(props) {
 
           
 
-          <div className="overflow-x-auto">
+          <div className="">
             <div class="font-[sans-serif] overflow-x-auto">
               <table class="min-w-full bg-white">
                 <thead class="whitespace-nowrap">
@@ -355,7 +400,7 @@ export default function List(props) {
                   {products.data.length === 0 && (
                     <tr>
                       <td colSpan="12" className="p-4 text-center">
-                        No products found.
+                        No purchases found.
                       </td>
                     </tr>
                   )}
@@ -481,56 +526,29 @@ export default function List(props) {
 
 
                       <td class="p-4 flex items-center gap-2">
-                        {/* view button */}
-                        
-                        <button
-                          onClick={() => router.get(route('product.show', product.code || product.id))}
-                          className=" flex items-center space-x-2 bg-yellow-500 text-white rounded px-4 py-1"
-                          title="View"
-                        >
-                         <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" className="w-6 fill-black" fill="currentColor" class="w-6 bi bi-eye">
-                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z" />
-                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z" />
-                          </svg>
-                          <span className="text-white hover:text-black">View</span>
-                        </button>
-                        <button
-                          onClick={() => router.get(route('product.edit', product.id))}
-                          className=" flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1"
-                          title="Edit"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 348.882 348.882">
-                            <path
-                              d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
-                              data-original="#000000" />
-                            <path
-                              d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
-                              data-original="#000000" />
-                          </svg>
-                          <span className="text-white hover:text-black">Edit</span>
-                        </button>
-                        <button onClick={() => setIsDeleteModalOpen(product)} title="Delete" className="flex items-center space-x-2 bg-red-500 rounded text-white px-2 py-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 24 24">
-                            <path
-                              d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                              data-original="#000000" />
-                            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                              data-original="#000000" />
-                          </svg>
-                          <span className="text-white hover:text-black">Delete</span>
-                        </button>
-                        {product.identity_type !== 'imei' &&
-                          // <MdManageHistory className='cursor-pointer' onClick={() => router.get(route('stock.index'), { product_id: product.id })} size={22} />
-                          <button 
-                          className="flex items-center space-x-2 bg-green-500 rounded text-white px-2 py-1"
-                          onClick={() => router.get(route('stock.index'), { product_id: product.id })} 
-                          title="Stock"
-                        >
-                          <MdManageHistory className='cursor-pointer w-5 fill-black' size={22} />
-                          <span className="text-white hover:text-black">Stock</span>
-                        </button>
-                        
-                        }
+
+                      
+                          <Dropdown >
+                            <Dropdown.Trigger>
+                              <button className="text-gray-500 hover:text-black focus:outline-none">
+                              <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    </svg>
+                              </button>
+                            </Dropdown.Trigger>
+                            <Dropdown.Content>
+                              <Dropdown.Link href={route('product.show', product.code || product.id)}>View</Dropdown.Link>
+                              <Dropdown.Link href={route('product.edit', product.id)}>Edit</Dropdown.Link>
+                              <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() => setIsDeleteModalOpen(product)} >Delete</button>
+                              {product.identity_type !== 'imei' &&
+                                    <Dropdown.Link href={route('stock.index', { product_id: product.id })}>Stock</Dropdown.Link>
+     
+                              }
+                            
+                            </Dropdown.Content>
+                          </Dropdown>
+                  
+                     
                       </td>
                     </tr>
                   ))}
@@ -547,7 +565,7 @@ export default function List(props) {
                 <nav aria-label="Table navigation">
                   <ul class="inline-flex items-center">
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: status || '', search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '' , category: params.get('category') || '' ,brand: params.get('brand') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -601,7 +619,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -614,7 +632,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>

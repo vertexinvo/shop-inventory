@@ -76,9 +76,15 @@ Route::get('/dashboard', function (Request $request) {
         'order_date'
     );
 
+    $totalStockValue = Product::with('stock')->whereHas('stock')->get()->sum(function ($product) {
+        return $product->purchase_price * $product->stock->quantity;
+    });
+
+    $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
+
 
  
-    return Inertia::render('Dashboard',compact('trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 
