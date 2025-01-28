@@ -13,6 +13,9 @@ import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { MdKeyboardBackspace } from "react-icons/md";
 import { SiMicrosoftexcel } from "react-icons/si";
 import Dropdown from '@/Components/Dropdown';
+import Modal from '@/Components/Modal';
+import { QRCode } from 'react-qrcode-logo';
+
 
 
 export default function List(props) {
@@ -23,9 +26,10 @@ export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
-
+  const [isPrintQRModalOpen, setIsPrintQRModalOpen] = useState(false);
   // http://127.0.0.1:8000/dashboard/product?status=1 get status=1
   // http://127.0.0.1:8000/dashboard/product?status=0 get status=0
+
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0]; // Selecting the first file from the FileList object
@@ -237,12 +241,21 @@ export default function List(props) {
               
 
               {selectId.length > 0 && (
+                <>
+                 <button
+                  onClick={() => setIsPrintQRModalOpen(true)}
+                  className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 "
+                >
+                 Print QR
+                </button>
+
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
                   className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>
+                </>
               )}
               <button
                 onClick={() => router.get(route('product.create'))}
@@ -671,7 +684,90 @@ export default function List(props) {
 
       }} />
 
+
+<Modal
+  show={isPrintQRModalOpen}
+  onClose={() => setIsPrintQRModalOpen(false)}
+  maxWidth="6xl"
+>
+
+<div className="my-4 text-center hide-print">
+      <h1 className="text-2xl font-bold mb-4">Purchases QR Codes</h1>
+    </div>
+
+  <div>
+  
+
+
+  <div id="printable-content" className=" grid grid-cols-5 gap-2">
+  {products.data
+    .filter((product) => selectId.includes(product.id)) // Show only selected products
+    .map((product, index) => (
+      <div key={index} className="flex flex-col border border-gray-300 items-center justify-center">
+        <QRCode value={product.code || product.id} size={180} logoOpacity={0.8} /> {/* Increased size */}
+        <div className="mt-2 pl-2">{product.code || product.id}</div>
+      </div>
+    ))}
+</div>
+
+
+    <div className="mt-4 text-center">
+      <button
+        onClick={() => window.print()}
+        className="ml-2 bg-black text-white py-2 px-4 mb-4 rounded shadow hover:bg-gray-600 transition duration-300"
+      >
+        Print
+      </button>
+      {/* close */}
+      <button
+        onClick={() => setIsPrintQRModalOpen(false)}
+        className="ml-2 bg-red-500 text-white py-2 px-4 mb-4 rounded shadow hover:bg-red-600 transition duration-300"
+      >
+        Close
+      </button>
+    
+    </div>
+  </div>
+
+  <style jsx global>{`
+    @media print {
+      /* Print styles */
+      body {
+       
+        font-size: 12px;
+      }
+
+      #printable-content {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        padding: 20px;
+        page-break-before: always;
+      }
+
+      .flex {
+        display: block; /* Ensures items stack properly for printing */
+        text-align: center;
+      }
+
+      .mt-2 {
+        margin-top: 5px;
+      }
+
+      button {
+        display: none; /* Hide print button during print */
+      }
+
+      .hide-print {
+        display: none;
+      }
+    }
+  `}</style>
+
+  
+</Modal>
+
+
     </AuthenticatedLayout>
   );
 }
-
