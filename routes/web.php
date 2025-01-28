@@ -82,9 +82,13 @@ Route::get('/dashboard', function (Request $request) {
 
     $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
 
+    $totalOrderAmountPending = Order::where('status', 'pending')->get()->sum(function ($order) {
+        return $order->payable_amount - $order->paid_amount;
+    });
+
 
  
-    return Inertia::render('Dashboard',compact('totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 

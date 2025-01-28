@@ -10,9 +10,10 @@ import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { BsGraphUp } from "react-icons/bs";
 import RecentOrder from '@/Components/RecentOrder';
 import { GiMoneyStack } from 'react-icons/gi';
+import { MdOutlinePendingActions } from 'react-icons/md';
 
 export default function Dashboard(props) {
-  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock } = props;
+  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending } = props;
 
   console.log(auth);
   const [chartdata, setChartData] = useState({
@@ -106,6 +107,21 @@ export default function Dashboard(props) {
             </div>
             <div className="my-auto">
               <GiMoneyStack size={40} />
+            </div>
+          </div>
+        </div>
+        </Link>
+
+
+        <Link href={route('order.index')}>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
+            <div className="my-auto">
+              <p className="font-bold">CUSTOMER PENDING BALANCE</p>
+              <p className="text-lg">{ auth.permissions.includes('viewAny Order') ? totalOrderAmountPending : <p>No Access</p>}</p>
+            </div>
+            <div className="my-auto">
+              <MdOutlinePendingActions  size={40} />
             </div>
           </div>
         </div>

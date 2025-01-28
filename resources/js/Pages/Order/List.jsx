@@ -372,7 +372,7 @@ export default function List(props) {
                   {orders.data.map((order, index) => (
 
 
-                    <tr className={`  ${ (order.status === 'pending' && order.paid_amount == 0) ? 'bg-red-100' : (order.status === 'pending' && order.paid_amount < order.payable_amount) ? 'bg-yellow-100' : 'odd:bg-white even:bg-gray-50 border-b'}`}>
+                    <tr className={`  ${ (order.status === 'pending' && order.paid_amount <= 0) ? 'bg-red-100' : (order.status === 'pending' && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)) ? 'bg-yellow-100' : ' bg-white '} border-b`}>
 
                       <td className="pl-4 w-8">
                         <input

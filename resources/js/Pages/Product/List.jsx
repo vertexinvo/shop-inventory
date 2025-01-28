@@ -690,26 +690,31 @@ export default function List(props) {
   onClose={() => setIsPrintQRModalOpen(false)}
   maxWidth="6xl"
 >
-
-<div className="my-4 text-center hide-print">
-      <h1 className="text-2xl font-bold mb-4">Purchases QR Codes</h1>
-    </div>
+  <div className="my-4 text-center hide-print">
+    <h1 className="text-2xl font-bold mb-4">Purchases QR Codes</h1>
+  </div>
 
   <div>
-  
-
-
-  <div id="printable-content" className=" grid grid-cols-5 gap-2">
-  {products.data
-    .filter((product) => selectId.includes(product.id)) // Show only selected products
-    .map((product, index) => (
-      <div key={index} className="flex flex-col border border-gray-300 items-center justify-center">
-        <QRCode value={product.code || product.id} size={180} logoOpacity={0.8} /> {/* Increased size */}
-        <div className="mt-2 pl-2">{product.code || product.id}</div>
-      </div>
-    ))}
-</div>
-
+    <div
+      id="printable-content"
+      className="grid grid-cols-4 gap-4 max-h-[70vh] overflow-auto p-4" // Scrollable in modal
+    >
+      {products.data
+        .filter((product) => selectId.includes(product.id)) // Show only selected products
+        .map((product, index) => (
+          <div
+            key={index}
+            className="flex flex-col border border-gray-300 items-center justify-center p-4 break-inside-avoid"
+          >
+            <QRCode
+              value={product.code || product.id}
+              size={150} // Adjusted size for better layout
+              logoOpacity={0.8}
+            />
+            <div className="mt-2">{product.code || product.id}</div>
+          </div>
+        ))}
+    </div>
 
     <div className="mt-4 text-center">
       <button
@@ -718,54 +723,54 @@ export default function List(props) {
       >
         Print
       </button>
-      {/* close */}
       <button
         onClick={() => setIsPrintQRModalOpen(false)}
         className="ml-2 bg-red-500 text-white py-2 px-4 mb-4 rounded shadow hover:bg-red-600 transition duration-300"
       >
         Close
       </button>
-    
     </div>
   </div>
 
   <style jsx global>{`
     @media print {
-      /* Print styles */
       body {
-       
         font-size: 12px;
       }
 
       #printable-content {
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(2, 1fr); /* 2 columns per row */
+        gap: 20px;
         padding: 20px;
-        page-break-before: always;
       }
 
-      .flex {
-        display: block; /* Ensures items stack properly for printing */
+      #printable-content > div {
+        width: 50%;
+        page-break-inside: avoid;
         text-align: center;
-      }
-
-      .mt-2 {
-        margin-top: 5px;
-      }
-
-      button {
-        display: none; /* Hide print button during print */
       }
 
       .hide-print {
         display: none;
       }
+
+      .break-inside-avoid {
+        page-break-inside: avoid; /* Prevents breaking items across pages */
+      }
+
+      button {
+        display: none; /* Hides buttons during printing */
+      }
+
+      @page {
+        size: A4; /* Ensures proper page size */
+        margin: 20mm; /* Adjust the print margin */
+      }
     }
   `}</style>
-
-  
 </Modal>
+
 
 
     </AuthenticatedLayout>

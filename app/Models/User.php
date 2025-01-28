@@ -110,5 +110,6 @@ class User extends Authenticatable
             return $order->payable_amount - $order->paid_amount;
         });
     }
+
  
 }

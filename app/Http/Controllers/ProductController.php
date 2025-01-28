@@ -32,25 +32,37 @@ class ProductController extends Controller
     //     default => now()->subDay(),
     // };
 
-    
     $products = Product::with('categories', 'stock', 'brands')
-        ->where(function ($query) use ($search) {
-            $query->where('name', 'like', "%$search%")
-                  ->orWhere('model', 'like', "%$search%")
-                  ->orWhere('id', 'like', "%$search%")
-                  ->orWhere('code', 'like', "%$search%")
-                  ->orWhere('identity_value', 'like', "%$search%");
-        })->whereHas('stock', function ($query) use ($status) {
-           $status !== '' &&  $query->where('status', $status);
-        })
-        ->whereHas('brands', function ($query) use ($brand) {
-            $brand !== '' &&  $query->where('name', $brand);
-        })
-        ->whereHas('categories', function ($query) use ($category) {
-            $category !== '' &&  $query->where('name', $category);
-        })
-        // ->where('created_at', '>=', $dateRange) 
-        ->latest();
+    ->where(function ($query) use ($search) {
+        $query->where('name', 'like', "%$search%")
+              ->orWhere('model', 'like', "%$search%")
+              ->orWhere('id', 'like', "%$search%")
+              ->orWhere('code', 'like', "%$search%")
+              ->orWhere('identity_value', 'like', "%$search%");
+    })
+    ->where(function ($query) use ($status) {
+        if ($status !== '') {
+            $query->whereHas('stock', function ($query) use ($status) {
+                $query->where('status', $status);
+            });
+        }
+    })
+    ->where(function ($query) use ($brand) {
+        if ($brand !== '') {
+            $query->whereHas('brands', function ($query) use ($brand) {
+                $query->where('name', $brand);
+            });
+        } 
+    })
+    ->where(function ($query) use ($category) {
+        if ($category !== '') {
+            $query->whereHas('categories', function ($query) use ($category) {
+                $query->where('name', $category);
+            });
+        } 
+    })
+    ->latest();
+
 
         if($status){
             $products = $products->whereHas('stock', function ($query) use ($status) {
