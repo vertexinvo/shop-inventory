@@ -13,7 +13,7 @@ import { GiMoneyStack } from 'react-icons/gi';
 import { MdOutlinePendingActions } from 'react-icons/md';
 
 export default function Dashboard(props) {
-  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending } = props;
+  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
 
   console.log(auth);
   const [chartdata, setChartData] = useState({
@@ -122,6 +122,44 @@ export default function Dashboard(props) {
             </div>
             <div className="my-auto">
               <MdOutlinePendingActions  size={40} />
+            </div>
+          </div>
+        </div>
+        </Link>
+
+        
+        <Link href={route('order.index')}>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
+            <div className="my-auto">
+              <p className="font-bold">SUPPLIER PENDING BALANCE</p>
+              <p className="text-lg">{ auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : <p>No Access</p>}</p>
+            </div>
+            <div className="my-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40">
+                <title>Supplier Pending Balance</title>
+                <desc>Monochrome icon showing factory building with pending currency indicator</desc>
+                
+            
+                <path fill="#000" d="M8 52V24l24-16 24 16v28H8z"/>
+                <path fill="#fff" d="M32 8l20 13.3V52H12V21.3L32 8z"/>
+                <path fill="#000" d="M16 28h8v24h-8zM28 28h8v24h-8zM40 28h8v24h-8z"/>
+                
+               
+                <circle cx="50" cy="14" r="10" fill="#000"/>
+              
+                <path fill="#fff" d="M50 14v-4M50 14l3 3">
+                  <animateTransform
+                    attributeName="transform"
+                    type="rotate"
+                    from="0 50 14"
+                    to="360 50 14"
+                    dur="2s"
+                    repeatCount="indefinite"/>
+                </path>
+                
+                <path fill="#fff" d="M52 12h-1v-2h-2v2h-2v2h2v4h-3v2h3v1h2v-1h1v-2h-1v-4h3v-2h-3v-2z"/>
+              </svg>
             </div>
           </div>
         </div>

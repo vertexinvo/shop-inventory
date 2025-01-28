@@ -86,9 +86,14 @@ Route::get('/dashboard', function (Request $request) {
         return $order->payable_amount - $order->paid_amount;
     });
 
+    $allsuppliers = Supplier::all();
+
+    $totalSupplierPendingAmount = $allsuppliers->sum(function ($supplier) {
+        return $supplier->total_amount_pending; // Use the accessor
+    });
 
  
-    return Inertia::render('Dashboard',compact('totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 
