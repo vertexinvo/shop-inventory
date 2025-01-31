@@ -55,7 +55,11 @@ class Order extends Model
         'shipping_id',
         'order_date',
         'exchange',
-        'code'
+        'code',
+        'payment_note',
+        'note',
+        'payment_details',
+        'bill_no',
     ];
 
     protected $appends = ['tax_fee']; 

@@ -80,6 +80,7 @@ class OrderController extends Controller
         "Expires"             => "0"
     ];
     $columns = [
+        'bill_no',
         'Name',
         'Email',
         'Phone',
@@ -109,13 +110,16 @@ class OrderController extends Controller
         'Tax Id',
         'Shipping Id',
         'Order Date',
-        'Exchange'
+        'Exchange',
+        'payment_note',
+        'note',
     ];
     $callback = function() use ($orders, $columns) {
         $file = fopen('php://output', 'w');
         fputcsv($file, $columns);
         foreach ($orders as $order) {
             fputcsv($file, [
+                $order->bill_no,
                 $order->name,
                 $order->email,
                 $order->phone,
@@ -145,7 +149,9 @@ class OrderController extends Controller
                 $order->tax_id,
                 $order->shipping_id,
                 $order->order_date,
-                $order->exchange
+                $order->exchange,
+                $order->payment_note,
+                $order->note,
             ]);
         }
         fclose($file);
@@ -257,6 +263,7 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
    
         $validator = Validator::make($request->all(), [
+            'bill_no' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
@@ -270,6 +277,8 @@ class OrderController extends Controller
             'exchange' => 'nullable|numeric|max:1000000000',
             'extra_charges' => 'nullable|numeric|max:1000000000',
             'order_date' => 'required|date',
+            'payment_note' => 'nullable|string|max:1000',
+            'note' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -277,6 +286,7 @@ class OrderController extends Controller
             return back();
         }
         $data = $request->only([
+            'bill_no',
             'name',
             'email',
             'phone',
@@ -288,7 +298,9 @@ class OrderController extends Controller
             'user_id',
             'order_date',
             'exchange',
-            'extra_charges'
+            'extra_charges',
+            'payment_note',
+            'note',
         ]);
        
    
@@ -425,6 +437,7 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
       
         $validator = Validator::make($request->all(), [
+            'bill_no' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
@@ -436,6 +449,8 @@ class OrderController extends Controller
             'items' => 'required|array',
             'exchange_items' => 'nullable|array',
             'exchange' => 'nullable|numeric|max:1000000000',
+            'payment_note' => 'nullable|string|max:1000',
+            'note' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -443,6 +458,7 @@ class OrderController extends Controller
             return back();
         }
         $data = $request->only([
+            'bill_no',
             'name',
             'email',
             'phone',
@@ -473,6 +489,8 @@ class OrderController extends Controller
             'shipping_id',
             'order_date',
             'exchange',
+            'payment_note',
+            'note',
         ]);
 
         $order = Order::create($data);
@@ -619,6 +637,7 @@ class OrderController extends Controller
     {
         $this->authorize('update', $order);
         $validator = Validator::make($request->all(), [
+            'bill_no' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
@@ -630,6 +649,8 @@ class OrderController extends Controller
             'items' => 'required|array',
             'exchange_items' => 'nullable|array',
             'exchange' => 'nullable|numeric|max:1000000000',
+            'payment_note' => 'nullable|string|max:1000',
+            'note' => 'nullable|string|max:1000',
         ]);
 
         if ($validator->fails()) {
@@ -637,6 +658,7 @@ class OrderController extends Controller
             return back();
         }
         $data = $request->only([
+            'bill_no',
             'name',
             'email',
             'phone',
@@ -667,6 +689,8 @@ class OrderController extends Controller
             'shipping_id',
             'order_date',
             'exchange',
+            'payment_note',
+            'note',
         ]);
         $order->update($data);
 

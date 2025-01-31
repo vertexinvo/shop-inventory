@@ -311,6 +311,9 @@ export default function List(props) {
                       Sale ID
                     </th>
                     <th class="pl-4 text-left text-sm font-semibold ">
+                      Bill No.
+                    </th>
+                    <th class="pl-4 text-left text-sm font-semibold ">
                       Sale Date
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -409,6 +412,10 @@ export default function List(props) {
                         <button onClick={() => router.get(route('order.show', order.code || order.id ))} className='text-blue-600' title="Edit" type='button'>
                           {order.code || order.id}
                         </button>
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
+                        {order.bill_no || 'N/A'}
                       </td>
 
                       <td class="p-4 text-sm text-black">
