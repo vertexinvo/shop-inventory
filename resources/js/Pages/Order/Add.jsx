@@ -107,7 +107,10 @@ export default function Add(props) {
         order_date: order?.order_date || new Date().toISOString().slice(0, 10),
         close: false,
         exchange_items: order?.exchange_items || [],
-        exchange: order?.exchange || 0
+        exchange: order?.exchange || 0,
+        payment_note: order?.payment_note || '',
+        payment_details: order?.payment_details || {},
+        note : order?.note || '',
       }}
         validationSchema={Yup.object({
           name: Yup.string().required('Name is required'),
@@ -188,6 +191,12 @@ export default function Add(props) {
           // }),
           items: Yup.array().min(1, 'At least one item is required'),
           order_date: Yup.date().required('Order date is required'),
+          payment_note: Yup.string().when('method', {
+            is: 'partial',
+            then: scheme => scheme.required("Payment Note is required"),
+            otherwise: scheme => scheme.optional()
+          }),
+          note: Yup.string(),
           // paid_amount: Yup.number()
           //   .min(0, 'Paid amount must be a positive number')
           //   .required('Paid amount is required'),
@@ -682,9 +691,18 @@ export default function Add(props) {
                               <option value="bank">Bank Transfer</option>
                               <option value="cheque">Cheque</option>
                               <option value="online">Online</option>
+                              <option value="partial">Partial</option>
                             </Field>
                             <ErrorMessage name="method" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
+
+                          {values.method === "partial" && (
+                          <div className="mb-4">
+                            <label className="block text-grey-darker text-sm  mb-2 font-bold" >Payment Note</label>
+                            <Field as="textarea"  rows="4" name="payment_note" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"></Field>
+                            <ErrorMessage name="payment_note" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+                          )}
 
 
 
@@ -896,6 +914,13 @@ export default function Add(props) {
                               styles={customStyles}
                             />
                             <ErrorMessage name="shipping_id" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+
+
+                          <div className="mb-4">
+                            <label className="block text-grey-darker text-sm  mb-2 font-bold" >Note</label>
+                            <Field as="textarea"  rows="4" name="note" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"></Field>
+                            <ErrorMessage name="note" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
 
