@@ -229,7 +229,7 @@ export default function List(props) {
                                 ) : null}
 
                                 {expences.data.map((expance, index) => (
-                                    <tr key={expance.id} class="odd:bg-gray-50 border-b border-gray-300">
+                                    <tr key={expance.id} class={`odd:bg-gray-50  ${selectId.includes(expance.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
                                         <td className="pl-4 w-8">
                                             <input
                                                 id={`checkbox-${expance.id}`} // Unique id for each checkbox
