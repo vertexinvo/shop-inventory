@@ -419,7 +419,7 @@ export default function List(props) {
                   )}
                   {products.data.map((product, index) => (
 
-                    <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'} border-b border-gray-300`}>
+                    <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}   ${selectId.includes(product.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
                       <td className="pl-4 w-8">
                         <input
                           id={`checkbox-${product.id}`} // Unique id for each checkbox

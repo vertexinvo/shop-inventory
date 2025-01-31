@@ -45,7 +45,8 @@ const View = (props) => {
         }
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
-        const currentDateTime = new Date().toLocaleString();
+
+        const currentDateTime =  new Date().toLocaleDateString('en-GB');
 
         printWindow.document.write(`
             <html>
@@ -72,7 +73,7 @@ const View = (props) => {
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-left text-sm mb-4">
-                            <div>Invoice #: <span class="font-semibold">INV-${order.code || order.id}</span></div>
+                            <div>Invoice #: <span class="font-semibold">${order.code || order.id}</span></div>
                             <div>Date: <span class="font-semibold">${currentDateTime || 'N/A'}</span></div>
                             <div>Customer: <span class="font-semibold">${order?.name || 'N/A'}</span></div>
                         </div>
@@ -239,7 +240,10 @@ const View = (props) => {
                         </div>
                         <div className="text-right">
                             <p>
-                                Invoice number: <span className="text-gray-500">INV-{ order.code || order.id}</span>
+                                Invoice number: <span className="text-gray-500">{ order.code || order.id}</span>
+                            </p>
+                            <p>
+                                Bill number: <span className="text-gray-500">{ order.bill_no || 'N/A'}</span>
                             </p>
                             <p>
                                 Invoice date: <span className="text-gray-500">{order.order_date || 'N/A'}</span>
@@ -394,6 +398,13 @@ const View = (props) => {
                                         </table>
                                     </div>
                                 </div>
+                            )}
+
+                            {order.note && (
+                            <div className="order-note-section mb-8">
+                                <div className="text-gray-800 text-sm font-bold">Order Note</div>
+                                <div className="text-gray-600 text-sm">{order.note || "N/A"}</div>
+                            </div>
                             )}
 
 
