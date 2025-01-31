@@ -111,8 +111,10 @@ export default function Add(props) {
         payment_note: order?.payment_note || '',
         payment_details: order?.payment_details || {},
         note : order?.note || '',
+        bill_no: order?.bill_no || '',
       }}
         validationSchema={Yup.object({
+          bill_no: Yup.string(),
           name: Yup.string().required('Name is required'),
           email: Yup.string().email('Invalid email address'),
           phone: Yup.string()
@@ -317,6 +319,13 @@ export default function Add(props) {
                               </button>
                             </div>
                           </div>
+
+                          <div className="mb-4">
+                              <label className="block text-grey-darker text-sm  mb-2" >Bill No</label>
+                              <Field name="bill_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Bill No" />
+                              <ErrorMessage name="bill_no" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+
 
 
                           <div className="mb-4">
