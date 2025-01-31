@@ -243,7 +243,9 @@ export default function List(props) {
               {selectId.length > 0 && (
                 <>
                  <button
-                  onClick={() => setIsPrintQRModalOpen(true)}
+onClick={() => {
+  router.get(route('product.printqr', { id: selectId.join(',') }), { preserveState: true });
+}}                  // onClick={() => setIsPrintQRModalOpen(true)}
                   className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 "
                 >
                  Print QR
