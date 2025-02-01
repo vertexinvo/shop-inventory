@@ -63,6 +63,10 @@ class DomainDatabaseSwitcher
             DB::purge('mysql');
             DB::reconnect('mysql');
 
+            if($domain === 'inventorysystem.vertexinvo.io'){
+                abort(500)->with('message', 'Currently this domain is not allowed');
+            }
+
         }
         return $next($request);
     }
