@@ -22,7 +22,7 @@ import { QRCode } from 'react-qrcode-logo';
 
 
 export default function List(props) {
-  const { auth, orders, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
+  const { auth, orders,todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
   console.log(totalPendingAmount);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -69,6 +69,19 @@ export default function List(props) {
       </div> */}
 
       <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+      <Link href={route('order.index')}>
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
+              <div class="my-auto">
+                <p class="font-bold">TODAYS ORDERS</p>
+                <p class="text-lg">{todaysOrder}</p>
+              </div>
+              <div class="my-auto">
+                <VscGraph size={40} />
+              </div>
+            </div>
+          </div>
+        </Link>
         <Link href={route('order.index')}>
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">

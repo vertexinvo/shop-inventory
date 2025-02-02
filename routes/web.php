@@ -92,8 +92,11 @@ Route::get('/dashboard', function (Request $request) {
         return $supplier->total_amount_pending; // Use the accessor
     });
 
+    //todays orders
+    $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
+
  
-    return Inertia::render('Dashboard',compact('totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('todaysOrder','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 
