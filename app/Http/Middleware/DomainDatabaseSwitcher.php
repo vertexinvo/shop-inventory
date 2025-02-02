@@ -45,12 +45,12 @@ class DomainDatabaseSwitcher
                 'password' => env('DB_VERTEXINVO_PASSWORD'),
                 'host' => env('DB_VERTEXINVO_HOST'),
             ],
-            'solinvo.vertexinvo.io' => [
-                'database' => env('DB_SOLINVO_DATABASE'),
-                'username' => env('DB_SOLINVO_USERNAME'),
-                'password' => env('DB_SOLINVO_PASSWORD'),
-                'host' => env('DB_SOLINVO_HOST'),
-            ],
+            'iqracompb1.vertexinvo.io' => [
+                'database' => env('DB_IQRACOMPB1_DATABASE'),
+                'username' => env('DB_IQRACOMPB1_USERNAME'),
+                'password' => env('DB_IQRACOMPB1_PASSWORD'),
+                'host' => env('DB_IQRACOMPB1_HOST'),
+            ]
         ];
    
         if (array_key_exists($domain, $domainToDatabase)) {
