@@ -788,7 +788,9 @@ class OrderController extends Controller
     {
         $this->authorize('bulkdelete', Order::class);
         $ids = explode(',', $request->ids);
-        Order::whereIn('id', $ids)->delete();
+        Order::whereIn('id', $ids)->each(function ($order) {
+            $order->delete();
+        });
         session()->flash('message', 'Order deleted successfully');
         return back();
     }

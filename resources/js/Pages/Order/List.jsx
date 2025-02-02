@@ -786,7 +786,7 @@ export default function List(props) {
 
 
 
-      <ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these products?" onConfirm={() => {
+      <ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these sales?" onConfirm={() => {
 
         router.post(route('order.bulkdestroy'), { ids: selectId.join(',') }, {
           onSuccess: () => {
