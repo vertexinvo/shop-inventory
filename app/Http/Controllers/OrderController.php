@@ -14,6 +14,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -64,7 +65,10 @@ class OrderController extends Controller
         ->sum(function ($order) {
         return $order->payable_amount - $order->paid_amount;
         });
-    return Inertia::render('Order/List', compact('orders','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
+
+        $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
+
+    return Inertia::render('Order/List', compact('orders','todaysOrder','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
     }
 
 
@@ -788,7 +792,9 @@ class OrderController extends Controller
     {
         $this->authorize('bulkdelete', Order::class);
         $ids = explode(',', $request->ids);
-        Order::whereIn('id', $ids)->delete();
+        Order::whereIn('id', $ids)->each(function ($order) {
+            $order->delete();
+        });
         session()->flash('message', 'Order deleted successfully');
         return back();
     }

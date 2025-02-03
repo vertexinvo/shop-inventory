@@ -78,7 +78,7 @@ class Order extends Model
         public static function generateOrderId()
         {
             $date = now()->format('Ymd'); // Format the current date as YYYYMMDD
-            $lastOrder = self::whereDate('created_at', now()->toDateString())
+            $lastOrder =  self::withTrashed()->whereDate('created_at', now()->toDateString())
                 ->orderBy('id', 'desc')
                 ->first();
         

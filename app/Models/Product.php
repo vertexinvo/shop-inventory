@@ -60,7 +60,7 @@ class Product extends Model
     public static function generatePurchaseId()
     {
         $date = now()->format('Ymd'); // Format the current date as YYYYMMDD
-        $lastProduct = self::whereDate('created_at', now()->toDateString())
+        $lastProduct = self::withTrashed()->whereDate('created_at', now()->toDateString())
             ->orderBy('id', 'desc')
             ->first();
     

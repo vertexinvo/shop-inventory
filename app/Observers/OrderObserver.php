@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Order;
+use App\Models\Stock;
 
 class OrderObserver
 {
@@ -30,7 +31,15 @@ class OrderObserver
      */
     public function deleted(Order $order): void
     {
-        //
+        foreach ($order->items as $item) {
+            $stock = Stock::where('product_id', $item->product_id)->first();
+
+            if ($stock) {
+                $stock->increment('quantity', $item->qty);
+            }
+        }
+
+        $order->exchangeproduct()->delete();
     }
 
     /**

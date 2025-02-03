@@ -13,7 +13,7 @@ import { GiMoneyStack } from 'react-icons/gi';
 import { MdOutlinePendingActions } from 'react-icons/md';
 
 export default function Dashboard(props) {
-  const { auth,latestOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
+  const { auth,latestOrder,todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
 
   console.log(auth);
   const [chartdata, setChartData] = useState({
@@ -50,6 +50,19 @@ export default function Dashboard(props) {
               <div className="my-auto">
                 <p className="font-bold">TOTAL (ORDERS)</p>
                 <p className="text-lg"> { auth.permissions.includes('viewAny Order') ?   totalOrder : <p>No Access</p>}</p>
+              </div>
+              <div className="my-auto">
+                <VscGraph size={40} />
+              </div>
+            </div>
+          </div>
+        </Link>
+        <Link href={route('order.index')}>
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+              <div className="my-auto">
+                <p className="font-bold">TODAY'S ORDERS</p>
+                <p className="text-lg"> { auth.permissions.includes('viewAny Order') ?   todaysOrder : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
                 <VscGraph size={40} />

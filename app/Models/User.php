@@ -70,7 +70,7 @@ class User extends Authenticatable
     public static function generateUserId()
     {
         $date = now()->format('Ymd'); // Format the current date as YYYYMMDD
-        $lastUser = self::whereDate('created_at', now()->toDateString())
+        $lastUser = self::withTrashed()->whereDate('created_at', now()->toDateString())
             ->orderBy('id', 'desc')
             ->first();
     

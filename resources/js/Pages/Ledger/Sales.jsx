@@ -121,9 +121,9 @@ export default function Sales(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Total Amount Pending
                     </th>
-                    {/* <th class="p-4 text-left text-sm font-semibold ">
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Action
-                    </th> */}
+                    </th>
                   </tr>
                 </thead>
 
@@ -166,14 +166,14 @@ export default function Sales(props) {
                     <td class="p-4 text-sm">{item.total_orders_amount || 0}</td>{/* total amount */}
                     <td class="p-4 text-sm">{item.total_orders_amount_paid || 0}</td>{/* total amount paid */}
                     <td class="p-4 text-sm">{item.total_order_amount_pending || 0}</td>{/* total amount pending */}
-                    {/* <td class="p-4 flex items-center gap-2">
+                    <td class="p-4 flex items-center gap-2">
                       <button
-                        onClick={() => router.get(route('supplier.invoices', item.id))} className="mr-4 flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1" title="View Invoice"
+                        onClick={() => router.get(route('ledger.customers.salesLedger', item.code || item.id))} className="mr-4 flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1" title="View Invoice"
                       >
                         <LiaFileInvoiceSolid className="w-6 fill-black " size={25} />
-                        <span className="text-white hover:text-black">Orders</span>
+                        <span className="text-white hover:text-black">Ledger</span>
                       </button>
-                    </td> */}
+                    </td>
                   </tr>
                    ))} 
 

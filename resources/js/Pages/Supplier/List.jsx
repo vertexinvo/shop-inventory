@@ -248,7 +248,7 @@ export default function List(props) {
                   )}
                   {suppliers.data.map((item, index) => (
 
-                    <tr className={`${item?.total_amount_paid == 0 && item?.total_amount > 0   ? 'bg-red-100' :  item?.total_amount_paid > 0 && item?.total_amount_pending > 0  ? 'bg-yellow-100' : ''} border-b border-gray-300 hover:bg-gray-100`}>
+                    <tr className={`${item?.total_amount_paid == 0 && item?.total_amount > 0   ? 'bg-red-100' :  item?.total_amount_paid > 0 && item?.total_amount_pending > 0  ? 'bg-yellow-100' : ''}  ${selectId.includes(item.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
 
                       <td className="pl-4 w-8">
                         <input
