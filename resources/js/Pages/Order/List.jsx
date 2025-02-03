@@ -20,7 +20,6 @@ import { QRCode } from 'react-qrcode-logo';
 
 
 
-
 export default function List(props) {
   const { auth, orders,todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
   console.log(totalPendingAmount);
@@ -296,7 +295,15 @@ export default function List(props) {
 
               </Formik>
 
-
+              <div class="inline-flex rounded-md shadow-sm" role="group">
+                             <Link       
+                               href={route('order.scanproduct')}
+                              class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
+                               ScanProduct
+                             </Link>
+             
+                            
+                           </div>
             </div>
           </div>
 
@@ -707,7 +714,7 @@ export default function List(props) {
                           );
                         });
                     })()}
-
+ 
 
                     <li>
                       <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
