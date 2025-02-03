@@ -15,6 +15,9 @@ use App\Services\StockService;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Order;
 use App\Observers\OrderObserver;
+use App\Models\Item;
+use App\Observers\ItemObserver;
+use App\Services\OrderService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +41,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('stockService', function () {
             return new StockService();
         });
+        $this->app->singleton('orderService', function () {
+            return new OrderService();
+        });
+
 
 
     }
@@ -50,5 +57,6 @@ class AppServiceProvider extends ServiceProvider
         Stocklog::observe(StocklogObserver::class);
         Product::observe(ProductObserver::class);
         Order::observe(OrderObserver::class);
+        Item::observe(ItemObserver::class);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Facades\OrderService;
 use App\Http\Controllers\ProfileController;
 use App\Models\Product;
 use App\Models\Supplier;
@@ -92,11 +93,14 @@ Route::get('/dashboard', function (Request $request) {
         return $supplier->total_amount_pending; // Use the accessor
     });
 
-    //todays orders
     $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
 
- 
-    return Inertia::render('Dashboard',compact('todaysOrder','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    $todayProfit = OrderService::getTodayNetProfit();
+    $weekProfit = OrderService::getThisWeekNetProfit();
+    $monthProfit = OrderService::getThisMonthNetProfit();
+    $yearProfit = OrderService::getThisYearNetProfit();
+    
+    return Inertia::render('Dashboard',compact('todaysOrder','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 

@@ -366,9 +366,7 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      QRCode
-                    </th>
+                   
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Action
@@ -590,9 +588,7 @@ export default function List(props) {
                         </button>
                       </td>
 
-                      <td >
-                      <QRCode  value={route('order.show',order.code || order.id )} size={100} />
-                      </td>
+                     
 
 
 

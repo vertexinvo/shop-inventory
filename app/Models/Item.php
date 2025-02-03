@@ -9,13 +9,13 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-     
+    protected $fillable = [ 
         'order_id',
         'product_id',
         'name',
         'category',
         'price',
+        'purchase_price',
         'qty',
         'status',
         'code',
