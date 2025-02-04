@@ -49,7 +49,7 @@ class SupplierController extends Controller
 
     // Manually paginate the filtered collection
     $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    $perPage = 10;
+    $perPage = 50;
     $offset = ($currentPage - 1) * $perPage;
     $suppliers = new LengthAwarePaginator(
         $suppliers->slice($offset, $perPage),
