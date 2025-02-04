@@ -18,10 +18,12 @@ class SupplierController extends Controller
      */
     public function index(Request $request)
     {
+
         $this->authorize('viewAny', Supplier::class);
         $totalSuppliers = Supplier::count();
         $search = $request->search ?? '';
         $status = $request->status ?? '';
+        $per_page = $request->input('per_page', 10);
         // total_amount_pending > 0
         $suppliersQuery = Supplier::where('person_name', 'like', "%$search%")
         ->orWhere('code', 'like', "%$search%")
@@ -49,12 +51,12 @@ class SupplierController extends Controller
 
     // Manually paginate the filtered collection
     $currentPage = LengthAwarePaginator::resolveCurrentPage();
-    $perPage = 50;
-    $offset = ($currentPage - 1) * $perPage;
+ 
+    $offset = ($currentPage - 1) * $per_page;
     $suppliers = new LengthAwarePaginator(
-        $suppliers->slice($offset, $perPage),
+        $suppliers->slice($offset, $per_page),
         $suppliers->count(),
-        $perPage,
+        $per_page,
         $currentPage,
         ['path' => LengthAwarePaginator::resolveCurrentPath()]
     );
