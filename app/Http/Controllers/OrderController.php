@@ -778,8 +778,7 @@ class OrderController extends Controller
     }
 
 public function scanproduct(Request $request){
-    // $product = Product::where('code', $request->code)->first();
-    return inertia('Order/ScanProduct');
+    return Inertia::render('Order/ScanProduct');
 }
 
     /**
