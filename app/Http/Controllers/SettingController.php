@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
 use Spatie\DbDumper\Databases\MySql;
+use Illuminate\Support\Facades\Validator;
+
 
 class SettingController extends Controller
 {
@@ -26,6 +28,29 @@ class SettingController extends Controller
     public function update(Request $request)
     {
         $data = $request->except('site_favicon', 'site_logo');
+
+        $validator = Validator::make($data, [
+            'site_name' => 'required|string|max:255',
+            'site_title' => 'required|string|max:255',
+            'site_description' => 'nullable|string|max:255',
+            'site_email' => 'nullable|email|max:255',
+            'site_phone' => 'nullable|max:255',
+            'site_address' => 'nullable|string|max:255',
+            'site_currency' => 'required|string|max:255',
+            'site_currency_symbol' => 'required|string|max:255',
+            'site_currency_position' => 'required|string|max:255',
+            'site_timezone' => 'required|string|max:255',
+            'site_language' => 'required|string|max:255',
+            'site_status' => 'nullable|string|max:255',
+            'site_maintenance' => 'required|boolean',
+            'site_maintenance_message' => 'nullable|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+        }
+
         Setting::updateOrCreate(['id' => 1], $data);
 
         // Handle site_favicon file upload

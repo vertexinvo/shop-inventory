@@ -357,9 +357,9 @@ export default function List(props) {
 
                       Adjustment
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
+                    {/* <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
-                    </th>
+                    </th> */}
                     <th class="p-4 text-left text-sm font-semibold ">
                       Paid Amount
                     </th>
@@ -522,7 +522,7 @@ export default function List(props) {
                         <p class="text-sm text-black "> Discount : {order.discount || 'N/A'}</p>
                         <p class="text-sm text-black ">Exchange : {order.exchange || '0'}</p>
                       </td>
-                      <td class=" pt-4 pb-4 text-sm text-black">
+                      {/* <td class=" pt-4 pb-4 text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
                             {!order.is_installment ? <p class="text-sm text-black ">No</p> : <>
@@ -534,7 +534,7 @@ export default function List(props) {
                             </>}
                           </div>
                         </div>
-                      </td>
+                      </td> */}
 
                       <td class="p-4 text-sm text-black">
                         <div className="flex items-center w-[130px] ">
