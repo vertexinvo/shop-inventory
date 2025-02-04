@@ -59,7 +59,7 @@ export default function SiteSetting(props) {
                       site_name: Yup.string().required('Site name is required'),
                       site_title: Yup.string().required('Site title is required'),
                       site_icon: Yup.string(),
-                      site_phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
+                      site_phone: Yup.string(),
                       site_email: Yup.string().email('Invalid email address'),
                       site_currency: Yup.string().required('Currency is required'),
                       site_currency_symbol: Yup.string().required('Currency symbol is required'),
