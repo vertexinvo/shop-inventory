@@ -73,6 +73,7 @@ const View = (props) => {
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
                         <div class="text-left text-sm mb-4">
+                         <div>Bill No. #: <span class="font-semibold">${order.bill_no || 'N/A'}</span></div>
                             <div>Invoice #: <span class="font-semibold">${order.code || order.id}</span></div>
                             <div>Date: <span class="font-semibold">${currentDateTime || 'N/A'}</span></div>
                             <div>Customer: <span class="font-semibold">${order?.name || 'N/A'}</span></div>

@@ -596,6 +596,10 @@ class ProductController extends Controller
         return  Inertia::render('Product/PrintQR', compact('products'));
     }
 
+    public function scanproduct(Request $request){
+        return Inertia::render('Product/ScanProduct');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

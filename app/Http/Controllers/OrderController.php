@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\OrderService;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -67,6 +68,7 @@ class OrderController extends Controller
         });
 
         $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
+
 
     return Inertia::render('Order/List', compact('orders','todaysOrder','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
     }
@@ -318,7 +320,9 @@ class OrderController extends Controller
                 'qty' => $item['quantity'],
                 'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
                 'status'=> 'active',
-                'code' => $item["data"]['code']
+                'code' => $item["data"]['code'],
+                'order_code' => $order->code ?? null,
+                'purchase_price' => $item["data"]['purchase_price'],
             ]);
         }
 
@@ -507,7 +511,9 @@ class OrderController extends Controller
                 'qty' => $item['quantity'],
                 'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
                 'status'=> 'active',
-                'code' => $item["data"]['code']
+                'code' => $item["data"]['code'],
+                'order_code' => $order->code ?? null,
+                'purchase_price' => $item["data"]['purchase_price'],
             ]);
         }
 
@@ -721,7 +727,10 @@ class OrderController extends Controller
                 'price' => $item["data"]['selling_price'],
                 'qty' => $item['quantity'],
                 'category' => $item["data"]['categories'] ? $item["data"]['categories'][0]['name'] : '',
-                'status'=> 'active'
+                'status'=> 'active',
+                'code' => $item["data"]['code'],
+                'order_code' => $order->code ?? null,
+                'purchase_price' => $item["data"]['purchase_price'],
             ]);
         }
 
@@ -777,9 +786,6 @@ class OrderController extends Controller
         
     }
 
-public function scanproduct(Request $request){
-    return Inertia::render('Order/ScanProduct');
-}
 
     /**
      * Remove the specified resource from storage.

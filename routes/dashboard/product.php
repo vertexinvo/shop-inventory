@@ -11,5 +11,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::post('product/bulkdestroy', [ProductController::class, 'bulkdestroy'])->name('product.bulkdestroy');
     Route::post('/product/csvstore', [ProductController::class, 'csvstore'])->name('product.csvstore');
     Route::get('product/printqr/{id}', [ProductController::class, 'printqr'])->name('product.printqr');
+    Route::get('scanproduct', [ProductController::class, 'scanproduct'])->name('product.scanproduct');
+
 });
 

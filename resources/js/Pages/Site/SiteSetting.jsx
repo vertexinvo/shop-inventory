@@ -41,7 +41,7 @@ export default function SiteSetting(props) {
                       site_title: setting?.site_title || '',
                       site_description: setting?.site_description || '',
                       site_logo: setting?.site_logo || null,
-                      site_icon: setting?.site_icon || null,
+                      site_icon: setting?.site_icon || '',
                       site_favicon: setting?.site_favicon || '',
                       site_email: setting?.site_email || '',
                       site_phone: setting?.site_phone || '',
@@ -58,9 +58,9 @@ export default function SiteSetting(props) {
                     validationSchema={Yup.object({
                       site_name: Yup.string().required('Site name is required'),
                       site_title: Yup.string().required('Site title is required'),
-                      site_icon: Yup.string().required('Site icon is required'),
-                      site_phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
-                      site_email: Yup.string().email('Invalid email address').required('Email is required'),
+                      site_icon: Yup.string(),
+                      site_phone: Yup.string(),
+                      site_email: Yup.string().email('Invalid email address'),
                       site_currency: Yup.string().required('Currency is required'),
                       site_currency_symbol: Yup.string().required('Currency symbol is required'),
                       site_currency_position: Yup.string().required('Currency name is required'),
@@ -121,9 +121,10 @@ export default function SiteSetting(props) {
                           <div>
                             <label htmlFor="site_phone">Site Phone</label>
                             <Field
+                              as="textarea"
                               name="site_phone"
                               className="block w-full border rounded-md p-2 mt-1"
-                            />
+                            ></Field>
                             <ErrorMessage name="site_phone" component="div" className="text-red-500 text-sm" />
                           </div>
                           <div>

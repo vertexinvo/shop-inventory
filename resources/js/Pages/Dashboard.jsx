@@ -11,11 +11,12 @@ import { BsGraphUp } from "react-icons/bs";
 import RecentOrder from '@/Components/RecentOrder';
 import { GiMoneyStack } from 'react-icons/gi';
 import { MdOutlinePendingActions } from 'react-icons/md';
+import { GrMoney } from "react-icons/gr";
 
 export default function Dashboard(props) {
-  const { auth,latestOrder,todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
+  const { auth,todayProfit,weekProfit,monthProfit,yearProfit,latestOrder,todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
 
-  console.log(auth);
+ 
   const [chartdata, setChartData] = useState({
     options: {
       chart: {
@@ -33,6 +34,8 @@ export default function Dashboard(props) {
     ],
   });
 
+  const rolename = auth.user.roles.map((role) => role.name);
+
   return (
     <AuthenticatedLayout
       header={
@@ -44,6 +47,55 @@ export default function Dashboard(props) {
       <Head title="Dashboard" />
 
       <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-4">
+   
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+              <div className="my-auto">
+                <p className="font-bold">TODAY'S PROFIT</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   todayProfit : <p>No Access</p>}</p>
+              </div>
+              <div className="my-auto">
+                <GrMoney  size={40} />
+              </div>
+            </div>
+          </div>
+
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+              <div className="my-auto">
+                <p className="font-bold">THIS WEEK PROFIT</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   weekProfit : <p>No Access</p>}</p>
+              </div>
+              <div className="my-auto">
+                <GrMoney  size={40} />
+              </div>
+            </div>
+          </div>
+
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+              <div className="my-auto">
+                <p className="font-bold">THIS MONTH PROFIT</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   monthProfit : <p>No Access</p>}</p>
+              </div>
+              <div className="my-auto">
+                <GrMoney  size={40} />
+              </div>
+            </div>
+          </div>
+
+          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+              <div className="my-auto">
+                <p className="font-bold">THIS YEAR PROFIT</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   yearProfit : <p>No Access</p>}</p>
+              </div>
+              <div className="my-auto">
+                <GrMoney  size={40} />
+              </div>
+            </div>
+          </div>
+      
         <Link href={route('order.index')}>
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">

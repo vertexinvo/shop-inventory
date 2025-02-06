@@ -295,15 +295,7 @@ export default function List(props) {
 
               </Formik>
 
-              <div class="inline-flex rounded-md shadow-sm" role="group">
-                <Link
-                  href={route('order.scanproduct')}
-                  class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
-                  ScanProduct
-                </Link>
-
-
-              </div>
+             
             </div>
           </div>
 
@@ -364,18 +356,16 @@ export default function List(props) {
 
                       Adjustment
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
+                    {/* <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
-                    </th>
+                    </th> */}
                     <th class="p-4 text-left text-sm font-semibold ">
                       Paid Amount
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      QRCode
-                    </th>
+                   
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Action
@@ -531,7 +521,7 @@ export default function List(props) {
                         <p class="text-sm text-black "> Discount : {order.discount || 'N/A'}</p>
                         <p class="text-sm text-black ">Exchange : {order.exchange || '0'}</p>
                       </td>
-                      <td class=" pt-4 pb-4 text-sm text-black">
+                      {/* <td class=" pt-4 pb-4 text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
                             {!order.is_installment ? <p class="text-sm text-black ">No</p> : <>
@@ -543,7 +533,7 @@ export default function List(props) {
                             </>}
                           </div>
                         </div>
-                      </td>
+                      </td> */}
 
                       <td class="p-4 text-sm text-black">
                         <div className="flex items-center w-[130px] ">
@@ -597,9 +587,7 @@ export default function List(props) {
                         </button>
                       </td>
 
-                      <td >
-                        <QRCode value={route('order.show', order.code || order.id)} size={100} />
-                      </td>
+                     
 
 
 
