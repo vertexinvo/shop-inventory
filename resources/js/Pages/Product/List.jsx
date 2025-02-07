@@ -413,6 +413,9 @@ onClick={() => {
                       Other Info
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Created At
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Action
                     </th>
                   </tr>
@@ -547,6 +550,12 @@ onClick={() => {
                       }
                       </td>
 
+                      <td class="p-4 text-sm text-black">
+                        {FormatDate(product.created_at)}
+                        </td>
+
+                   
+
 
                       <td class="p-4 flex items-center gap-2">
 
@@ -573,6 +582,8 @@ onClick={() => {
                   
                      
                       </td>
+
+                    
                     </tr>
                   ))}
 
