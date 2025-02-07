@@ -403,6 +403,9 @@ export default function List(props) {
                       Other Info
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Created At
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Action
                     </th>
                   </tr>
@@ -537,6 +540,12 @@ export default function List(props) {
                       }
                       </td>
 
+                      <td class="p-4 text-sm text-black">
+                        {FormatDate(product.created_at)}
+                        </td>
+
+                   
+
 
                       <td class="p-4 flex items-center gap-2">
 
@@ -563,6 +572,8 @@ export default function List(props) {
                   
                      
                       </td>
+
+                    
                     </tr>
                   ))}
 
