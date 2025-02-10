@@ -31,7 +31,7 @@ use Eliseekn\LaravelMetrics\Enums\Period;
 
 Route::get('/', function () {
 
-    return Inertia::render('Welcome' );
+    return Inertia::render('Welcome');
 });
 
 
@@ -65,13 +65,13 @@ Route::get('/dashboard', function (Request $request) {
     }
 
     $groupedDataLabels = LaravelMetrics::query(Order::query()->whereNotIn('status', ['cancel']))->dateColumn('order_date')->labelColumn('order_date')->trends();
-  
+
 
     $trend = Metrics::trends(
         Order::metrics()
-        ->dateColumn('order_date')
-        // check where status is not cancel
-        ->fillMissingData(),
+            ->dateColumn('order_date')
+            // check where status is not cancel
+            ->fillMissingData(),
         $period,
         $groupedDataLabels["labels"],
         'order_date'
@@ -99,8 +99,8 @@ Route::get('/dashboard', function (Request $request) {
     $weekProfit = OrderService::getThisWeekNetProfit();
     $monthProfit = OrderService::getThisMonthNetProfit();
     $yearProfit = OrderService::getThisYearNetProfit();
-    
-    return Inertia::render('Dashboard',compact('todaysOrder','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+
+    return Inertia::render('Dashboard', compact('todaysOrder', 'todayProfit', 'weekProfit', 'monthProfit', 'yearProfit', 'totalSupplierPendingAmount', 'totalOrderAmountPending', 'totaliteminstock', 'totalStockValue', 'trend', 'period', 'totalOrder', 'totalProductInStock', 'totalProductOutofStock', 'outOfStockProductrecord', 'supplierBalanceRecord', 'latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 
@@ -108,25 +108,26 @@ Route::get('/dashboard', function (Request $request) {
 
 
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-require __DIR__.'/auth.php';
-require __DIR__.'/dashboard/user.php';
-require __DIR__.'/dashboard/customer.php';
-require __DIR__.'/dashboard/product.php';
-require __DIR__.'/dashboard/setting.php';
-require __DIR__.'/dashboard/role.php';
-require __DIR__.'/dashboard/category.php';
-require __DIR__.'/dashboard/brand.php';
-require __DIR__.'/dashboard/supplier.php';
-require __DIR__.'/dashboard/supplierinvoice.php';
-require __DIR__.'/dashboard/order.php';
-require __DIR__.'/dashboard/tax.php';
-require __DIR__.'/dashboard/shippingrate.php';
-require __DIR__.'/dashboard/stock.php';
-require __DIR__.'/dashboard/stocklog.php';
-require __DIR__.'/dashboard/expence.php';
-require __DIR__.'/dashboard/ledger.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/dashboard/user.php';
+require __DIR__ . '/dashboard/customer.php';
+require __DIR__ . '/dashboard/product.php';
+require __DIR__ . '/dashboard/setting.php';
+require __DIR__ . '/dashboard/role.php';
+require __DIR__ . '/dashboard/category.php';
+require __DIR__ . '/dashboard/brand.php';
+require __DIR__ . '/dashboard/supplier.php';
+require __DIR__ . '/dashboard/supplierinvoice.php';
+require __DIR__ . '/dashboard/order.php';
+require __DIR__ . '/dashboard/tax.php';
+require __DIR__ . '/dashboard/shippingrate.php';
+require __DIR__ . '/dashboard/stock.php';
+require __DIR__ . '/dashboard/stocklog.php';
+require __DIR__ . '/dashboard/expence.php';
+require __DIR__ . '/dashboard/ledger.php';
+require __DIR__ . '/dashboard/qrcoderoute.php';
