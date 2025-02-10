@@ -198,7 +198,7 @@ public function csvExport(Request $request)
 {
     $this->authorize('viewAny', Product::class);
     // Fetch all products from the database with their attributes and categories
-    $products = Product::with(['categories'])->get();
+    $products = Product::with(['categories','stock'])->get();
     
     // Define the headers for the CSV file
     $headers = [
@@ -236,6 +236,7 @@ public function csvExport(Request $request)
         'Is Return',
         'Return Remarks',
         'Exchange Order Id',
+        'quantity'
     ];
     
     // Create a callback to stream the CSV content
@@ -279,8 +280,7 @@ public function csvExport(Request $request)
                 $product->is_return,
                 $product->return_remarks,
                 $product->exchange_order_id,
-              
-              
+                $product->stock->quantity
             ]);
         }
         
