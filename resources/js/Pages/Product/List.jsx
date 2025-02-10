@@ -15,11 +15,13 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import { QRCode } from 'react-qrcode-logo';
-
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css';
 
 
 export default function List(props) {
-  const { auth, stock, products ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock,categories,brands} = props
+  const { auth, stock, startdate,enddate, products ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock,categories,brands} = props
   const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
 
@@ -27,8 +29,15 @@ export default function List(props) {
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
   const [isPrintQRModalOpen, setIsPrintQRModalOpen] = useState(false);
-  // http://127.0.0.1:8000/dashboard/product?status=1 get status=1
-  // http://127.0.0.1:8000/dashboard/product?status=0 get status=0
+  const [daterangeModel, setDaterangeModel] = useState(false);
+    const [dateRange, setDateRange] = useState(
+        {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: 'selection',
+          }
+    )
+    
 
 
   const handleFileSelect = (event) => {
@@ -198,7 +207,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { status: e.target.value }, { preserveState: true })}
+                onChange={(e) => router.get(route('product.index'), { status: e.target.value, category: params.get('category'), brand: params.get('brand'), search: params.get('search'), startdate : startdate,enddate:enddate }, { preserveState: true })}
                 value={params.get('status') || ''}
               >
                 <option value="">Select Status</option>
@@ -212,7 +221,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { category: e.target.value , status: params.get('status'), brand: params.get('brand') , search: params.get('search') }, { preserveState: true , preserveScroll: true})}
+                onChange={(e) => router.get(route('product.index'), { category: e.target.value , status: params.get('status'), brand: params.get('brand') , search: params.get('search') ,startdate : startdate,enddate:enddate  }, { preserveState: true , preserveScroll: true})}
                 value={params.get('category') || ''}
               >
                 <option value="">Select Category</option>
@@ -228,7 +237,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { brand: e.target.value, category: params.get('category'), status: params.get('status'), search: params.get('search') }, { preserveState: true, preserveScroll: true })}
+                onChange={(e) => router.get(route('product.index'), { brand: e.target.value, category: params.get('category'), status: params.get('status'), search: params.get('search'), startdate : startdate,enddate:enddate }, { preserveState: true, preserveScroll: true })}
                value={params.get('brand') || ''}
               >
                 <option value="">Select Brand</option>
@@ -268,7 +277,7 @@ export default function List(props) {
                 enableReinitialize
                 initialValues={{ search: params.get('search') || '' }}
                 onSubmit={(values) => {
-                  router.get(route('product.index'), { search: values.search , status: params.get('status'), brand: params.get('brand'), category: params.get('category') }, {
+                  router.get(route('product.index'), { search: values.search , status: params.get('status'), brand: params.get('brand'), category: params.get('category'), startdate : startdate,enddate:enddate }, {
                     preserveState: true,
                     preserveScroll: true,
                   });
@@ -318,6 +327,12 @@ export default function List(props) {
               </Formik>
 
 
+              <button
+                onClick={() => setDaterangeModel(true)}
+                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+              >
+                Date&nbsp;Range&nbsp;Filter
+              </button>
 
 
 
@@ -591,7 +606,7 @@ export default function List(props) {
                 <nav aria-label="Table navigation">
                   <ul class="inline-flex items-center">
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '' , category: params.get('category') || '' ,brand: params.get('brand') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '' , category: params.get('category') || '' ,brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -645,7 +660,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -658,7 +673,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -784,6 +799,56 @@ export default function List(props) {
   `}</style>
 </Modal>
 
+
+
+
+    <Modal
+        show={daterangeModel}
+        onClose={() => setDaterangeModel(false)}
+        maxWidth="2xl"
+      >
+           <div className="overflow-y-auto max-h-[80vh]">
+        <div className="flex justify-center p-10">
+          <div className="text-2xl font-medium text-[#5d596c] ">
+            Date Range
+          </div>
+        </div>
+        <div className="px-10 flex justify-center mb-5">
+          <div className="text-center">
+          <DateRangePicker
+            ranges={[dateRange]}
+            onChange={(item) => {
+                setDateRange(item.selection);
+            }}
+            className="w-96"
+        />
+          
+            <div className="flex justify-center gap-4 mt-5">
+              <button
+                type="button"
+                onClick={()=>{setDaterangeModel(false)}}
+                className="text-gray-500 bg-[#eaebec] hover:bg-[#eaebec] focus:ring-4 focus:ring-[#eaebec] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                    router.get(route('product.index', {
+                        startdate: dateRange.startDate, 
+                        enddate: dateRange.endDate
+                    }));
+                }}
+                className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+              >
+                Filter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </Modal>
 
 
     </AuthenticatedLayout>

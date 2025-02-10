@@ -23,6 +23,9 @@ class ProductController extends Controller
     $status = $request->status ?? ''; 
     $brand = $request->brand ?? '';
     $category = $request->category ?? '';
+
+    $startdate = $request->startdate ?? '';
+    $enddate = $request->enddate ??'';
    
     // $dateRange = match ($filter) {
     //     'day' => now()->subDay(),
@@ -61,6 +64,11 @@ class ProductController extends Controller
             });
         } 
     })
+    ->where(function ($query) use ($startdate, $enddate) {
+        if ($startdate && $enddate) {
+            $query->whereBetween('created_at', [$startdate, $enddate]);
+        }
+    })
     ->latest();
 
 
@@ -95,7 +103,7 @@ class ProductController extends Controller
     $brands = Brand::latest()->get();
     $categories = Category::latest()->get();
 
-    return Inertia::render('Product/List', compact( 'brands', 'categories','products','totaliteminstock', 'stock','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
+    return Inertia::render('Product/List', compact( 'startdate', 'enddate','brands', 'categories','products','totaliteminstock', 'stock','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
 }
 
 

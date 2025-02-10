@@ -130,7 +130,7 @@ export default function CustomerSalesLedger(props) {
                     {/* Orders Table */}
                     <div className="mt-8">
                         <h3 className="text-lg font-bold mb-4">Transactions</h3>
-                        <table className="min-w-full bg-white border border-gray-300">
+                        {/* <table className="min-w-full bg-white border border-gray-300">
                             <thead>
                                 <tr className="bg-gray-100">
                                     <th className="py-2 px-4 border-b text-left">Order ID</th>
@@ -158,7 +158,40 @@ export default function CustomerSalesLedger(props) {
                                     );
                                 })}
                             </tbody>
-                        </table>
+                        </table> */}
+                        <table className="min-w-full bg-white border border-gray-300">
+    <thead>
+        <tr className="bg-gray-100">
+            <th className="py-2 px-4 border-b text-left">Date</th>
+            <th className="py-2 px-4 border-b text-left">Particulars</th>
+            <th className="py-2 px-4 border-b text-left">Folio</th>
+            <th className="py-2 px-4 border-b text-left">Debit (Dr)</th>
+            <th className="py-2 px-4 border-b text-left">Credit (Cr)</th>
+            <th className="py-2 px-4 border-b text-left">Dr or Cr</th>
+            <th className="py-2 px-4 border-b text-left">Balance</th>
+        </tr>
+    </thead>
+    <tbody>
+        {orders.map((order, index) => {
+            const debit = Number(order.payable_amount) || 0; // Ensure it's a number
+            const credit = Number(order.paid_amount) || 0;   // Ensure it's a number
+            const balanceType = runningBalance >= 0 ? 'Dr' : 'Cr';
+
+            return (
+                <tr key={index} className="border-b hover:bg-gray-50">
+                    <td className="py-2 px-4">{order.order_date || 'N/A'}</td>
+                    <td className="py-2 px-4">{`Order #${order.code || order.id}`}</td>
+                    <td className="py-2 px-4">{order.code || 'N/A'}</td>
+                    <td className="py-2 px-4">Rs. {debit.toFixed(2)}</td>
+                    <td className="py-2 px-4">Rs. {credit.toFixed(2)}</td>
+                    <td className="py-2 px-4">{balanceType}</td>
+                    <td className="py-2 px-4">Rs. {runningBalance.toFixed(2)}</td>
+                </tr>
+            );
+        })}
+    </tbody>
+</table>
+
                     </div>
 
                     {/* Summary Section */}
