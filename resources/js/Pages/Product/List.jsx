@@ -207,7 +207,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { status: e.target.value, category: params.get('category'), brand: params.get('brand'), search: params.get('search'), startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno')}, { preserveState: true })}
+                onChange={(e) => router.get(route('product.index'), { status: e.target.value, category: params.get('category'), brand: params.get('brand'), search: params.get('search'), startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno'),invoicecode: params.get('invoicecode')}, { preserveState: true })}
                 value={params.get('status') || ''}
               >
                 <option value="">Select Status</option>
@@ -221,7 +221,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { category: e.target.value , status: params.get('status'), brand: params.get('brand') , search: params.get('search') ,startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno')  }, { preserveState: true , preserveScroll: true})}
+                onChange={(e) => router.get(route('product.index'), { category: e.target.value , status: params.get('status'), brand: params.get('brand') , search: params.get('search') ,startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno'),invoicecode: params.get('invoicecode')  }, { preserveState: true , preserveScroll: true})}
                 value={params.get('category') || ''}
               >
                 <option value="">Select Category</option>
@@ -237,7 +237,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { brand: e.target.value, category: params.get('category'), status: params.get('status'), search: params.get('search'), startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno') }, { preserveState: true, preserveScroll: true })}
+                onChange={(e) => router.get(route('product.index'), { brand: e.target.value, category: params.get('category'), status: params.get('status'), search: params.get('search'), startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno'),invoicecode: params.get('invoicecode') }, { preserveState: true, preserveScroll: true })}
                value={params.get('brand') || ''}
               >
                 <option value="">Select Brand</option>
@@ -277,7 +277,7 @@ export default function List(props) {
                 enableReinitialize
                 initialValues={{ search: params.get('search') || '' }}
                 onSubmit={(values) => {
-                  router.get(route('product.index'), { search: values.search , status: params.get('status'), brand: params.get('brand'), category: params.get('category'), startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno') }, {
+                  router.get(route('product.index'), { search: values.search , status: params.get('status'), brand: params.get('brand'), category: params.get('category'), startdate : startdate,enddate:enddate, supplierinvoiceno: params.get('supplierinvoiceno'),invoicecode: params.get('invoicecode') }, {
                     preserveState: true,
                     preserveScroll: true,
                   });
@@ -606,7 +606,7 @@ export default function List(props) {
                 <nav aria-label="Table navigation">
                   <ul class="inline-flex items-center">
                     <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '' , category: params.get('category') || '' ,brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '' ,supplierinvoiceno : params.get('supplierinvoiceno') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '' , category: params.get('category') || '' ,brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '' ,supplierinvoiceno : params.get('supplierinvoiceno') || '', invoicecode : params.get('invoicecode') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -660,7 +660,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -673,7 +673,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -841,7 +841,8 @@ export default function List(props) {
                         search: params.get('search') || '',
                         category: params.get('category') || '',
                         brand: params.get('brand') || '',
-                        supplierinvoiceno: params.get('supplierinvoiceno') || ''
+                        supplierinvoiceno: params.get('supplierinvoiceno') || '',
+                        invoicecode: params.get('invoicecode') || '',
                     }));
                 }}
                 className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"

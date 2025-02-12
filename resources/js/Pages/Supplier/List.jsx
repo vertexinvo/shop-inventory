@@ -301,7 +301,7 @@ export default function List(props) {
                         {item?.address || 'N/A'}
                       </td>
                       <td class="p-4 text-sm text-black flex items-center">
-                        {item?.code || 'N/A'} <BiCopy size={20} onClick={() => { navigator.clipboard.writeText(item.code); toast.success('Copied!'); }} className="ml-2 cursor-pointer" />
+                       <Link className='text-blue-600' href={route('product.index',{invoicecode:item.code})} >{item?.code || 'N/A'}</Link> <BiCopy size={20} onClick={() => { navigator.clipboard.writeText(item.code); toast.success('Copied!'); }} className="ml-2 cursor-pointer" />
                       </td>
 
                       <td class="p-4 text-sm text-black">

@@ -28,6 +28,8 @@ class ProductController extends Controller
         $enddate = $request->enddate ??'';
 
         $supplierinvoiceno = $request->supplierinvoiceno ??'';
+
+        $invoicecode =  $request->invoicecode ?? '';
     
         // $dateRange = match ($filter) {
         //     'day' => now()->subDay(),
@@ -75,6 +77,13 @@ class ProductController extends Controller
             if ($supplierinvoiceno) {
                 $query->whereHas('supplierInvoice', function ($query) use ($supplierinvoiceno) {
                     $query->where('supplier_invoice_no', $supplierinvoiceno);
+                });
+            }
+        })
+        ->where(function ($query) use ($invoicecode) {
+            if ($invoicecode) {
+                $query->whereHas('supplierInvoice.supplier', function ($query) use ($invoicecode) {
+                    $query->where('code', $invoicecode);
                 });
             }
         })
