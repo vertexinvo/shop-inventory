@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import React, { useState } from 'react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { BiCopy } from 'react-icons/bi';
 import { toast } from 'react-toastify';
@@ -195,7 +195,7 @@ export default function List(props) {
                   {supplier.data.map((item, index) => (
 
                     <tr className={`${item?.paid_amount == 0 ? 'bg-red-100' : (item.total_payment - item.paid_amount) > 0 ? 'bg-yellow-100' : '' } border-b border-gray-300`} key={index}>
-                      <td className="p-4 text-sm text-black">{item.invoice_no || 'N/A'}</td>
+                      <td className="p-4 text-sm text-blue-600"><Link href={route('product.index', {supplierinvoiceno: item.invoice_no})}>{item.invoice_no || 'N/A'}</Link></td>
                       <td className="p-4 text-sm text-black">{item.invoice_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.due_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.total_payment || 'N/A'}</td>
@@ -224,7 +224,7 @@ export default function List(props) {
                       <td className="p-4 text-sm text-black">{item.cheque_date || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.bank_name || 'N/A'}</td>
                       <td className="p-4 text-sm text-black">{item.note || 'N/A'}</td>
-                      <td className="p-4 text-sm text-black">
+                      <td className="p-4 text-sm text-black flex  ">
                         <button onClick={() => setIsStatusModalOpen(item)}>
                           {item.status === "pending" ? (
                             <span className="flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
@@ -235,6 +235,7 @@ export default function List(props) {
                               </span>
                             )}
                         </button>
+                       
                       </td>
 
                       <td className="p-4 text-sm text-black">
@@ -247,6 +248,7 @@ export default function List(props) {
                               data-original="#000000" />
                           </svg>
                         </button>
+                        
                       </td>
 
                     </tr>

@@ -17,94 +17,104 @@ use Illuminate\Support\Facades\Validator;
 class ProductController extends Controller
 {
     public function index(Request $request)
-{
-    $this->authorize('viewAny', Product::class);
-    $search = $request->search ?? '';
-    $status = $request->status ?? ''; 
-    $brand = $request->brand ?? '';
-    $category = $request->category ?? '';
+    {
+        $this->authorize('viewAny', Product::class);
+        $search = $request->search ?? '';
+        $status = $request->status ?? ''; 
+        $brand = $request->brand ?? '';
+        $category = $request->category ?? '';
 
-    $startdate = $request->startdate ?? '';
-    $enddate = $request->enddate ??'';
-   
-    // $dateRange = match ($filter) {
-    //     'day' => now()->subDay(),
-    //     'week' => now()->subWeek(),
-    //     'month' => now()->subMonth(),
-    //     'year' => now()->subYear(),
-    //     default => now()->subDay(),
-    // };
+        $startdate = $request->startdate ?? '';
+        $enddate = $request->enddate ??'';
 
-    $products = Product::with('categories', 'stock', 'brands')
-    ->where(function ($query) use ($search) {
-        $query->where('name', 'like', "%$search%")
-              ->orWhere('model', 'like', "%$search%")
-              ->orWhere('id', 'like', "%$search%")
-              ->orWhere('code', 'like', "%$search%")
-              ->orWhere('identity_value', 'like', "%$search%");
-    })
-    ->where(function ($query) use ($status) {
-        if ($status !== '') {
-            $query->whereHas('stock', function ($query) use ($status) {
-                $query->where('status', $status);
-            });
-        }
-    })
-    ->where(function ($query) use ($brand) {
-        if ($brand !== '') {
-            $query->whereHas('brands', function ($query) use ($brand) {
-                $query->where('name', $brand);
-            });
-        } 
-    })
-    ->where(function ($query) use ($category) {
-        if ($category !== '') {
-            $query->whereHas('categories', function ($query) use ($category) {
-                $query->where('name', $category);
-            });
-        } 
-    })
-    ->where(function ($query) use ($startdate, $enddate) {
-        if ($startdate && $enddate) {
-            $query->whereBetween('created_at', [$startdate, $enddate]);
-        }
-    })
-    ->latest();
+        $supplierinvoiceno = $request->supplierinvoiceno ??'';
+    
+        // $dateRange = match ($filter) {
+        //     'day' => now()->subDay(),
+        //     'week' => now()->subWeek(),
+        //     'month' => now()->subMonth(),
+        //     'year' => now()->subYear(),
+        //     default => now()->subDay(),
+        // };
+
+        $products = Product::with('categories', 'stock', 'brands')
+        ->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('model', 'like', "%$search%")
+                ->orWhere('id', 'like', "%$search%")
+                ->orWhere('code', 'like', "%$search%")
+                ->orWhere('identity_value', 'like', "%$search%");
+        })
+        ->where(function ($query) use ($status) {
+            if ($status !== '') {
+                $query->whereHas('stock', function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+            }
+        })
+        ->where(function ($query) use ($brand) {
+            if ($brand !== '') {
+                $query->whereHas('brands', function ($query) use ($brand) {
+                    $query->where('name', $brand);
+                });
+            } 
+        })
+        ->where(function ($query) use ($category) {
+            if ($category !== '') {
+                $query->whereHas('categories', function ($query) use ($category) {
+                    $query->where('name', $category);
+                });
+            } 
+        })
+        ->where(function ($query) use ($startdate, $enddate) {
+            if ($startdate && $enddate) {
+                $query->whereBetween('created_at', [$startdate, $enddate]);
+            }
+        })
+        ->where(function ($query) use ($supplierinvoiceno) {
+            if ($supplierinvoiceno) {
+                $query->whereHas('supplierInvoice', function ($query) use ($supplierinvoiceno) {
+                    $query->where('supplier_invoice_no', $supplierinvoiceno);
+                });
+            }
+        })
+        
+        ->latest();
 
 
-        if($status){
-            $products = $products->whereHas('stock', function ($query) use ($status) {
-                $query->where('status', $status);
-            });
-        }
+            if($status){
+                $products = $products->whereHas('stock', function ($query) use ($status) {
+                    $query->where('status', $status);
+                });
+            }
 
-        $products = $products->paginate(50);
+            $products = $products->paginate(50);
 
-    $stock = Product::with('stock')->get();
+        $stock = Product::with('stock')->get();
 
-    // total products
+        // total products
 
-    $totalstock = Product::with('stock')->whereHas('stock')->count();
+        $totalstock = Product::with('stock')->whereHas('stock')->count();
 
-    $totalstockavailable = Product::with('stock')->whereHas('stock', function ($query) {
-        $query->where('status', true)->where('quantity', '>', 0);
-    })->count();
+        $totalstockavailable = Product::with('stock')->whereHas('stock', function ($query) {
+            $query->where('status', true)->where('quantity', '>', 0);
+        })->count();
 
-    $totalstocknotavailable = Product::with('stock')->whereHas('stock', function ($query) {
-        $query->where('status', false)->orWhere('quantity', 0);
-    })->count();
+        $totalstocknotavailable = Product::with('stock')->whereHas('stock', function ($query) {
+            $query->where('status', false)->orWhere('quantity', 0);
+        })->count();
 
-    $totalStockValue = Product::with('stock')->whereHas('stock')->get()->sum(function ($product) {
-        return $product->purchase_price * $product->stock->quantity;
-    });
+        $totalStockValue = Product::with('stock')->whereHas('stock')->get()->sum(function ($product) {
+            return $product->purchase_price * $product->stock->quantity;
+        });
 
-    $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
+        $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
 
-    $brands = Brand::latest()->get();
-    $categories = Category::latest()->get();
+        $brands = Brand::latest()->get();
+        $categories = Category::latest()->get();
 
-    return Inertia::render('Product/List', compact( 'startdate', 'enddate','brands', 'categories','products','totaliteminstock', 'stock','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
-}
+        return Inertia::render('Product/List', compact( 'startdate', 'enddate','brands', 'categories','products','totaliteminstock', 'stock','search','totalstock','totalstockavailable','totalstocknotavailable','totalStockValue'));
+    }
 
 
 public function csvstore(Request $request)
