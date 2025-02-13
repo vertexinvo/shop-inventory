@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Product;
 
 Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::resource('product',ProductController::class);
@@ -10,5 +12,18 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::get('product/csv/csvexport', [ProductController::class, 'csvExport'])->name('product.csvexport');
     Route::post('product/bulkdestroy', [ProductController::class, 'bulkdestroy'])->name('product.bulkdestroy');
     Route::post('/product/csvstore', [ProductController::class, 'csvstore'])->name('product.csvstore');
+    Route::get('/product/printqr/{id}', [ProductController::class, 'printqr'])->name('product.printqr');
+});
+
+Route::prefix('qrcode')->group(function () {
+    Route::get('/product/{id}', function ($code) {
+        $product = Product::with('stock','categories','brands')->where('code', $code)->first();
+
+        if ($product === null) {
+            $product = Product::where('id', $code)->firstOrFail();
+        }
+
+        return view('ProductDetail',compact('product'));
+    })->name('product.detail'); 
 });
 

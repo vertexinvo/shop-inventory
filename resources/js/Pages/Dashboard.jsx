@@ -36,6 +36,13 @@ export default function Dashboard(props) {
 
   const rolename = auth.user.roles.map((role) => role.name);
 
+  const formatProfit = (profit) => {
+    if (profit < 0) {
+      return <span className="text-red-500">Loss: {Math.abs(profit)}</span>;
+    }
+    return <span>{profit}</span>;
+  };
+
   return (
     <AuthenticatedLayout
       header={
@@ -52,7 +59,7 @@ export default function Dashboard(props) {
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
                 <p className="font-bold">TODAY'S PROFIT</p>
-                <p className="text-lg"> { rolename.includes('superadmin') ?   todayProfit : <p>No Access</p>}</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(todayProfit) : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
                 <GrMoney  size={40} />
@@ -64,7 +71,7 @@ export default function Dashboard(props) {
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
                 <p className="font-bold">THIS WEEK PROFIT</p>
-                <p className="text-lg"> { rolename.includes('superadmin') ?   weekProfit : <p>No Access</p>}</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?  formatProfit(weekProfit) : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
                 <GrMoney  size={40} />
@@ -76,7 +83,7 @@ export default function Dashboard(props) {
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
                 <p className="font-bold">THIS MONTH PROFIT</p>
-                <p className="text-lg"> { rolename.includes('superadmin') ?   monthProfit : <p>No Access</p>}</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(monthProfit) : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
                 <GrMoney  size={40} />
@@ -88,7 +95,7 @@ export default function Dashboard(props) {
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
                 <p className="font-bold">THIS YEAR PROFIT</p>
-                <p className="text-lg"> { rolename.includes('superadmin') ?   yearProfit : <p>No Access</p>}</p>
+                <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(yearProfit) : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
                 <GrMoney  size={40} />

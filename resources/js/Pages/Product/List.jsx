@@ -251,18 +251,17 @@ export default function List(props) {
 
               {selectId.length > 0 && (
                 <>
-                 <button
-                  onClick={() => setIsPrintQRModalOpen(true)}
+                 <Link href={route('product.printqr', { id: selectId.join(',') })}
                   className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 "
                 >
-                 Print QR
-                </button>
+                 Print&nbsp;QR
+                </Link>
 
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
                   className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
-                  Bulk Delete
+                  Bulk&nbsp;Delete
                 </button>
                 </>
               )}
@@ -378,7 +377,7 @@ export default function List(props) {
                       Product Info
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
-                      Supplier Invoice
+                       Quantity
                     </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -401,7 +400,7 @@ export default function List(props) {
                     </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
-                      Quantity
+                      Supplier Invoice
                     </th>
 
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -488,10 +487,9 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
-                        {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{ product.supplier_invoice_no} - ({ product.supplier_name})</p>)}
+                        {product?.stock?.quantity || 0}
                       </td>
-
+                   
                       <td class="p-4 text-sm text-black">
                         {product.purchase_price || 'N/A'}
                       </td>
@@ -519,9 +517,12 @@ export default function List(props) {
                           </ul>
                         </p>)}
                       </td>
+                     
                       <td class="p-4 text-sm text-black">
-                        {product?.stock?.quantity || 0}
+                        {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+                        {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{ product.supplier_invoice_no} - ({ product.supplier_name})</p>)}
                       </td>
+
 
                       <td class="p-4">
                         <label class="relative cursor-pointer">

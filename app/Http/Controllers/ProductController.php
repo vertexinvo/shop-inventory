@@ -16,6 +16,17 @@ use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
+    public function scanProduct(Request $request){
+        return Inertia::render('Product/ScanProduct');
+    }
+
+    public function printqr(Request $request, string $id)
+    {
+        $ids = explode(',', $id);
+        $products = Product::whereIn('id', $ids)->get();
+        return  Inertia::render('Product/PrintQR', compact('products'));
+    }
+
     public function index(Request $request)
     {
         $this->authorize('viewAny', Product::class);

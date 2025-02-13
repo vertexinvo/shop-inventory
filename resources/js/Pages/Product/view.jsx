@@ -531,7 +531,7 @@ export default function View(props) {
                             <ErrorMessage name="customfield" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-                            <QRCode  value={route('product.show',product.code || product.id )} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
+                            <QRCode  value={product.code || product.id} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
 
                           <div className="flex items-center justify-start gap-1 mt-8">
 
