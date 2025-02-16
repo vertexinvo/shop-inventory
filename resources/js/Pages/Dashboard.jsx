@@ -12,6 +12,10 @@ import RecentOrder from '@/Components/RecentOrder';
 import { GiMoneyStack } from 'react-icons/gi';
 import { MdOutlinePendingActions } from 'react-icons/md';
 import { GrMoney } from "react-icons/gr";
+import Clock from 'react-simple-clock'
+import LiveClockUpdate from '@/Components/LiveClockUpdate';
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 export default function Dashboard(props) {
   const { auth,todayProfit,weekProfit,monthProfit,yearProfit,latestOrder,todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
@@ -52,6 +56,22 @@ export default function Dashboard(props) {
       }
     >
       <Head title="Dashboard" />
+
+
+      <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 ">
+        <div className=" mt-4 mx-4 bg-white p-5 rounded-lg shadow-md flex items-center justify-center">
+         <Clock live={true} hourMarkFormat="number" />
+        </div>
+        <div className=" mt-4 mx-4 bg-white p-5 rounded-lg shadow-md flex items-center justify-center">
+         {/* digital clock */}
+         <LiveClockUpdate />
+        </div>
+        <div className=" mt-4 mx-4 bg-white p-5 rounded-lg shadow-md flex items-center justify-center">
+        <Calendar value={new Date()} />
+       
+        </div>
+      
+      </div>
 
       <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-4">
    
@@ -238,6 +258,8 @@ export default function Dashboard(props) {
         </Link>
         
       </div>
+
+     
 
       <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
         <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">

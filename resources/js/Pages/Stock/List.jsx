@@ -171,9 +171,9 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       type
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
+                    {/* <th class="p-4 text-left text-sm font-semibold ">
                       Supplier Invoice
-                    </th>
+                    </th> */}
                     <th class="p-4 text-left text-sm font-semibold ">
                       Remarks
                     </th>
@@ -238,10 +238,10 @@ export default function List(props) {
                       <td class="p-4 text-sm text-black">
                         {product?.type || 'N/A'}
                       </td>
-                      <td class="p-4 text-sm text-black">
+                      {/* <td class="p-4 text-sm text-black">
                         {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
                         {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no}</p>)}
-                      </td>
+                      </td> */}
                       <td class="p-4 text-sm text-black">
                         {product?.remarks || 'N/A'}
                       </td>
