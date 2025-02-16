@@ -53,7 +53,7 @@ export default function View(props) {
             onClick={() => window.history.back()}
             title="Back"
           />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">View Purchase</h2>
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">{product.code || product.id}</h2>
         </>}
     >
       <Head title="Purchase" />

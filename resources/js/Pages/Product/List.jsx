@@ -18,7 +18,8 @@ import { QRCode } from 'react-qrcode-logo';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
-
+import { Menu, Item, useContextMenu } from "react-contexify";
+import "react-contexify/dist/ReactContexify.css";
 
 export default function List(props) {
   const { auth, stock, startdate,enddate, products ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock,categories,brands} = props
@@ -55,7 +56,20 @@ export default function List(props) {
     }
   };
 
+  const { show } = useContextMenu({ id: "context-menu" });
 
+  const handleMenuClick = ({ props, action }) => {
+    const product = props;
+    if (action === "view") {
+      router.get(route("product.show", product.id));
+    } else if (action === "edit") {
+      router.get(route("product.edit", product.id));
+    } else if (action === "delete") {
+      setIsDeleteModalOpen(product)
+    } else if (action === "stock") {
+      router.get(route("stock.index", { product_id: product.id }));
+    }
+  };
 
   return (
     <AuthenticatedLayout
@@ -436,7 +450,14 @@ export default function List(props) {
                   )}
                   {products.data.map((product, index) => (
 
-                    <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}   ${selectId.includes(product.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
+                    <tr
+                    key={product.id}
+                     className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}   ${selectId.includes(product.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
+                     onContextMenu={(e) => {
+                      e.preventDefault(); // Prevents default right-click menu
+                      show({ event: e, props: product }); // Shows custom menu
+                    }}
+                     >
                       <td className="pl-4 w-8">
                         <input
                           id={`checkbox-${product.id}`} // Unique id for each checkbox
@@ -595,6 +616,33 @@ export default function List(props) {
 
                 </tbody>
               </table>
+
+
+               {/* Context Menu */}
+            <Menu id="context-menu">
+              <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
+                View
+              </Item>
+              <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
+                Edit
+              </Item>
+              {/* Show Stock option only if identity_type is not 'imei' */}
+              <Item
+                onClick={({ props }) => handleMenuClick({ props, action: "stock" })}
+                hidden={({ props }) => props.identity_type === "imei"}
+              >
+                Stock
+              </Item>
+              <Item
+                onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
+                className="text-red-600"
+              >
+                Delete
+              </Item>
+              
+            
+            </Menu>
+          
 
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">

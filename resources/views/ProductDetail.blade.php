@@ -75,7 +75,7 @@
                         <td class="p-4 text-gray-600 border-b">
                             {{ $product->categories->count() === 0 ? 'N/A' : $product->categories->pluck('name')->implode(', ') }}
                         </td>
-                            </tr>
+                    </tr>
 
                     <tr class="hover:bg-gray-50 transition duration-200">
                         <th class="p-4 text-left text-gray-700 font-semibold bg-gray-200 border-b">Product Brands</th> 
