@@ -71,6 +71,8 @@ export default function List(props) {
     }
   };
 
+  const [accordion, setAccordion] = useState(false);
+
   return (
     <AuthenticatedLayout
       Product={auth.Product}
@@ -172,9 +174,10 @@ export default function List(props) {
       <div className="flex flex-col px-4  mt-5 mx-auto w-full">
         <div className="w-full ">
 
-        <div
-  class="rounded-lg bg-white p-6 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
+        <div  class="rounded-lg bg-white p-6 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
   <h2 class="mb-5 text-3xl font-semibold">CSV Import Guide</h2>
+ {!accordion &&  <button className='bg-cyan-700 text-white px-4 py-2 rounded' onClick={() => setAccordion(!accordion)}>Read Guide</button>}
+  {accordion &&(<>
   <ul className='list-disc space-y-2'>
         <li>Download the CSV template and fill in the required fields.</li>
         <li>In the "warranty_type" column, values are "none" or "years" or "months" or "days".</li>
@@ -208,6 +211,7 @@ export default function List(props) {
                       </span>
                     </label>
   </div>
+  </>)}
 
 </div>
 
@@ -279,6 +283,7 @@ export default function List(props) {
                 </button>
                 </>
               )}
+              
               <button
                 onClick={() => router.get(route('product.create'))}
                 className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
@@ -305,17 +310,20 @@ export default function List(props) {
                         placeholder="Search..."
                         className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
                       />
-                      <button
+                      
+                    </div>
+
+                    <button
                         type="button"
                         onClick={() => {
-                          setFieldValue('search', '');
                           router.get(route('product.index'));
                         }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                        className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
                       >
-                        ✖
+                        Clear
                       </button>
-                    </div>
+
+
 
                     <button
                       type="submit"
@@ -339,7 +347,7 @@ export default function List(props) {
                 )}
               </Formik>
 
-
+            
               <button
                 onClick={() => setDaterangeModel(true)}
                 className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
