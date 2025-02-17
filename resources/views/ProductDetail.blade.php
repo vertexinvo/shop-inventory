@@ -19,6 +19,27 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+        .card-header {
+            background: linear-gradient(to right, #948f99, #c8cdd4);
+            color: white;
+            border-radius: 10px 10px 0 0;
+            padding: 1.5rem;
+        }
+        .card-header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: white;
+            transition: color 0.3s ease;
+        }
+        .btn-close:hover {
+            color: #ffdd57;
+        }
         .table th {
             background-color: #f8f9fa;
             font-weight: 600;
@@ -26,21 +47,13 @@
         .table td, .table th {
             vertical-align: middle;
         }
-        .btn-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #6c757d;
-        }
-        .btn-close:hover {
-            color: #343a40;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
-            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <!-- Enhanced Top Bar -->
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h1 class="h3 mb-0">Product Details</h1>
                 <button type="button" class="btn-close" onclick="window.location.href = '{{ route('product.scan') }}'">
                     <i class="fas fa-times"></i>
