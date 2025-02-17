@@ -4,17 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 use Eliseekn\LaravelMetrics\LaravelMetrics;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Supplierinvoice;
 use App\Models\Product;
 use App\Models\Item;
 use App\Models\tax;
+use Spatie\Activitylog\LogOptions;
 
 class Order extends Model
 {
     use HasFactory, SoftDeletes;
+    use LogsActivity;
+
+    protected static $logAttributes = ['status', 'payable_amount', 'name','phone','code']; // Attributes to log
+    protected static $logOnlyDirty = true; // Log only changed attributes
+    protected static $logName = 'order'; // Log category name
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['status', 'payable_amount', 'name','phone'])
+            ->useLogName('order')
+            ->setDescriptionForEvent(fn(string $eventName) => "Order has been {$eventName}");
+    }
 
     public static function metrics(): LaravelMetrics
     {
