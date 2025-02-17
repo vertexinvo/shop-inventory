@@ -92,24 +92,27 @@ const PrintQR = ({ products }) => {
 
     {/* Responsive Grid */}
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 print:grid-cols-5 print:gap-2">
-      {products.map((product, index) => (
-        <div
-          key={index}
-          className="flex flex-col border border-gray-200 items-center justify-center p-6 rounded-lg bg-white hover:shadow-md transition-shadow duration-300 break-inside-avoid"
-        >
-          <QRCode
-            value={product?.code || product?.id || 'N/A'} // Use optional chaining
-            size={150} // Adjust size as needed
-            logoOpacity={0.8} // Optional: Add a logo overlay
-            className="rounded-lg"
-            logoImage={setting.site_favicon} 
-          />
-          <div className="mt-3 text-sm font-medium text-gray-700">
-            {product?.code || product?.id || 'N/A'}
-          </div>
+  {products.map((product, index) =>
+    Array.from({ length: product?.stock?.quantity || 1 }).map((_, qtyIndex) => (
+      <div
+        key={`${index}-${qtyIndex}`} // Unique key using product index and quantity index
+        className="flex flex-col border border-gray-200 items-center justify-center p-6 rounded-lg bg-white hover:shadow-md transition-shadow duration-300 break-inside-avoid"
+      >
+        <QRCode
+          value={product?.code || product?.id || 'N/A'}
+          size={150}
+          logoOpacity={0.8}
+          className="rounded-lg"
+          logoImage={setting.site_favicon}
+        />
+        <div className="mt-3 text-sm font-medium text-gray-700">
+          {product?.code || product?.id || 'N/A'}
         </div>
-      ))}
-    </div>
+      </div>
+    ))
+  )}
+</div>
+
 
     {/* Print Button */}
     <div className="mt-8 text-center hide-print">

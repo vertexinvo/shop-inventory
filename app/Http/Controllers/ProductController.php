@@ -23,7 +23,7 @@ class ProductController extends Controller
     public function printqr(Request $request, string $id)
     {
         $ids = explode(',', $id);
-        $products = Product::whereIn('id', $ids)->get();
+        $products = Product::with( 'stock')->whereIn('id', $ids)->get();
         return  Inertia::render('Product/PrintQR', compact('products'));
     }
 
