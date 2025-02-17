@@ -283,7 +283,6 @@ export default function List(props) {
                 </button>
                 </>
               )}
-              
               <button
                 onClick={() => router.get(route('product.create'))}
                 className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
@@ -310,20 +309,17 @@ export default function List(props) {
                         placeholder="Search..."
                         className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
                       />
-                      
-                    </div>
-
-                    <button
+                      <button
                         type="button"
                         onClick={() => {
+                          setFieldValue('search', '');
                           router.get(route('product.index'));
                         }}
-                        className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
                       >
-                        Clear
+                        ✖
                       </button>
-
-
+                    </div>
 
                     <button
                       type="submit"
@@ -347,7 +343,7 @@ export default function List(props) {
                 )}
               </Formik>
 
-            
+
               <button
                 onClick={() => setDaterangeModel(true)}
                 className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
