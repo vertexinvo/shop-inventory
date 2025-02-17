@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Product Detail</title>
-    @vite('resources/css/app.css')
+
 </head>
 <body class="bg-gradient-to-r from-gray-50 to-gray-200 p-6">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-200">
