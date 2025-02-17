@@ -188,6 +188,25 @@ export default function Setting(props) {
           </a>
            
         </div>
+        <div className="w-full scale-100">
+          <a href={route('setting.activitylog')}  className="w-full">
+            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
+              <div className="items-center">
+                <div className="flex justify-center mt-2">
+                  <img className="w-auto h-16 " src="images/activitylogs.png" alt="Role Setting" />
+                </div>
+              </div>
+              <div className="flex flex-col items-center pb-5">
+                <div className="flex mt-4">
+                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
+                    Activity Logs
+                  </span>
+                </div>
+              </div>
+            </button>
+          </a>
+           
+        </div>
       </div>
     </div>
   </div>

@@ -11,3 +11,9 @@ Route::middleware(['auth'])->prefix('setting')->group(function(){
     Route::post('update', [SettingController::class, 'update'])->name('setting.update')->middleware('isSuperAdmin');
     Route::get('/exportdb', [SettingController::class, 'exportDatabase'])->name('setting.db')->middleware('isSuperAdmin');
 });
+//route for activity loog
+Route::get('/activitylog',function () {
+    
+    return Inertia::render('ActivityLog');
+})->name('setting.activitylog')->middleware('isSuperAdmin');
+ 
