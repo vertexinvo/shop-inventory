@@ -9,13 +9,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiLogOut } from "react-icons/bi";
 import ConfirmModal from '@/Components/ConfirmModal';
-import { MdFormatListBulleted, MdOutlineQrCodeScanner } from "react-icons/md";
+import { MdFormatListBulleted, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbInvoice } from "react-icons/tb";
 import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
-
+import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
+import { QRCode } from 'react-qrcode-logo';
 
 export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
@@ -46,6 +47,8 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
     const [isMinimizeSidebar , setIsMinimizeSidebar] = useState(false);
+
+    const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
 
     return (
         <>
@@ -323,6 +326,14 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
                             <hr />
                             <div className='mt-1'>
+                                
+                                <button onClick={() => setIsLinkDeviceModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
+                                <MdOutlinePhoneAndroid  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
+                                <span class="ms-3">Link Mobile App</span>
+                                </button>
+
+                            </div> 
+                            <div className='mt-1'>
                                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
                                     <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
                                     <span class="ms-3">Settings</span>
@@ -443,6 +454,9 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
             <ConfirmModal isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} title="Are you sure you want to logout?" onConfirm={() => {
                 router.post(route('logout'))
             }} />
+
+
+            <LinkDeviceQrcode isOpen={isLinkDeviceModalOpen} onClose={() => setIsLinkDeviceModalOpen(false)}  />
 
         </>
     );

@@ -1,0 +1,11 @@
+{
+    "name": "Mobileapp",
+    "alias": "mobileapp",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Mobileapp\\Providers\\MobileappServiceProvider"
+    ],
+    "files": []
+}

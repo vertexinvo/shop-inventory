@@ -20,6 +20,9 @@ return [
 
     'favicon' => env('APP_URL') . '/images/logo.png',
 
+    'qr_login_secret' => env('QR_LOGIN_SECRET', 'default-secret'),
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

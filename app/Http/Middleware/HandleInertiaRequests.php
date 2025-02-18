@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Config;
+
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -32,7 +33,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
-    public function share(Request $request): array
+    public function share(Request $request)
     {
         $this->setting = Setting::first();
 
@@ -47,7 +48,8 @@ class HandleInertiaRequests extends Middleware
         if($this->setting && $this->setting->site_logo){
             Config::set('app.favicon', $this->setting->site_favicon);
         }
-       
+
+      
     
 
         return [
