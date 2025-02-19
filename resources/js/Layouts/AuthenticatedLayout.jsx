@@ -16,7 +16,7 @@ import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
-import { QRCode } from 'react-qrcode-logo';
+
 
 export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
@@ -325,14 +325,15 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                             </ul>
 
                             <hr />
+                            {/* profile.generated-via-qr */}
+                           
                             <div className='mt-1'>
-                                
-                                <button onClick={() => setIsLinkDeviceModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
+                                <NavLink href={route('profile.generated-via-qr')} active={route().current('profile.generated-via-qr')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
                                 <MdOutlinePhoneAndroid  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
                                 <span class="ms-3">Link Mobile App</span>
-                                </button>
+                                </NavLink>
 
-                            </div> 
+                            </div>
                             <div className='mt-1'>
                                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
                                     <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
@@ -456,7 +457,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
             }} />
 
 
-            <LinkDeviceQrcode isOpen={isLinkDeviceModalOpen} onClose={() => setIsLinkDeviceModalOpen(false)}  />
+
 
         </>
     );
