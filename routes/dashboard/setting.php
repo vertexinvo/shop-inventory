@@ -16,6 +16,6 @@ Route::middleware(['auth'])->prefix('setting')->group(function(){
 });
 //route for activity log
 Route::get('/activitylog', function (Request $request) {
-    $activities = Activity::with('causer')->latest()->paginate(50);
+    $activities = Activity::with('causer')->latest()->paginate(20);
     return Inertia::render('ActivityLog', compact('activities'));
 })->name('setting.activitylog')->middleware('isSuperAdmin');
