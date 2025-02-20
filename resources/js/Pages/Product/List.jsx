@@ -244,7 +244,7 @@ export default function List(props) {
               >
                 <option value="">Select Category</option>
                 {categories.map((category) => (
-                <option value={category.name}>{category.name}</option>
+                <option value={category.name}>{category.name} ({category.total_products})</option>
                 ))} 
                 
               </select>
@@ -260,7 +260,7 @@ export default function List(props) {
               >
                 <option value="">Select Brand</option>
                 {brands.map((brand) => (
-                <option value={brand.name}>{brand.name}</option>
+                <option value={brand.name}>{brand.name} ({brand.total_products})</option>
                 ))}
                 
               </select>
