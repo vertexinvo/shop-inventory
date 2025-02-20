@@ -16,8 +16,7 @@ class MasterStatus
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $domain = $request->getHttpHost();// Get the domain name
-
+       
         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
         $tenant = Tenancy::where('domain',  $domainurl)->first();
 
