@@ -32,46 +32,46 @@ class DomainDatabaseSwitcher
         // Map domains to their respective database configurations
         $domainToDatabase = [
             
-            'localhost:8000' => [
-                'database' => env('DB_SHOPA_DATABASE'),
-                'username' => env('DB_SHOPA_USERNAME'),
-                'password' => env('DB_SHOPA_PASSWORD'),
-                'host' => env('DB_SHOPA_HOST'),
-            ],
-            'celltech.vertexinvo.io' => [
-                'database' => env('DB_CELLTECH_DATABASE'),
-                'username' => env('DB_CELLTECH_USERNAME'),
-                'password' => env('DB_CELLTECH_PASSWORD'),
-                'host' => env('DB_CELLTECH_HOST'),
-            ],
-            'inventorysystem.vertexinvo.io' => [
-                'database' => env('DB_VERTEXINVO_DATABASE'),
-                'username' => env('DB_VERTEXINVO_USERNAME'),
-                'password' => env('DB_VERTEXINVO_PASSWORD'),
-                'host' => env('DB_VERTEXINVO_HOST'),
-            ],
-            'iqracompb1.vertexinvo.io' => [
-                'database' => env('DB_IQRACOMPB1_DATABASE'),
-                'username' => env('DB_IQRACOMPB1_USERNAME'),
-                'password' => env('DB_IQRACOMPB1_PASSWORD'),
-                'host' => env('DB_IQRACOMPB1_HOST'),
-            ]
+            // 'localhost:8000' => [
+            //     'database' => env('DB_SHOPA_DATABASE'),
+            //     'username' => env('DB_SHOPA_USERNAME'),
+            //     'password' => env('DB_SHOPA_PASSWORD'),
+            //     'host' => env('DB_SHOPA_HOST'),
+            // ],
+            // 'celltech.vertexinvo.io' => [
+            //     'database' => env('DB_CELLTECH_DATABASE'),
+            //     'username' => env('DB_CELLTECH_USERNAME'),
+            //     'password' => env('DB_CELLTECH_PASSWORD'),
+            //     'host' => env('DB_CELLTECH_HOST'),
+            // ],
+            // 'inventorysystem.vertexinvo.io' => [
+            //     'database' => env('DB_VERTEXINVO_DATABASE'),
+            //     'username' => env('DB_VERTEXINVO_USERNAME'),
+            //     'password' => env('DB_VERTEXINVO_PASSWORD'),
+            //     'host' => env('DB_VERTEXINVO_HOST'),
+            // ],
+            // 'iqracompb1.vertexinvo.io' => [
+            //     'database' => env('DB_IQRACOMPB1_DATABASE'),
+            //     'username' => env('DB_IQRACOMPB1_USERNAME'),
+            //     'password' => env('DB_IQRACOMPB1_PASSWORD'),
+            //     'host' => env('DB_IQRACOMPB1_HOST'),
+            // ]
         ];
 
-        // foreach ($tenants as $tenant) {
+        foreach ($tenants as $tenant) {
 
-        //     $domain = parse_url($tenant->domain, PHP_URL_HOST);
-        //     $port = parse_url($tenant->domain, PHP_URL_PORT);
+            $domain = parse_url($tenant->domain, PHP_URL_HOST);
+            $port = parse_url($tenant->domain, PHP_URL_PORT);
 
-        //     // Combine domain and port if the port exists
-        //     $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
-        //     $domainToDatabase[$domainWithPort] = [
-        //         'database' => $tenant->database,
-        //         'username' => $tenant->username,
-        //         'password' => $tenant->password,
-        //         'host' => $tenant->host,
-        //     ];
-        // }
+            // Combine domain and port if the port exists
+            $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
+            $domainToDatabase[$domainWithPort] = [
+                'database' => $tenant->database,
+                'username' => $tenant->username,
+                'password' => $tenant->password,
+                'host' => $tenant->host,
+            ];
+        }
    
         if (array_key_exists($domain, $domainToDatabase)) {
         
