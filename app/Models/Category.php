@@ -16,8 +16,23 @@ class Category extends Model
         'parent_id',
     ];
 
+    protected $appends = [
+        'total_products',
+    ];
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id');
+    }
+
+    // total_products
+    public function getTotalProductsAttribute()
+    {
+        return $this->products()->count();
     }
 }

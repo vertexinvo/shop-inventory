@@ -63,29 +63,8 @@ class AppServiceProvider extends ServiceProvider
         Stocklog::observe(StocklogObserver::class);
         Product::observe(ProductObserver::class);
         Order::observe(OrderObserver::class);
-        Item::observe(ItemObserver::class);
-        if ($this->app->runningInConsole()) {
-            $this->preventMasterMigrations();
-        }
+        
     }
 
-/**
- * Prevent Master module migrations from running.
- */
-
-private function preventMasterMigrations(): void
-{
-    $masterMigrationsPath = base_path('Modules/Master/Database/Migrations');
-    echo "🚫 Preventing Master Module Migrations\n";
-
-    Event::listen(MigrationStarted::class, function (MigrationStarted $event) use ($masterMigrationsPath) {
-        $migrationFile = (new \ReflectionClass($event->migration))->getFileName();
-
-        if (str_contains($migrationFile, $masterMigrationsPath)) {
-            echo "🚫 Skipping Master Module Migration: " . basename($migrationFile) . "\n";
-            exit(0); // Prevent migration from running
-        }
-    });
-}
 
 }

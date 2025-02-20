@@ -116,6 +116,9 @@ export default function List(props) {
                       Name
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Total Products
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Parent Category
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -175,6 +178,13 @@ export default function List(props) {
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4 ">
                             <p class="text-sm text-black ">{category.name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td class=" text-sm">
+                        <div class="flex items-center cursor-pointer w-max">
+                          <div class="ml-4 ">
+                            <p class="text-sm text-black ">{category.total_products}</p>
                           </div>
                         </div>
                       </td>

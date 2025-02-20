@@ -14,4 +14,20 @@ class Brand extends Model
         'name',
         'description',
     ];
+
+    protected $appends = [
+        'total_products',
+    ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'brand_product', 'brand_id', 'product_id');
+    }
+
+    public function getTotalProductsAttribute()
+    {
+        return $this->products()->count();
+    }
+
+
 }
