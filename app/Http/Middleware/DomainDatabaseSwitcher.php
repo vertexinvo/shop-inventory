@@ -30,7 +30,7 @@ class DomainDatabaseSwitcher
         Config::set('app.url', $domainurl);
  
         // Map domains to their respective database configurations
-        $domainToDatabase = [
+       // $domainToDatabase = [
             
             // 'localhost:8000' => [
             //     'database' => env('DB_SHOPA_DATABASE'),
@@ -56,22 +56,25 @@ class DomainDatabaseSwitcher
             //     'password' => env('DB_IQRACOMPB1_PASSWORD'),
             //     'host' => env('DB_IQRACOMPB1_HOST'),
             // ]
-        ];
+       // ];
 
-        foreach ($tenants as $tenant) {
+       $domainToDatabase = []; // Ensure the array is initialized
 
-            $domain = parse_url($tenant->domain, PHP_URL_HOST);
-            $port = parse_url($tenant->domain, PHP_URL_PORT);
-
-            // Combine domain and port if the port exists
-            $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
-            $domainToDatabase[$domainWithPort] = [
-                'database' => $tenant->db_name,
-                'username' => $tenant->db_user,
-                'password' => $tenant->db_password,
-                'host' => $tenant->db_host,
-            ];
-        }
+       foreach ($tenants as $tenant) {
+           $domain = parse_url($tenant->domain, PHP_URL_HOST);
+           $port = parse_url($tenant->domain, PHP_URL_PORT);
+       
+           // Combine domain and port if the port exists
+           $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
+       
+           $domainToDatabase[$domainWithPort] = [
+               'database' => $tenant->db_name,
+               'username' => $tenant->db_user,
+               'password' => $tenant->db_password,
+               'host' => $tenant->db_host,
+           ];
+       }
+       
    
         if (array_key_exists($domain, $domainToDatabase)) {
         
