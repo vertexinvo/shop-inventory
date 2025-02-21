@@ -35,7 +35,7 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request)
     {
-        $this->setting = Setting::first();
+        $this->setting = Setting::first() ?? null;
 
         $message = Session::get('message');
         $error = Session::get('error');
