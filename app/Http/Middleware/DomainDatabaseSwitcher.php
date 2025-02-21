@@ -77,6 +77,8 @@ class DomainDatabaseSwitcher
            $domainToDatabase = array_merge($domainToDatabase, $record);
        }
 
+       dd($domainToDatabase);
+
        
    
         if (array_key_exists($domain, $domainToDatabase)) {
