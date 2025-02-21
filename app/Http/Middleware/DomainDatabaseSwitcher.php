@@ -67,13 +67,16 @@ class DomainDatabaseSwitcher
            // Combine domain and port if the port exists
            $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
        
-           $domainToDatabase[$domainWithPort] = [
+           $record[$domainWithPort] = [
                'database' => $tenant->db_name,
                'username' => $tenant->db_user,
                'password' => $tenant->db_password,
                'host' => $tenant->db_host,
            ];
+
+           $domainToDatabase = array_merge($domainToDatabase, $record);
        }
+
        
    
         if (array_key_exists($domain, $domainToDatabase)) {
