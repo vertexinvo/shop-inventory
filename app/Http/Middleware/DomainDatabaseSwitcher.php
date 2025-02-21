@@ -25,7 +25,7 @@ class DomainDatabaseSwitcher
 
         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
 
-        $tenants = Tenancy::all();
+        // $tenants = Tenancy::all();
 
         Config::set('app.url', $domainurl);
  
@@ -58,33 +58,35 @@ class DomainDatabaseSwitcher
             // ]
        // ];
 
-       $domainToDatabase = []; // Ensure the array is initialized
+       $tenant = Tenancy::where('domain',  $domainurl)->first();
 
-       foreach ($tenants as $tenant) {
-           $domain = parse_url($tenant->domain, PHP_URL_HOST);
-           $port = parse_url($tenant->domain, PHP_URL_PORT);
-       
-           // Combine domain and port if the port exists
-           $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
-       
-           $record[$domainWithPort] = [
-               'database' => $tenant->db_name,
-               'username' => $tenant->db_user,
-               'password' => $tenant->db_password,
-               'host' => $tenant->db_host,
-           ];
+    //    $domainToDatabase = []; // Ensure the array is initialized
 
-           $domainToDatabase = array_merge($domainToDatabase, $record);
-       }
+    //    foreach ($tenants as $tenant) {
+    //        $domain = parse_url($tenant->domain, PHP_URL_HOST);
+    //        $port = parse_url($tenant->domain, PHP_URL_PORT);
+       
+    //        // Combine domain and port if the port exists
+    //        $domainWithPort = $port ? "{$domain}:{$port}" : $domain;
+    //         dd($domainWithPort);
+    //        $record[$domainWithPort] = [
+    //            'database' => $tenant->db_name,
+    //            'username' => $tenant->db_user,
+    //            'password' => $tenant->db_password,
+    //            'host' => $tenant->db_host,
+    //        ];
+
+    //        $domainToDatabase = array_merge($domainToDatabase, $record);
+    //    }
 
        
    
-        if (array_key_exists($domain, $domainToDatabase)) {
+        // if (array_key_exists($domain, $domainToDatabase)) {
         
-            Config::set('database.connections.mysql.database', $domainToDatabase[$domainWithPort]['database']);
-            Config::set('database.connections.mysql.username', $domainToDatabase[$domainWithPort]['username']);
-            Config::set('database.connections.mysql.password', $domainToDatabase[$domainWithPort]['password']);
-            Config::set('database.connections.mysql.host', $domainToDatabase[$domainWithPort]['host']);
+            Config::set('database.connections.mysql.database',$tenant->db_name);
+            Config::set('database.connections.mysql.username', $tenant->db_user);
+            Config::set('database.connections.mysql.password', $tenant->db_password);
+            Config::set('database.connections.mysql.host', $tenant->db_host);
         
             DB::purge('mysql');
             DB::reconnect('mysql');
@@ -93,7 +95,7 @@ class DomainDatabaseSwitcher
             //     abort(500)->with('message', 'Currently this domain is not allowed');
             // }
 
-        }
+        // }
         return $next($request);
     }
 }
