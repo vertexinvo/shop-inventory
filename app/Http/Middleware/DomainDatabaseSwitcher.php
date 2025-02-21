@@ -77,16 +77,14 @@ class DomainDatabaseSwitcher
            $domainToDatabase = array_merge($domainToDatabase, $record);
        }
 
-       dd($domainToDatabase);
-
        
    
         if (array_key_exists($domain, $domainToDatabase)) {
         
-            Config::set('database.connections.mysql.database', $domainToDatabase[$domain]['database']);
-            Config::set('database.connections.mysql.username', $domainToDatabase[$domain]['username']);
-            Config::set('database.connections.mysql.password', $domainToDatabase[$domain]['password']);
-            Config::set('database.connections.mysql.host', $domainToDatabase[$domain]['host']);
+            Config::set('database.connections.mysql.database', $domainToDatabase[$domainWithPort]['database']);
+            Config::set('database.connections.mysql.username', $domainToDatabase[$domainWithPort]['username']);
+            Config::set('database.connections.mysql.password', $domainToDatabase[$domainWithPort]['password']);
+            Config::set('database.connections.mysql.host', $domainToDatabase[$domainWithPort]['host']);
         
             DB::purge('mysql');
             DB::reconnect('mysql');
