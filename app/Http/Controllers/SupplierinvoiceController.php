@@ -155,9 +155,42 @@ class SupplierinvoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSupplierinvoiceRequest $request, Supplierinvoice $supplierinvoice)
+    public function update(UpdateSupplierinvoiceRequest $request, $id)
     {
-        //
+        $supplierinvoice = Supplierinvoice::findOrFail($id);
+        $this->authorize('update', $supplierinvoice);
+        $validator = Validator::make($request->all(), [
+            'supplier_code' => 'required|exists:suppliers,code',
+            'invoice_no' => 'required|unique:supplierinvoices,invoice_no,'.$supplierinvoice->id,
+
+            'invoice_date' => 'required',
+            'due_date' => 'required',
+            'total_payment' => 'required|numeric|max:1000000000',
+            'status' => 'required|in:pending,paid',
+            'method' => 'required',
+            'cheque_no' => 'nullable|string|max:255',
+            'cheque_date' => 'nullable',
+            'bank_name' => 'nullable|string|max:255',
+            'bank_branch' => 'nullable|string|max:255',
+            'bank_account' => 'nullable|string|max:255',
+            'online_payment_link' => 'nullable|url',
+            'payment_proof' => 'nullable',
+            'note' => 'nullable|string|max:5000',
+        ]);
+
+        if ($validator->fails()) {
+            session()->flash('error', $validator->errors()->first());
+            return redirect()->back();
+        }
+        $data = $request->all();
+        
+        //check supplier_code and get id
+        $supplier = Supplier::where('code', $data['supplier_code'])->first();
+        $data['supplier_id'] = $supplier->id; 
+
+        $supplierinvoice->update($data);
+        session()->flash('message', 'Supplier invoice updated successfully');
+
     }
 
     /**

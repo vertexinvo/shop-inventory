@@ -27,6 +27,8 @@ export default function List(props) {
   const [supplierInvoiceAmounts, setSupplierInvoiceAmounts] = useState({});
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
 
+  const [supplierEdit , setSupplierEdit] = useState(null);
+
   const handleAmountChange = (e, orderId) => {
     const updatedAmount = e.target.value;
     setSupplierInvoiceAmounts((prevState) => ({
@@ -248,6 +250,10 @@ export default function List(props) {
                               data-original="#000000" />
                           </svg>
                         </button>
+                        &nbsp;&nbsp;
+                        <button onClick={() => setSupplierEdit(item)} title="Edit">
+                          <FaPen className="text-blue-500 hover:text-blue-700" />
+                        </button>
                         
                       </td>
 
@@ -350,32 +356,32 @@ export default function List(props) {
 
 
       </div>
-      <Modal show={isNewSupplierInvoiceModel} onClose={() => setIsNewSupplierInvoiceModel(false)}>
+      <Modal show={isNewSupplierInvoiceModel || supplierEdit !== null} onClose={() =>{ setIsNewSupplierInvoiceModel(false) ; setSupplierEdit(null)}}>
         <div className="overflow-y-auto max-h-[80vh]">
           <div className="flex justify-center p-10">
             <div className="text-2xl font-medium text-[#5d596c] ">
-              Create New Invoice
+          {supplierEdit !== null ? "Update Invoice" : "Create New Invoice"}  
             </div>
           </div>
 
           <div className="px-10 mb-5">
             <Formik enableReinitialize initialValues={{
-              supplier_code: suppliers.code || "",
-              invoice_no: "",
-              invoice_date: "",
-              due_date: "",
-              total_payment: "",
-              paid_amount: "",
-              status: "",
-              method: "",
-              cheque_no: "",
-              cheque_date: "",
-              bank_name: "",
-              bank_branch: "",
-              bank_account: "",
-              online_payment_link: "",
-              payment_proof: "",
-              note: "",
+               supplier_code: suppliers.code || "",
+               invoice_no: supplierEdit?.invoice_no || "",
+               invoice_date: supplierEdit?.invoice_date || "",
+               due_date: supplierEdit?.due_date || "",
+               total_payment: supplierEdit?.total_payment || "",
+               paid_amount: supplierEdit?.paid_amount || "",
+               status: supplierEdit?.status || "",
+               method: supplierEdit?.method || "",
+               cheque_no: supplierEdit?.cheque_no || "",
+               cheque_date: supplierEdit?.cheque_date || "",
+               bank_name: supplierEdit?.bank_name || "",
+               bank_branch: supplierEdit?.bank_branch || "",
+               bank_account: supplierEdit?.bank_account || "",
+               online_payment_link: supplierEdit?.online_payment_link || "",
+               payment_proof: supplierEdit?.payment_proof || "",
+               note: supplierEdit?.note || "",
             }}
               validationSchema={Yup.object({
                 supplier_code: Yup.string().required("Supplier Code is required"),
@@ -406,6 +412,15 @@ export default function List(props) {
                 note: Yup.string(),
               })}
               onSubmit={(values, { setSubmitting }) => {
+              
+                supplierEdit !== null ? router.put(route('supplier-invoice.update', supplierEdit.id), values, {
+                  onSuccess: () => {
+                    setIsNewSupplierInvoiceModel(false);
+                    setSupplierEdit(null);
+                  },
+                  preserveScroll: true,
+                  preserveState: true,
+                }) :
                 router.post(route('supplier-invoice.store'), values, {
                   onSuccess: () => {
                     setIsNewSupplierInvoiceModel(false);
@@ -433,7 +448,7 @@ export default function List(props) {
 
                     <div className="mb-4">
                       <label className="block text-grey-darker text-sm  mb-2">Supplier Code</label>
-                      <Field name="supplier_code" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier code" />
+                      <Field disabled={supplierEdit !== null} name="supplier_code" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter supplier code" />
 
                       <ErrorMessage name="supplier_code" component="div" className="text-red-500 text-xs mt-1" />
                     </div>
@@ -725,7 +740,7 @@ export default function List(props) {
                       <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
                         Submit
                       </button>
-                      <button onClick={() => setIsNewSupplierInvoiceModel(false)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
+                      <button onClick={() => {setIsNewSupplierInvoiceModel(false); setSupplierEdit(null);}} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                         Close
                       </button>
                     </div>
@@ -736,6 +751,9 @@ export default function List(props) {
           </div>
         </div>
       </Modal>
+
+
+      
 
 
       <Modal
