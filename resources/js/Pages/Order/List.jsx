@@ -18,7 +18,8 @@ import { MdOutlinePayments } from "react-icons/md";
 import { FaMoneyBills } from "react-icons/fa6";
 import { QRCode } from 'react-qrcode-logo';
 import Dropdown from '@/Components/Dropdown';
-
+import { Menu, Item, useContextMenu } from "react-contexify";
+import "react-contexify/dist/ReactContexify.css";
 
 
 
@@ -42,6 +43,21 @@ export default function List(props) {
       order.id === orderId ? { ...order, paid_amount: updatedAmount } : order
     );
   }
+
+
+    const { show } = useContextMenu({ id: "context-menu" });
+  
+    const handleMenuClick = ({ props, action }) => {
+      const order = props;
+      if (action === "view") {
+        router.get(route("order.show", order.id));
+      } else if (action === "edit") {
+        router.get(route("order.edit", order.id));
+      } else if (action === "delete") {
+        setIsDeleteModalOpen(order)
+      } 
+    };
+  
 
   return (
     <AuthenticatedLayout
@@ -389,7 +405,12 @@ export default function List(props) {
                   {orders.data.map((order, index) => (
 
 
-                    <tr className={`  ${ (order.status === 'pending' && order.paid_amount <= 0) ? 'bg-red-100' : (order.status === 'pending' && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)) ? 'bg-yellow-100' : ' bg-white '} ${selectId.includes(order.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
+                    <tr className={`  ${ (order.status === 'pending' && order.paid_amount <= 0) ? 'bg-red-100' : (order.status === 'pending' && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)) ? 'bg-yellow-100' : ' bg-white '} ${selectId.includes(order.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
+                    onContextMenu={(e) => {
+                      e.preventDefault(); // Prevents default right-click menu
+                      show({ event: e, props: order }); // Shows custom menu
+                    }}
+                    >
 
                       <td className="pl-4 w-8">
                         <input
@@ -613,6 +634,28 @@ export default function List(props) {
 
                 </tbody>
               </table>
+
+
+              
+               {/* Context Menu */}
+            <Menu id="context-menu">
+              <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
+                View
+              </Item>
+              <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
+                Edit
+              </Item>
+              {/* Show Stock option only if identity_type is not 'imei' */}
+             
+              <Item
+                onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
+                className="text-red-600"
+              >
+                Delete
+              </Item>
+              
+            
+            </Menu>
 
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
