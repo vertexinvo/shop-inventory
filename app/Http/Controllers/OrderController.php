@@ -33,7 +33,8 @@ class OrderController extends Controller
                     ->orWhere('code', 'like', "%$search%")
                     ->orWhere('phone', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%")
-                  ->orWhere('id', 'like', "%$search%");
+                  ->orWhere('id', 'like', "%$search%")
+                  ->orWhere('bill_no', 'like', "%$search%");
         })->latest();
         if($status !== ''){
             $orders = $orders->where('status', $status);
