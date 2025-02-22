@@ -2,6 +2,7 @@ import React from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, router } from '@inertiajs/react';
 import { MdKeyboardBackspace } from "react-icons/md";
+import { useState } from 'react';
 
 const ActivityLog = ({ activities }) => {
   console.log(activities); // Log the activities to the console
@@ -38,36 +39,11 @@ const ActivityLog = ({ activities }) => {
                 <th className="p-4 text-left text-sm font-semibold">Log Name</th>
                 <th className="p-4 text-left text-sm font-semibold">Action</th>
                 <th className="p-4 text-left text-sm font-semibold">Event</th>
+                <th className="p-4 text-left text-sm font-semibold">Properties</th>
                 <th className="p-4 text-left text-sm font-semibold">Time</th>
               </tr>
             </thead>
-            <tbody className="whitespace-nowrap">
-              {activities?.data?.length > 0 ? (
-                activities.data.map((activity) => (
-                  <tr key={activity.id} className="hover:bg-gray-50 transition-colors">
-
-                    <td className="p-4 text-sm text-gray-700">
-                      {activity.causer ? activity.causer.name : "System"}
-                    </td>
-                    <td className="p-4 text-sm text-gray-700">
-                      {activity.causer ? activity.causer.email : "N/A"}
-                    </td>
-                    <td className="p-4 text-sm text-gray-700">{activity.log_name}</td>
-                    <td className="p-4 text-sm text-gray-700">{activity.description}</td>
-                    <td className="p-4 text-sm text-gray-700">{activity.event}</td>
-                    <td className="p-4 text-sm text-gray-700">
-                      {new Date(activity.created_at).toLocaleString()}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="p-4 text-sm text-center text-gray-700">
-                    No activity logs found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
+           <ActivityTable activities={activities} />
           </table>
         </div>
 
@@ -163,3 +139,93 @@ const ActivityLog = ({ activities }) => {
 };
 
 export default ActivityLog;
+
+
+
+const ActivityTable = ({ activities }) => {
+  const [visibleProperties, setVisibleProperties] = useState({});
+
+  const toggleProperties = (id) => {
+    setVisibleProperties((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
+
+  return (
+    <tbody className="whitespace-nowrap">
+      {activities?.data?.length > 0 ? (
+        activities.data.map((activity) => (
+          <tr key={activity.id} className="hover:bg-gray-50 transition-colors">
+            <td className="p-4 text-sm text-gray-700">
+              {activity.causer ? activity.causer.name : "System"}
+            </td>
+            <td className="p-4 text-sm text-gray-700">
+              {activity.causer ? activity.causer.email : "N/A"}
+            </td>
+            <td className="p-4 text-sm text-gray-700">{activity.log_name}</td>
+            <td className="p-4 text-sm text-gray-700">{activity.description}</td>
+            <td className="p-4 text-sm text-gray-700">{activity.event}</td>
+
+            {/* Properties Column with Toggle Button */}
+            <td className="p-4 text-sm text-gray-700">
+              {activity.properties && (
+                <>
+                  <button
+                    onClick={() => toggleProperties(activity.id)}
+                    className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 transition"
+                  >
+                    {visibleProperties[activity.id] ? "Hide Details" : "Show Details"}
+                  </button>
+
+                  {visibleProperties[activity.id] && (
+                    <div className="overflow-x-auto mt-2">
+                      <table className="min-w-full border border-gray-300 bg-white shadow-md rounded-lg">
+                        <thead>
+                          <tr className="bg-gray-100 text-left">
+                            <th className="py-2 px-4 border-b">Property</th>
+                            <th className="py-2 px-4 border-b">Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Object.entries(activity.properties).map(([key, value]) => (
+                            <tr key={key} className="hover:bg-gray-50">
+                              <td className="py-2 px-4 border-b font-semibold">{key}</td>
+                              <td className="py-2 px-4 border-b">
+                                {typeof value === "object" ? (
+                                  <ul className="list-disc list-inside bg-gray-100 p-2 rounded">
+                                    {Object.entries(value).map(([subKey, subValue]) => (
+                                      <li key={subKey}>
+                                        <strong>{subKey}: </strong> {subValue}
+                                      </li>
+                                    ))}
+                                  </ul>
+                                ) : (
+                                  value
+                                )}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
+            </td>
+
+            <td className="p-4 text-sm text-gray-700">
+              {new Date(activity.created_at).toLocaleString()}
+            </td>
+          </tr>
+        ))
+      ) : (
+        <tr>
+          <td colSpan="7" className="p-4 text-sm text-center text-gray-700">
+            No activity logs found.
+          </td>
+        </tr>
+      )}
+    </tbody>
+  );
+};
