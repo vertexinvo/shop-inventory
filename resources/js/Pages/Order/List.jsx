@@ -327,6 +327,15 @@ export default function List(props) {
                     <th class="pl-4 text-left text-sm font-semibold ">
                       Bill No.
                     </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      Payable Amount
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      Paid Amount
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
+                      Status
+                    </th>
                     <th class="pl-4 text-left text-sm font-semibold ">
                       Sale Date
                     </th>
@@ -346,9 +355,7 @@ export default function List(props) {
                       Total
                     </th>
 
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Payable Amount
-                    </th>
+                  
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Charges Info
@@ -361,12 +368,7 @@ export default function List(props) {
                     {/* <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
                     </th> */}
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Paid Amount
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Status
-                    </th>
+                  
                    
 
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -431,6 +433,53 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
+
+
+                      {order.payable_amount || 'N/A'}
+
+                      </td>
+                      
+                      <td class="p-4 text-sm text-black">
+                        <div className="flex items-center w-[130px] ">
+                          <input
+                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
+                            type="number"
+                            step="0.01"
+                            value={orderAmounts[order.id] || order.paid_amount || 0} // Use order-specific value
+                            onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
+
+                          />
+                          <IoIosSave className="ml-2 cursor-pointer" size={30} onClick={async () => {
+                            await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
+                          }} />
+                        </div>
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
+                       
+                        <button
+                          onClick={() => {
+                            if (order.status === "cancel") {
+                              toast.error("You can't change the status because it is already canceled.");
+                            } else {
+                              setIsStatusModalOpen(order);
+                            }
+                          }}
+                          className={`${order.status === "pending"
+                            ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
+                            : order.status === "completed"
+                              ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
+                              : order.status === "cancel"
+                                ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
+                                : ""
+                            }`}
+                        >
+                          {order.status || "N/A"}
+                          {order.status !== "cancel" && <FaPen className="ms-1" />}
+                        </button>
+                      </td>
+
+                      <td class="p-4 text-sm text-black">
                         
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4">
@@ -442,8 +491,8 @@ export default function List(props) {
                       <td class="text-sm text-black">
                           <div class="flex items-center cursor-pointer w-max">
                             <div class="ml-4 ">
-                              <p class="text-sm text-black ">Customer Name : {order.name}</p>
-                              {order.email && <p class="text-xs text-gray-500 mt-0.5">Email :{order.email} </p>}
+                              <p class="text-sm text-black ">{order.name}</p>
+                              {order.email && <p class="text-xs text-gray-500 mt-0.5">{order.email} </p>}
                             </div>
                           </div>
                       </td>
@@ -502,12 +551,7 @@ export default function List(props) {
 
                         </td>)}
 
-                      <td class="p-4 text-sm text-black">
-
-
-                        {order.payable_amount || 'N/A'}
-
-                      </td>
+                    
 
                       <td class=" text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
@@ -537,57 +581,6 @@ export default function List(props) {
                         </div>
                       </td> */}
 
-                      <td class="p-4 text-sm text-black">
-                        <div className="flex items-center w-[130px] ">
-                          <input
-                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
-                            type="number"
-                            step="0.01"
-                            value={orderAmounts[order.id] || order.paid_amount || 0} // Use order-specific value
-                            onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
-
-                          />
-                          <IoIosSave className="ml-2 cursor-pointer" size={30} onClick={async () => {
-                            await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
-                          }} />
-                        </div>
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {/* if status is cancel so cant click on this button cancel status */}
-                        {/* {order.status === "cancel" ? (
-                          <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                          >{order.status || 'N/A'}
-                          </span>
-                        ) : (
-                          <button onClick={() => setIsStatusModalOpen(order)}>
-                            <span className="flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                            >{order.status || 'N/A'}
-                            </span>
-                          
-                          </button>
-                        )} */}
-                        <button
-                          onClick={() => {
-                            if (order.status === "cancel") {
-                              toast.error("You can't change the status because it is already canceled.");
-                            } else {
-                              setIsStatusModalOpen(order);
-                            }
-                          }}
-                          className={`${order.status === "pending"
-                            ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                            : order.status === "completed"
-                              ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                              : order.status === "cancel"
-                                ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                                : ""
-                            }`}
-                        >
-                          {order.status || "N/A"}
-                          {order.status !== "cancel" && <FaPen className="ms-1" />}
-                        </button>
-                      </td>
 
                      
 
