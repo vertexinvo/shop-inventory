@@ -76,7 +76,7 @@ class Order extends Model
         'bill_no',
     ];
 
-    protected $appends = ['tax_fee']; 
+    protected $appends = ['tax_fee','pending_amount']; 
    
         // Automatically generate purchase ID when creating a new record
         protected static function boot()
@@ -138,5 +138,10 @@ class Order extends Model
     public function getTaxFeeAttribute()
     {
         return  $this->tax;
+    }
+
+    public function getPendingAmountAttribute()
+    {
+        return floatval($this->payable_amount) - floatval($this->paid_amount ?? 0);
     }
 }

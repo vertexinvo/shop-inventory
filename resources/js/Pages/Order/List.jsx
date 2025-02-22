@@ -347,8 +347,12 @@ export default function List(props) {
                       Payable Amount
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Pending Amount
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Paid Amount
                     </th>
+                   
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
@@ -457,6 +461,12 @@ export default function List(props) {
 
 
                       {order.payable_amount || 'N/A'}
+
+                      </td>
+                      <td class="p-4 text-sm text-black">
+
+
+                      {order.pending_amount}
 
                       </td>
                       
