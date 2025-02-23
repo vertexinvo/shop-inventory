@@ -23,6 +23,7 @@ class LedgerController extends Controller
         return Inertia::render('Ledger/Sales', compact('sales'));
     }
 
+
     public function customerSalesLedger($code)
     {
         // Fetch the customer by code or ID
@@ -78,6 +79,64 @@ class LedgerController extends Controller
             'totalAdjustments' => $totalAdjustments, // Pass adjustments to the frontend
         ]);
     }
+
+    //supplierLedger
+    public function supplierLedger($code)
+    {
+        // Fetch the customer by code or ID
+        $customer = User::where('code', $code)->first();
+    
+        if (!$customer) {
+            $customer = User::findOrFail($code);
+        }
+    
+        // Fetch all orders for the customer (excluding canceled orders)
+        $orders = Order::where('user_id', $customer->id)
+            ->where('status', '!=', 'cancel')
+            ->with(['items', 'tax', 'shipping'])
+            ->orderBy('order_date', 'asc') // Sort by order date
+            ->get();
+    
+        // Initialize ledger variables
+        $openingBalance = 0; // Assuming no opening balance initially
+        $runningBalance = $openingBalance;
+        $totalPayable = 0;
+        $totalPaid = 0;
+        $totalPending = 0;
+        $totalAdjustments = 0; // Track adjustments for completed orders with pending amounts
+    
+        // Calculate totals for each order and update running balance
+        $orders->each(function ($order) use (&$runningBalance, &$totalPayable, &$totalPaid, &$totalPending, &$totalAdjustments) {
+            $order->pending_amount = $order->payable_amount - $order->paid_amount;
+    
+            // If status is "completed" but pending amount is not zero, adjust the ledger
+            if ($order->status === 'completed' && $order->pending_amount > 0) {
+                $totalAdjustments += $order->pending_amount; // Add to adjustments
+                $order->pending_amount = 0; // Set pending amount to zero
+            }
+    
+            // Update running balance
+            $runningBalance += $order->payable_amount - $order->paid_amount;
+    
+            // Update totals
+            $totalPayable += $order->payable_amount;
+            $totalPaid += $order->paid_amount;
+            $totalPending += $order->pending_amount;
+        });
+    
+        // Pass data to the React component
+        return Inertia::render('Ledger/SupplierLedger', [
+            'customer' => $customer,
+            'orders' => $orders,
+            'openingBalance' => $openingBalance,
+            'runningBalance' => $runningBalance,
+            'totalPayable' => $totalPayable,
+            'totalPaid' => $totalPaid,
+            'totalPending' => $totalPending,
+            'totalAdjustments' => $totalAdjustments, // Pass adjustments to the frontend
+        ]);
+    }
+
     public function csvExport(Request $request)
     {
             $customers = User::role('customer')->get();

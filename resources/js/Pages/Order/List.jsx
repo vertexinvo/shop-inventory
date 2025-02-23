@@ -20,7 +20,9 @@ import { QRCode } from 'react-qrcode-logo';
 import Dropdown from '@/Components/Dropdown';
 import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
-
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css';
 
 
 export default function List(props) {
@@ -31,7 +33,17 @@ export default function List(props) {
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
   const [orderAmounts, setOrderAmounts] = useState({});
-
+  const [daterangeModel, setDaterangeModel] = useState(false);
+  const [dateRange, setDateRange] = useState(
+      {
+          startDate: new Date(),
+          endDate: new Date(),
+          key: 'selection',
+        }
+  )
+  const { url } = usePage();
+  const params = new URLSearchParams(url.split('?')[1]);
+      
   const handleAmountChange = (e, orderId) => {
     const updatedAmount = e.target.value;
     setOrderAmounts((prevState) => ({
@@ -224,7 +236,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('order.index'), { status: e.target.value }, { preserveState: true })}
+                onChange={(e) => router.get(route('order.index'), { status: e.target.value, startdate: params.get('startdate'), enddate: params.get('enddate'), search: params.get('search'),searchuserid: params.get('searchuserid') }, { preserveState: true })}
                 value={status}
               >
                 <option value="">Select Status</option>
@@ -259,7 +271,7 @@ export default function List(props) {
                 enableReinitialize
                 initialValues={{ search: '' }}
                 onSubmit={(values) => {
-                  router.get(route('order.index'), { search: values.search }, { preserveState: true });
+                  router.get(route('order.index'), { search: values.search,searchuserid: params.get('searchuserid'), status: params.get('status'), startdate: params.get('startdate'), enddate: params.get('enddate') }, { preserveState: true });
                 }}
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
@@ -312,6 +324,13 @@ export default function List(props) {
                 )}
 
               </Formik>
+
+              <button
+                onClick={() => setDaterangeModel(true)}
+                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+              >
+                Date&nbsp;Range&nbsp;Filter
+              </button>
 
 
             </div>
@@ -684,7 +703,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '' ,startdate: params.get('startdate') || '',enddate:params.get('enddate') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -738,7 +757,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -751,7 +770,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -850,6 +869,59 @@ export default function List(props) {
         });
 
       }} />
+
+
+      <Modal
+              show={daterangeModel}
+              onClose={() => setDaterangeModel(false)}
+              maxWidth="2xl"
+            >
+                 <div className="overflow-y-auto max-h-[80vh]">
+              <div className="flex justify-center p-10">
+                <div className="text-2xl font-medium text-[#5d596c] ">
+                  Date Range
+                </div>
+              </div>
+              <div className="px-10 flex justify-center mb-5">
+                <div className="text-center">
+                <DateRangePicker
+                  ranges={[dateRange]}
+                  onChange={(item) => {
+                      setDateRange(item.selection);
+                  }}
+                  className="w-96"
+              />
+                
+                  <div className="flex justify-center gap-4 mt-5">
+                    <button
+                      type="button"
+                      onClick={()=>{setDaterangeModel(false)}}
+                      className="text-gray-500 bg-[#eaebec] hover:bg-[#eaebec] focus:ring-4 focus:ring-[#eaebec] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                    >
+                      Close
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                          router.get(route('order.index', {
+                              startdate: dateRange.startDate, 
+                              enddate: dateRange.endDate,
+                              status: params.get('status') || '',
+                              search: params.get('search') || '',
+                              searchuserid: searchuserid || '',
+                              
+                          }));
+                      }}
+                      className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                    >
+                      Filter
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            </Modal>
 
     </AuthenticatedLayout>
   );

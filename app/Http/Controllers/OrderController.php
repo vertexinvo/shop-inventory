@@ -28,6 +28,10 @@ class OrderController extends Controller
         $search = $request->search ?? '';
         $status = $request->status ?? ''; 
         $searchuserid = $request->searchuserid ?? '';
+        
+        $startdate = $request->startdate ?? '';
+        $enddate = $request->enddate ??'';
+
         $orders = Order::where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                     ->orWhere('code', 'like', "%$search%")
@@ -35,14 +39,20 @@ class OrderController extends Controller
                     ->orWhere('email', 'like', "%$search%")
                   ->orWhere('id', 'like', "%$search%")
                   ->orWhere('bill_no', 'like', "%$search%");
-        })->latest();
+        })
+        ->where(function ($query) use ($startdate, $enddate) {
+            if ($startdate && $enddate) {
+                $query->whereBetween('order_date', [$startdate, $enddate]);
+            }
+        })
+        ->orderBy('order_date', 'desc');
         if($status !== ''){
             $orders = $orders->where('status', $status);
         }
         if($searchuserid !== ''){
             $orders = $orders->where('user_id', $searchuserid);
         }
-        $orders = $orders->paginate(50);
+        $orders = $orders->paginate(10);
         $total = Order::where('status','!=', 'cancel')->count();
         $pendingCount = Order::where('status', 'pending')->count();
         $completedCount = Order::where('status', 'completed')->count();
