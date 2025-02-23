@@ -338,16 +338,19 @@ export default function List(props) {
                       </label>
                     </th>
                     <th class="pl-4 text-left text-sm font-semibold ">
-                      Sale ID
+                      Sale Date
                     </th>
                     <th class="pl-4 text-left text-sm font-semibold ">
                       Bill No.
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Sale Info
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Payable Amount
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
-                      Pending Amount
+                      Remaining Amount
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
                       Paid Amount
@@ -356,12 +359,11 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
+                    
                     <th class="pl-4 text-left text-sm font-semibold ">
-                      Sale Date
+                      Sale ID
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Sale Info
-                    </th>
+                  
                     <th class="p-4 text-left text-sm font-semibold ">
                       Phone
                     </th>
@@ -447,14 +449,27 @@ export default function List(props) {
                         </label>
                       </td>
 
-                      <td class="pl-4 text-sm text-black cursor-pointer">
-                        <button onClick={() => router.get(route('order.show', order.code || order.id ))} className='text-blue-600' title="Edit" type='button'>
-                          {order.code || order.id}
-                        </button>
+                      <td class="p-4 text-sm text-black">
+                        
+                        <div class="flex items-center cursor-pointer w-max">
+                          <div class="ml-4">
+                            <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
+                          </div>
+                        </div>
+                      
                       </td>
 
                       <td class="p-4 text-sm text-black">
                         {order.bill_no || 'N/A'}
+                      </td>
+
+                      <td class="text-sm text-black">
+                          <div class="flex items-center cursor-pointer w-max">
+                            <div class="ml-4 ">
+                              <p class="text-sm text-black ">{order.name}</p>
+                              {order.email && <p class="text-xs text-gray-500 mt-0.5">{order.email} </p>}
+                            </div>
+                          </div>
                       </td>
 
                       <td class="p-4 text-sm text-black">
@@ -510,23 +525,15 @@ export default function List(props) {
                         </button>
                       </td>
 
-                      <td class="p-4 text-sm text-black">
-                        
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4">
-                            <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
-                          </div>
-                        </div>
                       
+
+                      <td class="pl-4 text-sm text-black cursor-pointer">
+                        <button onClick={() => router.get(route('order.show', order.code || order.id ))} className='text-blue-600' title="Edit" type='button'>
+                          {order.code || order.id}
+                        </button>
                       </td>
-                      <td class="text-sm text-black">
-                          <div class="flex items-center cursor-pointer w-max">
-                            <div class="ml-4 ">
-                              <p class="text-sm text-black ">{order.name}</p>
-                              {order.email && <p class="text-xs text-gray-500 mt-0.5">{order.email} </p>}
-                            </div>
-                          </div>
-                      </td>
+
+                      
 
                       <td class="p-4 text-sm text-black">
                         {order.phone || 'N/A'}

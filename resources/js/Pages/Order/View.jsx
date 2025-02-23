@@ -43,6 +43,13 @@ const View = (props) => {
             alert("Printing is not supported in this browser.");
             return;
         }
+
+        const qrCanvas = document.createElement('canvas');
+        const qrCode = new QRCode(qrCanvas, {
+            text: route('order.show', order.code || order.id),
+            width: 150,
+            height: 150,
+        });
         // Create a new window for thermal-like receipt printing
         const printWindow = window.open('', 'PRINT', 'height=600,width=400');
 
@@ -51,6 +58,8 @@ const View = (props) => {
         printWindow.document.write(`
             <html>
                 <head>
+                  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+           
                     <script src="https://cdn.tailwindcss.com"></script>
                     <style>
                         body { 
@@ -109,6 +118,15 @@ const View = (props) => {
 
                             <div class="font-bold">Total: <span class="text-lg">Rs.  ${order.payable_amount ? order.payable_amount : '0.00'}</span></div>
                         </div>
+                        
+                        <div class="flex justify-center my-2" id="qrcode"></div>
+                                    <script>
+                                        var qrcode = new QRCode(document.getElementById("qrcode"), {
+                                            text: "${route('order.show', order.code || order.id)}",
+                                            width: 128,
+                                            height: 128
+                                        });
+                                    </script>
     
                         <div class="border-t border-dashed border-gray-300 my-2"></div>
     
@@ -129,6 +147,9 @@ const View = (props) => {
         `);
         printWindow.document.close();
     };
+    
+   
+    
     return (
         <Authenticated auth={props.auth} errors={props.errors}
             header={
@@ -448,6 +469,11 @@ const View = (props) => {
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Grand Total:</th>
 
                                     <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.payable_amount || '0.00'}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Remaining Amount:</th>
+
+                                    <td className="pl-3 pr-4 text-right text-sm font-semibold text-gray-900 sm:pr-0">Rs. {order.pending_amount}</td>
                                 </tr>
                                 <tr>
                                     <th scope="row" colSpan="6" className="hidden pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:table-cell sm:pl-0">Paid Amount:</th>
