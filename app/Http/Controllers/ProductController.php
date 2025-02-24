@@ -274,7 +274,9 @@ public function csvExport(Request $request)
         'Is Return',
         'Return Remarks',
         'Exchange Order Id',
-        'quantity'
+        'quantity',
+        'Categories',
+        'Brands'
     ];
     
     // Create a callback to stream the CSV content
@@ -318,7 +320,9 @@ public function csvExport(Request $request)
                 $product->is_return,
                 $product->return_remarks,
                 $product->exchange_order_id,
-                $product->stock->quantity
+                $product->stock->quantity,
+                $product->categories->count() ? $product->categories->pluck('name')->implode(', ') : '',
+                $product->brands->count() ? $product->brands->pluck('name')->implode(', ') : '',
             ]);
         }
         
