@@ -642,9 +642,7 @@ export default function List(props) {
                 className="text-red-600"
               >
                 Delete
-              </Item>
-              
-            
+              </Item>   
             </Menu>
           
 

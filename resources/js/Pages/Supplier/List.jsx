@@ -14,7 +14,9 @@ import { FaBoxOpen } from 'react-icons/fa6';
 import { VscGraph } from 'react-icons/vsc';
 import { MdKeyboardBackspace } from "react-icons/md";
 import { SiMicrosoftexcel } from "react-icons/si";
-
+import { Menu, Item, useContextMenu } from "react-contexify";
+import "react-contexify/dist/ReactContexify.css";
+import Dropdown from '@/Components/Dropdown';
 
 export default function List(props) {
   const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers, status, search } = props
@@ -24,6 +26,21 @@ export default function List(props) {
   const [selectId, setSelectId] = useState([]);
     const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
+
+  const { show } = useContextMenu({ id: "context-menu" });
+  
+  const handleMenuClick = ({ props, action }) => {
+    const item = props;
+    if (action === "invoice") {
+      router.get(route('supplier.invoices', item.id));
+    } else if (action === "edit") {
+      router.get(route('supplier.edit', item.id));
+    } else if (action === "delete") {
+      setIsDeleteModalOpen(item)
+    } else if (action === "ledger") {
+      router.get(route('ledger.supplier.supplierLedger', item.code || item.id));
+    }
+  };
 
 
 
@@ -249,7 +266,12 @@ export default function List(props) {
                   )}
                   {suppliers.data.map((item, index) => (
 
-                    <tr className={`${item?.total_amount_paid == 0 && item?.total_amount > 0   ? 'bg-red-100' :  item?.total_amount_paid > 0 && item?.total_amount_pending > 0  ? 'bg-yellow-100' : ''}  ${selectId.includes(item.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
+                    <tr 
+                    onContextMenu={(e) => {
+                      e.preventDefault(); // Prevents default right-click menu
+                      show({ event: e, props: item }); // Shows custom menu
+                    }} 
+                    className={`${item?.total_amount_paid == 0 && item?.total_amount > 0   ? 'bg-red-100' :  item?.total_amount_paid > 0 && item?.total_amount_pending > 0  ? 'bg-yellow-100' : ''}  ${selectId.includes(item.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
 
                       <td className="pl-4 w-8">
                         <input
@@ -322,34 +344,28 @@ export default function List(props) {
 
 
                       <td class="p-4 flex items-center">
-                        <button onClick={() => router.get(route('supplier.invoices', item.id))} className="mr-4 flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1" title="View Invoice">
-                          <LiaFileInvoiceSolid className="w-6 fill-black " size={25} />
-                          <span className="text-white hover:text-black">Invoice</span>
-                        </button>
+
+                            <Dropdown >
+                                <Dropdown.Trigger>
+                                  <button className="text-gray-500 hover:text-black focus:outline-none">
+                                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                                        </svg>
+                                  </button>
+                                </Dropdown.Trigger>
+                                <Dropdown.Content>
+                                  <Dropdown.Link href={route('supplier.invoices', item.id)}>Invoice</Dropdown.Link>
+                                  <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.id)}>Ledger</Dropdown.Link>
+                                  <Dropdown.Link href={route('supplier.edit', item.id)}>Edit</Dropdown.Link>
+                                  <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() =>  setIsDeleteModalOpen(item)} >Delete</button>
+                                
+                                
+                                </Dropdown.Content>
+                            </Dropdown>
 
 
-                        <button onClick={() => router.get(route('supplier.edit', item.id))} className="mr-4 flex items-center space-x-2 bg-green-500 rounded text-white px-2 py-1" title="Edit">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 348.882 348.882">
-                            <path
-                              d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
-                              data-original="#000000" />
-                            <path
-                              d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
-                              data-original="#000000" />
-                          </svg>
-                          <span className="text-white hover:text-black">Edit</span>
-                        </button>
 
-                        <button onClick={() => setIsDeleteModalOpen(item)} title="Delete" className="flex items-center space-x-2 bg-red-500 rounded text-white px-2 py-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-5 fill-black" viewBox="0 0 24 24">
-                            <path
-                              d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                              data-original="#000000" />
-                            <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                              data-original="#000000" />
-                          </svg>
-                          <span className="text-white hover:text-black">Delete</span>
-                        </button>
+
 
                       </td>
                     </tr>
@@ -357,6 +373,30 @@ export default function List(props) {
 
                 </tbody>
               </table>
+
+
+                      {/* Context Menu */}
+                          <Menu id="context-menu">
+                            <Item onClick={({ props }) => handleMenuClick({ props, action: "invoice" })}>
+                              Invoice
+                            </Item>
+                            <Item
+                              onClick={({ props }) => handleMenuClick({ props, action: "ledger" })}
+                              className="text-red-600"
+                            >
+                              Ledger
+                            </Item>   
+                            <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
+                              Edit
+                            </Item>
+                            <Item
+                              onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
+                              className="text-red-600"
+                            >
+                              Delete
+                            </Item>   
+                          </Menu>
+                        
 
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9">

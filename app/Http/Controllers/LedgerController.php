@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Order;
+use App\Models\Supplier;
+use App\Models\Supplierinvoice;
 
 class LedgerController extends Controller
 {
@@ -83,59 +85,62 @@ class LedgerController extends Controller
     //supplierLedger
     public function supplierLedger($code)
     {
-        // Fetch the customer by code or ID
-        $customer = User::where('code', $code)->first();
+        // Fetch the supplier by code
+        $supplier = Supplier::where('code', $code)->firstOrFail();
     
-        if (!$customer) {
-            $customer = User::findOrFail($code);
-        }
-    
-        // Fetch all orders for the customer (excluding canceled orders)
-        $orders = Order::where('user_id', $customer->id)
-            ->where('status', '!=', 'cancel')
-            ->with(['items', 'tax', 'shipping'])
-            ->orderBy('order_date', 'asc') // Sort by order date
+        // Fetch supplier invoices (excluding deleted ones)
+        $invoices = Supplierinvoice::where('supplier_id', $supplier->id)
+            ->with(['supplier'])
+            ->orderBy('invoice_date', 'asc') // Sort by date
             ->get();
     
         // Initialize ledger variables
-        $openingBalance = 0; // Assuming no opening balance initially
+        $openingBalance = 0; // Fetch this from the supplier's record if applicable
         $runningBalance = $openingBalance;
         $totalPayable = 0;
         $totalPaid = 0;
         $totalPending = 0;
-        $totalAdjustments = 0; // Track adjustments for completed orders with pending amounts
+        $ledgerEntries = [];
     
-        // Calculate totals for each order and update running balance
-        $orders->each(function ($order) use (&$runningBalance, &$totalPayable, &$totalPaid, &$totalPending, &$totalAdjustments) {
-            $order->pending_amount = $order->payable_amount - $order->paid_amount;
-    
-            // If status is "completed" but pending amount is not zero, adjust the ledger
-            if ($order->status === 'completed' && $order->pending_amount > 0) {
-                $totalAdjustments += $order->pending_amount; // Add to adjustments
-                $order->pending_amount = 0; // Set pending amount to zero
-            }
+        // Process each invoice transaction
+        foreach ($invoices as $invoice) {
+            $debit = $invoice->total_payment; // Amount to be paid
+            $credit = $invoice->paid_amount; // Amount paid
+            $pendingAmount = $debit - $credit; // Remaining balance
     
             // Update running balance
-            $runningBalance += $order->payable_amount - $order->paid_amount;
+            $runningBalance += $pendingAmount;
+    
+            // Store formatted transaction data
+            $ledgerEntries[] = [
+                'invoice_date' => $invoice->invoice_date,
+                'invoice_no' => $invoice->invoice_no,
+                'total_payment' => $debit,
+                'paid_amount' => $credit,
+                'pending_amount' => $pendingAmount,
+                'running_balance' => $runningBalance,
+                'balance_type' => $runningBalance >= 0 ? 'Dr' : 'Cr',
+            ];
     
             // Update totals
-            $totalPayable += $order->payable_amount;
-            $totalPaid += $order->paid_amount;
-            $totalPending += $order->pending_amount;
-        });
+            $totalPayable += $debit;
+            $totalPaid += $credit;
+            $totalPending += $pendingAmount;
+        }
     
         // Pass data to the React component
         return Inertia::render('Ledger/SupplierLedger', [
-            'customer' => $customer,
-            'orders' => $orders,
+            'supplier' => $supplier,
+            'invoices' => $ledgerEntries,
             'openingBalance' => $openingBalance,
             'runningBalance' => $runningBalance,
             'totalPayable' => $totalPayable,
             'totalPaid' => $totalPaid,
             'totalPending' => $totalPending,
-            'totalAdjustments' => $totalAdjustments, // Pass adjustments to the frontend
         ]);
     }
+    
+    
 
     public function csvExport(Request $request)
     {
