@@ -144,4 +144,9 @@ class Order extends Model
     {
         return floatval($this->payable_amount) - floatval($this->paid_amount ?? 0);
     }
+
+    public static function todaysPendingAmount()
+    {
+        return self::whereDate('order_date', now()->toDateString())->get()->sum->pending_amount;
+    }
 }

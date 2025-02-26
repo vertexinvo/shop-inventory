@@ -80,8 +80,12 @@ class OrderController extends Controller
 
         $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
 
+        $todayProfit = OrderService::getTodayNetProfit();
 
-    return Inertia::render('Order/List', compact('orders','todaysOrder','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
+        $todaysPendingOrderAmount = Order::todaysPendingAmount();
+    
+
+    return Inertia::render('Order/List', compact('orders','todaysPendingOrderAmount','todayProfit','todaysOrder','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
     }
 
 

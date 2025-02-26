@@ -23,10 +23,12 @@ import "react-contexify/dist/ReactContexify.css";
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
+import { GrMoney } from 'react-icons/gr';
+import { CiTimer } from 'react-icons/ci';
 
 
 export default function List(props) {
-  const { auth, orders,todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
+  const { auth,todaysPendingOrderAmount,todayProfit, orders,todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
   console.log(totalPendingAmount);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -70,6 +72,15 @@ export default function List(props) {
       } 
     };
   
+    const formatProfit = (profit) => {
+      if (profit < 0) {
+        return <span className="text-red-500">Loss: {Math.abs(profit)}</span>;
+      }
+      return <span>{profit}</span>;
+    };
+
+    const rolename = auth.user.roles.map((role) => role.name);
+
 
   return (
     <AuthenticatedLayout
@@ -98,6 +109,32 @@ export default function List(props) {
       </div> */}
 
       <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+
+         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                    <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+                      <div className="my-auto">
+                        <p className="font-bold">TODAY'S PROFIT</p>
+                        <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(todayProfit) : <p>No Access</p>}</p>
+                      </div>
+                      <div className="my-auto">
+                        <GrMoney  size={40} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+                    <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+                      <div className="my-auto">
+                        <p className="font-bold">TODAY'S PENDING AMOUNT</p>
+                        <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
+                      </div>
+                      <div className="my-auto">
+                        <CiTimer   size={40} />
+                      </div>
+                    </div>
+                  </div>
+
+
       <Link href={route('order.index')}>
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
