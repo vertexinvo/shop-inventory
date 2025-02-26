@@ -57,6 +57,7 @@ export default function InstantOrder(props) {
       <Head title="Instant Sale" />
       <Formik enableReinitialize initialValues={{
         bill_no: '',
+        status : 'pending',
         name: user?.name || '',
         email: user?.email || '',
         phone: user?.phone || '',
@@ -74,6 +75,7 @@ export default function InstantOrder(props) {
       }}
         validationSchema={Yup.object({
           bill_no: Yup.string(),
+          status : Yup.string().required('Status is required'),
           name: Yup.string().required('Name is required'),
           email: Yup.string(),
           phone: Yup.string().required('Phone number is required'),
@@ -268,7 +270,16 @@ export default function InstantOrder(props) {
                               <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
                           </div>
-
+                          <div className="mb-4">
+                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
+                          <Field as="select" name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker">
+                         
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancel">Cancelled</option>
+                          </Field>
+                          <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Items</label>

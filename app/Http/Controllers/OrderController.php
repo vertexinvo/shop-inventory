@@ -300,6 +300,7 @@ class OrderController extends Controller
             'order_date' => 'required|date',
             'payment_note' => 'nullable|string|max:1000',
             'note' => 'nullable|string|max:1000',
+            'status' => 'required|string|in:pending,completed,cancel',
         ]);
 
         if ($validator->fails()) {
@@ -322,6 +323,7 @@ class OrderController extends Controller
             'extra_charges',
             'payment_note',
             'note',
+            'status',
         ]);
        
    
@@ -474,6 +476,7 @@ class OrderController extends Controller
             'exchange' => 'nullable|numeric|max:1000000000',
             'payment_note' => 'nullable|string|max:1000',
             'note' => 'nullable|string|max:1000',
+            'status' => 'required|string|in:pending,completed,cancel',
         ]);
 
         if ($validator->fails()) {
@@ -514,6 +517,7 @@ class OrderController extends Controller
             'exchange',
             'payment_note',
             'note',
+            'status',
         ]);
 
         $order = Order::create($data);
@@ -676,6 +680,7 @@ class OrderController extends Controller
             'exchange' => 'nullable|numeric|max:1000000000',
             'payment_note' => 'nullable|string|max:1000',
             'note' => 'nullable|string|max:1000',
+            'status' => 'required|string|in:pending,completed,cancel',
         ]);
 
         if ($validator->fails()) {
@@ -716,6 +721,7 @@ class OrderController extends Controller
             'exchange',
             'payment_note',
             'note',
+            'status',
         ]);
         $order->update($data);
 

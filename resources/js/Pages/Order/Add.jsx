@@ -75,6 +75,7 @@ export default function Add(props) {
     >
       <Head title="Sale" />
       <Formik enableReinitialize initialValues={{
+        status : order?.status || 'pending',
         name: order?.name || '',
         email: order?.email || '',
         phone: order?.phone || '',
@@ -114,6 +115,7 @@ export default function Add(props) {
         bill_no: order?.bill_no || '',
       }}
         validationSchema={Yup.object({
+          status : Yup.string().oneOf(['pending', 'completed', 'cancel'], 'Invalid status').required('Status is required'),
           bill_no: Yup.string(),
           name: Yup.string().required('Name is required'),
           email: Yup.string().email('Invalid email address'),
@@ -393,6 +395,17 @@ export default function Add(props) {
                               <ErrorMessage name="address" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
                           </div>
+
+                           <div className="mb-4">
+                              <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
+                              <Field as="select" name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker">
+                              
+                                <option value="pending">Pending</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancel">Cancelled</option>
+                              </Field>
+                              <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
+                              </div>
 
 
                           <div className="mb-4">
