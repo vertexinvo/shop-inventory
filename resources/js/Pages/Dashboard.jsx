@@ -16,9 +16,10 @@ import Clock from 'react-simple-clock'
 import LiveClockUpdate from '@/Components/LiveClockUpdate';
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { CiTimer } from 'react-icons/ci';
 
 export default function Dashboard(props) {
-  const { auth,todayProfit,weekProfit,monthProfit,yearProfit,latestOrder,todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
+  const { auth,todaysPendingOrderAmount,todayProfit,weekProfit,monthProfit,yearProfit,latestOrder,todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period,totalStockValue,totaliteminstock,totalOrderAmountPending,totalSupplierPendingAmount } = props;
 
  
   const [chartdata, setChartData] = useState({
@@ -86,6 +87,19 @@ export default function Dashboard(props) {
               </div>
             </div>
           </div>
+
+
+            <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+              <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+                <div className="my-auto">
+                  <p className="font-bold">TODAY'S PENDING AMOUNT</p>
+                  <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
+                </div>
+                <div className="my-auto">
+                  <CiTimer   size={40} />
+                </div>
+              </div>
+            </div>
 
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">

@@ -105,8 +105,10 @@ Route::get('/dashboard', function (Request $request) {
     $weekProfit = OrderService::getThisWeekNetProfit();
     $monthProfit = OrderService::getThisMonthNetProfit();
     $yearProfit = OrderService::getThisYearNetProfit();
+
+    $todaysPendingOrderAmount = Order::todaysPendingAmount();
     
-    return Inertia::render('Dashboard',compact('todaysOrder','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('todaysOrder','todaysPendingOrderAmount','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 
