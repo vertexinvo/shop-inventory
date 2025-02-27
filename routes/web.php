@@ -23,6 +23,8 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
+use Modules\Master\Entities\Applogin;
+use Modules\Master\Entities\Tenancy;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,7 +122,23 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 
 Route::get('/generated-via-qr', function (Request $request) {
     
-    $dataHash = "Abc";
+    //Applogin 
+    //generate unique a hash
+    $dataHash = Date('Y-m-d H:i:s').Str::random(10);
+    $dataHash = Crypt::encryptString($dataHash);
+    $dataHash = Hash::make($dataHash);
+
+
+    $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
+    $tenant = Tenancy::where('domain',  $domainurl)->first();
+
+    $qrLoginSession = Applogin::create([
+        'token' => $dataHash,
+        'ip_address' => $request->ip(),
+        'expired_at' => Carbon::now()->addMinutes(5),
+        'tenant_id' => $tenant->id,
+    ]);
+   
 
     return Inertia::render('Profile/GeneratedViaQr', compact('dataHash'));
 })->name('profile.generated-via-qr');

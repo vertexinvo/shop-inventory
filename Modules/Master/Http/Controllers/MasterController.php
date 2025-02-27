@@ -2,9 +2,11 @@
 
 namespace Modules\Master\Http\Controllers;
 
+use App\Models\QrLoginSession;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class MasterController extends Controller
 {
@@ -15,6 +17,60 @@ class MasterController extends Controller
     public function index()
     {
         return view('master::index');
+    }
+
+    //loginViaQr
+    public function loginViaQr(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+           'token' => 'required|string|max:255|exists:master.applogins,token',
+           'device_id' => 'required|string|max:255',
+           'device_type' => 'required|string|max:255',
+           'device_name' => 'required|string|max:255',
+           'device_os' => 'required|string|max:255',
+           'device_os_version' => 'required|string|max:255',
+           'device_model' => 'required|string|max:255',
+           'device_uid' => 'required|string|max:255',
+            'ip_address' => 'required|string|max:255',
+       ]);
+       if ($validator->fails()) {
+           return response()->json(['error' => $validator->errors()], 401);
+       }
+
+       ////check expired_at
+       $applogin = \Modules\Master\Entities\Applogin::where('token', $request->token)->first();
+       if ($applogin->expired_at < now()) {
+           return response()->json(['error' => 'Token Expired'], 401);
+       }
+
+       //check status already active
+         if ($applogin->status == 'active') {
+              return response()->json(['error' => 'Token Already Active'], 401);
+         }
+
+         //check ip_address not same
+            if ($applogin->ip_address != $request->ip_address) {
+                return response()->json(['error' => 'IP Address Not Same'], 401);
+            }
+
+
+         $applogin = \Modules\Master\Entities\Applogin::where('token', $request->token)->first();
+        $applogin->status = 'active';
+        $applogin->device_id = $request->device_id;
+        $applogin->device_type = $request->device_type;
+        $applogin->device_name = $request->device_name;
+        $applogin->device_os = $request->device_os;
+        $applogin->device_os_version = $request->device_os_version;
+        $applogin->device_model = $request->device_model;
+        $applogin->device_uid = $request->device_uid;
+        $applogin->save();
+
+         if ($applogin) {
+             return response()->json([
+                 'token' => $applogin->token,
+                 'user' => $applogin->user,
+             ]);
+         }
     }
 
     /**
