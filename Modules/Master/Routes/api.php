@@ -15,9 +15,9 @@ use Modules\Master\Http\Controllers\MasterController;
 |
 */
 
-Route::middleware('auth:api')->get('/master', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/master', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::prefix('master')->group(function() {
 

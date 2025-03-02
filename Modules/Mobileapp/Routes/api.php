@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Mobileapp\Http\Controllers\MobileappController;
+use Modules\Mobileapp\Http\Middleware\checkapplogintoken;
+
 //use Auth
 
 /*
@@ -16,14 +18,22 @@ use Modules\Mobileapp\Http\Controllers\MobileappController;
 |
 */
 
-Route::middleware('auth:api')->get('/mobileapp', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/mobileapp', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::middleware('auth:api')->prefix('mobileapp')->group(function() {
+Route::middleware(checkapplogintoken::class)->prefix('mobileapp')->group(function() {
 
-    Route::prefix('auth')->group(function() {
-        Route::post('login-via-qr', [MobileappController::class, 'loginViaQr']);
+    Route::prefix('products')->group(function() {
+        Route::get('list', [MobileappController::class, 'productsList']);
     });
+
+    Route::prefix('orders')->group(function() {
+        Route::get('list', [MobileappController::class, 'ordersList']);
+        Route::get('today-orders', [MobileappController::class, 'todayOrders']);
+        Route::get('view-order/{code}', [MobileappController::class, 'viewOrder']);
+    });
+
     
 });
+
