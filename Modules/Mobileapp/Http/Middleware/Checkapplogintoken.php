@@ -8,19 +8,14 @@ use Modules\Master\Entities\Applogin;
 
 class CheckAppLoginToken
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @return mixed
-     */
     public function handle(Request $request, Closure $next)
     {
         $token = $request->header('Authorization');
+        
         if ($token == null) {
             return response()->json(['error' => 'Token not found'], 401);
         }
+
         $applogin = Applogin::where('token', $token)->where('status', 'active')->first();
         if (!$applogin) {
             return response()->json(['error' => 'Invalid token or token expired'], 401);
