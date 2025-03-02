@@ -3,9 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Mobileapp\Http\Controllers\MobileappController;
-use Modules\Mobileapp\Http\Middleware\checkapplogintoken;
-
-//use Auth
+use Modules\Mobileapp\Http\Middleware\Checkapplogintoken;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +20,7 @@ use Modules\Mobileapp\Http\Middleware\checkapplogintoken;
 //     return $request->user();
 // });
 
-Route::middleware(checkapplogintoken::class)->prefix('mobileapp')->group(function() {
+Route::middleware(Checkapplogintoken::class)->prefix('mobileapp')->group(function() {
 
     Route::prefix('products')->group(function() {
         Route::get('list', [MobileappController::class, 'productsList']);

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Modules\Master\Entities\Applogin;
 
-class checkapplogintoken
+class Checkapplogintoken
 {
     /**
      * Handle an incoming request.
