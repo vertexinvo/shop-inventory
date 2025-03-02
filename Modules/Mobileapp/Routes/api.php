@@ -20,7 +20,7 @@ use Modules\Mobileapp\Http\Controllers\MobileappController;
 //     return $request->user();
 // });
 
-Route::middleware('checkapplogintoken')->prefix('mobileapp')->group(function() {
+Route::prefix('mobileapp')->group(function() {
 
     Route::prefix('products')->group(function() {
         Route::get('list', [MobileappController::class, 'productsList']);
