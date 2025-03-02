@@ -19,4 +19,10 @@ class Applogin extends Model
     {
         return \Modules\Master\Database\factories\ApploginFactory::new();
     }
+
+
+    public function tenant()
+    {
+        return $this->belongsTo(Tenancy::class, 'tenant_id');
+    }
 }

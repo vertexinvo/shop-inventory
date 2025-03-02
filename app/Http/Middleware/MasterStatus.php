@@ -18,8 +18,8 @@ class MasterStatus
     {
        
         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
+       
         $tenant = Tenancy::where('domain',  $domainurl)->first();
-
         if($tenant == null){
             return  abort(403, 'Domain not found. Please contact your administrator.');
         }

@@ -7,6 +7,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Validator;
+use Modules\Master\Entities\Applogin;
 
 class MasterController extends Controller
 {
@@ -22,9 +23,10 @@ class MasterController extends Controller
     //loginViaQr
     public function loginViaQr(Request $request)
     {
+      
        $validator = Validator::make($request->all(), [
-           'token' => 'required|string|max:255|exists:master.applogins,token',
-           'device_id' => 'required|string|max:255',
+           'token' => 'required|string',
+           'device_id' => 'nullable|string|max:255',
            'device_type' => 'required|string|max:255',
            'device_name' => 'required|string|max:255',
            'device_os' => 'required|string|max:255',
@@ -33,12 +35,18 @@ class MasterController extends Controller
            'device_uid' => 'required|string|max:255',
             'ip_address' => 'required|string|max:255',
        ]);
+
+
+
        if ($validator->fails()) {
            return response()->json(['error' => $validator->errors()], 401);
        }
-
        ////check expired_at
-       $applogin = \Modules\Master\Entities\Applogin::where('token', $request->token)->first();
+       $applogin = Applogin::where('token', $request->token)->first();
+       if (!$applogin) {
+           return response()->json(['error' => 'Token Not Found'], 401);
+       }
+
        if ($applogin->expired_at < now()) {
            return response()->json(['error' => 'Token Expired'], 401);
        }
@@ -51,6 +59,16 @@ class MasterController extends Controller
          //check ip_address not same
             if ($applogin->ip_address != $request->ip_address) {
                 return response()->json(['error' => 'IP Address Not Same'], 401);
+            }
+
+            //check applogin->tanant->status
+            if ($applogin->tenant->status == 'inactive') {
+                return response()->json(['error' => 'System Inactive'], 401);
+            }
+
+            //check applogin->tanant->mobileapp_access
+            if ($applogin->tenant->mobileapp_access == false) {
+                return response()->json(['error' => 'Mobile App Access Inactive'], 401);
             }
 
 
@@ -68,7 +86,8 @@ class MasterController extends Controller
          if ($applogin) {
              return response()->json([
                  'token' => $applogin->token,
-                 'user' => $applogin->user,
+                 'user' => $applogin->tenant->user,
+                 'domain' => $applogin->tenant->domain,
              ]);
          }
     }
