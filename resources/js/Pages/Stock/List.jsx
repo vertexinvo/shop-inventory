@@ -119,14 +119,14 @@ export default function List(props) {
 
             <div className="flex flex-col md:flex-row w-full  space-y-2 md:space-y-0 md:space-x-2">
 
-              {selectId.length > 0 &&
+              {/* {selectId.length > 0 &&
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
                   className="text-white py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
                 >
                   Bulk Delete
                 </button>
-              }
+              } */}
               <button
                 onClick={() => router.get(route('stocklog.create'), { product_id: stocks.product_id })}
                 className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
@@ -143,7 +143,7 @@ export default function List(props) {
               <table class="min-w-full bg-white">
                 <thead class="whitespace-nowrap">
                   <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                    <th class="pl-4 w-8">
+                    {/* <th class="pl-4 w-8">
                       <input id="checkbox" type="checkbox" class="hidden peer"
                         onChange={(e) => setSelectId(e.target.checked ? stocklogs.data.map((product) => product.id) : [])}
                         checked={selectId.length === stocklogs.data.length}
@@ -156,7 +156,7 @@ export default function List(props) {
                             data-name="7-Check" data-original="#000000" />
                         </svg>
                       </label>
-                    </th>
+                    </th> */}
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Date/Time
@@ -197,7 +197,7 @@ export default function List(props) {
 
                     <tr className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}`}>
 
-                      <td className="pl-4 w-8">
+                      {/* <td className="pl-4 w-8">
                         <input
                           id={`checkbox-${product.id}`} // Unique id for each checkbox
                           type="checkbox"
@@ -226,7 +226,7 @@ export default function List(props) {
                             />
                           </svg>
                         </label>
-                      </td>
+                      </td> */}
 
 
                       <td class="p-4 text-sm text-black">

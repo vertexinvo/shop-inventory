@@ -355,7 +355,7 @@ export default function List(props) {
                                 </Dropdown.Trigger>
                                 <Dropdown.Content>
                                   <Dropdown.Link href={route('supplier.invoices', item.id)}>Invoice</Dropdown.Link>
-                                  <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.id)}>Ledger</Dropdown.Link>
+                                  <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.code || item.id)}>Ledger</Dropdown.Link>
                                   <Dropdown.Link href={route('supplier.edit', item.id)}>Edit</Dropdown.Link>
                                   <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() =>  setIsDeleteModalOpen(item)} >Delete</button>
                                 
