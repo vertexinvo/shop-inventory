@@ -38,6 +38,9 @@ export default function Add(props) {
     }),
   };
 
+  const [allowDescription, setAllowDescription] = useState(false);
+  const [allowSpecifications, setAllowSpecifications] = useState(false);
+
   return (
     <AuthenticatedLayout
       Product={auth.Product}
@@ -140,16 +143,19 @@ export default function Add(props) {
                           </div>
 
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="specifications">Specifications  (optional)</label>
+                            <label className="block text-grey-darker text-sm font-bold mb-2 flex items-center gap-2" for="specifications">Specifications  (optional) <FaEdit size={15} onClick={() => setAllowSpecifications(!allowSpecifications)} /></label>
+                            {allowSpecifications && 
                             <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
-
+                            }
                             <ErrorMessage name="specifications" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
 
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="specifications">Description  (optional)</label>
+                            <label className="block text-grey-darker text-sm font-bold mb-2 flex items-center gap-2" for="specifications">Description  (optional) <FaEdit size={15} onClick={() => setAllowDescription(!allowDescription)} /></label>
+                            {allowDescription && 
                             <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.description} onChange={(e) => setFieldValue('description', e)} />
+                            }
                             <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
