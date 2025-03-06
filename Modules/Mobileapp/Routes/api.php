@@ -24,12 +24,15 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
 
     Route::prefix('products')->group(function() {
         Route::get('list', [MobileappController::class, 'productsList']);
+        Route::get('search/{search}', [MobileappController::class, 'productsSearch']);
+        Route::get('/detail/{code}', [MobileappController::class, 'productDetail']);
     });
 
     Route::prefix('orders')->group(function() {
         Route::get('list', [MobileappController::class, 'ordersList']);
         Route::get('today-orders', [MobileappController::class, 'todayOrders']);
         Route::get('view-order/{code}', [MobileappController::class, 'viewOrder']);
+        Route::get('search/{search}', [MobileappController::class, 'ordersSearch']);
     });
 
 

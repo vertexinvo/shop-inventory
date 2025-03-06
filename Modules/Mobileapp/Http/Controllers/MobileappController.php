@@ -22,6 +22,38 @@ class MobileappController extends Controller
         return response()->json($products, 200);
      }
 
+    public function productsSearch(Request $request, $search){
+        $products = Product::with('categories', 'stock', 'brands')->where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                ->orWhere('model', 'like', "%$search%")
+                ->orWhere('id', 'like', "%$search%")
+                ->orWhere('code', 'like', "%$search%")
+                ->orWhere('identity_value', 'like', "%$search%");
+        })->latest()->get();
+        return response()->json($products, 200);
+    }
+
+    public function productDetail(Request $request, $code){
+        $product = Product::with('stock','categories','brands')->where('code', $code)->first();
+
+        if ($product === null) {
+            $product = Product::where('id', $code)->firstOrFail();
+        }  
+        return response()->json($product, 200);
+    }
+
+    public function ordersSearch(Request $request, $search){
+        $orders = Order::where(function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%")
+                    ->orWhere('code', 'like', "%$search%")
+                    ->orWhere('phone', 'like', "%$search%")
+                    ->orWhere('email', 'like', "%$search%")
+                  ->orWhere('id', 'like', "%$search%")
+                  ->orWhere('bill_no', 'like', "%$search%");
+        })->orderBy('order_date', 'desc')->get();
+        return response()->json($orders, 200);
+    }
+
      public function ordersList(Request $request){
         $orders = Order::orderBy('order_date', 'desc')->get();
         return response()->json($orders, 200);
