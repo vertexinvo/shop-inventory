@@ -7,7 +7,9 @@ use App\Models\Product;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use App\Facades\OrderService;
+use Carbon\Carbon;
+use App\Models\Supplier;
 class MobileappController extends Controller
 {
     /**
@@ -38,6 +40,60 @@ class MobileappController extends Controller
         }   
         $order->load('items','user','tax','shipping','items.product','exchangeproduct','exchange_items');
         return response()->json($order, 200);
+     }
+
+
+     public function counts(Request $request){
+        $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
+        $totalProductInStock = Product::whereHas('stock', function ($query) {
+            $query->where('quantity', '>', 0)->orWhere('status', true);
+        })->count();
+    
+        $totalProductOutofStock = Product::whereHas('stock', function ($query) {
+            $query->where('quantity', 0)->orWhere('status', false);
+        })->count();
+
+        $totalStockValue = Product::with('stock')->whereHas('stock')->get()->sum(function ($product) {
+            return $product->purchase_price * $product->stock->quantity;
+        });
+    
+        $totaliteminstock = Product::with('stock')->whereHas('stock')->get()->sum('stock.quantity');
+    
+        $totalOrderAmountPending = Order::where('status', 'pending')->get()->sum(function ($order) {
+            return $order->payable_amount - $order->paid_amount;
+        });
+
+        $allsuppliers = Supplier::all();
+
+        $totalSupplierPendingAmount = $allsuppliers->sum(function ($supplier) {
+            return $supplier->total_amount_pending; // Use the accessor
+        });
+    
+        $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
+    
+        $todayProfit = OrderService::getTodayNetProfit();
+        $weekProfit = OrderService::getThisWeekNetProfit();
+        $monthProfit = OrderService::getThisMonthNetProfit();
+        $yearProfit = OrderService::getThisYearNetProfit();
+    
+        $todaysPendingOrderAmount = Order::todaysPendingAmount();
+        
+        return response()->json([
+            'totalOrder' => $totalOrder,
+            'totalProductInStock' => $totalProductInStock,
+            'totalProductOutofStock' => $totalProductOutofStock,
+            'totalStockValue' => $totalStockValue,
+            'totaliteminstock' => $totaliteminstock,
+            'totalOrderAmountPending' => $totalOrderAmountPending,
+            'totalSupplierPendingAmount' => $totalSupplierPendingAmount,
+            'todaysOrder' => $todaysOrder,
+            'todayProfit' => $todayProfit,
+            'weekProfit' => $weekProfit,
+            'monthProfit' => $monthProfit,
+            'yearProfit' => $yearProfit,
+            'todaysPendingOrderAmount' => $todaysPendingOrderAmount,
+        ], 200);
+
      }
      
     public function index()

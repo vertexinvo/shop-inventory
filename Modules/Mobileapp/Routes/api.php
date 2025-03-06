@@ -32,6 +32,8 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
         Route::get('view-order/{code}', [MobileappController::class, 'viewOrder']);
     });
 
+
+    Route::get('counts', [MobileappController::class, 'counts']);
     
 });
 
