@@ -40,7 +40,7 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
 
     Route::get('counts', [MobileappController::class, 'counts']);
 
-    Route::get('tanency-config',function(){
+    Route::get('tanency-config',function(Request $request){
 
 
         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
