@@ -43,30 +43,21 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
 
     Route::get('tanency-config',function(Request $request){
 
-
-         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
-
-        // $tenants = Tenancy::all();
-
+        //in laravel module change dabase connection dynamically
+        $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
         Config::set('app.url', $domainurl);
-
         $tenant = Tenancy::where('domain',  $domainurl)->first();
-
-        // Set up dynamic database connection
         $newDbConfig = [
             'driver'    => 'mysql',
             'host'      => $tenant->db_host,
             'database'  => $tenant->db_name,
             'username'  => $tenant->db_user,
             'password'  => $tenant->db_password,
-            
         ];
-
-        Config::set('database.connections.mysql', $newDbConfig);
-        DB::purge('mysql'); // Clear any existing connections
-        DB::setDefaultConnection('mysql'); // Switch to new database connection
+        Config::set('database.connections.default', $newDbConfig);
+        DB::purge('default'); // Clear any existing connections
+        DB::setDefaultConnection('default'); // Switch to new database connection
         DB::reconnect('mysql'); // Reconnect with new settings
-
 
         //get database connection
         $connection = config('database.connections.mysql');
