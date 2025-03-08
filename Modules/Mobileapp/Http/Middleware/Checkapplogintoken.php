@@ -21,6 +21,8 @@ class CheckAppLoginToken
             return response()->json(['error' => 'Invalid token or token expired'], 401);
         }
 
+        
+
         return $next($request);
     }
 }

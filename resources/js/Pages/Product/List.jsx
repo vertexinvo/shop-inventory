@@ -492,7 +492,7 @@ export default function List(props) {
                           </svg>
                         </label>
                       </td>
-                      <td class="p-4 text-sm text-blue-600">
+                      <td class="p-4 text-xs text-blue-600">
                         <button onClick={() => router.get(route('product.show', product.code || product.id))} className='text-blue-600' title="Order" type='button'>
                         {product?.code || product?.id}
                         </button>
@@ -504,21 +504,21 @@ export default function List(props) {
                             router.get(route('product.edit', product.id))
 
                           }}>
-                            <p class="text-sm text-black ">Name : {product.name}</p>
-                            {product.model && <p class="text-xs text-gray-500 mt-0.5">Model :{product.model} </p>}
-                            {product.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
+                            <p class="text-lg text-black ">Name : {product.name}</p>
+                            {product.model && <p class="text-lg text-gray-500 mt-0.5">Model :{product.model} </p>}
+                            {product.identity_type !== 'none' && <p class="text-lg text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
                           </div>
                         </div>
                       </td>
 
-                      <td class="p-4 text-sm text-black">
+                      <td class="p-4 text-lg text-black">
                         {product?.stock?.quantity || 0}
                       </td>
                    
-                      <td class="p-4 text-sm text-black">
+                      <td class="p-4 text-lg text-black">
                         {product.purchase_price || 'N/A'}
                       </td>
-                      <td class="p-4 text-sm text-black">
+                      <td class="p-4 text-lg text-black">
                         {product.selling_price || 'N/A'}
                       </td>
                       <td class="p-4 text-sm text-black">
