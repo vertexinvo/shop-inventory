@@ -37,6 +37,14 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
 
 
     Route::get('counts', [MobileappController::class, 'counts']);
+
+    Route::get('tanency-config',function(){
+
+        //get database connection
+        $connection = config('database.connections.mysql');
+
+        return response()->json($connection, 200);
+    });
     
 });
 
