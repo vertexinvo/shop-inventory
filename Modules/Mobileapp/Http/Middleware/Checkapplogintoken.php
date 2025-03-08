@@ -32,19 +32,24 @@ class CheckAppLoginToken
 
         $tenant = Tenancy::where('domain',  $domainurl)->first();
 
-        if (!$tenant) {
-            return response()->json(['error' => 'Tenant not found'], 401);
-        }
+        // Set up dynamic database connection
+        $newDbConfig = [
+            'driver'    => 'mysql',
+            'host'      => $tenant->db_host,
+            'database'  => $tenant->db_name,
+            'username'  => $tenant->db_user,
+            'password'  => $tenant->db_password,
+            'charset'   => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+            'engine'    => null,
+        ];
 
-        
-        Config::set('database.connections.mysql.database',$tenant->db_name);
-        Config::set('database.connections.mysql.username', $tenant->db_user);
-        Config::set('database.connections.mysql.password', $tenant->db_password);
-        Config::set('database.connections.mysql.host', $tenant->db_host);
-    
-        DB::purge('mysql');
-        DB::reconnect('mysql');
-
+        Config::set('database.connections.mysql', $newDbConfig);
+        DB::purge('mysql'); // Clear any existing connections
+        DB::setDefaultConnection('mysql'); // Switch to new database connection
+        DB::reconnect('mysql'); // Reconnect with new settings
 
 
         return $next($request);
