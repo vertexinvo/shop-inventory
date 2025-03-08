@@ -39,16 +39,12 @@ class CheckAppLoginToken
             'database'  => $tenant->db_name,
             'username'  => $tenant->db_user,
             'password'  => $tenant->db_password,
-            'charset'   => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-            'engine'    => null,
+            
         ];
 
-        Config::set('database.connections.mysql', $newDbConfig);
-        DB::purge('mysql'); // Clear any existing connections
-        DB::setDefaultConnection('mysql'); // Switch to new database connection
+        Config::set('database.connections.default', $newDbConfig);
+        DB::purge('default'); // Clear any existing connections
+        DB::setDefaultConnection('default'); // Switch to new database connection
         DB::reconnect('mysql'); // Reconnect with new settings
 
 
