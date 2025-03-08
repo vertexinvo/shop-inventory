@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Facades\OrderService;
+use App\Http\Middleware\DomainDatabaseSwitcher;
 use Carbon\Carbon;
 use App\Models\Supplier;
 class MobileappController extends Controller
@@ -16,6 +17,12 @@ class MobileappController extends Controller
      * Display a listing of the resource.
      * @return Renderable
      */
+
+     //constructor
+        public function __construct()
+        {
+            $this->middleware(DomainDatabaseSwitcher::class);
+        }
 
      public function productsList(Request $request){
         $products = Product::with('categories', 'stock', 'brands')->latest()->get();

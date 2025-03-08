@@ -24,29 +24,6 @@ class CheckAppLoginToken
             return response()->json(['error' => 'Invalid token or token expired'], 401);
         }
 
-        $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
-
-        // $tenants = Tenancy::all();
-
-        Config::set('app.url', $domainurl);
-
-        $tenant = Tenancy::where('domain',  $domainurl)->first();
-
-        // Set up dynamic database connection
-        $newDbConfig = [
-            'driver'    => 'mysql',
-            'host'      => $tenant->db_host,
-            'database'  => $tenant->db_name,
-            'username'  => $tenant->db_user,
-            'password'  => $tenant->db_password,
-            
-        ];
-
-        Config::set('database.connections.default', $newDbConfig);
-        DB::purge('default'); // Clear any existing connections
-        DB::setDefaultConnection('default'); // Switch to new database connection
-        DB::reconnect('mysql'); // Reconnect with new settings
-
 
         return $next($request);
     }
