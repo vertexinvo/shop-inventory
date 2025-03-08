@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Modules\Master\Entities\Tenancy;
 use Modules\Mobileapp\Http\Controllers\MobileappController;
 use Modules\Mobileapp\Http\Middleware\CheckAppLoginToken;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\DB;
+use Modules\Master\Entities\Tenancy;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,11 +44,11 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
     Route::get('tanency-config',function(Request $request){
 
 
-        $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
+         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
 
         // $tenants = Tenancy::all();
 
-        config('app.url', $domainurl);
+        Config::set('app.url', $domainurl);
 
         $tenant = Tenancy::where('domain',  $domainurl)->first();
 
@@ -61,7 +62,7 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
             
         ];
 
-        config('database.connections.default', $newDbConfig);
+        Config::set('database.connections.mysql', $newDbConfig);
         DB::purge('mysql'); // Clear any existing connections
         DB::setDefaultConnection('mysql'); // Switch to new database connection
         DB::reconnect('mysql'); // Reconnect with new settings
