@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Modules\Master\Entities\Tenancy;
 use Modules\Mobileapp\Http\Controllers\MobileappController;
 use Modules\Mobileapp\Http\Middleware\CheckAppLoginToken;
 
@@ -39,6 +41,31 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
     Route::get('counts', [MobileappController::class, 'counts']);
 
     Route::get('tanency-config',function(){
+
+
+        $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
+
+        // $tenants = Tenancy::all();
+
+        config('app.url', $domainurl);
+
+        $tenant = Tenancy::where('domain',  $domainurl)->first();
+
+        // Set up dynamic database connection
+        $newDbConfig = [
+            'driver'    => 'mysql',
+            'host'      => $tenant->db_host,
+            'database'  => $tenant->db_name,
+            'username'  => $tenant->db_user,
+            'password'  => $tenant->db_password,
+            
+        ];
+
+        config('database.connections.default', $newDbConfig);
+        DB::purge('mysql'); // Clear any existing connections
+        DB::setDefaultConnection('mysql'); // Switch to new database connection
+        DB::reconnect('mysql'); // Reconnect with new settings
+
 
         //get database connection
         $connection = config('database.connections.mysql');
