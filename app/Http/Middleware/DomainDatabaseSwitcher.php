@@ -20,9 +20,7 @@ class DomainDatabaseSwitcher
     public function handle(Request $request, Closure $next): Response
     {
       
-       
-        $domain = $request->getHttpHost();// Get the domain name
-
+     
         $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
 
         // $tenants = Tenancy::all();

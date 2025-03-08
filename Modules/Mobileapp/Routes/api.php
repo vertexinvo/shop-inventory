@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Middleware\DomainDatabaseSwitcher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Modules\Mobileapp\Http\Controllers\MobileappController;
@@ -21,7 +20,7 @@ use Modules\Mobileapp\Http\Middleware\CheckAppLoginToken;
 //     return $request->user();
 // });
 
-Route::middleware([CheckAppLoginToken::class,DomainDatabaseSwitcher::class])->prefix('mobileapp')->group(function() {
+Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(function() {
 
     Route::prefix('products')->group(function() {
         Route::get('list', [MobileappController::class, 'productsList']);
