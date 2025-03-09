@@ -8,10 +8,12 @@ import { QRCode } from 'react-qrcode-logo';
 import { usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { useState } from 'react';
+import { set } from 'date-fns';
 
 export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
     const setting = usePage().props.setting;
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(null);
+    const [isLogoutAllModalOpen, setIsLogoutAllModalOpen] = useState(false);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -39,9 +41,10 @@ export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
                 {/* table */}
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
                     <div className="bg-white overflow-hidden shadow sm:rounded-lg">
-                        <div className="px-4 py-5 sm:px-6">
+                        <div className="px-4 py-5 sm:px-6 flex justify-between items-center border-b border-gray-200">
                             <h3 className="text-lg font-medium leading-6 text-gray-900">Linked Devices</h3>
-       
+                            
+                            <button type="button" onClick={() => setIsLogoutAllModalOpen(true)} className="text-red-600">Unlink All</button>
                         </div>
                         <div className="border-t border-gray-200">
                             <table className="min-w-full divide-y divide-gray-200">
@@ -127,6 +130,15 @@ export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
                 })
                 setIsLogoutModalOpen(null)
                 }} />
+
+            <ConfirmModal isOpen={isLogoutAllModalOpen} onClose={() => setIsLogoutAllModalOpen(false)} title="Are you sure you want to logout all device?" onConfirm={() => {
+
+            router.delete(route('profile.removealldevice'), {
+            preserveScroll: true,
+            preserveState: true,
+            })
+            setIsLogoutAllModalOpen(false)
+            }} />
 
         </AuthenticatedLayout>
     );

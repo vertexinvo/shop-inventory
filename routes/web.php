@@ -157,6 +157,15 @@ Route::delete('/unlinkdevice/{token}', function (Request $request, $token) {
     return redirect()->route('profile.generated-via-qr');
 })->name('profile.unlinkdevice');
 
+//removealldevice
+Route::delete('/removealldevice', function (Request $request) {
+    $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
+    $tenant = Tenancy::where('domain',  $domainurl)->first();
+    $tenant->applogin()->update(['status' => 'logout']);
+    session()->flash('message', 'All devices unlinked successfully');
+    return redirect()->route('profile.generated-via-qr');
+})->name('profile.removealldevice');
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/dashboard/user.php';
