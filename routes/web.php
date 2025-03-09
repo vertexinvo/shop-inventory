@@ -140,9 +140,7 @@ Route::get('/generated-via-qr', function (Request $request) {
     ]);
 
     //get linked device to the tenant
-    $linkeddevices = $tenant->applogin()->where('status', 'active')->get(); 
-   
-
+    $linkeddevices = $tenant->applogin()->where('status', 'active')->latest()->get(); 
     return Inertia::render('Profile/GeneratedViaQr', compact('dataHash','linkeddevices'));
 })->name('profile.generated-via-qr');
 
