@@ -146,6 +146,19 @@ Route::get('/generated-via-qr', function (Request $request) {
     return Inertia::render('Profile/GeneratedViaQr', compact('dataHash','linkeddevices'));
 })->name('profile.generated-via-qr');
 
+//unlinkdevice
+Route::delete('/unlinkdevice/{token}', function (Request $request, $token) {
+    $applogin = Applogin::where('token', $token)->first();
+    if(!$applogin){
+        session()->flash('error', 'Device not found');
+        return redirect()->route('profile.generated-via-qr');
+    }
+    $applogin->status = 'logout';
+    $applogin->save();
+    session()->flash('message', 'Device unlinked successfully');
+    return redirect()->route('profile.generated-via-qr');
+})->name('profile.unlinkdevice');
+
 
 require __DIR__.'/auth.php';
 require __DIR__.'/dashboard/user.php';

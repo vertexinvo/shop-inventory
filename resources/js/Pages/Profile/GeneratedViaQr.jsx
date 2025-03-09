@@ -6,10 +6,12 @@ import { Head, router } from '@inertiajs/react';
 import { MdKeyboardBackspace } from "react-icons/md";
 import { QRCode } from 'react-qrcode-logo';
 import { usePage } from '@inertiajs/react';
+import ConfirmModal from '@/Components/ConfirmModal';
+import { useState } from 'react';
 
 export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
     const setting = usePage().props.setting;
-
+    const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(null);
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -54,9 +56,19 @@ export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
                                         <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Status
                                         </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Action
+                                        </th>
                                     </tr>
                                 </thead>
                                 <tbody className="bg-white divide-y divide-gray-200">
+                                    {linkeddevices.length === 0 && (
+                                        <tr>
+                                            <td colSpan="4" className="px-6 py-4 whitespace-nowrap">
+                                                <div className="text-sm text-gray-900">No linked devices found.</div>
+                                            </td>
+                                        </tr>
+                                    )}
                                     {linkeddevices.map((device) => (
                                     <tr>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -79,6 +91,7 @@ export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
                                                 <div className="ml-4">
                                                     <div className="text-sm font-medium text-gray-900">Device UID:{device.device_uid || "N/A"}</div>
                                                 </div>
+                                           
                                                 
                                             </div>
                                         </td>
@@ -92,6 +105,9 @@ export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
                                                 {device.status || "N/A"}
                                             </span>
                                         </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-left text-sm font-medium">
+                                            <button type="button" onClick={() => setIsLogoutModalOpen(device)} className="text-red-600">Logout</button>
+                                        </td>
                                     </tr>
                                     ))}
                                 </tbody>
@@ -100,6 +116,18 @@ export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
                     </div>
                 </div>
             </div>
+
+
+
+            <ConfirmModal isOpen={isLogoutModalOpen !== null} onClose={() => setIsLogoutModalOpen(null)} title="Are you sure you want to logout device?" onConfirm={() => {
+
+                router.delete(route('profile.unlinkdevice', isLogoutModalOpen.token), {
+                preserveScroll: true,
+                preserveState: true,
+                })
+                setIsLogoutModalOpen(null)
+                }} />
+
         </AuthenticatedLayout>
     );
 }
