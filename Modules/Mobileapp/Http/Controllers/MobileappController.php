@@ -71,7 +71,6 @@ class MobileappController extends Controller
         return response()->json($orders, 200);
      }
 
-     //viewOrder
      public function viewOrder(Request $request, $code){
         $order = Order::where('code', $code)->first();
         if ($order === null) {
@@ -80,7 +79,6 @@ class MobileappController extends Controller
         $order->load('items','user','tax','shipping','items.product','exchangeproduct','exchange_items');
         return response()->json($order, 200);
      }
-
 
      public function counts(Request $request){
         $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
@@ -132,7 +130,6 @@ class MobileappController extends Controller
             'yearProfit' => $yearProfit,
             'todaysPendingOrderAmount' => $todaysPendingOrderAmount,
         ], 200);
-
      }
      
     public function index()

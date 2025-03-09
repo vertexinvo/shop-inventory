@@ -92,6 +92,18 @@ class MasterController extends Controller
          }
     }
 
+    //logout
+    public function logout(Request $request)
+    {
+        $applogin = \Modules\Master\Entities\Applogin::where('token', $request->token)->first();
+        if ($applogin) {
+            $applogin->status = 'logout';
+            $applogin->save();
+            return response()->json(['message' => 'Logout Success']);
+        }
+        return response()->json(['error' => 'Token Not Found'], 401);
+    }
+
     /**
      * Show the form for creating a new resource.
      * @return Renderable

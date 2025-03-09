@@ -23,6 +23,7 @@ Route::prefix('master')->group(function() {
 
     Route::prefix('auth')->group(function() {
         Route::post('login-via-qr', [MasterController::class, 'loginViaQr']);
+        Route::post('logout', [MasterController::class, 'logout']);
     });
     
 });

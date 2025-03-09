@@ -7,7 +7,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { QRCode } from 'react-qrcode-logo';
 import { usePage } from '@inertiajs/react';
 
-export default function GeneratedViaQr({ auth,dataHash }) {
+export default function GeneratedViaQr({ auth,dataHash,linkeddevices }) {
     const setting = usePage().props.setting;
 
     return (
@@ -26,12 +26,78 @@ export default function GeneratedViaQr({ auth,dataHash }) {
             <Head title="Link Mobile App" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6 flex flex-col items-center">
                     <div className="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                          <QRCode  value={dataHash} size={150} logoImage={setting.site_favicon} logoOpacity={0.8} />
                     </div>
 
                     
+                </div>
+
+                {/* table */}
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
+                    <div className="bg-white overflow-hidden shadow sm:rounded-lg">
+                        <div className="px-4 py-5 sm:px-6">
+                            <h3 className="text-lg font-medium leading-6 text-gray-900">Linked Devices</h3>
+       
+                        </div>
+                        <div className="border-t border-gray-200">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Device
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            IP Address
+                                        </th>
+                                        <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Status
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {linkeddevices.map((device) => (
+                                    <tr>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-left text-sm font-medium text-gray-900">
+                                                <div className="ml-4">
+                                                    <div className="text-sm font-medium text-gray-900">Device Type:{device.device_type || "N/A"}</div>
+                                                </div>
+                                                <div className="ml-4">
+                                                    <div className="text-sm font-medium text-gray-900">Device Name:{device.device_name || "N/A"}</div>
+                                                </div>
+                                                <div className="ml-4">
+                                                    <div className="text-sm font-medium text-gray-900">Device OS:{device.device_os || "N/A"}</div>
+                                                </div>
+                                                <div className="ml-4">
+                                                    <div className="text-sm font-medium text-gray-900">Device OS Version:{device.device_os_version || "N/A"}</div>
+                                                </div>
+                                                <div className="ml-4">
+                                                    <div className="text-sm font-medium text-gray-900">Device Model:{device.device_model || "N/A"}</div>
+                                                </div>
+                                                <div className="ml-4">
+                                                    <div className="text-sm font-medium text-gray-900">Device UID:{device.device_uid || "N/A"}</div>
+                                                </div>
+                                                
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                {device.ip_address || "N/A"}
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                {device.status || "N/A"}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>

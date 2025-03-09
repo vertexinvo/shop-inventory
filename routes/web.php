@@ -138,9 +138,12 @@ Route::get('/generated-via-qr', function (Request $request) {
         'expired_at' => Carbon::now()->addMinutes(5),
         'tenant_id' => $tenant->id,
     ]);
+
+    //get linked device to the tenant
+    $linkeddevices = $tenant->applogin()->where('status', 'active')->get(); 
    
 
-    return Inertia::render('Profile/GeneratedViaQr', compact('dataHash'));
+    return Inertia::render('Profile/GeneratedViaQr', compact('dataHash','linkeddevices'));
 })->name('profile.generated-via-qr');
 
 

@@ -13,6 +13,11 @@ class Tenancy extends Model
     protected $connection = 'master';
 
     protected $fillable = [];
+
+    public function applogin()
+    {
+        return $this->hasMany(Applogin::class, 'tenant_id');
+    }
     
     protected static function newFactory()
     {
