@@ -340,7 +340,7 @@ const View = (props) => {
                                                         {item.qty || "N/A"}
                                                     </td>
                                                     <td className="px-3 py-2 text-right text-sm text-gray-700">
-                                                        Rs. {order.total || "N/A"}
+                                                        Rs. {item.price * item.qty || "N/A"}
                                                     </td>
                                                 </tr>
                                             ))}
