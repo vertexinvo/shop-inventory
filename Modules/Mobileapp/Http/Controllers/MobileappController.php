@@ -9,8 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use App\Facades\OrderService;
 use App\Http\Middleware\DomainDatabaseSwitcher;
+use App\Models\Setting;
 use Carbon\Carbon;
 use App\Models\Supplier;
+use App\Models\Supplierinvoice;
+
 class MobileappController extends Controller
 {
     /**
@@ -23,6 +26,29 @@ class MobileappController extends Controller
         {
             $this->middleware(DomainDatabaseSwitcher::class);
         }
+
+
+    public function shopinfo(Request $request){
+        $setting = Setting::first();
+        return response()->json($setting, 200);
+    }
+
+    public function suppliersList(Request $request){
+        $suppliers = Supplier::latest()->get();
+        return response()->json($suppliers, 200);
+    }
+
+    public function suppliersSearch(Request $request, $search){
+        $suppliers = Supplier::where('person_name', 'like', "%$search%")
+        ->orWhere('code', 'like', "%$search%")
+        ->orWhere('contact', 'like', "%$search%")->latest()->get();
+        return response()->json($suppliers, 200);
+    }
+
+    public function supplierInvoices(Request $request,$id){
+        $invoices = Supplier::findOrFail($id)->supplierinvoices()->latest()->get();
+        return response()->json($invoices, 200);
+    }
 
      public function productsList(Request $request){
         $products = Product::with('categories', 'stock', 'brands')->latest()->get();

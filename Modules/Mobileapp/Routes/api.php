@@ -38,9 +38,15 @@ Route::middleware(CheckAppLoginToken::class)->prefix('mobileapp')->group(functio
         Route::get('search/{search}', [MobileappController::class, 'ordersSearch']);
     });
 
+    Route::prefix('suppliers')->group(function() {
+        Route::get('list', [MobileappController::class, 'suppliersList']);
+        Route::get('search/{search}', [MobileappController::class, 'suppliersSearch']);
+        Route::get('invoices/{id}', [MobileappController::class, 'supplierInvoices']);
+    });
+
 
     Route::get('counts', [MobileappController::class, 'counts']);
-
+    Route::get('shopinfo', [MobileappController::class, 'shopinfo']);
   
 });
 
