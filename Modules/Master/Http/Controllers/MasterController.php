@@ -57,9 +57,9 @@ class MasterController extends Controller
          }
 
          //check ip_address not same
-            if ($applogin->ip_address != $request->ip_address) {
-                return response()->json(['error' => 'IP Address Not Same'], 401);
-            }
+            // if ($applogin->ip_address != $request->ip_address) {
+            //     return response()->json(['error' => 'IP Address Not Same'], 401);
+            // }
 
             //check applogin->tanant->status
             if ($applogin->tenant->status == 'inactive') {
