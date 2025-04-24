@@ -426,9 +426,6 @@ export default function List(props) {
         setIsDeleteModalOpen(null)
       }} />
 
-
-
-
       <ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these users?" onConfirm={() => {
 
         router.post(route('customer.bulkdestroy'), { ids: selectId.join(',') }, {
