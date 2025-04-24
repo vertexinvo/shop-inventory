@@ -7,6 +7,7 @@ import { MdKeyboardBackspace } from "react-icons/md";
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
 import { SiMicrosoftexcel } from "react-icons/si";
+import FloatingCreateButton from '@/Components/FloatingCreateButton';
 
 
 export default function List(props) {
@@ -86,12 +87,12 @@ export default function List(props) {
                   Bulk Delete
                 </button>
               )}
-              <button
+              {/* <button
                 onClick={() => router.get(route('customer.create'))}
                 className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
               >
                 Create
-              </button>
+              </button> */}
 
               <Formik
                 enableReinitialize
@@ -158,7 +159,7 @@ export default function List(props) {
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
                           <path
                             d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            data-name="7-Check" data-original="#000000" />
+                            data-name="7-Check" data-original="#000000" />F
                         </svg>
                       </label>
                     </th>
@@ -412,8 +413,9 @@ export default function List(props) {
         </div>
       </div>
 
+      {/* Floating Create Button */}
 
-
+      <FloatingCreateButton routeName="customer.create" title="Create" /> 
 
       <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
 
