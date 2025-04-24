@@ -25,6 +25,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import { GrMoney } from 'react-icons/gr';
 import { CiTimer } from 'react-icons/ci';
+import FloatingCreateButton from '@/Components/FloatingCreateButton';
 
 
 export default function List(props) {
@@ -296,12 +297,7 @@ export default function List(props) {
               >
                 Instant Sale
               </button>
-              <button
-                onClick={() => router.get(route('order.create'))}
-                className="text-white  py-2 px-4 rounded-lg bg-black hover:bg-gray-600  "
-              >
-                Add&nbsp;Sale
-              </button>
+              <FloatingCreateButton routeName="order.create" title="Create" />
 
 
               <Formik

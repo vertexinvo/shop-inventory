@@ -13,6 +13,7 @@ import 'react-date-range/dist/theme/default.css';
 import { DateRangePicker } from 'react-date-range';
 import Modal from '@/Components/Modal';
 import { set } from 'date-fns';
+import FloatingCreateButton from '@/Components/FloatingCreateButton';
 
 export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -148,12 +149,7 @@ export default function List(props) {
                 Bulk Delete
               </button>
             )}
-            <button
-              onClick={() => router.get(route('expense.create'))}
-              className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
-            >
-              Create
-            </button>
+               <FloatingCreateButton routeName="expense.create" title="Create" />
 
 
             {/* Date range filter button */}

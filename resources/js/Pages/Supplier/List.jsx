@@ -17,6 +17,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import Dropdown from '@/Components/Dropdown';
+import FloatingCreateButton from '@/Components/FloatingCreateButton';
 
 export default function List(props) {
   const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers, status, search } = props
@@ -24,11 +25,11 @@ export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
-    const { url } = usePage();
+  const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
 
   const { show } = useContextMenu({ id: "context-menu" });
-  
+
   const handleMenuClick = ({ props, action }) => {
     const item = props;
     if (action === "invoice") {
@@ -135,13 +136,7 @@ export default function List(props) {
                 </button>
               )}
 
-              <button
-                onClick={() => router.get(route('supplier.create'))}
-                className="text-white  py-2 px-4 rounded-lg bg-black hover:bg-gray-600  "
-              >
-                Create
-              </button>
-
+              <FloatingCreateButton routeName="supplier.create" title="Create" />
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -266,12 +261,12 @@ export default function List(props) {
                   )}
                   {suppliers.data.map((item, index) => (
 
-                    <tr 
-                    onContextMenu={(e) => {
-                      e.preventDefault(); // Prevents default right-click menu
-                      show({ event: e, props: item }); // Shows custom menu
-                    }} 
-                    className={`${item?.total_amount_paid == 0 && item?.total_amount > 0   ? 'bg-red-100' :  item?.total_amount_paid > 0 && item?.total_amount_pending > 0  ? 'bg-yellow-100' : ''}  ${selectId.includes(item.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
+                    <tr
+                      onContextMenu={(e) => {
+                        e.preventDefault(); // Prevents default right-click menu
+                        show({ event: e, props: item }); // Shows custom menu
+                      }}
+                      className={`${item?.total_amount_paid == 0 && item?.total_amount > 0 ? 'bg-red-100' : item?.total_amount_paid > 0 && item?.total_amount_pending > 0 ? 'bg-yellow-100' : ''}  ${selectId.includes(item.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
 
                       <td className="pl-4 w-8">
                         <input
@@ -323,7 +318,7 @@ export default function List(props) {
                         {item?.address || 'N/A'}
                       </td>
                       <td class="p-4 text-sm text-black flex items-center">
-                       <Link className='text-blue-600' href={route('product.index',{invoicecode:item.code})} >{item?.code || 'N/A'}</Link> <BiCopy size={20} onClick={() => { navigator.clipboard.writeText(item.code); toast.success('Copied!'); }} className="ml-2 cursor-pointer" />
+                        <Link className='text-blue-600' href={route('product.index', { invoicecode: item.code })} >{item?.code || 'N/A'}</Link> <BiCopy size={20} onClick={() => { navigator.clipboard.writeText(item.code); toast.success('Copied!'); }} className="ml-2 cursor-pointer" />
                       </td>
 
                       <td class="p-4 text-sm text-black">
@@ -345,23 +340,23 @@ export default function List(props) {
 
                       <td class="p-4 flex items-center">
 
-                            <Dropdown >
-                                <Dropdown.Trigger>
-                                  <button className="text-gray-500 hover:text-black focus:outline-none">
-                                  <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        </svg>
-                                  </button>
-                                </Dropdown.Trigger>
-                                <Dropdown.Content>
-                                  <Dropdown.Link href={route('supplier.invoices', item.id)}>Invoice</Dropdown.Link>
-                                  <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.code || item.id)}>Ledger</Dropdown.Link>
-                                  <Dropdown.Link href={route('supplier.edit', item.id)}>Edit</Dropdown.Link>
-                                  <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() =>  setIsDeleteModalOpen(item)} >Delete</button>
-                                
-                                
-                                </Dropdown.Content>
-                            </Dropdown>
+                        <Dropdown >
+                          <Dropdown.Trigger>
+                            <button className="text-gray-500 hover:text-black focus:outline-none">
+                              <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                              </svg>
+                            </button>
+                          </Dropdown.Trigger>
+                          <Dropdown.Content>
+                            <Dropdown.Link href={route('supplier.invoices', item.id)}>Invoice</Dropdown.Link>
+                            <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.code || item.id)}>Ledger</Dropdown.Link>
+                            <Dropdown.Link href={route('supplier.edit', item.id)}>Edit</Dropdown.Link>
+                            <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() => setIsDeleteModalOpen(item)} >Delete</button>
+
+
+                          </Dropdown.Content>
+                        </Dropdown>
 
 
 
@@ -375,72 +370,72 @@ export default function List(props) {
               </table>
 
 
-                      {/* Context Menu */}
-                          <Menu id="context-menu">
-                            <Item onClick={({ props }) => handleMenuClick({ props, action: "invoice" })}>
-                              Invoice
-                            </Item>
-                            <Item
-                              onClick={({ props }) => handleMenuClick({ props, action: "ledger" })}
-                              className="text-red-600"
-                            >
-                              Ledger
-                            </Item>   
-                            <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
-                              Edit
-                            </Item>
-                            <Item
-                              onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
-                              className="text-red-600"
-                            >
-                              Delete
-                            </Item>   
-                          </Menu>
-                        
+              {/* Context Menu */}
+              <Menu id="context-menu">
+                <Item onClick={({ props }) => handleMenuClick({ props, action: "invoice" })}>
+                  Invoice
+                </Item>
+                <Item
+                  onClick={({ props }) => handleMenuClick({ props, action: "ledger" })}
+                  className="text-red-600"
+                >
+                  Ledger
+                </Item>
+                <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
+                  Edit
+                </Item>
+                <Item
+                  onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
+                  className="text-red-600"
+                >
+                  Delete
+                </Item>
+              </Menu>
+
 
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9">
-  <span class="flex items-center col-span-3">
-    Showing {suppliers.from} - {suppliers.to} of {suppliers.total}
-  </span>
-  <span class="col-span-2"></span>
+              <span class="flex items-center col-span-3">
+                Showing {suppliers.from} - {suppliers.to} of {suppliers.total}
+              </span>
+              <span class="col-span-2"></span>
 
-  <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-    {/* Load More Button - Hide when all data is loaded */}
-    {suppliers.to < suppliers.total && (
-      <button
-        type="button"
-        onClick={() =>
-          router.get(route('supplier.index'), {
-            status: status || '',
-            search: search || '',
-            per_page: params.get('per_page') ? parseInt(params.get('per_page')) + 10 : 20,
-          })
-        }
-        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-      >
-        Load More
-      </button>
-    )}
+              <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                {/* Load More Button - Hide when all data is loaded */}
+                {suppliers.to < suppliers.total && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      router.get(route('supplier.index'), {
+                        status: status || '',
+                        search: search || '',
+                        per_page: params.get('per_page') ? parseInt(params.get('per_page')) + 10 : 20,
+                      })
+                    }
+                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                  >
+                    Load More
+                  </button>
+                )}
 
-    {/* Load Less Button - Hide when at minimum per_page */}
-    {params.get('per_page') && parseInt(params.get('per_page')) > 10 && (
-      <button
-        type="button"
-        onClick={() =>
-          router.get(route('supplier.index'), {
-            status: status || '',
-            search: search || '',
-            per_page: Math.max(10, parseInt(params.get('per_page')) - 10),
-          })
-        }
-        class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-      >
-        Load Less
-      </button>
-    )}
-  </span>
-</div>
+                {/* Load Less Button - Hide when at minimum per_page */}
+                {params.get('per_page') && parseInt(params.get('per_page')) > 10 && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      router.get(route('supplier.index'), {
+                        status: status || '',
+                        search: search || '',
+                        per_page: Math.max(10, parseInt(params.get('per_page')) - 10),
+                      })
+                    }
+                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                  >
+                    Load Less
+                  </button>
+                )}
+              </span>
+            </div>
 
           </div>
 

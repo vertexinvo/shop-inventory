@@ -415,7 +415,7 @@ export default function List(props) {
 
       {/* Floating Create Button */}
 
-      <FloatingCreateButton routeName="customer.create" title="Create" /> 
+      <FloatingCreateButton routeName="customer.create" title="Create" />
 
       <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
 

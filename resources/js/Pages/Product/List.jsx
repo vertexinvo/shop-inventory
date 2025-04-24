@@ -20,6 +20,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css';
 import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
+import FloatingCreateButton from '@/Components/FloatingCreateButton';
 
 export default function List(props) {
   const { auth, stock, startdate,enddate, products ,totalstock,totalstockavailable,totalstocknotavailable,totalStockValue,totaliteminstock,categories,brands} = props
@@ -283,12 +284,7 @@ export default function List(props) {
                 </button>
                 </>
               )}
-              <button
-                onClick={() => router.get(route('product.create'))}
-                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
-              >
-                Create
-              </button>
+               <FloatingCreateButton routeName="product.create" title="Create" />
 
               <Formik
                 enableReinitialize
