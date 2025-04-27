@@ -51,7 +51,7 @@ export default function List(props) {
     >
       <Head title="Expense" />
 
-      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+      <div class="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
 
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
@@ -138,7 +138,7 @@ export default function List(props) {
       </div>
 
 
-      <div class="px-5 mx-4  py-5">
+      <div class="mx-4">
 
         <div className="flex flex-col md:flex-row justify-start items-center mt-2 mb-4">
 
