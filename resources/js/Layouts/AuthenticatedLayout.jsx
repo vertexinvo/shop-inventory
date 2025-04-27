@@ -46,7 +46,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-    const [isMinimizeSidebar , setIsMinimizeSidebar] = useState(false);
+    const [isMinimizeSidebar, setIsMinimizeSidebar] = useState(false);
 
     const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
 
@@ -61,7 +61,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 <div className="flex shrink-0 items-center gap-2">
                                     <IoMdMenu size={30} className='cursor-pointer' onClick={() => setIsMinimizeSidebar(!isMinimizeSidebar)} />
                                     <Link href="/">
-                                        <img src={ setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
+                                        <img src={setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
                                     </Link>
 
                                 </div>
@@ -90,17 +90,17 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                     {user.name}
 
                                                     <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
+                                                        className="-me-0.5 ms-2 h-4 w-4"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 20 20"
+                                                        fill="currentColor"
+                                                    >
+                                                        <path
+                                                            fillRule="evenodd"
+                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                            clipRule="evenodd"
+                                                        />
+                                                    </svg>
                                                 </button>
                                             </span>
                                         </Dropdown.Trigger>
@@ -236,7 +236,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 <ResponsiveNavLink href={route('profile.edit')}>
                                     Profile
                                 </ResponsiveNavLink>
-                                
+
                                 <ResponsiveNavLink href={route('setting')}>
                                     Setting
                                 </ResponsiveNavLink>
@@ -255,7 +255,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
 
 
-                {!isMinimizeSidebar ? 
+                {!isMinimizeSidebar ?
                     <aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0    " aria-label="Sidebar">
                         <div class="h-full px-3 pb-4 overflow-y-auto bg-white   flex flex-col">
                             <ul class="space-y-2 font-medium flex-grow">
@@ -300,20 +300,20 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </li>
                                 <li>
                                     <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <GiExpense  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <GiExpense className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Expense</span>
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdFormatListBulleted   className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <MdFormatListBulleted className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Sales Ledger</span>
                                     </NavLink>
                                 </li>
-                              
+
                                 <li>
                                     <NavLink href={route('product.scan')} active={route().current('product.scan')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdOutlineQrCodeScanner    className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <MdOutlineQrCodeScanner className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Scanner</span>
                                     </NavLink>
                                 </li>
@@ -324,14 +324,14 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                     </NavLink>
                                 </li> */}
                             </ul>
-
+                                    <span className="block text-center text-xs text-gray-400 mb-4">powered by solinvo</span>
                             <hr />
                             {/* profile.generated-via-qr */}
-                           
+
                             <div className='mt-1'>
                                 <NavLink href={route('profile.generated-via-qr')} active={route().current('profile.generated-via-qr')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                <MdOutlinePhoneAndroid  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                                <span class="ms-3">Link Mobile App</span>
+                                    <MdOutlinePhoneAndroid className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
+                                    <span class="ms-3">Link Mobile App</span>
                                 </NavLink>
 
                             </div>
@@ -353,79 +353,79 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                     </aside>
                     :
                     <aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-15 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0    " aria-label="Sidebar">
-                    <div class="h-full px-3 pb-4 overflow-y-auto bg-white   flex flex-col">
-                        <ul class="space-y-2 font-medium flex-grow">
-                            <li>
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
-                                    <svg class="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
-                                        <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                                        <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-                                    </svg>
-                                    
-                                </NavLink>
-                            </li>
+                        <div class="h-full px-3 pb-4 overflow-y-auto bg-white   flex flex-col">
+                            <ul class="space-y-2 font-medium flex-grow">
+                                <li>
+                                    <NavLink href={route('dashboard')} active={route().current('dashboard')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
+                                        <svg class="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                            <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
+                                            <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
+                                        </svg>
 
-                            <li>
-                                <NavLink href={route('customer.index')} active={route().current('customer.index')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
-                                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                                        <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
-                                    </svg>
-                                 
-                                </NavLink>
-                            </li>
+                                    </NavLink>
+                                </li>
 
-                            <li>
-                                <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                    <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
-                                        <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                                    </svg>
-                                  
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href={route('order.index')} active={route().current('order.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                    <HiMiniShoppingCart className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                    
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href={route('supplier.index')} active={route().current('supplier.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                    <TbInvoice className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                   
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                    <GiExpense  className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                               
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                    <MdFormatListBulleted   className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                   
-                                </NavLink>
-                            </li>
-                            
-                        </ul>
+                                <li>
+                                    <NavLink href={route('customer.index')} active={route().current('customer.index')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
+                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                        </svg>
 
-                        <hr />
-                        <div className='mt-1'>
-                            <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                              
-                            </NavLink>
+                                    </NavLink>
+                                </li>
 
+                                <li>
+                                    <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                                            <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
+                                        </svg>
+
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink href={route('order.index')} active={route().current('order.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                        <HiMiniShoppingCart className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink href={route('supplier.index')} active={route().current('supplier.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                        <TbInvoice className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                        <GiExpense className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
+                                        <MdFormatListBulleted className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+
+                                    </NavLink>
+                                </li>
+
+                            </ul>
+
+                            <hr />
+                            <div className='mt-1'>
+                                <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
+                                    <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
+
+                                </NavLink>
+
+                            </div>
+                            <div>
+                                <button onClick={() => setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
+                                    <BiLogOut className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
+
+                                </button>
+
+                            </div>
                         </div>
-                        <div>
-                            <button onClick={() => setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
-                                <BiLogOut className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                             
-                            </button>
-
-                        </div>
-                    </div>
-                </aside>
+                    </aside>
                 }
 
 
@@ -436,7 +436,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         {header && (
                             <header className="bg-white shadow no-print">
                                 <div className="mx-auto px-4 py-5 pt-6 sm:px-6 lg:px-8">
-                                    
+
                                     {header}
                                 </div>
                             </header>
