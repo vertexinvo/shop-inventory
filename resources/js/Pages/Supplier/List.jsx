@@ -58,7 +58,7 @@ export default function List(props) {
               onClick={() => router.get(route('dashboard'))}
               title="Back"
             />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales</h2>
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Suppliers</h2>
           </div>
 
           {/* Action Buttons */}

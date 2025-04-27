@@ -8,6 +8,7 @@ import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
 import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { BiExport } from 'react-icons/bi';
 
 
 export default function Sales(props) {
@@ -21,15 +22,33 @@ export default function Sales(props) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('dashboard'))}
-            title="Back"
-          />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales Ledger</h2>
-        </>}
+        <div className="flex items-center justify-between">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => router.get(route('dashboard'))}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales</h2>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3">
+            <a
+              href={route('ledger.sales.csvexport')}
+              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+            >
+              <span className="flex items-center gap-x-1 transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                <BiExport className="h-5 w-5" />
+                Export CSV File
+              </span>
+            </a>
+
+          </div>
+        </div>
+      }
     >
       <Head title="Sales Ledger" />
       
@@ -78,14 +97,7 @@ export default function Sales(props) {
                       Search
                     </button>
 
-                    <a
-                       href={route('ledger.sales.csvexport')}
-                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'>
-                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                        Export CSV File
-                      </span>
-                    </a>
+                   
                   </Form>
                 )}
               </Formik>
