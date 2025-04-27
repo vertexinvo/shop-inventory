@@ -6,7 +6,7 @@ import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
-import { BiCopy } from 'react-icons/bi';
+import { BiCopy, BiExport } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { PiListChecksFill } from 'react-icons/pi';
@@ -48,20 +48,38 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<>
+      header={
+        <div className="flex items-center justify-between">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => router.get(route('dashboard'))}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales</h2>
+          </div>
 
-        <MdKeyboardBackspace
-          size={20}
-          className="mr-2 cursor-pointer"
-          onClick={() => router.get(route('dashboard'))}
-          title="Back"
-        />
-        <h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier</h2>
-      </>}
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3">
+            <a
+              href={route('supplier.csvexport')}
+              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+            >
+              <span className="flex items-center gap-x-1 transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                <BiExport className="h-5 w-5" />
+                Export CSV File
+              </span>
+            </a>
+
+          </div>
+        </div>
+      }
     >
       <Head title="Supplier" />
 
-      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 mt-10">
+      <div class="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 mt-10">
         <Link href={route('supplier.index')}>
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
@@ -107,36 +125,11 @@ export default function List(props) {
 
 
 
-      <div className="flex flex-col px-4  mt-10 mx-auto w-full">
+      <div className="flex flex-col px-4 mt-7 mx-auto w-full">
         <div className="w-full ">
-
-          {/*  */}
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-              <select
-                name="filter"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                          w-full md:w-[150px] p-2.5  pr-10  
-                                              
-                                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
-                value={status}
-              >
-                <option value="">Select Status</option>
-                <option value="pending">Pending</option>
-                <option value="paid">Paid</option>
 
-              </select>
-              {selectId.length > 0 && (
-                <button
-                  onClick={() => setIsBulkDeleteModalOpen(true)}
-                  className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
-                >
-                  Bulk Delete
-                </button>
-              )}
-
-              <FloatingCreateButton routeName="supplier.create" title="Create" />
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -174,22 +167,36 @@ export default function List(props) {
                     >
                       Search
                     </button>
-                    <a
-                      href={route('supplier.csvexport')}
-                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-                    >
-                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                        Export CSV File
-                      </span>
-                    </a>
 
                   </Form>
 
                 )}
 
               </Formik>
+              <select
+                name="filter"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                          w-full md:w-[150px] p-2.5  pr-10  
+                                              
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
+                value={status}
+              >
+                <option value="">Select Status</option>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
 
+              </select>
+              {selectId.length > 0 && (
+                <button
+                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                  className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                >
+                  Bulk Delete
+                </button>
+              )}
+
+              <FloatingCreateButton routeName="supplier.create" title="Create" />
 
             </div>
           </div>
