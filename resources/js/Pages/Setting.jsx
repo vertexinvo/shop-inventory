@@ -13,15 +13,20 @@ export default function Setting(props) {
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={ <>
-        <MdKeyboardBackspace
-             size={20}
-             className="mr-2 cursor-pointer"
-             onClick={() => router.get(route('dashboard'))}
-             title="Back"
-         />
-      <h2 className="font-semibold text-xl text-gray-800 leading-tight">Setting</h2>
-      </>}
+      header={
+        <div className="flex items-center justify-between py-2">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => router.get(route('dashboard'))}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Settings</h2>
+          </div>
+        </div>
+      }
     >
       <Head title="Setting" />
 
