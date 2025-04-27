@@ -435,7 +435,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
                         {header && (
                             <header className="bg-white shadow no-print">
-                                <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 flex items-center">
+                                <div className="mx-auto px-4 py-5 pt-6 sm:px-6 lg:px-8">
                                     
                                     {header}
                                 </div>

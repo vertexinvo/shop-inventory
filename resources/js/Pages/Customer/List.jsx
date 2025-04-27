@@ -8,6 +8,7 @@ import { HiOutlineShoppingBag } from 'react-icons/hi2';
 import { FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
 import { SiMicrosoftexcel } from "react-icons/si";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
+import { BiExport, BiImport } from 'react-icons/bi';
 
 
 export default function List(props) {
@@ -21,18 +22,41 @@ export default function List(props) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('dashboard'))}
-            title="Back"
-          />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Customer</h2>
-        </>}
+        <div className="flex items-center justify-between">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => router.get(route('dashboard'))}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Customer</h2>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3">
+            {/* <button
+              onClick={() => router.get(route('customer.import'))} // Assuming a route for importing
+              className="flex items-center space-x-1 text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
+            >
+              <BiImport size={18} />
+              <span>Import</span>
+            </button> */}
+            <a
+              href={route('customer.csvexport')}
+              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'>
+              <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                Export CSV File
+              </span>
+            </a>  
+          </div>
+        </div>
+      }
     >
       <Head title="Customer" />
-      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+      <div class="px-5 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
 
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
@@ -72,7 +96,7 @@ export default function List(props) {
 
       </div>
 
-      <div className="flex flex-col px-5  mt-10 mx-auto w-full">
+      <div className="flex flex-col px-5  mx-auto w-full">
         <div className="w-full ">
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
 
@@ -129,14 +153,14 @@ export default function List(props) {
                       Search
                     </button>
 
-                    <a
+                    {/* <a
                       href={route('customer.csvexport')}
                       className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'>
                       <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
                         <SiMicrosoftexcel className="mr-2 h-5 w-5" />
                         Export CSV File
                       </span>
-                    </a>
+                    </a> */}
                   </Form>
                 )}
               </Formik>

@@ -26,10 +26,11 @@ import 'react-date-range/dist/theme/default.css';
 import { GrMoney } from 'react-icons/gr';
 import { CiTimer } from 'react-icons/ci';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
+import { BiExport } from 'react-icons/bi';
 
 
 export default function List(props) {
-  const { auth,todaysPendingOrderAmount,todayProfit, orders,todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
+  const { auth, todaysPendingOrderAmount, todayProfit, orders, todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount } = props
   console.log(totalPendingAmount);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -38,15 +39,15 @@ export default function List(props) {
   const [orderAmounts, setOrderAmounts] = useState({});
   const [daterangeModel, setDaterangeModel] = useState(false);
   const [dateRange, setDateRange] = useState(
-      {
-          startDate: new Date(),
-          endDate: new Date(),
-          key: 'selection',
-        }
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection',
+    }
   )
   const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
-      
+
   const handleAmountChange = (e, orderId) => {
     const updatedAmount = e.target.value;
     setOrderAmounts((prevState) => ({
@@ -60,41 +61,60 @@ export default function List(props) {
   }
 
 
-    const { show } = useContextMenu({ id: "context-menu" });
-  
-    const handleMenuClick = ({ props, action }) => {
-      const order = props;
-      if (action === "view") {
-        router.get(route("order.show", order.id));
-      } else if (action === "edit") {
-        router.get(route("order.edit", order.id));
-      } else if (action === "delete") {
-        setIsDeleteModalOpen(order)
-      } 
-    };
-  
-    const formatProfit = (profit) => {
-      if (profit < 0) {
-        return <span className="text-red-500">Loss: {Math.abs(profit)}</span>;
-      }
-      return <span>{profit}</span>;
-    };
+  const { show } = useContextMenu({ id: "context-menu" });
 
-    const rolename = auth.user.roles.map((role) => role.name);
+  const handleMenuClick = ({ props, action }) => {
+    const order = props;
+    if (action === "view") {
+      router.get(route("order.show", order.id));
+    } else if (action === "edit") {
+      router.get(route("order.edit", order.id));
+    } else if (action === "delete") {
+      setIsDeleteModalOpen(order)
+    }
+  };
+
+  const formatProfit = (profit) => {
+    if (profit < 0) {
+      return <span className="text-red-500">Loss: {Math.abs(profit)}</span>;
+    }
+    return <span>{profit}</span>;
+  };
+
+  const rolename = auth.user.roles.map((role) => role.name);
 
 
   return (
     <AuthenticatedLayout
       Order={auth.Order}
       header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('dashboard'))}
-            title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Sale</h2>
-        </>}
+        <div className="flex items-center justify-between">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => router.get(route('dashboard'))}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales</h2>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center space-x-3">
+            <a
+              href={route('order.csvexport')}
+              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
+            >
+              <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+                <BiExport className="h-5 w-5" />
+                Export CSV File
+              </span>
+            </a>
+
+          </div>
+        </div>
+      }
     >
       <Head title="Sale" />
 
@@ -109,34 +129,34 @@ export default function List(props) {
         </select>
       </div> */}
 
-      <div class="px-5 mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+      <div class=" mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
 
-         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-                    <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-                      <div className="my-auto">
-                        <p className="font-bold">TODAY'S PROFIT</p>
-                        <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(todayProfit) : <p>No Access</p>}</p>
-                      </div>
-                      <div className="my-auto">
-                        <GrMoney  size={40} />
-                      </div>
-                    </div>
-                  </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+            <div className="my-auto">
+              <p className="font-bold">TODAY'S PROFIT</p>
+              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todayProfit) : <p>No Access</p>}</p>
+            </div>
+            <div className="my-auto">
+              <GrMoney size={40} />
+            </div>
+          </div>
+        </div>
 
-                  <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-                    <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-                      <div className="my-auto">
-                        <p className="font-bold">TODAY'S PENDING AMOUNT</p>
-                        <p className="text-lg"> { rolename.includes('superadmin') ?   formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
-                      </div>
-                      <div className="my-auto">
-                        <CiTimer   size={40} />
-                      </div>
-                    </div>
-                  </div>
+        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
+          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
+            <div className="my-auto">
+              <p className="font-bold">TODAY'S PENDING AMOUNT</p>
+              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
+            </div>
+            <div className="my-auto">
+              <CiTimer size={40} />
+            </div>
+          </div>
+        </div>
 
 
-      <Link href={route('order.index')}>
+        <Link href={route('order.index')}>
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
               <div class="my-auto">
@@ -262,7 +282,7 @@ export default function List(props) {
 
 
 
-      <div className="flex flex-col px-4  mt-10 mx-auto w-full">
+      <div className="flex flex-col px-4 mx-auto w-full">
         <div className="w-full ">
 
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
@@ -274,7 +294,7 @@ export default function List(props) {
                                 w-full md:w-[150px] p-2.5 pr-10 
                                     
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('order.index'), { status: e.target.value, startdate: params.get('startdate'), enddate: params.get('enddate'), search: params.get('search'),searchuserid: params.get('searchuserid') }, { preserveState: true })}
+                onChange={(e) => router.get(route('order.index'), { status: e.target.value, startdate: params.get('startdate'), enddate: params.get('enddate'), search: params.get('search'), searchuserid: params.get('searchuserid') }, { preserveState: true })}
                 value={status}
               >
                 <option value="">Select Status</option>
@@ -304,7 +324,7 @@ export default function List(props) {
                 enableReinitialize
                 initialValues={{ search: '' }}
                 onSubmit={(values) => {
-                  router.get(route('order.index'), { search: values.search,searchuserid: params.get('searchuserid'), status: params.get('status'), startdate: params.get('startdate'), enddate: params.get('enddate') }, { preserveState: true });
+                  router.get(route('order.index'), { search: values.search, searchuserid: params.get('searchuserid'), status: params.get('status'), startdate: params.get('startdate'), enddate: params.get('enddate') }, { preserveState: true });
                 }}
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
@@ -341,15 +361,7 @@ export default function List(props) {
                       <SiMicrosoftexcel className="mr-2 h-5 w-5" />
                       Export Excel
                     </button> */}
-                    <a
-                      href={route('order.csvexport')}
-                      className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-                    >
-                      <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                        <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                        Export CSV File
-                      </span>
-                    </a>
+
 
 
                   </Form>
@@ -407,15 +419,15 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       Paid Amount
                     </th>
-                   
+
                     <th class="p-4 text-left text-sm font-semibold ">
                       Status
                     </th>
-                    
+
                     <th class="pl-4 text-left text-sm font-semibold ">
                       Sale ID
                     </th>
-                  
+
                     <th class="p-4 text-left text-sm font-semibold ">
                       Phone
                     </th>
@@ -429,7 +441,7 @@ export default function List(props) {
                       Total
                     </th>
 
-                  
+
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Charges Info
@@ -442,8 +454,8 @@ export default function List(props) {
                     {/* <th class="p-4 text-left text-sm font-semibold ">
                       Installment Info
                     </th> */}
-                  
-                   
+
+
 
                     <th class="p-4 text-left text-sm font-semibold ">
                       Action
@@ -463,11 +475,11 @@ export default function List(props) {
                   {orders.data.map((order, index) => (
 
 
-                    <tr className={`  ${ (order.status === 'pending' && order.paid_amount <= 0) ? 'bg-red-100' : (order.status === 'pending' && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)) ? 'bg-yellow-100' : ' bg-white '} ${selectId.includes(order.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
-                    onContextMenu={(e) => {
-                      e.preventDefault(); // Prevents default right-click menu
-                      show({ event: e, props: order }); // Shows custom menu
-                    }}
+                    <tr className={`  ${(order.status === 'pending' && order.paid_amount <= 0) ? 'bg-red-100' : (order.status === 'pending' && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)) ? 'bg-yellow-100' : ' bg-white '} ${selectId.includes(order.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
+                      onContextMenu={(e) => {
+                        e.preventDefault(); // Prevents default right-click menu
+                        show({ event: e, props: order }); // Shows custom menu
+                      }}
                     >
 
                       <td className="pl-4 w-8">
@@ -502,13 +514,13 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
-                        
+
                         <div class="flex items-center cursor-pointer w-max">
                           <div class="ml-4">
                             <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
                           </div>
                         </div>
-                      
+
                       </td>
 
                       <td class="p-4 text-sm text-black">
@@ -516,27 +528,27 @@ export default function List(props) {
                       </td>
 
                       <td class="text-sm text-black">
-                          <div class="flex items-center cursor-pointer w-max">
-                            <div class="ml-4 ">
-                              <p class="text-sm text-black ">{order.name}</p>
-                              {order.email && <p class="text-xs text-gray-500 mt-0.5">{order.email} </p>}
-                            </div>
+                        <div class="flex items-center cursor-pointer w-max">
+                          <div class="ml-4 ">
+                            <p class="text-sm text-black ">{order.name}</p>
+                            {order.email && <p class="text-xs text-gray-500 mt-0.5">{order.email} </p>}
                           </div>
+                        </div>
                       </td>
 
                       <td class="p-4 text-sm text-black">
 
 
-                      {order.payable_amount || 'N/A'}
+                        {order.payable_amount || 'N/A'}
 
                       </td>
                       <td class="p-4 text-sm text-black">
 
 
-                      {order.pending_amount}
+                        {order.pending_amount}
 
                       </td>
-                      
+
                       <td class="p-4 text-sm text-black">
                         <div className="flex items-center w-[130px] ">
                           <input
@@ -554,7 +566,7 @@ export default function List(props) {
                       </td>
 
                       <td class="p-4 text-sm text-black">
-                       
+
                         <button
                           onClick={() => {
                             if (order.status === "cancel") {
@@ -577,15 +589,15 @@ export default function List(props) {
                         </button>
                       </td>
 
-                      
+
 
                       <td class="pl-4 text-sm text-black cursor-pointer">
-                        <button onClick={() => router.get(route('order.show', order.code || order.id ))} className='text-blue-600' title="Edit" type='button'>
+                        <button onClick={() => router.get(route('order.show', order.code || order.id))} className='text-blue-600' title="Edit" type='button'>
                           {order.code || order.id}
                         </button>
                       </td>
 
-                      
+
 
                       <td class="p-4 text-sm text-black">
                         {order.phone || 'N/A'}
@@ -641,7 +653,7 @@ export default function List(props) {
 
                         </td>)}
 
-                    
+
 
                       <td class=" text-sm text-black">
                         <div class="flex items-center cursor-pointer w-max">
@@ -672,32 +684,32 @@ export default function List(props) {
                       </td> */}
 
 
-                     
 
- <td class="p-4 flex items-center gap-2">
 
-                      
-                          <Dropdown >
-                            <Dropdown.Trigger>
-                              <button className="text-gray-500 hover:text-black focus:outline-none">
+                      <td class="p-4 flex items-center gap-2">
+
+
+                        <Dropdown >
+                          <Dropdown.Trigger>
+                            <button className="text-gray-500 hover:text-black focus:outline-none">
                               <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                    </svg>
-                              </button>
-                            </Dropdown.Trigger>
-                            <Dropdown.Content>
-                              <Dropdown.Link href={route('order.show', { id: order.id })}>View</Dropdown.Link>
-                              <Dropdown.Link href={route('order.edit', order.id)}>Edit</Dropdown.Link>
-                              <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() =>  setIsDeleteModalOpen(order)} >Delete</button>
-                             
-                            
-                            </Dropdown.Content>
-                          </Dropdown>
-                  
-                     
+                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+                              </svg>
+                            </button>
+                          </Dropdown.Trigger>
+                          <Dropdown.Content>
+                            <Dropdown.Link href={route('order.show', { id: order.id })}>View</Dropdown.Link>
+                            <Dropdown.Link href={route('order.edit', order.id)}>Edit</Dropdown.Link>
+                            <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() => setIsDeleteModalOpen(order)} >Delete</button>
+
+
+                          </Dropdown.Content>
+                        </Dropdown>
+
+
                       </td>
 
-                     
+
                     </tr>
                   ))}
 
@@ -705,26 +717,26 @@ export default function List(props) {
               </table>
 
 
-              
-               {/* Context Menu */}
-            <Menu id="context-menu">
-              <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
-                View
-              </Item>
-              <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
-                Edit
-              </Item>
-              {/* Show Stock option only if identity_type is not 'imei' */}
-             
-              <Item
-                onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
-                className="text-red-600"
-              >
-                Delete
-              </Item>
-              
-            
-            </Menu>
+
+              {/* Context Menu */}
+              <Menu id="context-menu">
+                <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
+                  View
+                </Item>
+                <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
+                  Edit
+                </Item>
+                {/* Show Stock option only if identity_type is not 'imei' */}
+
+                <Item
+                  onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
+                  className="text-red-600"
+                >
+                  Delete
+                </Item>
+
+
+              </Menu>
 
             </div>
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
@@ -736,7 +748,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '' ,startdate: params.get('startdate') || '',enddate:params.get('enddate') || ''}) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -905,56 +917,56 @@ export default function List(props) {
 
 
       <Modal
-              show={daterangeModel}
-              onClose={() => setDaterangeModel(false)}
-              maxWidth="2xl"
-            >
-                 <div className="overflow-y-auto max-h-[80vh]">
-              <div className="flex justify-center p-10">
-                <div className="text-2xl font-medium text-[#5d596c] ">
-                  Date Range
-                </div>
-              </div>
-              <div className="px-10 flex justify-center mb-5">
-                <div className="text-center">
-                <DateRangePicker
-                  ranges={[dateRange]}
-                  onChange={(item) => {
-                      setDateRange(item.selection);
-                  }}
-                  className="w-96"
+        show={daterangeModel}
+        onClose={() => setDaterangeModel(false)}
+        maxWidth="2xl"
+      >
+        <div className="overflow-y-auto max-h-[80vh]">
+          <div className="flex justify-center p-10">
+            <div className="text-2xl font-medium text-[#5d596c] ">
+              Date Range
+            </div>
+          </div>
+          <div className="px-10 flex justify-center mb-5">
+            <div className="text-center">
+              <DateRangePicker
+                ranges={[dateRange]}
+                onChange={(item) => {
+                  setDateRange(item.selection);
+                }}
+                className="w-96"
               />
-                
-                  <div className="flex justify-center gap-4 mt-5">
-                    <button
-                      type="button"
-                      onClick={()=>{setDaterangeModel(false)}}
-                      className="text-gray-500 bg-[#eaebec] hover:bg-[#eaebec] focus:ring-4 focus:ring-[#eaebec] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                          router.get(route('order.index', {
-                              startdate: dateRange.startDate, 
-                              enddate: dateRange.endDate,
-                              status: params.get('status') || '',
-                              search: params.get('search') || '',
-                              searchuserid: searchuserid || '',
-                              
-                          }));
-                      }}
-                      className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                    >
-                      Filter
-                    </button>
-                  </div>
-                </div>
+
+              <div className="flex justify-center gap-4 mt-5">
+                <button
+                  type="button"
+                  onClick={() => { setDaterangeModel(false) }}
+                  className="text-gray-500 bg-[#eaebec] hover:bg-[#eaebec] focus:ring-4 focus:ring-[#eaebec] font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    router.get(route('order.index', {
+                      startdate: dateRange.startDate,
+                      enddate: dateRange.endDate,
+                      status: params.get('status') || '',
+                      search: params.get('search') || '',
+                      searchuserid: searchuserid || '',
+
+                    }));
+                  }}
+                  className="text-white bg-black hover:bg-gray-800 focus:ring-4 focus:ring-gray-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                >
+                  Filter
+                </button>
               </div>
             </div>
-      
-            </Modal>
+          </div>
+        </div>
+
+      </Modal>
 
     </AuthenticatedLayout>
   );
