@@ -106,7 +106,7 @@ export default function List(props) {
               href={route('order.csvexport')}
               className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
             >
-              <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
+              <span className="flex items-center gap-x-1 transition-all duration-200 rounded-md px-4 py-2 text-sm">
                 <BiExport className="h-5 w-5" />
                 Export CSV File
               </span>
@@ -286,8 +286,65 @@ export default function List(props) {
         <div className="w-full ">
 
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+            <Formik
+              enableReinitialize
+              initialValues={{ search: '' }}
+              onSubmit={(values) => {
+                router.get(route('order.index'), { search: values.search, searchuserid: params.get('searchuserid'), status: params.get('status'), startdate: params.get('startdate'), enddate: params.get('enddate') }, { preserveState: true });
+              }}
+            >
+              {({ values, setFieldValue, handleSubmit, errors, touched }) => (
+                <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                  <div className="relative w-full md:w-auto">
+                    <Field
+                      name="search"
+                      type="text"
+                      placeholder="Search..."
+                      className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFieldValue('search', '');
+                        router.get(route('order.index'));
+                      }}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                    >
+                      ✖
+                    </button>
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                  >
+                    Search
+                  </button>
+                  {/* <button
+                      type="submit"
+                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                    >
+                      <SiMicrosoftexcel className="mr-2 h-5 w-5" />
+                      Export Excel
+                    </button> */}
+
+
+
+                </Form>
+
+              )}
+
+            </Formik>
 
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+              <button
+                onClick={() => router.get(route('order.instantorder'))}
+                className="text-white w-full md:w-64  py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
+              >
+                Instant Sale
+              </button>
+
+              
               <select
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
@@ -311,64 +368,10 @@ export default function List(props) {
                   Bulk Delete
                 </button>
               )}
-              <button
-                onClick={() => router.get(route('order.instantorder'))}
-                className="text-white w-full md:w-64 lg:w-96  py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
-              >
-                Instant Sale
-              </button>
+
               <FloatingCreateButton routeName="order.create" title="Create" />
 
 
-              <Formik
-                enableReinitialize
-                initialValues={{ search: '' }}
-                onSubmit={(values) => {
-                  router.get(route('order.index'), { search: values.search, searchuserid: params.get('searchuserid'), status: params.get('status'), startdate: params.get('startdate'), enddate: params.get('enddate') }, { preserveState: true });
-                }}
-              >
-                {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
-                    <div className="relative w-full md:w-auto">
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFieldValue('search', '');
-                          router.get(route('order.index'));
-                        }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                      >
-                        ✖
-                      </button>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                    >
-                      Search
-                    </button>
-                    {/* <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                    >
-                      <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                      Export Excel
-                    </button> */}
-
-
-
-                  </Form>
-
-                )}
-
-              </Formik>
 
               <button
                 onClick={() => setDaterangeModel(true)}
