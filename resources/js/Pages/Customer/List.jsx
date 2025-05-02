@@ -28,7 +28,7 @@ export default function List(props) {
             <MdKeyboardBackspace
               size={20}
               className="cursor-pointer text-gray-600 hover:text-gray-800"
-              onClick={() => router.get(route('dashboard'))}
+              onClick={() => window.history.back()} 
               title="Back"
             />
             <h2 className="font-semibold text-xl text-gray-800 leading-tight">Customer</h2>

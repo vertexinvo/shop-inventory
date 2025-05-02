@@ -44,20 +44,24 @@ export default function InstantOrder(props) {
   return (
     <AuthenticatedLayout
       header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('order.index'))}
-            title="Back"
-          />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Sale</h2>
-        </>}
+        <div className="flex items-center justify-between py-2">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => window.history.back()}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Instant Sale</h2>
+          </div>
+        </div>
+      }
     >
       <Head title="Instant Sale" />
       <Formik enableReinitialize initialValues={{
         bill_no: '',
-        status : 'pending',
+        status: 'pending',
         name: user?.name || '',
         email: user?.email || '',
         phone: user?.phone || '',
@@ -75,7 +79,7 @@ export default function InstantOrder(props) {
       }}
         validationSchema={Yup.object({
           bill_no: Yup.string(),
-          status : Yup.string().required('Status is required'),
+          status: Yup.string().required('Status is required'),
           name: Yup.string().required('Name is required'),
           email: Yup.string(),
           phone: Yup.string().required('Phone number is required'),
@@ -95,7 +99,7 @@ export default function InstantOrder(props) {
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
           // show paid_amount error if paid_amount is less than payable_amount
-          
+
           router.post(route('order.instantorderstore'), values, {
             onSuccess: () => {
               resetForm();
@@ -115,7 +119,7 @@ export default function InstantOrder(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount', (totalAmount+ parseFloat(values.extra_charges||0)) - (discount + parseFloat(values.exchange||0)));
+            setFieldValue('payable_amount', (totalAmount + parseFloat(values.extra_charges || 0)) - (discount + parseFloat(values.exchange || 0)));
           }, [values.items, values.discount, setFieldValue, values.exchange, values.extra_charges, values.exchange_items]);
 
 
@@ -198,11 +202,11 @@ export default function InstantOrder(props) {
                             </div>
                           </div>
 
-                            <div className="mb-4">
-                                  <label className="block text-grey-darker text-sm  mb-2" >Bill No</label>
-                                  <Field name="bill_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Bill No" />
-                                  <ErrorMessage name="bill_no" component="div" className="text-red-500 text-xs mt-1" />
-                              </div>
+                          <div className="mb-4">
+                            <label className="block text-grey-darker text-sm  mb-2" >Bill No</label>
+                            <Field name="bill_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Bill No" />
+                            <ErrorMessage name="bill_no" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
 
 
                           <div className="mb-4">
@@ -271,14 +275,14 @@ export default function InstantOrder(props) {
                             </div>
                           </div>
                           <div className="mb-4">
-                          <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
-                          <Field as="select" name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker">
-                         
-                            <option value="pending">Pending</option>
-                            <option value="completed">Completed</option>
-                            <option value="cancel">Cancelled</option>
-                          </Field>
-                          <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
+                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
+                            <Field as="select" name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker">
+
+                              <option value="pending">Pending</option>
+                              <option value="completed">Completed</option>
+                              <option value="cancel">Cancelled</option>
+                            </Field>
+                            <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
                           <div className="mb-4">
@@ -355,7 +359,7 @@ export default function InstantOrder(props) {
                                 <div class="font-[sans-serif] ">
                                   <table class="min-w-full bg-white">
 
-                                    <thead  className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100 border border-red-200' : ''} "whitespace-nowrap  "`}>
+                                    <thead className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100 border border-red-200' : ''} "whitespace-nowrap  "`}>
                                       <tr class="odd:bg-gray-50">
 
                                         <th class="p-4 text-left text-sm font-semibold text-black">
@@ -830,7 +834,7 @@ export default function InstantOrder(props) {
 
 
                                             <td class="p-4 text-sm text-black">
-                                            <input type="number" name="selling_price" value={record?.data?.selling_price} className="appearance-none border rounded w-[100px] py-2 px-3 text-grey-darker"
+                                              <input type="number" name="selling_price" value={record?.data?.selling_price} className="appearance-none border rounded w-[100px] py-2 px-3 text-grey-darker"
                                                 min={0}
                                                 onChange={(e) => {
                                                   setFieldValue(`items.${index}.data.selling_price`, e.target.value || 0);
@@ -922,12 +926,12 @@ export default function InstantOrder(props) {
                                         value={
                                           (values.items.reduce(
                                             (total, item) => total + item.quantity * item.data.selling_price,
-                                            0 
+                                            0
                                           ) +
-                                          (parseFloat(values.extra_charges || 0) +
-                                          parseFloat(values.tax || 0) +
-                                          parseFloat(values.shipping_charges || 0))) -
-                                          ( parseFloat(values.exchange|| 0) + parseFloat(values.discount || 0))
+                                            (parseFloat(values.extra_charges || 0) +
+                                              parseFloat(values.tax || 0) +
+                                              parseFloat(values.shipping_charges || 0))) -
+                                          (parseFloat(values.exchange || 0) + parseFloat(values.discount || 0))
                                         }
                                         className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
                                         disabled

@@ -16,16 +16,19 @@ export default function Add(props) {
     <AuthenticatedLayout
       category={auth.category}
       header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('category.index'))}
-            title="Back"
-          />
-
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Category</h2>
-        </>}
+        <div className="flex items-center justify-between py-2">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => window.history.back()}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Category</h2>
+          </div>
+        </div>
+      }
     >
       <Head title="Category" />
 
