@@ -390,7 +390,7 @@ public function csvExport(Request $request)
     public function store(StoreProductRequest $request)
     {
         $this->authorize('create', Product::class);
-  
+
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'model' => 'nullable|string|max:255',
@@ -416,9 +416,10 @@ public function csvExport(Request $request)
             'is_supplier' => 'required',
             'customfield' => 'nullable',
             'type' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
       
-
+      
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
             return back();
@@ -430,7 +431,7 @@ public function csvExport(Request $request)
             }
         }
         
-        $data = $request->except(['categories', 'brands']);
+        $data = $request->except(['categories', 'brands','image']);
         $data['customfield'] = json_encode($request->customfield);
         $product = Product::create($data);
         if ($request->categories) {
@@ -438,6 +439,10 @@ public function csvExport(Request $request)
         }
         if ($request->brands) {
             $product->brands()->sync($request->brands);
+        }
+
+        if ($request->hasFile('image')) {
+            $product->addMediaFromRequest('image')->toMediaCollection('product');
         }
         
         session()->flash('message', 'Product created successfully');
@@ -565,6 +570,7 @@ public function csvExport(Request $request)
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+
         $this->authorize('update', $product);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -591,6 +597,8 @@ public function csvExport(Request $request)
             'is_supplier' => 'required',
             'customfield' => 'nullable',
             'type' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'remove_image' => 'nullable|boolean',
         ]);
       
 
@@ -628,6 +636,16 @@ public function csvExport(Request $request)
         //     'quantity' => $request->quantity,
         //     'status' => 1
         // ]);
+
+
+        // Handle image update
+        if ($request->hasFile('image')) {
+            $product->updateImage($request->file('image'));
+        }
+        // Handle image removal if checkbox is checked
+        elseif ($request->remove_image) {
+            $product->deleteImage();
+        }
 
         session()->flash('message', 'Product updated successfully');
         return back();

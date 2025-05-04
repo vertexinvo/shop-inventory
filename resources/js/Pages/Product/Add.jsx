@@ -69,7 +69,8 @@ export default function Add(props) {
                     , identity_type: 'none', identity_value: '', warranty_type: 'none', is_warranty: '0',
                     categories: [],
                     brands: [], quantity: 1,
-                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type : 'new'
+                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type : 'new',
+                    image : null
                   }}
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
@@ -120,8 +121,20 @@ export default function Add(props) {
 
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
+                      const formData = new FormData();
+                      // Append all regular fields
+                      Object.keys(values).forEach(key => {
+                        if (key !== 'image') {
+                          formData.append(key, values[key]);
+                        }
+                      });
+                      
+                      // Append the image file if exists
+                      if (values.image) {
+                        formData.append('image', values.image);
+                      }
 
-                      router.post(route('product.store'), values, { onSuccess: ({ props }) => { if (!props.flash.error) { resetForm(); } }, preserveScroll: true });
+                      router.post(route('product.store'), formData, {  forceFormData: true, onSuccess: ({ props }) => { if (!props.flash.error) { resetForm();  } }, preserveScroll: true });
                     }}
                   >
 
@@ -543,6 +556,22 @@ export default function Add(props) {
 
 
                             <ErrorMessage name="customfield" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
+
+
+
+                          <div className="mb-4">
+                            <label className="block text-grey-darker text-sm font-bold mb-2" for="image">Image (optional) (Allowed formats: jpeg,png,jpg,gif)</label>
+                            <input
+                              id="image"
+                              name="image"
+                              type="file"
+                              onChange={(event) => {
+                                setFieldValue('image', event.currentTarget.files[0]);
+                              }}
+                              className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
+                            />   
+                            <ErrorMessage name="image" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
 

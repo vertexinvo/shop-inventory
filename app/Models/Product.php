@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model  implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes , InteractsWithMedia;
     use LogsActivity;
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
@@ -56,7 +58,9 @@ class Product extends Model
     ];
 
     // appends supplier name
-    protected $appends = ['supplier_name'];
+    protected $appends = ['supplier_name','image_url'];
+
+
 
 
     // Automatically generate purchase ID when creating a new record
@@ -67,6 +71,47 @@ class Product extends Model
         static::creating(function ($product) {
             $product->code= self::generatePurchaseId();
         });
+    }
+
+
+     /**
+     * Register media collections
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('product')
+            ->singleFile()
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/jpg', 'image/gif']);
+    }
+
+    /**
+     * Get the product image URL
+     */
+    public function getImageUrlAttribute()
+    {
+        $media = $this->getFirstMedia('product');
+        return $media ? $media->getUrl() : null;
+    }
+
+
+   /**
+     * Update product image
+     */
+    public function updateImage($file)
+    {
+        // Clear existing media first since we're using singleFile
+        $this->clearMediaCollection('product');
+        
+        // Add new media
+        $this->addMedia($file)->toMediaCollection('product');
+    }
+
+    /**
+     * Delete product image
+     */
+    public function deleteImage()
+    {
+        $this->clearMediaCollection('product');
     }
 
     // Function to generate a unique purchase ID
@@ -116,4 +161,6 @@ class Product extends Model
     {
         return $this->supplierInvoice ? $this->supplierInvoice->supplier->person_name . ' - ' . $this->supplierInvoice->supplier->code : '';
     }
+
+  
 }

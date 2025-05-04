@@ -87,7 +87,9 @@ export default function Edit(props) {
             weight: product?.weight || '',
             is_supplier: product?.is_supplier ? '1' : '0',
             customfield: JSON.parse(product?.customfield) || [],
-            type: product?.type || 'new'
+            type: product?.type || 'new',
+            image: null,
+            remove_image: false,
           }}
           validationSchema={Yup.object({
             name: Yup.string().required('Name is required'),
@@ -150,8 +152,28 @@ export default function Edit(props) {
             // Update brands and categories
             values.brands = extractAndValidateValues(values.brands);
             values.categories = extractAndValidateValues(values.categories);
+
+
+            const formData = new FormData();
+  
+            // Append all regular fields
+            Object.keys(values).forEach(key => {
+              if (key !== 'image' && key !== 'remove_image') {
+                formData.append(key, values[key]);
+              }
+            });
             
-            router.put(route('product.update', product.id), values, { onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
+            // Handle image removal
+            if (values.remove_image) {
+              formData.append('remove_image', '1');
+            }
+            
+            // Append image file if exists
+            if (values.image) {
+              formData.append('image', values.image);
+            }
+            
+            router.put(route('product.update', product.id), formData, {forceFormData: true, onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
           }}
           >
 
@@ -546,6 +568,44 @@ export default function Edit(props) {
                       </div>
 
                     
+                      <div className="mb-4">
+                      <label className="block text-grey-darker text-sm font-bold mb-2">
+                        Product Image
+                      </label>
+                      
+                      {/* Current image preview */}
+                      {product.image_url && !values.remove_image && (
+                        <div className="mb-3">
+                          <img 
+                            src={product.image_url} 
+                            alt="Current product image" 
+                            className="h-32 w-32 object-cover rounded"
+                          />
+                          <div className="mt-2">
+                            <label className="inline-flex items-center">
+                              <Field
+                                type="checkbox"
+                                name="remove_image"
+                                className="form-checkbox"
+                              />
+                              <span className="ml-2">Remove current image</span>
+                            </label>
+                          </div>
+                        </div>
+                      )}
+                      
+                      {/* Image upload field */}
+                      <input
+                        type="file"
+                        name="image"
+                        onChange={(event) => {
+                          setFieldValue("image", event.currentTarget.files[0]);
+                        }}
+                        className="appearance-none border rounded w-full py-2 px-3 focus:ring-black focus:border-black text-grey-darker"
+                      />
+                      <ErrorMessage name="image" component="div" className="text-red-500 text-xs mt-1" />
+                    </div>
+
     
                       <div className="flex items-center justify-start gap-1 mt-8">
                     <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
