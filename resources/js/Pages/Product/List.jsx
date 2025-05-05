@@ -109,7 +109,7 @@ export default function List(props) {
                 Export CSV File
               </span>
             </a>
-            <label className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 rounded-lg'>
+            <label className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-green-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 rounded-lg'>
               <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm ">
                 <BiImport className="mr-2 h-5 w-5" />
                 Import CSV File
