@@ -18,7 +18,7 @@ import CategoryForm from '@/Partials/CategoryForm';
 import BrandForm from '@/Partials/BrandForm';
 
 export default function Add(props) {
-  const { auth, categories, brands, code, invoicecode, suppliers, supplierinvoices,categories_object_model } = props
+  const { auth, categories, brands, code, invoicecode, suppliers, supplierinvoices, categories_object_model } = props
   const [isNewSupplierModel, setIsNewSupplierModel] = useState(false);
   const [isNewSupplierInvoiceModel, setIsNewSupplierInvoiceModel] = useState(false);
   const [isCategoryModel, setIsCategoryModel] = useState(false);
@@ -44,14 +44,20 @@ export default function Add(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={<>
-        <MdKeyboardBackspace
-          size={20}
-          className="mr-2 cursor-pointer"
-          onClick={() => router.get(route('product.index'))}
-          title="Back"
-        /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Purchase</h2>
-      </>}
+      header={
+        <div className="flex items-center justify-between py-2">
+                  {/* Title */}
+                  <div className="flex items-center space-x-3">
+                    <MdKeyboardBackspace
+                      size={20}
+                      className="cursor-pointer text-gray-600 hover:text-gray-800"
+                      onClick={() => window.history.back()}
+                      title="Back"
+                    />
+                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add purchase</h2>
+                  </div>
+                </div>
+      }
     >
       <Head title="Purchase" />
 
@@ -69,7 +75,7 @@ export default function Add(props) {
                     , identity_type: 'none', identity_value: '', warranty_type: 'none', is_warranty: '0',
                     categories: [],
                     brands: [], quantity: 1,
-                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type : 'new'
+                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type: 'new'
                   }}
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
@@ -144,8 +150,8 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2 flex items-center gap-2" for="specifications">Specifications  (optional) <FaEdit size={15} onClick={() => setAllowSpecifications(!allowSpecifications)} /></label>
-                            {allowSpecifications && 
-                            <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
+                            {allowSpecifications &&
+                              <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
                             }
                             <ErrorMessage name="specifications" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
@@ -153,8 +159,8 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2 flex items-center gap-2" for="specifications">Description  (optional) <FaEdit size={15} onClick={() => setAllowDescription(!allowDescription)} /></label>
-                            {allowDescription && 
-                            <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.description} onChange={(e) => setFieldValue('description', e)} />
+                            {allowDescription &&
+                              <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.description} onChange={(e) => setFieldValue('description', e)} />
                             }
                             <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
@@ -184,9 +190,9 @@ export default function Add(props) {
 
 
                           <div className="mb-4 ">
-                           
+
                             <div className="flex items-center justify-start gap-2 mt-2 mb-2">
-                            <label className="block   text-grey-darker text-sm font-bold " for="categories">Select Category (optional)</label>
+                              <label className="block   text-grey-darker text-sm font-bold " for="categories">Select Category (optional)</label>
                               <button type='button' onClick={() => setIsCategoryModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new category</button>
                             </div>
                             <Select
@@ -201,14 +207,14 @@ export default function Add(props) {
                               styles={customStyles}
                             />
                             <ErrorMessage name="categories" component="div" className="text-red-500 text-xs mt-1" />
-                            
+
                           </div>
                           <div className="mb-4">
-                           
+
                             <div className="flex items-center justify-start gap-2 mt-2 mb-2">
                               <label className="block text-grey-darker text-sm font-bold " for="brands">Select Brand  (optional)</label>
                               <button type='button' onClick={() => setIsBrandModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new brand</button>
-                            
+
                             </div>
                             <Select
                               onChange={(e) => {
@@ -222,20 +228,20 @@ export default function Add(props) {
                               styles={customStyles}
                             />
                             <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
-                          
+
                           </div>
 
                           <div className="mb-4">
-                               
-                               <label className="block text-grey-darker text-sm  mb-2" for="type">Type </label>
-                               <Field name="type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="type" as="select" >
-                                 <option value='new'>New</option>
-                                 <option value="used">Used</option>
-                               </Field>
-                               <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
-                            
 
-                           </div>
+                            <label className="block text-grey-darker text-sm  mb-2" for="type">Type </label>
+                            <Field name="type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="type" as="select" >
+                              <option value='new'>New</option>
+                              <option value="used">Used</option>
+                            </Field>
+                            <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
+
+
+                          </div>
 
 
                           <div className="mb-4">
@@ -326,7 +332,7 @@ export default function Add(props) {
 
 
 
-                          
+
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
@@ -342,7 +348,7 @@ export default function Add(props) {
                           </div>
 
 
-                        
+
 
                           {values.is_warranty === '1' && (
                             <>
@@ -1052,7 +1058,7 @@ export default function Add(props) {
           </div>
 
           <div className="px-10 mb-5">
-              <CategoryForm categories={categories_object_model} cancelBtnAccToModel={true} cancelOnClick={() => setIsCategoryModel(false)} />
+            <CategoryForm categories={categories_object_model} cancelBtnAccToModel={true} cancelOnClick={() => setIsCategoryModel(false)} />
           </div>
         </div>
       </Modal>
@@ -1066,7 +1072,7 @@ export default function Add(props) {
           </div>
 
           <div className="px-10 mb-5">
-              <BrandForm cancelBtnAccToModel={true} cancelOnClick={() => setIsBrandModel(false)} />
+            <BrandForm cancelBtnAccToModel={true} cancelOnClick={() => setIsBrandModel(false)} />
           </div>
         </div>
       </Modal>
