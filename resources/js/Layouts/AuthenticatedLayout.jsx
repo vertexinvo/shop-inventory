@@ -434,7 +434,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                     <div class="    mt-14">
 
                         {header && (
-                            <header className="bg-white shadow no-print">
+                            <header className="bg-white shadow no-print sticky top-0">
                                 <div className="mx-auto px-4 py-5 pt-6 sm:px-6 lg:px-8">
                                     {header}
                                 </div>

@@ -125,96 +125,68 @@ export default function List(props) {
         </div>
       }
     >
-         
+
 
       <Head title="Purchase" />
 
-      <div class="p-5 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+        {/* Total Products */}
         <Link href={route('product.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">TOTAL PRODUCT</p>
-                <p class="text-lg">{totalstock}</p>
-              </div>
-              <div class="my-auto">
-                <FaBoxes size={40} />
-              </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Total Products</p>
+              <p className="text-xl font-bold">{totalstock}</p>
             </div>
+            <FaBoxes size={36} className="text-blue-500" />
           </div>
         </Link>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL ITEMS IN STOCK</p>
-              <p class="text-lg">{totaliteminstock}</p>
-            </div>
-            <div class="my-auto">
-              <FaBoxes size={40} />
-            </div>
+        {/* Total Items in Stock */}
+        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Items in Stock</p>
+            <p className="text-xl font-bold">{totaliteminstock}</p>
           </div>
+          <FaBoxes size={36} className="text-green-500" />
         </div>
 
-
+        {/* Total Product Out of Stock */}
         <Link href={route('product.index', { status: 0 })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
-                <p class="text-lg">{totalstocknotavailable}</p>
-              </div>
-              <div class="my-auto">
-                <HiMiniArchiveBoxXMark size={40} />
-              </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Out of Stock</p>
+              <p className="text-xl font-bold">{totalstocknotavailable}</p>
             </div>
+            <HiMiniArchiveBoxXMark size={36} className="text-red-500" />
           </div>
         </Link>
 
-
+        {/* Total Product In Stock */}
         <Link href={route('product.index', { status: 1 })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">TOTAL PRODUCT IN STOCK</p>
-                <p class="text-lg">{totalstockavailable}</p>
-              </div>
-              <div class="my-auto">
-                <FaBox size={40} />
-              </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">In Stock</p>
+              <p className="text-xl font-bold">{totalstockavailable}</p>
             </div>
+            <FaBox size={36} className="text-green-600" />
           </div>
         </Link>
 
-
-
-
-
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL STOCK VALUE</p>
-              <p class="text-lg">{totalStockValue}</p>
-            </div>
-            <div class="my-auto">
-              <GiMoneyStack size={40} />
-            </div>
+        {/* Total Stock Value */}
+        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Total Stock Value</p>
+            <p className="text-xl font-bold text-emerald-600">{totalStockValue}</p>
           </div>
+          <GiMoneyStack size={36} className="text-yellow-500" />
         </div>
-
-
-
-
       </div>
 
 
-
-
-      <div className="flex flex-col px-4  mt-5 mx-auto w-full">
+      <div className="flex flex-col px-4 mx-auto w-full">
         <div className="w-full ">
 
-          <div class="rounded-lg bg-white p-6 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
+          {/* <div class="rounded-lg bg-white p-6 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
             <h2 class="mb-5 text-3xl font-semibold">CSV Import Guide</h2>
             {!accordion && <button className='bg-cyan-700 text-white px-4 py-2 rounded' onClick={() => setAccordion(!accordion)}>Read Guide</button>}
             {accordion && (<>
@@ -242,7 +214,7 @@ export default function List(props) {
               </div>
             </>)}
 
-          </div>
+          </div> */}
 
 
           <div className="flex flex-col md:flex-row justify-end items-center mt-5 mb-4">
@@ -391,360 +363,132 @@ export default function List(props) {
                         onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
                         checked={selectId.length === products.data.length}
                       />
-                      <label for="checkbox"
+                      <label htmlFor="checkbox"
                         class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                          <path
-                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            data-name="7-Check" data-original="#000000" />
+                          <path d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z" />
                         </svg>
                       </label>
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Purchase ID
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Product Info
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Quantity
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Purchase price
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Selling price
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Categories
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Brands
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Warranty period
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Is Borrow
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Supplier Invoice
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Stock Status
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Is Exchange
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Type
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Other Info
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Created At
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Action
-                    </th>
+                    <th class="p-4 text-left text-sm font-semibold">Sno</th>
+                    <th class="p-4 text-left text-sm font-semibold">Product</th>
+                    <th class="p-4 text-left text-sm font-semibold">Quantity</th>
+                    <th class="p-4 text-left text-sm font-semibold">Purchase Price</th>
+                    <th class="p-4 text-left text-sm font-semibold">Selling Price</th>
+                    <th class="p-4 text-left text-sm font-semibold">Category</th>
+                    <th class="p-4 text-left text-sm font-semibold">Brand</th>
+                    <th class="p-4 text-left text-sm font-semibold">Stock Status</th>
+                    <th class="p-4 text-left text-sm font-semibold">Actions</th>
                   </tr>
                 </thead>
 
                 <tbody class="whitespace-nowrap">
-
                   {products.data.length === 0 && (
                     <tr>
-                      <td colSpan="12" className="p-4 text-center">
+                      <td colSpan="10" className="p-4 text-center">
                         No purchases found.
                       </td>
                     </tr>
                   )}
                   {products.data.map((product, index) => (
-
                     <tr
                       key={product.id}
-                      className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'}   ${selectId.includes(product.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
+                      className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'} ${selectId.includes(product.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
                       onContextMenu={(e) => {
-                        e.preventDefault(); // Prevents default right-click menu
-                        show({ event: e, props: product }); // Shows custom menu
+                        e.preventDefault();
+                        show({ event: e, props: product });
                       }}
                     >
                       <td className="pl-4 w-8">
                         <input
-                          id={`checkbox-${product.id}`} // Unique id for each checkbox
+                          id={`checkbox-${product.id}`}
                           type="checkbox"
                           className="hidden peer"
                           value={product.id}
                           onChange={(e) => {
                             if (e.target.checked) {
-                              setSelectId((prev) => [...prev, product.id]); // Add user ID to state
+                              setSelectId((prev) => [...prev, product.id]);
                             } else {
-                              setSelectId((prev) => prev.filter((id) => id !== product.id)); // Remove user ID from state
+                              setSelectId((prev) => prev.filter((id) => id !== product.id));
                             }
                           }}
-                          checked={selectId.includes(product.id)} // Bind state to checkbox
+                          checked={selectId.includes(product.id)}
                         />
                         <label
-                          htmlFor={`checkbox-${product.id}`} // Match label with checkbox id
+                          htmlFor={`checkbox-${product.id}`}
                           className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-full fill-white"
-                            viewBox="0 0 520 520"
-                          >
-                            <path
-                              d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            />
+                          <svg xmlns="http://www.w3.org/2000/svg" className="w-full fill-white" viewBox="0 0 520 520">
+                            <path d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z" />
                           </svg>
                         </label>
                       </td>
-                      <td class="p-4 text-xs text-blue-600">
-                        <button onClick={() => router.get(route('product.show', product.code || product.id))} className='text-blue-600' title="Order" type='button'>
-                          {product?.code || product?.id}
-                        </button>
-                      </td>
-                      <td class=" text-sm">
-                        <div class="flex items-center cursor-pointer w-max">
-                          {/* <img src='https://readymadeui.com/profile_4.webp' class="w-9 h-9 rounded-full shrink-0" /> */}
-                          <div class="ml-4 " onClick={() => {
-                            router.get(route('product.edit', product.id))
 
-                          }}>
-                            <p class="text-lg text-black ">Name : {product.name}</p>
-                            {product.model && <p class="text-lg text-gray-500 mt-0.5">Model :{product.model} </p>}
-                            {product.identity_type !== 'none' && <p class="text-lg text-gray-500 mt-0.5">{product.identity_type}:{product.identity_value} </p>}
-                          </div>
+                      <td class="p-4 text-sm">{index + 1}</td>
+                      <td class="text-sm">
+                        <div class="cursor-pointer" onClick={() => router.get(route('product.edit', product.id))}>
+                          <p class="text-black text-sm font-semibold">{product.name}</p>
+                          {product.model && <p class="text-xs text-gray-500">Model: {product.model}</p>}
                         </div>
                       </td>
-
-                      <td class="p-4 text-lg text-black">
-                        {product?.stock?.quantity || 0}
-                      </td>
-
-                      <td class="p-4 text-lg text-black">
-                        {product.purchase_price || 'N/A'}
-                      </td>
-                      <td class="p-4 text-lg text-black">
-                        {product.selling_price || 'N/A'}
-                      </td>
-                      <td class="p-4 text-sm text-black">
+                      <td class="p-4 text-sm">{product?.stock?.quantity || 0}</td>
+                      <td class="p-4 text-sm">{product.purchase_price || 'N/A'}</td>
+                      <td class="p-4 text-sm">{product.selling_price || 'N/A'}</td>
+                      <td class="p-4 text-sm">
                         {product?.categories?.map((category) => category.name).join(', ') || 'N/A'}
                       </td>
-                      <td class="p-4 text-sm text-black">
+                      <td class="p-4 text-sm">
                         {product?.brands?.map((brand) => brand.name).join(', ') || 'N/A'}
                       </td>
-                      <td class="p-4 text-sm text-black">
-                        {product.is_warranty == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_warranty == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.warranty_period} - {product.warranty_type} </p>)}
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        {product.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
-                          <ul class="list-disc">
-                            {product.shop_name && <li>Name: {product.shop_name}</li>}
-                            {product.shop_address && <li>Address: {product.shop_address}</li>}
-                            {product.shop_phone && <li>Phone: {product.shop_phone}</li>}
-                            {product.shop_email && <li>Email: {product.shop_email}</li>}
-                          </ul>
-                        </p>)}
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_supplier == '1' && (<p class="text-xs text-gray-500 mt-0.5">{product.supplier_invoice_no} - ({product.supplier_name})</p>)}
-                      </td>
-
-
                       <td class="p-4">
                         <label class="relative cursor-pointer">
-                          <input type="checkbox" onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })} class="sr-only peer" checked={product?.stock?.status || false} />
-                          <div
-                            class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black">
-                          </div>
+                          <input
+                            type="checkbox"
+                            onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })}
+                            class="sr-only peer"
+                            checked={product?.stock?.status || false}
+                          />
+                          <div class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
                         </label>
                       </td>
-
-
-
-                      <td class="p-4 text-sm text-black">
-                        {product.is_exchange !== 1 && <p class="text-xs text-gray-500 mt-0.5">No</p>}
-                        {product.is_exchange === 1 && (<a href={route('order.show', product.exchange_order_code || product.exchange_order_id)} class="text-xs text-blue-500 mt-0.5">Order# {product.exchange_order_code || product.exchange_order_id}</a>)}
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {`${product.type.charAt(0).toUpperCase()}${product.type.slice(1)}`}
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {
-                          (product.customfield && product.customfield !== 'null' && product.customfield !== '' && JSON.parse(product.customfield).length > 0) ?
-                            JSON.parse(product.customfield).map((field, index) => (
-                              <p className="text-xs text-gray-500 mt-0.5" key={index}>
-                                <span className="font-semibold">{field.name}:</span> {field.value}
-                              </p>
-                            )) :
-                            'N/A'
-                        }
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {FormatDate(product.created_at)}
-                      </td>
-
-
-
-
                       <td class="p-4 flex items-center gap-2">
+                        <div className="flex items-center space-x-2">
+                          <a
+                            href={route('product.show', product.code || product.id)}
+                            className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                          >
+                            View
+                          </a>
 
+                          <a
+                            href={route('product.edit', product.id)}
+                            className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                          >
+                            Edit
+                          </a>
 
-                        <Dropdown >
-                          <Dropdown.Trigger>
-                            <button className="text-gray-500 hover:text-black focus:outline-none">
-                              <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                              </svg>
-                            </button>
-                          </Dropdown.Trigger>
-                          <Dropdown.Content>
-                            <Dropdown.Link href={route('product.show', product.code || product.id)}>View</Dropdown.Link>
-                            <Dropdown.Link href={route('product.edit', product.id)}>Edit</Dropdown.Link>
-                            <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() => setIsDeleteModalOpen(product)} >Delete</button>
-                            {product.identity_type !== 'imei' &&
-                              <Dropdown.Link href={route('stock.index', { product_id: product.id })}>Stock</Dropdown.Link>
+                          <button
+                            onClick={() => setIsDeleteModalOpen(product)}
+                            className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                          >
+                            Delete
+                          </button>
 
-                            }
-
-                          </Dropdown.Content>
-                        </Dropdown>
-
+                          {product.identity_type !== 'imei' && (
+                            <a
+                              href={route('stock.index', { product_id: product.id })}
+                              className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                            >
+                              Stock
+                            </a>
+                          )}
+                        </div>
 
                       </td>
-
-
                     </tr>
                   ))}
-
                 </tbody>
               </table>
-
-
-              {/* Context Menu */}
-              <Menu id="context-menu">
-                <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
-                  View
-                </Item>
-                <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
-                  Edit
-                </Item>
-                {/* Show Stock option only if identity_type is not 'imei' */}
-                <Item
-                  onClick={({ props }) => handleMenuClick({ props, action: "stock" })}
-                  hidden={({ props }) => props.identity_type === "imei"}
-                >
-                  Stock
-                </Item>
-                <Item
-                  onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
-                  className="text-red-600"
-                >
-                  Delete
-                </Item>
-              </Menu>
-
-
-            </div>
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
-              <span class="flex items-center col-span-3"> Showing {products.from} - {products.to} of {products.total} </span>
-              <span class="col-span-2"></span>
-
-              <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-
-
-                <nav aria-label="Table navigation">
-                  <ul class="inline-flex items-center">
-                    <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '', category: params.get('category') || '', brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '', supplierinvoiceno: params.get('supplierinvoiceno') || '', invoicecode: params.get('invoicecode') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                          <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </li>
-                    {(() => {
-                      let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
-                      const activeIndex = products.links.findIndex((l) => l.active);
-
-                      return products.links
-                        .slice(1, -1) // Exclude the first and last items
-                        .filter((link, index, array) => {
-                          const currentIndex = parseInt(link.label, 10); // Parse label as number
-                          if (isNaN(currentIndex)) return true; // Always include non-numeric items like "..."
-
-                          // Adjust range dynamically based on the active index
-                          const rangeStart = Math.max(0, activeIndex - 2); // Start range around active
-                          const rangeEnd = Math.min(array.length - 1, activeIndex + 2); // End range around active
-
-                          // Show links within the range or first/last few
-                          return (
-                            index < 3 || // First 3 pages
-                            index > array.length - 4 || // Last 3 pages
-                            (index >= rangeStart && index <= rangeEnd) // Pages close to the active page
-                          );
-                        })
-                        .map((link, index, array) => {
-                          const currentIndex = parseInt(link.label, 10); // Parse label as a number
-                          const isEllipsis =
-                            !isNaN(currentIndex) &&
-                            lastShownIndex !== -1 &&
-                            currentIndex - lastShownIndex > 1; // Check for gaps
-
-                          // Update lastShownIndex only for valid numeric labels
-                          if (!isNaN(currentIndex)) {
-                            lastShownIndex = currentIndex;
-                          }
-
-                          return (
-                            <li key={index}>
-                              {isEllipsis ? (
-                                <span className="px-3 py-1">...</span>
-                              ) : link.active ? (
-                                // Active page button
-                                <button
-                                  className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                  aria-current="page"
-                                >
-                                  {link.label}
-                                </button>
-                              ) : (
-                                // Inactive link button
-                                <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)}
-                                  className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                >
-                                  {link.label}
-                                </button>
-                              )}
-                            </li>
-                          );
-                        });
-                    })()}
-
-
-                    <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                          <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </span>
             </div>
           </div>
 
