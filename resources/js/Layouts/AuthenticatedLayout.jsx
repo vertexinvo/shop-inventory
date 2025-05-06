@@ -53,7 +53,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
     return (
         <>
             <ToastContainer />
-            <div className="min-h-screen bg-gray-100">
+            <div className="min-h-screen bg-gray-100 overflow-hidden">
                 <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">
                     <div className="px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 justify-between">
@@ -251,10 +251,6 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         </div>
                     </div>
                 </nav>
-
-
-
-
                 {!isMinimizeSidebar ?
                     <aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0    " aria-label="Sidebar">
                         <div class="h-full px-3 pb-4 overflow-y-auto bg-white   flex flex-col">
@@ -288,32 +284,32 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </li>
                                 <li>
                                     <NavLink href={route('order.index')} active={route().current('order.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <HiMiniShoppingCart className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <HiMiniShoppingCart className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Sales</span>
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('supplier.index')} active={route().current('supplier.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <TbInvoice className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <TbInvoice className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Suppliers</span>
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <GiExpense className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <GiExpense className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Expense</span>
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdFormatListBulleted className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <MdFormatListBulleted className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Sales Ledger</span>
                                     </NavLink>
                                 </li>
 
                                 <li>
                                     <NavLink href={route('product.scan')} active={route().current('product.scan')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdOutlineQrCodeScanner className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <MdOutlineQrCodeScanner className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
                                         <span class="ms-3">Scanner</span>
                                     </NavLink>
                                 </li>
@@ -324,27 +320,36 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                     </NavLink>
                                 </li> */}
                             </ul>
-                                    <span className="block text-center text-xs text-gray-400 mb-4">powered by solinvo</span>
+                            <span className="block text-center text-xs text-gray-400 mb-4">powered by solinvo</span>
                             <hr />
                             {/* profile.generated-via-qr */}
 
                             <div className='mt-1'>
-                                <NavLink href={route('profile.generated-via-qr')} active={route().current('profile.generated-via-qr')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                    <MdOutlinePhoneAndroid className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                                    <span class="ms-3">Link Mobile App</span>
+                                <NavLink
+                                    href={route('profile.generated-via-qr')}
+                                    active={route().current('profile.generated-via-qr')}
+                                    className="flex items-center p-2 text-black rounded-lg hover:bg-gray-100 group"
+                                    fill="currentColor"
+                                    viewBox="0 0 18 20"
+                                >
+                                    <MdOutlinePhoneAndroid className='flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 group-hover:text-black' />
+                                    <span className="ms-3 flex items-center gap-2">
+                                        Link Mobile App
+                                        <span className="text-xs bg-yellow-300 text-yellow-900 px-2 py-0.5 rounded-full">Beta</span>
+                                    </span>
                                 </NavLink>
-
                             </div>
+
                             <div className='mt-1'>
                                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                    <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
+                                    <CiSettings className=' flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
                                     <span class="ms-3">Settings</span>
                                 </NavLink>
 
                             </div>
                             <div>
                                 <button onClick={() => setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
-                                    <BiLogOut className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
+                                    <BiLogOut className='flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
                                     <span class="ms-3">Log Out</span>
                                 </button>
 
@@ -370,7 +375,6 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
                                             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                                         </svg>
-
                                     </NavLink>
                                 </li>
 
@@ -379,30 +383,29 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
                                             <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
                                         </svg>
-
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('order.index')} active={route().current('order.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <HiMiniShoppingCart className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <HiMiniShoppingCart className=' flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
 
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('supplier.index')} active={route().current('supplier.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <TbInvoice className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <TbInvoice className=' flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
 
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <GiExpense className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <GiExpense className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
 
                                     </NavLink>
                                 </li>
                                 <li>
                                     <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdFormatListBulleted className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                        <MdFormatListBulleted className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
 
                                     </NavLink>
                                 </li>
@@ -412,15 +415,12 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                             <hr />
                             <div className='mt-1'>
                                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                    <CiSettings className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-
+                                    <CiSettings className='w-5 h-5 flex-shrink-0 text-gray-800 transition duration-75   group-hover:text-black  ' />
                                 </NavLink>
-
                             </div>
                             <div>
                                 <button onClick={() => setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
-                                    <BiLogOut className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-
+                                    <BiLogOut className='w-5 h-5 flex-shrink-0 text-gray-800 transition duration-75  group-hover:text-black  ' />
                                 </button>
 
                             </div>
@@ -428,11 +428,8 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                     </aside>
                 }
 
-
-
                 <div class={isMinimizeSidebar ? "sm:ml-14" : "sm:ml-64"}>
-                    <div class="    mt-14">
-
+                    <div className="mt-14">
                         {header && (
                             <header className="bg-white shadow no-print sticky top-0">
                                 <div className="mx-auto px-4 py-5 pt-6 sm:px-6 lg:px-8">
@@ -440,15 +437,11 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </div>
                             </header>
                         )}
-
-                        <main >{children}
-
+                        <main className="mx-auto overflow-auto px-3">
+                            {children}
                         </main>
-
-
                     </div>
                 </div>
-
             </div>
 
 

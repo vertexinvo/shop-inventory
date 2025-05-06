@@ -1,7 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-
-import { FaWallet, FaEdit, FaBoxes, FaFileDownload } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -22,6 +21,9 @@ import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
+import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
+  
+
 
 export default function List(props) {
   const { auth, stock, startdate, enddate, products, totalstock, totalstockavailable, totalstocknotavailable, totalStockValue, totaliteminstock, categories, brands } = props
@@ -40,9 +42,18 @@ export default function List(props) {
       key: 'selection',
     }
   )
+  const [showModal, setShowModal] = useState(false);
 
+  const handleImport = () => {
+    if (!selectedFile) {
+      alert('Please select a file first.');
+      return;
+    }
 
-
+    // Add your import logic here
+    console.log('Importing:', selectedFile.name);
+    setShowModal(false);
+  };
   const handleFileSelect = (event) => {
     const file = event.target.files[0]; // Selecting the first file from the FileList object
     if (file) {
@@ -59,7 +70,6 @@ export default function List(props) {
   };
 
   const { show } = useContextMenu({ id: "context-menu" });
-
   const handleMenuClick = ({ props, action }) => {
     const product = props;
     if (action === "view") {
@@ -102,30 +112,101 @@ export default function List(props) {
             </button> */}
             <a
               href={route('product.csvexport')}
-              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 rounded-lg'
+              download
+              className="inline-flex items-center justify-center rounded-lg border border-transparent bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
             >
-              <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                <BiExport className="mr-2 h-5 w-5" />
-                Export CSV File
-              </span>
+              <BiExport className="mr-2 h-5 w-5" />
+              Export CSV File
             </a>
-            <label className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-green-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 rounded-lg'>
-              <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm ">
+
+            {/* <div>
+              <input
+                id="csv-upload"
+                type="file"
+                accept=".csv"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+              <label
+                htmlFor="csv-upload"
+                className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
+              >
                 <BiImport className="mr-2 h-5 w-5" />
                 Import CSV File
+              </label>
+            </div> */}
+
+            <div>
+              {/* Trigger Button */}
+              <div>
                 <input
+                  id="csv-upload"
                   type="file"
                   accept=".csv"
                   onChange={handleFileSelect}
                   className="hidden"
                 />
-              </span>
-            </label>
+                <label
+                  htmlFor="csv-upload"
+                  className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
+                  onClick={() => setShowModal(true)}
+                >
+                  <BiImport className="mr-2 h-5 w-5" />
+                  Import CSV File
+                </label>
+              </div>
+
+              {/* Modal */}
+              {showModal && (
+                <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+                  <div className="rounded-lg bg-white p-6 text-surface shadow-lg max-w-xl w-full dark:bg-neutral-700 dark:text-white">
+                    <h2 className="mb-5 text-2xl font-semibold">CSV Import Guide</h2>
+                    <ul className="list-disc space-y-2 text-sm">
+                      <li>Download the CSV template and fill in the required fields.</li>
+                      <li>"warranty_type": "none", "years", "months", or "days".</li>
+                      <li>"identity_type": "none", "sku", "serial", or "imei".</li>
+                      <li>Upload the CSV file.</li>
+                      <li>Click "Import" to process the file.</li>
+                    </ul>
+
+                    {/* Buttons */}
+                    <div className="mt-6 flex justify-between items-center">
+                      {/* Download Template */}
+                      <a
+                        href="/productexample.csv"
+                        className="inline-flex items-center rounded-lg border border-transparent bg-cyan-700 px-4 py-2 text-sm text-white transition hover:bg-cyan-800"
+                        download="productexample.csv"
+                      >
+                        <FaFileDownload className="mr-2 h-5 w-5" />
+                        Download Template
+                      </a>
+
+                      {/* Import */}
+                      <button
+                        onClick={handleImport}
+                        className="inline-flex items-center rounded-lg bg-green-700 px-4 py-2 text-sm text-white transition hover:bg-green-800"
+                      >
+                        <BiImport className="mr-2 h-5 w-5" />
+                        Import
+                      </button>
+                    </div>
+
+                    {/* Close Button */}
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
           </div>
         </div>
       }
     >
-
 
       <Head title="Purchase" />
 
@@ -217,9 +298,9 @@ export default function List(props) {
           </div> */}
 
 
-          <div className="flex flex-col md:flex-row justify-end items-center mt-5 mb-4">
+          <div className="flex flex-col md:flex-row justify-end items-center my-4">
 
-            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+            <div className="flex flex-col md:flex-row w-full md:justify-end items-center gap-3">
 
               <FloatingCreateButton routeName="product.create" title="Create" />
 
@@ -234,40 +315,69 @@ export default function List(props) {
                 }}
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
-                    <div className="relative w-full md:w-auto">
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFieldValue('search', '');
-                          router.get(route('product.index'));
-                        }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                      >
-                        ✖
-                      </button>
+                  <Form className="w-full flex flex-col md:flex-row items-center gap-3">
+                    <div className="relative w-full md:max-w-md">
+                      <Field name="search">
+                        {({ field, form }) => (
+                          <>
+                            <input
+                              {...field}
+                              type="text"
+                              placeholder="Search products..."
+                              className="w-full rounded-xl border border-gray-300 focus:ring-black focus:outline-none transition"
+                            />
+                            {field.value && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  form.setFieldValue('search', '');
+                                  router.get(route('product.index'));
+                                }}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                                aria-label="Clear search"
+                              >
+                                <FaXmark className="w-4 h-4" />
+                              </button>
+                            )}
+                          </>
+                        )}
+                      </Field>
                     </div>
 
                     <button
                       type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                      className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 transition w-full md:w-auto"
                     >
                       Search
                     </button>
                   </Form>
+
+
                 )}
               </Formik>
+
+              {selectId.length > 0 && (
+                <>
+                  <Link href={route('product.printqr', { id: selectId.join(',') })}
+                    className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
+                  >
+                    <FaQrcode className="w-4 h-4" />
+                    Print&nbsp;QR
+                  </Link>
+
+                  <button
+                    onClick={() => setIsBulkDeleteModalOpen(true)}
+                    className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
+                  >
+                    <FaTrash className="w-4 h-4" />
+                    Bulk&nbsp;Delete
+                  </button>
+                </>
+              )}
               <select
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                w-full md:w-[150px] p-2.5 pr-10 
-                                    
+                                w-full md:w-[150px] p-2.5 pr-10
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => router.get(route('product.index'), { status: e.target.value, category: params.get('category'), brand: params.get('brand'), search: params.get('search'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, { preserveState: true })}
                 value={params.get('status') || ''}
@@ -280,8 +390,7 @@ export default function List(props) {
               <select
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                w-full md:w-[150px] p-2.5 pr-10 
-                                    
+                                w-full md:w-[150px] p-2.5 pr-10
                                 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 onChange={(e) => router.get(route('product.index'), { category: e.target.value, status: params.get('status'), brand: params.get('brand'), search: params.get('search'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, { preserveState: true, preserveScroll: true })}
                 value={params.get('category') || ''}
@@ -311,32 +420,17 @@ export default function List(props) {
 
 
 
-              {selectId.length > 0 && (
-                <>
-                  <Link href={route('product.printqr', { id: selectId.join(',') })}
-                    className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 "
-                  >
-                    Print&nbsp;QR
-                  </Link>
 
-                  <button
-                    onClick={() => setIsBulkDeleteModalOpen(true)}
-                    className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
-                  >
-                    Bulk&nbsp;Delete
-                  </button>
-                </>
-              )}
 
               <button
                 onClick={() => setDaterangeModel(true)}
-                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
               >
+                <FaCalendarCheck />
                 Date&nbsp;Range&nbsp;Filter
               </button>
 
-
-
+              {/* 
               <div class="inline-flex rounded-md shadow-sm" role="group">
                 <Link href={route('brand.index')} class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
                   Brands
@@ -345,40 +439,35 @@ export default function List(props) {
                 <Link href={route('category.index')} class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
                   Categories
                 </Link>
-              </div>
+              </div> */}
 
             </div>
           </div>
 
-
-
-
           <div className="">
-            <div class="font-[sans-serif] overflow-x-auto">
+            <div class="overflow-x-auto rounded-lg shadow-md">
               <table class="min-w-full bg-white">
                 <thead class="whitespace-nowrap">
-                  <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                    <th class="pl-4 w-8">
+                  <tr className='tracking-wide text-left text-white uppercase border-b bg-black h-20'>
+                    <th class="p-4">
                       <input id="checkbox" type="checkbox" class="hidden peer"
                         onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
                         checked={selectId.length === products.data.length}
                       />
                       <label htmlFor="checkbox"
                         class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                          <path d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z" />
-                        </svg>
+                        <FaCheck className="w-full h-3.5 fill-white" />
                       </label>
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold">Sno</th>
-                    <th class="p-4 text-left text-sm font-semibold">Product</th>
-                    <th class="p-4 text-left text-sm font-semibold">Quantity</th>
-                    <th class="p-4 text-left text-sm font-semibold">Purchase Price</th>
-                    <th class="p-4 text-left text-sm font-semibold">Selling Price</th>
-                    <th class="p-4 text-left text-sm font-semibold">Category</th>
-                    <th class="p-4 text-left text-sm font-semibold">Brand</th>
-                    <th class="p-4 text-left text-sm font-semibold">Stock Status</th>
-                    <th class="p-4 text-left text-sm font-semibold">Actions</th>
+                    <th class="p-4">Sno</th>
+                    <th class="p-4">Product</th>
+                    <th class="p-4">Quantity</th>
+                    <th class="p-4">Purchase Price</th>
+                    <th class="p-4">Selling Price</th>
+                    <th class="p-4">Category</th>
+                    <th class="p-4">Brand</th>
+                    <th class="p-4">Stock Status</th>
+                    <th class="p-4">Actions</th>
                   </tr>
                 </thead>
 
@@ -393,13 +482,13 @@ export default function List(props) {
                   {products.data.map((product, index) => (
                     <tr
                       key={product.id}
-                      className={`${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'} ${selectId.includes(product.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
+                      className={`h-16 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'} ${selectId.includes(product.id) ? 'border-gray-300 border-b' : 'border-gray-300 border-b'}`}
                       onContextMenu={(e) => {
                         e.preventDefault();
                         show({ event: e, props: product });
                       }}
                     >
-                      <td className="pl-4 w-8">
+                      <td className="p-4">
                         <input
                           id={`checkbox-${product.id}`}
                           type="checkbox"
@@ -418,26 +507,24 @@ export default function List(props) {
                           htmlFor={`checkbox-${product.id}`}
                           className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
                         >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-full fill-white" viewBox="0 0 520 520">
-                            <path d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z" />
-                          </svg>
+                          <FaCheck className="w-full h-3.5 fill-white" />
                         </label>
                       </td>
 
-                      <td class="p-4 text-sm">{index + 1}</td>
-                      <td class="text-sm">
+                      <td class="p-4 text-lg">{index + 1}</td>
+                      <td class="p-4">
                         <div class="cursor-pointer" onClick={() => router.get(route('product.edit', product.id))}>
-                          <p class="text-black text-sm font-semibold">{product.name}</p>
-                          {product.model && <p class="text-xs text-gray-500">Model: {product.model}</p>}
+                          <p class="text-black text-lg">{product.name}</p>
+                          {product.model && <p class="text-sm text-gray-500">Model: {product.model}</p>}
                         </div>
                       </td>
-                      <td class="p-4 text-sm">{product?.stock?.quantity || 0}</td>
-                      <td class="p-4 text-sm">{product.purchase_price || 'N/A'}</td>
-                      <td class="p-4 text-sm">{product.selling_price || 'N/A'}</td>
-                      <td class="p-4 text-sm">
+                      <td class="p-4 text-lg">{product?.stock?.quantity || 0}</td>
+                      <td class="p-4 text-lg">{product.purchase_price || 'N/A'}</td>
+                      <td class="p-4 text-lg">{product.selling_price || 'N/A'}</td>
+                      <td class="p-4 text-lg">
                         {product?.categories?.map((category) => category.name).join(', ') || 'N/A'}
                       </td>
-                      <td class="p-4 text-sm">
+                      <td class="p-4 text-lg">
                         {product?.brands?.map((brand) => brand.name).join(', ') || 'N/A'}
                       </td>
                       <td class="p-4">
@@ -451,40 +538,48 @@ export default function List(props) {
                           <div class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
                         </label>
                       </td>
-                      <td class="p-4 flex items-center gap-2">
-                        <div className="flex items-center space-x-2">
+                      <td className="p-4">
+                        <div className="flex items-center space-x-4">
+                          {/* View */}
                           <a
                             href={route('product.show', product.code || product.id)}
-                            className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                            className="text-blue-500 hover:text-blue-700 focus:outline-none text-sm flex items-center gap-1"
+                            title="View"
                           >
-                            View
+                            <FaEye className="w-4 h-4" />
                           </a>
 
+                          {/* Edit */}
                           <a
                             href={route('product.edit', product.id)}
-                            className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                            className="text-yellow-500 hover:text-yellow-700 focus:outline-none text-sm flex items-center gap-1"
+                            title="Edit"
                           >
-                            Edit
+                            <FaPencil className="w-4 h-4" />
                           </a>
 
+                          {/* Delete */}
                           <button
                             onClick={() => setIsDeleteModalOpen(product)}
-                            className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                            className="text-red-500 hover:text-red-700 focus:outline-none text-sm flex items-center gap-1"
+                            title="Delete"
                           >
-                            Delete
+                            <FaTrash className="w-4 h-4" />
                           </button>
 
+                          {/* Stock (if applicable) */}
                           {product.identity_type !== 'imei' && (
                             <a
                               href={route('stock.index', { product_id: product.id })}
-                              className="text-gray-500 hover:text-black focus:outline-none text-sm"
+                              className="text-green-500 hover:text-green-700 focus:outline-none text-sm flex items-center gap-1"
+                              title="Stock"
                             >
-                              Stock
+                              <FaBox className="w-4 h-4" />
                             </a>
                           )}
                         </div>
-
                       </td>
+
                     </tr>
                   ))}
                 </tbody>
@@ -505,9 +600,6 @@ export default function List(props) {
         setIsDeleteModalOpen(null)
       }} />
 
-
-
-
       <ConfirmModal isOpen={isBulkDeleteModalOpen} onClose={() => setIsBulkDeleteModalOpen(false)} title="Are you sure you want to delete these products?" onConfirm={() => {
 
         router.post(route('product.bulkdestroy'), { ids: selectId.join(',') }, {
@@ -518,7 +610,6 @@ export default function List(props) {
         });
 
       }} />
-
 
       <Modal
         show={isPrintQRModalOpen}
@@ -567,47 +658,47 @@ export default function List(props) {
           </div>
         </div>
 
-        <style jsx global>{`
-    @media print {
-      body {
-        font-size: 12px;
-      }
+        <style jsx global>
+          {`
+            @media print {
+              body {
+                font-size: 12px;
+              }
 
-      #printable-content {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr); /* 2 columns per row */
-        gap: 20px;
-        padding: 20px;
-      }
+              #printable-content {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr); /* 2 columns per row */
+                gap: 20px;
+                padding: 20px;
+              }
 
-      #printable-content > div {
-        width: 50%;
-        page-break-inside: avoid;
-        text-align: center;
-      }
+              #printable-content > div {
+                width: 50%;
+                page-break-inside: avoid;
+                text-align: center;
+              }
 
-      .hide-print {
-        display: none;
-      }
+              .hide-print {
+                display: none;
+              }
 
-      .break-inside-avoid {
-        page-break-inside: avoid; /* Prevents breaking items across pages */
-      }
+              .break-inside-avoid {
+                page-break-inside: avoid; /* Prevents breaking items across pages */
+              }
 
-      button {
-        display: none; /* Hides buttons during printing */
-      }
+              button {
+                display: none; /* Hides buttons during printing */
+              }
 
-      @page {
-        size: A4; /* Ensures proper page size */
-        margin: 20mm; /* Adjust the print margin */
-      }
-    }
-  `}</style>
+              @page {
+                size: A4; /* Ensures proper page size */
+                margin: 20mm; /* Adjust the print margin */
+              }
+            }
+          `
+          }
+        </style>
       </Modal>
-
-
-
 
       <Modal
         show={daterangeModel}
@@ -660,10 +751,7 @@ export default function List(props) {
             </div>
           </div>
         </div>
-
       </Modal>
-
-
     </AuthenticatedLayout>
   );
 }
