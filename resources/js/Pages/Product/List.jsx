@@ -22,7 +22,7 @@ import "react-contexify/dist/ReactContexify.css";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
 import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
-  
+
 
 
 export default function List(props) {
@@ -139,68 +139,16 @@ export default function List(props) {
             <div>
               {/* Trigger Button */}
               <div>
-                <input
-                  id="csv-upload"
-                  type="file"
-                  accept=".csv"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-                <label
-                  htmlFor="csv-upload"
+                <button
                   className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
                   onClick={() => setShowModal(true)}
                 >
                   <BiImport className="mr-2 h-5 w-5" />
                   Import CSV File
-                </label>
+                </button>
               </div>
 
-              {/* Modal */}
-              {showModal && (
-                <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-                  <div className="rounded-lg bg-white p-6 text-surface shadow-lg max-w-xl w-full dark:bg-neutral-700 dark:text-white">
-                    <h2 className="mb-5 text-2xl font-semibold">CSV Import Guide</h2>
-                    <ul className="list-disc space-y-2 text-sm">
-                      <li>Download the CSV template and fill in the required fields.</li>
-                      <li>"warranty_type": "none", "years", "months", or "days".</li>
-                      <li>"identity_type": "none", "sku", "serial", or "imei".</li>
-                      <li>Upload the CSV file.</li>
-                      <li>Click "Import" to process the file.</li>
-                    </ul>
 
-                    {/* Buttons */}
-                    <div className="mt-6 flex justify-between items-center">
-                      {/* Download Template */}
-                      <a
-                        href="/productexample.csv"
-                        className="inline-flex items-center rounded-lg border border-transparent bg-cyan-700 px-4 py-2 text-sm text-white transition hover:bg-cyan-800"
-                        download="productexample.csv"
-                      >
-                        <FaFileDownload className="mr-2 h-5 w-5" />
-                        Download Template
-                      </a>
-
-                      {/* Import */}
-                      <button
-                        onClick={handleImport}
-                        className="inline-flex items-center rounded-lg bg-green-700 px-4 py-2 text-sm text-white transition hover:bg-green-800"
-                      >
-                        <BiImport className="mr-2 h-5 w-5" />
-                        Import
-                      </button>
-                    </div>
-
-                    {/* Close Button */}
-                    <button
-                      onClick={() => setShowModal(false)}
-                      className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
-                    >
-                      &times;
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
 
           </div>
@@ -590,7 +538,61 @@ export default function List(props) {
 
         </div>
       </div>
+      {/* Import CSV Modal */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="rounded-lg bg-white p-6 text-surface shadow-lg max-w-xl w-full dark:bg-neutral-700 dark:text-white">
+            <h2 className="mb-5 text-2xl font-semibold">CSV Import Guide</h2>
+            <ul className="list-disc space-y-2 text-sm">
+              <li>Download the CSV template and fill in the required fields.</li>
+              <li>"warranty_type": "none", "years", "months", or "days".</li>
+              <li>"identity_type": "none", "sku", "serial", or "imei".</li>
+              <li>Upload the CSV file.</li>
+              <li>Click "Import" to process the file.</li>
+            </ul>
 
+            {/* Buttons */}
+            <div className="mt-6 flex justify-between items-center">
+              {/* Download Template */}
+              <a
+                href="/productexample.csv"
+                className="inline-flex items-center rounded-lg border border-transparent bg-cyan-700 px-4 py-2 text-sm text-white transition hover:bg-cyan-800"
+                download="productexample.csv"
+              >
+                <FaFileDownload className="mr-2 h-5 w-5" />
+                Download Template
+              </a>
+
+              {/* Import */}
+              <div>
+                <input
+                  id="csv-upload"
+                  type="file"
+                  accept=".csv"
+                  onChange={handleFileSelect}
+                  className="hidden"
+                />
+                <label
+                  htmlFor="csv-upload"
+                  className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
+                  onClick={() => setShowModal(true)}
+                >
+                  <BiImport className="mr-2 h-5 w-5" />
+                  Import CSV File
+                </label>
+              </div>
+            </div>
+
+            {/* Close Button */}
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
       <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
 
         router.delete(route('product.destroy', isDeleteModalOpen.id), {
