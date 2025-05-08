@@ -35,6 +35,7 @@ export default function List(props) {
   const [selectId, setSelectId] = useState([]);
   const [isPrintQRModalOpen, setIsPrintQRModalOpen] = useState(false);
   const [daterangeModel, setDaterangeModel] = useState(false);
+  const [importCsvModel, setImportCsvModel] = useState(false);
   const [dateRange, setDateRange] = useState(
     {
       startDate: new Date(),
@@ -141,7 +142,7 @@ export default function List(props) {
               <div>
                 <button
                   className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
-                  onClick={() => setShowModal(true)}
+                  onClick={() => setImportCsvModel(true)}
                 >
                   <BiImport className="mr-2 h-5 w-5" />
                   Import CSV File
@@ -538,61 +539,87 @@ export default function List(props) {
 
         </div>
       </div>
+
+
+
       {/* Import CSV Modal */}
-      {showModal && (
-        <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="rounded-lg bg-white p-6 text-surface shadow-lg max-w-xl w-full dark:bg-neutral-700 dark:text-white">
-            <h2 className="mb-5 text-2xl font-semibold">CSV Import Guide</h2>
-            <ul className="list-disc space-y-2 text-sm">
-              <li>Download the CSV template and fill in the required fields.</li>
-              <li>"warranty_type": "none", "years", "months", or "days".</li>
-              <li>"identity_type": "none", "sku", "serial", or "imei".</li>
-              <li>Upload the CSV file.</li>
-              <li>Click "Import" to process the file.</li>
-            </ul>
-
-            {/* Buttons */}
-            <div className="mt-6 flex justify-between items-center">
-              {/* Download Template */}
-              <a
-                href="/productexample.csv"
-                className="inline-flex items-center rounded-lg border border-transparent bg-cyan-700 px-4 py-2 text-sm text-white transition hover:bg-cyan-800"
-                download="productexample.csv"
-              >
-                <FaFileDownload className="mr-2 h-5 w-5" />
-                Download Template
-              </a>
-
-              {/* Import */}
-              <div>
-                <input
-                  id="csv-upload"
-                  type="file"
-                  accept=".csv"
-                  onChange={handleFileSelect}
-                  className="hidden"
-                />
-                <label
-                  htmlFor="csv-upload"
-                  className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
-                  onClick={() => setShowModal(true)}
-                >
-                  <BiImport className="mr-2 h-5 w-5" />
-                  Import CSV File
-                </label>
-              </div>
-            </div>
-
-            {/* Close Button */}
+      <Modal
+        show={importCsvModel}
+        onClose={() => setImportCsvModel(false)}
+        maxWidth="2xl"
+        className="rounded-xl shadow-2xl"
+      >
+        <div className="relative p-6 bg-white rounded-xl">
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">Import Products via CSV</h2>
             <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-3 text-gray-500 hover:text-black text-xl"
+              onClick={() => setImportCsvModel(false)}
+              className="text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Close modal"
             >
-              &times;
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
           </div>
+
+          {/* Guide Content */}
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-700 mb-3">How to Import</h3>
+            <ul className="space-y-3 text-gray-600 text-sm">
+              <li className="flex items-start">
+                Get the CSV template and complete the necessary fields.
+                <a
+                  href="/productexample.csv"
+                  className="inline-flex items-center text-cyan-600 hover:text-cyan-800 transition-colors duration-200 underline ml-1"
+                  download="productexample.csv"
+                >
+                  Download now
+                </a>
+              </li>
+              <li className="flex items-start">
+                Use <code className="bg-gray-100 px-1 rounded">"warranty_type"</code>: "none", "years", "months", or "days".
+              </li>
+              <li className="flex items-start">
+                Use <code className="bg-gray-100 px-1 rounded">"identity_type"</code>: "none", "sku", "serial", or "imei".
+              </li>
+              <li className="flex items-start">
+                Upload the completed CSV file.
+              </li>
+              <li className="flex items-start">
+                Click "Import" to process your file.
+              </li>
+            </ul>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex justify-between items-center">
+            {/* Download Template */}
+
+            {/* Import CSV */}
+            <div className="flex items-center">
+              <input
+                id="csv-upload"
+                type="file"
+                accept=".csv"
+                onChange={handleFileSelect}
+                className="hidden"
+              />
+              <label
+                htmlFor="csv-upload"
+                className="cursor-pointer inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition-colors duration-200"
+              >
+                <BiImport className="mr-2 h-5 w-5" />
+                Import CSV File
+              </label>
+            </div>
+          </div>
         </div>
-      )}
+      </Modal>
+
+
+
       <ConfirmModal isOpen={isDeleteModalOpen !== null} onClose={() => setIsDeleteModalOpen(null)} title="Are you sure you want to delete?" onConfirm={() => {
 
         router.delete(route('product.destroy', isDeleteModalOpen.id), {
@@ -754,6 +781,6 @@ export default function List(props) {
           </div>
         </div>
       </Modal>
-    </AuthenticatedLayout>
+    </AuthenticatedLayout >
   );
 }

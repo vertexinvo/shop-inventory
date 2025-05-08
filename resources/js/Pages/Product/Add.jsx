@@ -46,17 +46,17 @@ export default function Add(props) {
       Product={auth.Product}
       header={
         <div className="flex items-center justify-between py-2">
-                  {/* Title */}
-                  <div className="flex items-center space-x-3">
-                    <MdKeyboardBackspace
-                      size={20}
-                      className="cursor-pointer text-gray-600 hover:text-gray-800"
-                      onClick={() => window.history.back()}
-                      title="Back"
-                    />
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add purchase</h2>
-                  </div>
-                </div>
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => window.history.back()}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add purchase</h2>
+          </div>
+        </div>
       }
     >
       <Head title="Purchase" />
@@ -69,7 +69,7 @@ export default function Add(props) {
 
             <div className="w-full bg-grey-lightest">
               <div className="container mx-auto py-3 px-5">
-                <div className="w-full lg:w-full mx-auto bg-white rounded shadow">
+                <div className="w-full lg:w-full mx-auto">
                   <Formik enableReinitialize initialValues={{
                     name: '', model: '', specifications: '', purchase_price: '', selling_price: '', warranty_period: '', is_borrow: '0', shop_name: '', shop_address: '', shop_phone: '', shop_email: ''
                     , identity_type: 'none', identity_value: '', warranty_type: 'none', is_warranty: '0',
@@ -133,372 +133,532 @@ export default function Add(props) {
 
                     {({ values, errors, touched, setFieldValue, isSubmitting }) => (
                       <Form>
-                        <div className="py-4 px-8">
-                          <div className="flex mb-4">
-                            <div className="w-1/2 mr-1">
-                              <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>
-                              <Field name="name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="name" type="text" placeholder="Enter name" />
-                              <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
-                            </div>
-                            <div className="w-1/2 mr-1">
-                              <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Model  (optional)</label>
-                              <Field name="model" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="model" type="text" placeholder="Enter model" />
-                              <ErrorMessage name="model" component="div" className="text-red-500 text-xs mt-1" />
-                            </div>
-
+                        <div className="py-8 px-10 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg max-w-4xl mx-auto">
+                          {/* Header */}
+                          <div className="mb-8">
+                            <h2 className="text-2xl font-bold text-gray-800">Add New Product</h2>
+                            <p className="text-sm text-gray-500 mt-1">Fill in the details below to create a new product.</p>
                           </div>
 
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2 flex items-center gap-2" for="specifications">Specifications  (optional) <FaEdit size={15} onClick={() => setAllowSpecifications(!allowSpecifications)} /></label>
-                            {allowSpecifications &&
-                              <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.specifications} onChange={(e) => setFieldValue('specifications', e)} />
-                            }
+                          {/* Name and Model */}
+                          <div className="grid grid-cols-2 gap-6 mb-8">
+                            <div>
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="name">Name <span className="text-red-500">*</span></label>
+                              <Field
+                                name="name"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="name"
+                                type="text"
+                                placeholder="Enter product name"
+                              />
+                              <ErrorMessage name="name" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                            <div>
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="model">Model <span className="text-gray-400">(optional)</span></label>
+                              <Field
+                                name="model"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="model"
+                                type="text"
+                                placeholder="Enter model"
+                              />
+                              <ErrorMessage name="model" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                          </div>
+
+                          {/* Specifications */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-2 flex items-center gap-2" htmlFor="specifications">
+                              Specifications <span className="text-gray-400">(optional)</span>
+                              <FaEdit
+                                size={16}
+                                className="cursor-pointer text-cyan-600 hover:text-cyan-800 transition"
+                                onClick={() => setAllowSpecifications(!allowSpecifications)}
+                              />
+                            </label>
+                            {allowSpecifications && (
+                              <ReactQuill
+                                theme="snow"
+                                className="border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-cyan-500 transition duration-200"
+                                value={values.specifications}
+                                onChange={(e) => setFieldValue('specifications', e)}
+                              />
+                            )}
                             <ErrorMessage name="specifications" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2 flex items-center gap-2" for="specifications">Description  (optional) <FaEdit size={15} onClick={() => setAllowDescription(!allowDescription)} /></label>
-                            {allowDescription &&
-                              <ReactQuill theme="snow" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" value={values.description} onChange={(e) => setFieldValue('description', e)} />
-                            }
+                          {/* Description */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-2 flex items-center gap-2" htmlFor="description">
+                              Description <span className="text-gray-400">(optional)</span>
+                              <FaEdit
+                                size={16}
+                                className="cursor-pointer text-cyan-600 hover:text-cyan-800 transition"
+                                onClick={() => setAllowDescription(!allowDescription)}
+                              />
+                            </label>
+                            {allowDescription && (
+                              <ReactQuill
+                                theme="snow"
+                                className="border border-gray-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-cyan-500 transition duration-200"
+                                value={values.description}
+                                onChange={(e) => setFieldValue('description', e)}
+                              />
+                            )}
                             <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="purchase_price">Purchase Price</label>
-                            <Field name="purchase_price" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="purchase_price" type="number" step="0.01" placeholder="Enter purchase price" />
-                            <ErrorMessage name="purchase_price" component="div" className="text-red-500 text-xs mt-1" />
+                          {/* Purchase and Selling Price */}
+                          <div className="grid grid-cols-2 gap-6 mb-8">
+                            <div>
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="purchase_price">Purchase Price <span className="text-red-500">*</span></label>
+                              <Field
+                                name="purchase_price"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="purchase_price"
+                                type="number"
+                                step="0.01"
+                                placeholder="Enter purchase price"
+                              />
+                              <ErrorMessage name="purchase_price" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                            <div>
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="selling_price">Selling Price <span className="text-red-500">*</span></label>
+                              <Field
+                                name="selling_price"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="selling_price"
+                                type="number"
+                                step="0.01"
+                                placeholder="Enter selling price"
+                              />
+                              <ErrorMessage name="selling_price" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
                           </div>
 
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Selling Price</label>
-                            <Field name="selling_price" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="selling_price" type="number" step="0.01" placeholder="Enter selling price" />
-                            <ErrorMessage name="selling_price" component="div" className="text-red-500 text-xs mt-1" />
+                          {/* Quantity and Weight */}
+                          <div className="grid grid-cols-2 gap-6 mb-8">
+                            <div>
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="quantity">Quantity <span className="text-red-500">*</span></label>
+                              <Field
+                                name="quantity"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="quantity"
+                                type="number"
+                                min="1"
+                                placeholder="Enter quantity"
+                              />
+                              <ErrorMessage name="quantity" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
+                            <div>
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="weight">Weight (kg) <span className="text-gray-400">(optional)</span></label>
+                              <Field
+                                name="weight"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="weight"
+                                type="number"
+                                step="0.01"
+                                placeholder="Enter weight"
+                              />
+                              <ErrorMessage name="weight" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
                           </div>
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Quantity</label>
-                            <Field name="quantity" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="quantity" type="number" min="1" placeholder="Enter quantity" />
-                            <ErrorMessage name="quantity" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Weight - (kg) (optional)</label>
-                            <Field name="weight" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="weight" type="number" step="0.01" placeholder="Enter weight" />
-                            <ErrorMessage name="weight" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
 
-
-
-                          <div className="mb-4 ">
-
-                            <div className="flex items-center justify-start gap-2 mt-2 mb-2">
-                              <label className="block   text-grey-darker text-sm font-bold " for="categories">Select Category (optional)</label>
-                              <button type='button' onClick={() => setIsCategoryModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new category</button>
+                          {/* Category */}
+                          <div className="mb-8">
+                            <div className="flex items-center justify-between mb-2">
+                              <label className="block text-gray-700 text-sm font-medium" htmlFor="categories">Category <span className="text-gray-400">(optional)</span></label>
+                              <button
+                                type="button"
+                                onClick={() => setIsCategoryModel(true)}
+                                className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                              >
+                                Create new category
+                              </button>
                             </div>
                             <Select
-                              onChange={(e) => {
-                                setFieldValue("categories", e.map((item) => item.value));
-                              }}
+                              onChange={(e) => setFieldValue("categories", e.map((item) => item.value))}
                               isMulti
                               name="categories"
                               options={categories}
                               className="basic-multi-select"
                               classNamePrefix="select"
-                              styles={customStyles}
+                              styles={{
+                                control: (base) => ({
+                                  ...base,
+                                  borderRadius: '0.5rem',
+                                  borderColor: '#d1d5db',
+                                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                                  '&:hover': { borderColor: '#06b6d4' },
+                                }),
+                                menu: (base) => ({
+                                  ...base,
+                                  borderRadius: '0.5rem',
+                                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                }),
+                              }}
                             />
                             <ErrorMessage name="categories" component="div" className="text-red-500 text-xs mt-1" />
-
                           </div>
-                          <div className="mb-4">
 
-                            <div className="flex items-center justify-start gap-2 mt-2 mb-2">
-                              <label className="block text-grey-darker text-sm font-bold " for="brands">Select Brand  (optional)</label>
-                              <button type='button' onClick={() => setIsBrandModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new brand</button>
-
+                          {/* Brand */}
+                          <div className="mb-8">
+                            <div className="flex items-center justify-between mb-2">
+                              <label className="block text-gray-700 text-sm font-medium" htmlFor="brands">Brand <span className="text-gray-400">(optional)</span></label>
+                              <button
+                                type="button"
+                                onClick={() => setIsBrandModel(true)}
+                                className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                              >
+                                Create new brand
+                              </button>
                             </div>
                             <Select
-                              onChange={(e) => {
-                                setFieldValue("brands", e.map((item) => item.value));
-                              }}
+                              onChange={(e) => setFieldValue("brands", e.map((item) => item.value))}
                               isMulti
                               name="brands"
                               options={brands}
                               className="basic-multi-select"
                               classNamePrefix="select"
-                              styles={customStyles}
+                              styles={{
+                                control: (base) => ({
+                                  ...base,
+                                  borderRadius: '0.5rem',
+                                  borderColor: '#d1d5db',
+                                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)',
+                                  '&:hover': { borderColor: '#06b6d4' },
+                                }),
+                                menu: (base) => ({
+                                  ...base,
+                                  borderRadius: '0.5rem',
+                                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                                }),
+                              }}
                             />
                             <ErrorMessage name="brands" component="div" className="text-red-500 text-xs mt-1" />
-
                           </div>
 
-                          <div className="mb-4">
-
-                            <label className="block text-grey-darker text-sm  mb-2" for="type">Type </label>
-                            <Field name="type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="type" as="select" >
-                              <option value='new'>New</option>
+                          {/* Type */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="type">Type <span className="text-red-500">*</span></label>
+                            <Field
+                              name="type"
+                              as="select"
+                              className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                              id="type"
+                            >
+                              <option value="new">New</option>
                               <option value="used">Used</option>
                             </Field>
                             <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
-
-
                           </div>
 
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2">
-                              Identity Type
-                            </label>
-                            <div className="grid grid-cols-4 gap-2 w-1/2">
-                              {/* Option 1: None */}
-                              <div>
-                                <Field
-                                  className="hidden"
-                                  id="radio_1"
-                                  value="none"
-                                  type="radio"
-                                  name="identity_type"
-                                />
-                                <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "none" ? "  border-black" : "border-gray-400"
-                                    }`}
-                                  htmlFor="radio_1"
-                                >
-                                  <span className="text-xs font-semibold uppercase">None</span>
-                                </label>
-                              </div>
-
-                              {/* Option 2: Emi */}
-                              <div>
-                                <Field
-                                  className="hidden"
-                                  id="radio_2"
-                                  value="imei"
-                                  type="radio"
-                                  name="identity_type"
-                                />
-                                <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "imei" ? "border-black" : "border-gray-400"
-                                    }`}
-                                  htmlFor="radio_2"
-                                >
-                                  <span className="text-xs font-semibold uppercase">Imei</span>
-                                </label>
-                              </div>
-
-                              {/* Option 3: Sku */}
-                              <div>
-                                <Field
-                                  className="hidden"
-                                  id="radio_3"
-                                  value="sku"
-                                  type="radio"
-                                  name="identity_type"
-                                />
-                                <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "sku" ? "border-black" : "border-gray-400"
-                                    }`}
-                                  htmlFor="radio_3"
-                                >
-                                  <span className="text-xs font-semibold uppercase">Sku</span>
-                                </label>
-                              </div>
-                              {/* Option 4: Serial */}
-                              <div>
-                                <Field
-                                  className="hidden"
-                                  id="radio_4"
-                                  value="serial"
-                                  type="radio"
-                                  name="identity_type"
-                                />
-                                <label
-                                  className={`flex flex-col p-4 border-2 cursor-pointer ${values.identity_type === "serial" ? "border-black" : "border-gray-400"
-                                    }`}
-                                  htmlFor="radio_4"
-                                >
-                                  <span className="text-xs font-semibold uppercase">Serial</span>
-                                </label>
-                              </div>
+                          {/* Identity Type */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-3">Identity Type <span className="text-red-500">*</span></label>
+                            <div className="grid grid-cols-4 gap-4">
+                              {["none", "imei", "sku", "serial"].map((type, index) => (
+                                <div key={type}>
+                                  <Field
+                                    className="hidden"
+                                    id={`radio_${index + 1}`}
+                                    value={type}
+                                    type="radio"
+                                    name="identity_type"
+                                  />
+                                  <label
+                                    className={`flex flex-col p-4 border-2 rounded-lg cursor-pointer text-center transition duration-200 shadow-sm ${values.identity_type === type
+                                        ? "border-cyan-500 bg-cyan-50 text-cyan-700"
+                                        : "border-gray-300 hover:border-cyan-400 bg-white"
+                                      }`}
+                                    htmlFor={`radio_${index + 1}`}
+                                  >
+                                    <span className="text-sm font-medium uppercase">{type}</span>
+                                  </label>
+                                </div>
+                              ))}
                             </div>
+                            <ErrorMessage name="identity_type" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-                          {values.identity_type !== 'none' && (
-                            <div className=" mr-1 mb-4 ">
-                              <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">{values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} </label>
-                              <Field name="identity_value" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder={"Enter " + values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} />
+                          {/* Identity Value */}
+                          {values.identity_type !== "none" && (
+                            <div className="mb-8">
+                              <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="identity_value">
+                                {values.identity_type.charAt(0).toUpperCase() + values.identity_type.slice(1)} <span className="text-red-500">*</span>
+                              </label>
+                              <Field
+                                name="identity_value"
+                                className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                id="identity_value"
+                                type="text"
+                                placeholder={`Enter ${values.identity_type}`}
+                              />
                               <ErrorMessage name="identity_value" component="div" className="text-red-500 text-xs mt-1" />
                             </div>
                           )}
 
-
-
-
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2">Is Warranty</label>
-                            <div className="flex items-center">
-                              <label className="mr-4">
-                                <Field name="is_warranty" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
+                          {/* Warranty */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-3">Warranty <span className="text-red-500">*</span></label>
+                            <div className="flex items-center gap-8">
+                              <label className="flex items-center">
+                                <Field
+                                  name="is_warranty"
+                                  type="radio"
+                                  value="1"
+                                  className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                />
+                                <span className="text-sm text-gray-700">Yes</span>
                               </label>
-                              <label>
-                                <Field name="is_warranty" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
+                              <label className="flex items-center">
+                                <Field
+                                  name="is_warranty"
+                                  type="radio"
+                                  value="0"
+                                  className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                />
+                                <span className="text-sm text-gray-700">No</span>
                               </label>
                             </div>
                             <ErrorMessage name="is_warranty" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-
-
-
-                          {values.is_warranty === '1' && (
-                            <>
-                              <div className="flex mb-4">
-                                <div className="w-1/2 mr-1">
-                                  <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Type </label>
-                                  <Field name="warranty_type" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="warranty_type" as="select" >
-                                    <option value=''>Select Warranty Type</option>
-                                    <option value='years'>Year</option>
-                                    <option value="months">Month</option>
-                                    <option value="days">Day</option>
-                                  </Field>
-                                  <ErrorMessage name="warranty_type" component="div" className="text-red-500 text-xs mt-1" />
-                                </div>
-                                <div className="w-1/2 mr-1">
-                                  <label className="block text-grey-darker text-sm  mb-2" for="warranty_period">Warranty Period </label>
-                                  <Field name="warranty_period" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="warranty_period" type="number" step="1" placeholder="Enter warranty period" />
-                                  <ErrorMessage name="warranty_period" component="div" className="text-red-500 text-xs mt-1" />
-                                </div>
-
+                          {/* Warranty Details */}
+                          {values.is_warranty === "1" && (
+                            <div className="grid grid-cols-2 gap-6 mb-8">
+                              <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="warranty_type">Warranty Type <span className="text-red-500">*</span></label>
+                                <Field
+                                  name="warranty_type"
+                                  as="select"
+                                  className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                  id="warranty_type"
+                                >
+                                  <option value="">Select Warranty Type</option>
+                                  <option value="years">Year</option>
+                                  <option value="months">Month</option>
+                                  <option value="days">Day</option>
+                                </Field>
+                                <ErrorMessage name="warranty_type" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
-
-                            </>
+                              <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="warranty_period">Warranty Period <span className="text-red-500">*</span></label>
+                                <Field
+                                  name="warranty_period"
+                                  className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                  id="warranty_period"
+                                  type="number"
+                                  step="1"
+                                  placeholder="Enter warranty period"
+                                />
+                                <ErrorMessage name="warranty_period" component="div" className="text-red-500 text-xs mt-1" />
+                              </div>
+                            </div>
                           )}
 
-
-
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2">Is Borrow</label>
-                            <div className="flex items-center">
-                              <label className="mr-4">
-                                <Field name="is_borrow" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
+                          {/* Borrow */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-3">Borrow <span className="text-red-500">*</span></label>
+                            <div className="flex items-center gap-8">
+                              <label className="flex items-center">
+                                <Field
+                                  name="is_borrow"
+                                  type="radio"
+                                  value="1"
+                                  className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                />
+                                <span className="text-sm text-gray-700">Yes</span>
                               </label>
-                              <label>
-                                <Field name="is_borrow" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
+                              <label className="flex items-center">
+                                <Field
+                                  name="is_borrow"
+                                  type="radio"
+                                  value="0"
+                                  className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                />
+                                <span className="text-sm text-gray-700">No</span>
                               </label>
                             </div>
                             <ErrorMessage name="is_borrow" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-                          {values.is_borrow === '1' && (
+                          {/* Borrow Details */}
+                          {values.is_borrow === "1" && (
                             <>
-                              <label className="block text-grey-darker text-sm my-2 text-red-500" for="shop_name" >Fill atleast one</label>
-                              <div className="mb-4">
-                                <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Shop Name</label>
-                                <Field name="shop_name" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_name" type="text" placeholder="Enter shop name" />
-                                <ErrorMessage name="shop_name" component="div" className="text-red-500 text-xs mt-1" />
+                              <div className="mb-8">
+                                <label className="block text-red-500 text-sm font-medium mb-3">Fill at least one field below</label>
                               </div>
-
-                              <div className="mb-4">
-                                <label className="block text-grey-darker text-sm  mb-2" for="shop_address">Shop Address</label>
-                                <Field as="textarea" name="shop_address" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_address" rows="3" placeholder="Enter shop address"></Field>
+                              <div className="grid grid-cols-2 gap-6 mb-8">
+                                <div>
+                                  <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="shop_name">Shop Name</label>
+                                  <Field
+                                    name="shop_name"
+                                    className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                    id="shop_name"
+                                    type="text"
+                                    placeholder="Enter shop name"
+                                  />
+                                  <ErrorMessage name="shop_name" component="div" className="text-red-500 text-xs mt-1" />
+                                </div>
+                                <div>
+                                  <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="shop_phone">Shop Phone</label>
+                                  <Field
+                                    name="shop_phone"
+                                    className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                    id="shop_phone"
+                                    type="tel"
+                                    placeholder="Enter shop phone"
+                                  />
+                                  <ErrorMessage name="shop_phone" component="div" className="text-red-500 text-xs mt-1" />
+                                </div>
+                              </div>
+                              <div className="mb-8">
+                                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="shop_address">Shop Address</label>
+                                <Field
+                                  as="textarea"
+                                  name="shop_address"
+                                  className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                  id="shop_address"
+                                  rows="4"
+                                  placeholder="Enter shop address"
+                                />
                                 <ErrorMessage name="shop_address" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
-
-                              <div className="mb-4">
-                                <label className="block text-grey-darker text-sm  mb-2" for="shop_phone">Shop Phone</label>
-                                <Field name="shop_phone" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_phone" type="number" placeholder="Enter shop phone" />
-                                <ErrorMessage name="shop_phone" component="div" className="text-red-500 text-xs mt-1" />
-                              </div>
-
-                              <div className="mb-4">
-                                <label className="block text-grey-darker text-sm  mb-2" for="shop_email">Shop Email</label>
-                                <Field name="shop_email" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="shop_email" type="email" placeholder="Enter shop email" />
+                              <div className="mb-8">
+                                <label className="block text-gray-700 text-sm font-medium mb-2" htmlFor="shop_email">Shop Email</label>
+                                <Field
+                                  name="shop_email"
+                                  className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                  id="shop_email"
+                                  type="email"
+                                  placeholder="Enter shop email"
+                                />
                                 <ErrorMessage name="shop_email" component="div" className="text-red-500 text-xs mt-1" />
                               </div>
                             </>
                           )}
 
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2">Is Supplier</label>
-                            <div className="flex items-center">
-                              <label className="mr-4 ">
-                                <Field name="is_supplier" type="radio" value="1" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> Yes
+                          {/* Supplier */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-3">Supplier <span className="text-red-500">*</span></label>
+                            <div className="flex items-center gap-8">
+                              <label className="flex items-center">
+                                <Field
+                                  name="is_supplier"
+                                  type="radio"
+                                  value="1"
+                                  className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                />
+                                <span className="text-sm text-gray-700">Yes</span>
                               </label>
-                              <label>
-                                <Field name="is_supplier" type="radio" value="0" className="mr-2 checked:bg-black checked:hover:bg-gray-700 checked:active:bg-black checked:focus:bg-black focus:bg-black focus:outline-none focus:ring-1 focus:ring-black" /> No
+                              <label className="flex items-center">
+                                <Field
+                                  name="is_supplier"
+                                  type="radio"
+                                  value="0"
+                                  className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                />
+                                <span className="text-sm text-gray-700">No</span>
                               </label>
                             </div>
                             <ErrorMessage name="is_supplier" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-
-                          {values.is_supplier === '1' && (
-
-                            <div className="mb-4">
-
-                              <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing) &nbsp;  <button type='button' onClick={() => {
-                                setNotRemember(!notremember);
-                                setFieldValue('supplier_invoice_no', '')
-                              }} className='text-black text-sm underline hover:text-gray-700'>{!notremember ? 'Not remember?' : 'Remember!'}</button></label>
+                          {/* Supplier Invoice */}
+                          {values.is_supplier === "1" && (
+                            <div className="mb-8">
+                              <div className="flex items-center justify-between mb-2">
+                                <label className="block text-gray-700 text-sm font-medium">Supplier Invoice No</label>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    setNotRemember(!notremember);
+                                    setFieldValue('supplier_invoice_no', '');
+                                  }}
+                                  className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                >
+                                  {notremember ? 'Remember' : 'Not remember?'}
+                                </button>
+                              </div>
                               {!notremember ? (
-                                <Field name="supplier_invoice_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no" type="text" placeholder="Enter supplier invoice no" />
+                                <Field
+                                  name="supplier_invoice_no"
+                                  className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                  id="supplier_invoice_no"
+                                  type="text"
+                                  placeholder="Enter supplier invoice no"
+                                />
                               ) : (
                                 <>
-                                  <select onChange={(e) => {
-                                    setFieldValue('supplier_invoice_no', '')
-                                    setSupplierId(e.target.value)
-                                    router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true }
-                                    )
-                                  }} className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
+                                  <select
+                                    onChange={(e) => {
+                                      setFieldValue('supplier_invoice_no', '');
+                                      setSupplierId(e.target.value);
+                                      router.get(route('product.create'), { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true });
+                                    }}
+                                    className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                    id="supplier_invoice_no"
+                                  >
                                     <option value="">Select supplier</option>
                                     {suppliers.map((supplier) => (
-                                      <option key={supplier.id} value={supplier.id}>{supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}</option>
+                                      <option key={supplier.id} value={supplier.id}>
+                                        {supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}
+                                      </option>
                                     ))}
                                   </select>
                                   {supplierinvoices.length > 0 && (
-                                    <Field as="select" name="supplier_invoice_no" className="mt-2 appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" id="supplier_invoice_no">
+                                    <Field
+                                      as="select"
+                                      name="supplier_invoice_no"
+                                      className="mt-3 appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                      id="supplier_invoice_no"
+                                    >
                                       <option value="">Select supplier invoice no</option>
                                       {supplierinvoices.map((item) => (
-                                        <option key={item.id} value={item.invoice_no}>{item.invoice_no}</option>
+                                        <option key={item.id} value={item.invoice_no}>
+                                          {item.invoice_no}
+                                        </option>
                                       ))}
                                     </Field>
                                   )}
-
                                 </>
-
-
                               )}
-
                               <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
-                              <div className="flex items-center justify-start gap-2 mt-2">
-
-                                <button type='button' onClick={() => setIsNewSupplierInvoiceModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new invoice</button>
-                                <button type='button' onClick={() => setIsNewSupplierModel(true)} className='text-black text-sm underline hover:text-gray-700'>Create a new supplier</button>
-
+                              <div className="flex items-center gap-4 mt-3">
+                                <button
+                                  type="button"
+                                  onClick={() => setIsNewSupplierInvoiceModel(true)}
+                                  className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                >
+                                  Create new invoice
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => setIsNewSupplierModel(true)}
+                                  className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                >
+                                  Create new supplier
+                                </button>
                               </div>
                             </div>
                           )}
 
-
-
-
-
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Other Details (optional)</label>
+                          {/* Custom Fields */}
+                          <div className="mb-8">
+                            <label className="block text-gray-700 text-sm font-medium mb-3">Other Details <span className="text-gray-400">(optional)</span></label>
                             <FieldArray name="customfield">
                               {({ push, remove }) => (
                                 <div>
                                   {values.customfield && values.customfield.length > 0 ? (
                                     values.customfield.map((field, index) => (
-                                      <div key={index} className="flex items-center gap-2 mb-2">
-                                        <div className="flex flex-col gap-2">
+                                      <div key={index} className="grid grid-cols-3 gap-4 mb-4 items-start">
+                                        <div>
                                           <Field
                                             name={`customfield.${index}.name`}
-                                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
+                                            className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
                                             type="text"
-                                            placeholder="Enter field name"
+                                            placeholder="Field name"
                                           />
                                           <ErrorMessage
                                             name={`customfield.${index}.name`}
@@ -506,13 +666,12 @@ export default function Add(props) {
                                             className="text-red-500 text-xs mt-1"
                                           />
                                         </div>
-
-                                        <div className="flex flex-col gap-2">
+                                        <div>
                                           <Field
                                             name={`customfield.${index}.value`}
-                                            className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
+                                            className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
                                             type="text"
-                                            placeholder="Enter field value"
+                                            placeholder="Field value"
                                           />
                                           <ErrorMessage
                                             name={`customfield.${index}.value`}
@@ -520,52 +679,48 @@ export default function Add(props) {
                                             className="text-red-500 text-xs mt-1"
                                           />
                                         </div>
-
-                                        <div className="flex items-center justify-center gap-2">
-                                          <button
-                                            type="button"
-                                            onClick={() => remove(index)}
-                                            className="text-red-500 text-sm underline hover:text-red-700"
-                                          >
-                                            Remove
-                                          </button>
-                                        </div>
+                                        <button
+                                          type="button"
+                                          onClick={() => remove(index)}
+                                          className="text-red-500 text-sm font-medium hover:text-red-700 transition underline pt-3"
+                                        >
+                                          Remove
+                                        </button>
                                       </div>
                                     ))
                                   ) : (
                                     <p className="text-gray-500 text-sm">No custom fields added.</p>
                                   )}
-
                                   <button
                                     type="button"
                                     onClick={() => push({ name: '', value: '' })}
-                                    className="mt-2 text-black text-sm underline hover:text-gray-700"
+                                    className="mt-3 text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
                                   >
-                                    Add Field
+                                    Add Custom Field
                                   </button>
                                 </div>
                               )}
                             </FieldArray>
-
-
                             <ErrorMessage name="customfield" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-
-
-                          <div className="flex items-center justify-start gap-1 mt-8">
-                            <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                              Save
+                          {/* Action Buttons */}
+                          <div className="flex items-center gap-4 mt-10">
+                            <button
+                              className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-8 rounded-lg transition duration-200 shadow-md"
+                              type="submit"
+                            >
+                              Save Product
                             </button>
-                            {/* <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="button">
-                              Save & Close
-                            </button> */}
-                            <button onClick={() => router.get(route('product.index'))} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
-                              Close
+                            <button
+                              onClick={() => router.get(route('product.index'))}
+                              className="bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-8 rounded-lg transition duration-200 shadow-md"
+                              type="button"
+                            >
+                              Cancel
                             </button>
                           </div>
                         </div>
-
                       </Form>
                     )}
                   </Formik>
