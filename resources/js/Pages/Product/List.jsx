@@ -216,222 +216,205 @@ export default function List(props) {
       <div className="flex flex-col px-4 mx-auto w-full">
         <div className="w-full ">
 
-          {/* <div class="rounded-lg bg-white p-6 text-surface shadow-lg dark:bg-neutral-700 dark:text-white dark:shadow-black/30">
-            <h2 class="mb-5 text-3xl font-semibold">CSV Import Guide</h2>
-            {!accordion && <button className='bg-cyan-700 text-white px-4 py-2 rounded' onClick={() => setAccordion(!accordion)}>Read Guide</button>}
-            {accordion && (<>
-              <ul className='list-disc space-y-2'>
-                <li>Download the CSV template and fill in the required fields.</li>
-                <li>In the "warranty_type" column, values are "none" or "years" or "months" or "days".</li>
-                <li>In the "identity_type" column, values are "none" or "sku" or "serial" or "imei".</li>
-                <li>Upload the CSV file.</li>
-                <li>Click on the "Import" button.</li>
-                <li>After successful import, the products will be added to the database.</li>
-              </ul>
 
-              <div className='flex items-center space-x-2 mt-5'>
-                <a
-                  href='/productexample.csv'
-                  className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-                  download={'productexample.csv'}
-                >
-                  <span className="flex items-center transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                    <FaFileDownload className="mr-2 h-5 w-5" />
-                    Download&nbsp;CSV&nbsp;Template
-                  </span>
-                </a>
+          <div className="p-6 bg-gray-50 rounded-2xl shadow-lg">
+            {/* Filter Dropdowns */}
+            <div className="flex flex-wrap gap-4 mb-6">
+              <div className="flex flex-col md:flex-row justify-end items-center my-4">
 
-              </div>
-            </>)}
+                <div className="flex flex-col md:flex-row w-full md:justify-end items-center gap-3">
 
-          </div> */}
+                  <FloatingCreateButton routeName="product.create" title="Create" />
 
-
-          <div className="flex flex-col md:flex-row justify-end items-center my-4">
-
-            <div className="flex flex-col md:flex-row w-full md:justify-end items-center gap-3">
-
-              <FloatingCreateButton routeName="product.create" title="Create" />
-
-              <Formik
-                enableReinitialize
-                initialValues={{ search: params.get('search') || '' }}
-                onSubmit={(values) => {
-                  router.get(route('product.index'), { search: values.search, status: params.get('status'), brand: params.get('brand'), category: params.get('category'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, {
-                    preserveState: true,
-                    preserveScroll: true,
-                  });
-                }}
-              >
-                {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                  <Form className="w-full flex flex-col md:flex-row items-center gap-3">
-                    <div className="relative w-full md:max-w-md">
-                      <Field name="search">
-                        {({ field, form }) => (
-                          <>
-                            <input
-                              {...field}
-                              type="text"
-                              placeholder="Search products..."
-                              className="w-full rounded-xl border border-gray-300 focus:ring-black focus:outline-none transition"
-                            />
-                            {field.value && (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  form.setFieldValue('search', '');
-                                  router.get(route('product.index'));
-                                }}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                                aria-label="Clear search"
-                              >
-                                <FaXmark className="w-4 h-4" />
-                              </button>
-                            )}
-                          </>
-                        )}
-                      </Field>
-                    </div>
-
-                    <button
-                      type="submit"
-                      className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 transition w-full md:w-auto"
-                    >
-                      Search
-                    </button>
-                  </Form>
-
-
-                )}
-              </Formik>
-
-              {selectId.length > 0 && (
-                <>
-                  <Link href={route('product.printqr', { id: selectId.join(',') })}
-                    className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
+                  <Formik
+                    enableReinitialize
+                    initialValues={{ search: params.get('search') || '' }}
+                    onSubmit={(values) => {
+                      router.get(route('product.index'), { search: values.search, status: params.get('status'), brand: params.get('brand'), category: params.get('category'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, {
+                        preserveState: true,
+                        preserveScroll: true,
+                      });
+                    }}
                   >
-                    <FaQrcode className="w-4 h-4" />
-                    Print&nbsp;QR
-                  </Link>
+                    {({ values, setFieldValue, handleSubmit, errors, touched }) => (
+                      <Form className="w-full flex flex-col md:flex-row items-center gap-3">
+                        <div className="relative w-full md:max-w-md">
+                          <Field name="search">
+                            {({ field, form }) => (
+                              <>
+                                <input
+                                  {...field}
+                                  type="text"
+                                  placeholder="Search products..."
+                                  className="w-full rounded-xl border border-gray-300 focus:ring-black focus:outline-none transition"
+                                />
+                                {field.value && (
+                                  <button
+                                    type="button"
+                                    onClick={() => {
+                                      form.setFieldValue('search', '');
+                                      router.get(route('product.index'));
+                                    }}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                                    aria-label="Clear search"
+                                  >
+                                    <FaXmark className="w-4 h-4" />
+                                  </button>
+                                )}
+                              </>
+                            )}
+                          </Field>
+                        </div>
+
+                        <button
+                          type="submit"
+                          className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 transition w-full md:w-auto"
+                        >
+                          Search
+                        </button>
+                      </Form>
+
+
+                    )}
+                  </Formik>
+
+                  {selectId.length > 0 && (
+                    <>
+                      <Link href={route('product.printqr', { id: selectId.join(',') })}
+                        className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
+                      >
+                        <FaQrcode className="w-4 h-4" />
+                        Print&nbsp;QR
+                      </Link>
+
+                      <button
+                        onClick={() => setIsBulkDeleteModalOpen(true)}
+                        className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
+                      >
+                        <FaTrash className="w-4 h-4" />
+                        Bulk&nbsp;Delete
+                      </button>
+                    </>
+                  )}
 
                   <button
-                    onClick={() => setIsBulkDeleteModalOpen(true)}
-                    className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
+                    onClick={() => setDaterangeModel(true)}
+                    className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
                   >
-                    <FaTrash className="w-4 h-4" />
-                    Bulk&nbsp;Delete
+                    <FaCalendarCheck />
+                    Date&nbsp;Range&nbsp;Filter
                   </button>
-                </>
-              )}
-              <select
-                name="filter"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                w-full md:w-[150px] p-2.5 pr-10
-                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { status: e.target.value, category: params.get('category'), brand: params.get('brand'), search: params.get('search'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, { preserveState: true })}
-                value={params.get('status') || ''}
-              >
-                <option value="">Select Status</option>
-                <option value="1">In Stock</option>
-                <option value="0">Out of Stock</option>
-              </select>
 
-              <select
-                name="filter"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                w-full md:w-[150px] p-2.5 pr-10
-                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { category: e.target.value, status: params.get('status'), brand: params.get('brand'), search: params.get('search'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, { preserveState: true, preserveScroll: true })}
-                value={params.get('category') || ''}
-              >
-                <option value="">Select Category</option>
-                {categories.map((category) => (
-                  <option value={category.name}>{category.name} ({category.total_products})</option>
-                ))}
-
-              </select>
-
-              <select
-                name="filter"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                w-full md:w-[150px] p-2.5 pr-10 
-                                    
-                                focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                onChange={(e) => router.get(route('product.index'), { brand: e.target.value, category: params.get('category'), status: params.get('status'), search: params.get('search'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, { preserveState: true, preserveScroll: true })}
-                value={params.get('brand') || ''}
-              >
-                <option value="">Select Brand</option>
-                {brands.map((brand) => (
-                  <option value={brand.name}>{brand.name} ({brand.total_products})</option>
-                ))}
-
-              </select>
-
-
-
-
-
-              <button
-                onClick={() => setDaterangeModel(true)}
-                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
-              >
-                <FaCalendarCheck />
-                Date&nbsp;Range&nbsp;Filter
-              </button>
-
-              {/* 
-              <div class="inline-flex rounded-md shadow-sm" role="group">
-                <Link href={route('brand.index')} class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-s-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
-                  Brands
-                </Link>
-
-                <Link href={route('category.index')} class="px-4 py-2 text-sm font-medium text-gray-900 bg-transparent border border-gray-900 rounded-e-lg hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white   dark:hover:text-white   dark:focus:bg-gray-700">
-                  Categories
-                </Link>
-              </div> */}
-
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="">
-            <div class="overflow-x-auto rounded-lg shadow-md">
-              <table class="min-w-full bg-white">
-                <thead class="whitespace-nowrap">
-                  <tr className='tracking-wide text-left text-white uppercase border-b bg-black h-20'>
-                    <th class="p-4">
-                      <input id="checkbox" type="checkbox" class="hidden peer"
+            {/* Table */}
+            <div className="overflow-x-auto rounded-lg shadow-md">
+              <table className="min-w-full bg-white">
+                <thead className="whitespace-nowrap">
+                  <tr className="tracking-wide text-left text-white uppercase bg-cyan-600 h-16">
+                    <th className="p-4">
+                      <input
+                        id="checkbox"
+                        type="checkbox"
+                        className="hidden peer"
                         onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
                         checked={selectId.length === products.data.length}
                       />
-                      <label htmlFor="checkbox"
-                        class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
+                      <label
+                        htmlFor="checkbox"
+                        className="relative flex items-center justify-center p-0.5 peer gosh-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-cyan-600 border border-white rounded overflow-hidden"
+                      >
                         <FaCheck className="w-full h-3.5 fill-white" />
                       </label>
                     </th>
-                    <th class="p-4">Sno</th>
-                    <th class="p-4">Product</th>
-                    <th class="p-4">Quantity</th>
-                    <th class="p-4">Purchase Price</th>
-                    <th class="p-4">Selling Price</th>
-                    <th class="p-4">Category</th>
-                    <th class="p-4">Brand</th>
-                    <th class="p-4">Stock Status</th>
-                    <th class="p-4">Actions</th>
+                    <th className="p-4">Sno</th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Product
+                      </div>
+                    </th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Quantity
+
+                      </div>
+                    </th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Purchase Price
+
+                      </div>
+                    </th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Selling Price
+                      </div>
+                    </th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Category
+                        <select
+                          className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                          onChange={(e) => router.get(route('product.index'), { category: e.target.value }, { preserveState: true })}
+                        >
+                          <option value="">All</option>
+                          {categories.map((category) => (
+                            <option key={category.name} value={category.name}>
+                              {category.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Brand
+                        <select
+                          className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                          onChange={(e) => router.get(route('product.index'), { brand: e.target.value }, { preserveState: true })}
+                        >
+                          <option value="">All</option>
+                          {brands.map((brand) => (
+                            <option key={brand.name} value={brand.name}>
+                              {brand.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </th>
+                    <th className="p-4">
+                      <div className="flex items-center gap-2">
+                        Stock Status
+                        <select
+                          className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
+                          onChange={(e) => router.get(route('product.index'), { status: e.target.value }, { preserveState: true })}
+                        >
+                          <option value="">All</option>
+                          <option value="1">In Stock</option>
+                          <option value="0">Out of Stock</option>
+                        </select>
+                      </div></th>
+                    <th className="p-4">Actions</th>
                   </tr>
                 </thead>
 
-                <tbody class="whitespace-nowrap">
+                <tbody className="whitespace-nowrap">
                   {products.data.length === 0 && (
                     <tr>
-                      <td colSpan="10" className="p-4 text-center">
-                        No purchases found.
+                      <td colSpan="10" className="p-6 text-center text-gray-500">
+                        No products found.
                       </td>
                     </tr>
                   )}
                   {products.data.map((product, index) => (
                     <tr
                       key={product.id}
-                      className={`h-16 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null ? 'bg-red-100' : 'odd:bg-white even:bg-gray-50'} ${selectId.includes(product.id) ? 'border-gray-300 border-b' : 'border-gray-300 border-b'}`}
+                      className={`h-16 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                        ? 'bg-red-50 hover:bg-red-100'
+                        : 'odd:bg-white even:bg-gray-50 hover:bg-gray-100'
+                        } ${selectId.includes(product.id) ? 'border-cyan-200 border-b' : 'border-gray-200 border-b'}`}
                       onContextMenu={(e) => {
                         e.preventDefault();
                         show({ event: e, props: product });
@@ -454,73 +437,69 @@ export default function List(props) {
                         />
                         <label
                           htmlFor={`checkbox-${product.id}`}
-                          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-cyan-600 border border-gray-300 rounded overflow-hidden"
                         >
                           <FaCheck className="w-full h-3.5 fill-white" />
                         </label>
                       </td>
 
-                      <td class="p-4 text-lg">{index + 1}</td>
-                      <td class="p-4">
-                        <div class="cursor-pointer" onClick={() => router.get(route('product.edit', product.id))}>
-                          <p class="text-black text-lg">{product.name}</p>
-                          {product.model && <p class="text-sm text-gray-500">Model: {product.model}</p>}
+                      <td className="p-4 text-gray-700">{index + 1}</td>
+                      <td className="p-4">
+                        <div
+                          className="cursor-pointer hover:text-cyan-600 transition"
+                          onClick={() => router.get(route('product.edit', product.id))}
+                        >
+                          <p className="text-gray-800 font-medium">{product.name}</p>
+                          {product.model && <p className="text-sm text-gray-500">Model: {product.model}</p>}
                         </div>
                       </td>
-                      <td class="p-4 text-lg">{product?.stock?.quantity || 0}</td>
-                      <td class="p-4 text-lg">{product.purchase_price || 'N/A'}</td>
-                      <td class="p-4 text-lg">{product.selling_price || 'N/A'}</td>
-                      <td class="p-4 text-lg">
+                      <td className="p-4 text-gray-700">{product?.stock?.quantity || 0}</td>
+                      <td className="p-4 text-gray-700">{product.purchase_price || 'N/A'}</td>
+                      <td className="p-4 text-gray-700">{product.selling_price || 'N/A'}</td>
+                      <td className="p-4 text-gray-700">
                         {product?.categories?.map((category) => category.name).join(', ') || 'N/A'}
                       </td>
-                      <td class="p-4 text-lg">
+                      <td className="p-4 text-gray-700">
                         {product?.brands?.map((brand) => brand.name).join(', ') || 'N/A'}
                       </td>
-                      <td class="p-4">
-                        <label class="relative cursor-pointer">
+                      <td className="p-4">
+                        <label className="relative cursor-pointer">
                           <input
                             type="checkbox"
                             onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })}
-                            class="sr-only peer"
+                            className="sr-only peer"
                             checked={product?.stock?.status || false}
                           />
-                          <div class="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-black"></div>
+                          <div className="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
                         </label>
                       </td>
                       <td className="p-4">
                         <div className="flex items-center space-x-4">
-                          {/* View */}
                           <a
                             href={route('product.show', product.code || product.id)}
-                            className="text-blue-500 hover:text-blue-700 focus:outline-none text-sm flex items-center gap-1"
+                            className="text-cyan-500 hover:text-cyan-700 transition text-sm flex items-center gap-1"
                             title="View"
                           >
                             <FaEye className="w-4 h-4" />
                           </a>
-
-                          {/* Edit */}
                           <a
                             href={route('product.edit', product.id)}
-                            className="text-yellow-500 hover:text-yellow-700 focus:outline-none text-sm flex items-center gap-1"
+                            className="text-yellow-500 hover:text-yellow-700 transition text-sm flex items-center gap-1"
                             title="Edit"
                           >
                             <FaPencil className="w-4 h-4" />
                           </a>
-
-                          {/* Delete */}
                           <button
                             onClick={() => setIsDeleteModalOpen(product)}
-                            className="text-red-500 hover:text-red-700 focus:outline-none text-sm flex items-center gap-1"
+                            className="text-red-500 hover:text-red-700 transition text-sm flex items-center gap-1"
                             title="Delete"
                           >
                             <FaTrash className="w-4 h-4" />
                           </button>
-
-                          {/* Stock (if applicable) */}
                           {product.identity_type !== 'imei' && (
                             <a
                               href={route('stock.index', { product_id: product.id })}
-                              className="text-green-500 hover:text-green-700 focus:outline-none text-sm flex items-center gap-1"
+                              className="text-green-500 hover:text-green-700 transition text-sm flex items-center gap-1"
                               title="Stock"
                             >
                               <FaBox className="w-4 h-4" />
@@ -528,7 +507,6 @@ export default function List(props) {
                           )}
                         </div>
                       </td>
-
                     </tr>
                   ))}
                 </tbody>

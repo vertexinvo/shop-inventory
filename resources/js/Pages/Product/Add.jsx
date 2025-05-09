@@ -133,7 +133,7 @@ export default function Add(props) {
 
                     {({ values, errors, touched, setFieldValue, isSubmitting }) => (
                       <Form>
-                        <div className="py-8 px-10 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg max-w-4xl mx-auto">
+                        <div className="py-8 px-10 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-lg max-w-7xl mx-auto">
                           {/* Header */}
                           <div className="mb-8">
                             <h2 className="text-2xl font-bold text-gray-800">Add New Product</h2>
@@ -168,7 +168,7 @@ export default function Add(props) {
 
                           {/* Specifications */}
                           <div className="mb-8">
-                            <label className="block text-gray-700 text-sm font-medium mb-2 flex items-center gap-2" htmlFor="specifications">
+                            <label className="text-gray-700 text-sm font-medium mb-2 flex items-center gap-2" htmlFor="specifications">
                               Specifications <span className="text-gray-400">(optional)</span>
                               <FaEdit
                                 size={16}
@@ -189,7 +189,7 @@ export default function Add(props) {
 
                           {/* Description */}
                           <div className="mb-8">
-                            <label className="block text-gray-700 text-sm font-medium mb-2 flex items-center gap-2" htmlFor="description">
+                            <label className="text-gray-700 text-sm font-medium mb-2 flex items-center gap-2" htmlFor="description">
                               Description <span className="text-gray-400">(optional)</span>
                               <FaEdit
                                 size={16}
