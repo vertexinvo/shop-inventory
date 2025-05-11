@@ -173,7 +173,7 @@ export default function Edit(props) {
               formData.append('image', values.image);
             }
             
-            router.put(route('product.update', product.id), formData, {forceFormData: true, onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
+            router.post(route('product.updatewithimage', product), formData, {forceFormData: true, onSuccess: ({props}) => { if(!props.flash.error){  resetForm();  }} ,preserveScroll: true });
           }}
           >
 

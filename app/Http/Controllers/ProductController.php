@@ -571,6 +571,13 @@ public function csvExport(Request $request)
     public function update(UpdateProductRequest $request, Product $product)
     {
 
+    
+    }
+
+    //updatewithimage
+    public function updatewithimage(UpdateProductRequest $request, Product $product)
+    {
+
         $this->authorize('update', $product);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

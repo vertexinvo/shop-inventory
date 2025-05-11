@@ -12,6 +12,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::get('product/csv/csvexport', [ProductController::class, 'csvExport'])->name('product.csvexport');
     Route::post('product/bulkdestroy', [ProductController::class, 'bulkdestroy'])->name('product.bulkdestroy');
     Route::post('/product/csvstore', [ProductController::class, 'csvstore'])->name('product.csvstore');
+    Route::post('/product/updatewithimage/{product}', [ProductController::class, 'updatewithimage'])->name('product.updatewithimage');
     Route::get('/product/printqr/{id}', [ProductController::class, 'printqr'])->name('product.printqr');
 });
 
