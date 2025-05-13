@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -219,94 +219,108 @@ export default function List(props) {
 
           <div className="p-6 bg-gray-50 rounded-2xl shadow-lg">
             {/* Filter Dropdowns */}
-            <div className="flex flex-wrap gap-4 mb-6">
-              <div className="flex flex-col md:flex-row justify-end items-center my-4">
 
-                <div className="flex flex-col md:flex-row w-full md:justify-end items-center gap-3">
+            <div className="flex items-center justify-between gap-4 mb-6">
 
-                  <FloatingCreateButton routeName="product.create" title="Create" />
+              <FloatingCreateButton routeName="product.create" title="Create" />
 
-                  <Formik
-                    enableReinitialize
-                    initialValues={{ search: params.get('search') || '' }}
-                    onSubmit={(values) => {
-                      router.get(route('product.index'), { search: values.search, status: params.get('status'), brand: params.get('brand'), category: params.get('category'), startdate: startdate, enddate: enddate, supplierinvoiceno: params.get('supplierinvoiceno'), invoicecode: params.get('invoicecode') }, {
-                        preserveState: true,
-                        preserveScroll: true,
-                      });
-                    }}
-                  >
-                    {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                      <Form className="w-full flex flex-col md:flex-row items-center gap-3">
-                        <div className="relative w-full md:max-w-md">
-                          <Field name="search">
-                            {({ field, form }) => (
-                              <>
-                                <input
-                                  {...field}
-                                  type="text"
-                                  placeholder="Search products..."
-                                  className="w-full rounded-xl border border-gray-300 focus:ring-black focus:outline-none transition"
-                                />
-                                {field.value && (
-                                  <button
-                                    type="button"
-                                    onClick={() => {
-                                      form.setFieldValue('search', '');
-                                      router.get(route('product.index'));
-                                    }}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                                    aria-label="Clear search"
-                                  >
-                                    <FaXmark className="w-4 h-4" />
-                                  </button>
-                                )}
-                              </>
+
+              <Formik
+                enableReinitialize
+                initialValues={{ search: params.get('search') || '' }}
+                onSubmit={(values) => {
+                  router.get(
+                    route('product.index'),
+                    {
+                      search: values.search,
+                      status: params.get('status'),
+                      brand: params.get('brand'),
+                      category: params.get('category'),
+                      startdate: startdate,
+                      enddate: enddate,
+                      supplierinvoiceno: params.get('supplierinvoiceno'),
+                      invoicecode: params.get('invoicecode'),
+                    },
+                    {
+                      preserveState: true,
+                      preserveScroll: true,
+                    }
+                  );
+                }}
+              >
+                {({ values, setFieldValue, handleSubmit }) => (
+                  <Form className="w-full flex items-center gap-3">
+                    <div className="relative w-full md:max-w-md">
+                      <Field name="search">
+                        {({ field, form }) => (
+                          <div className="relative">
+                            <input
+                              {...field}
+                              type="text"
+                              placeholder="Search products..."
+                              className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300 bg-white shadow-sm hover:shadow-md placeholder-gray-400 text-gray-800"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSubmit();
+                              }}
+                            />
+                            {/* Search Icon */}
+                            <button
+                              type="submit"
+                              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-500 focus:outline-none transition-colors"
+                              aria-label="Search"
+                            >
+                              <FaSearch className="w-4 h-4" />
+                            </button>
+                            {/* Clear Icon */}
+                            {field.value && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  form.setFieldValue('search', '');
+                                  router.get(route('product.index'));
+                                }}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
+                                aria-label="Clear search"
+                              >
+                                <FaXmark className="w-4 h-4" />
+                              </button>
                             )}
-                          </Field>
-                        </div>
+                          </div>
+                        )}
+                      </Field>
+                    </div>
+                  </Form>
+                )}
+              </Formik>
 
-                        <button
-                          type="submit"
-                          className="bg-black text-white px-6 py-2 rounded-xl hover:bg-gray-700 transition w-full md:w-auto"
-                        >
-                          Search
-                        </button>
-                      </Form>
-
-
-                    )}
-                  </Formik>
-
-                  {selectId.length > 0 && (
-                    <>
-                      <Link href={route('product.printqr', { id: selectId.join(',') })}
-                        className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
-                      >
-                        <FaQrcode className="w-4 h-4" />
-                        Print&nbsp;QR
-                      </Link>
-
-                      <button
-                        onClick={() => setIsBulkDeleteModalOpen(true)}
-                        className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
-                      >
-                        <FaTrash className="w-4 h-4" />
-                        Bulk&nbsp;Delete
-                      </button>
-                    </>
-                  )}
+              {selectId.length > 0 && (
+                <>
+                  <Link href={route('product.printqr', { id: selectId.join(',') })}
+                    className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
+                  >
+                    <FaQrcode className="w-4 h-4" />
+                    Print&nbsp;QR
+                  </Link>
 
                   <button
-                    onClick={() => setDaterangeModel(true)}
-                    className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+                    onClick={() => setIsBulkDeleteModalOpen(true)}
+                    className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
                   >
-                    <FaCalendarCheck />
-                    Date&nbsp;Range&nbsp;Filter
+                    <FaTrash className="w-4 h-4" />
+                    Bulk&nbsp;Delete
                   </button>
+                </>
+              )}
 
-                </div>
-              </div>
+              <button
+                onClick={() => setDaterangeModel(true)}
+                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+              >
+                <FaCalendarCheck />
+                Date&nbsp;Range&nbsp;Filter
+              </button>
+
+
             </div>
 
             {/* Table */}
