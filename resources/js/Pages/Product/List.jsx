@@ -44,6 +44,18 @@ export default function List(props) {
     }
   )
   const [showModal, setShowModal] = useState(false);
+  const [filters, setFilters] = useState({
+    brand: '',
+    category: '',
+    status: '',
+  });
+
+  const updateFilter = (key, value) => {
+    let newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    // Send all filters
+    router.get(route('product.index'), newFilters, { preserveState: true });
+  };
 
   const handleImport = () => {
     if (!selectedFile) {
@@ -371,7 +383,8 @@ export default function List(props) {
                         Category
                         <select
                           className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                          onChange={(e) => router.get(route('product.index'), { category: e.target.value }, { preserveState: true })}
+                          value={filters.category}
+                          onChange={(e) => updateFilter('category', e.target.value)}
                         >
                           <option value="">All</option>
                           {categories.map((category) => (
@@ -387,7 +400,8 @@ export default function List(props) {
                         Brand
                         <select
                           className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                          onChange={(e) => router.get(route('product.index'), { brand: e.target.value }, { preserveState: true })}
+                          value={filters.brand}
+                          onChange={(e) => updateFilter('brand', e.target.value)}
                         >
                           <option value="">All</option>
                           {brands.map((brand) => (
@@ -403,13 +417,15 @@ export default function List(props) {
                         Stock Status
                         <select
                           className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                          onChange={(e) => router.get(route('product.index'), { status: e.target.value }, { preserveState: true })}
+                          value={filters.status}
+                          onChange={(e) => updateFilter('status', e.target.value)}
                         >
                           <option value="">All</option>
                           <option value="1">In Stock</option>
                           <option value="0">Out of Stock</option>
                         </select>
-                      </div></th>
+                      </div>
+                    </th>
                     <th className="p-4">Actions</th>
                   </tr>
                 </thead>

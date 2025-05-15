@@ -20,6 +20,8 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "ag-grid-community": "^33.3.0",
+        "ag-grid-react": "^33.3.0",
         "date-fns": "^4.1.0",
         "formik": "^2.4.6",
         "html2canvas": "^1.4.1",
