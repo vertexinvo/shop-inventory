@@ -20,7 +20,9 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@heroicons/react": "^2.2.0",
         "ag-grid-community": "^33.3.0",
+        "ag-grid-enterprise": "^33.3.0",
         "ag-grid-react": "^33.3.0",
         "date-fns": "^4.1.0",
         "formik": "^2.4.6",

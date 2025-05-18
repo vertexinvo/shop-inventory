@@ -10,7 +10,6 @@ import { FaBox } from "react-icons/fa";
 import FormatDate from '@/Helpers/FormatDate';
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { MdKeyboardBackspace } from "react-icons/md";
-import { SiMicrosoftexcel } from "react-icons/si";
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import { QRCode } from 'react-qrcode-logo';
@@ -21,7 +20,8 @@ import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
-import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
+import { FaCalendarCheck, FaQrcode, FaTrash, FaXmark } from 'react-icons/fa6';
+import ProductGrid from './ProductGrid';
 
 
 
@@ -334,213 +334,21 @@ export default function List(props) {
 
 
             </div>
-
+ 
             {/* Table */}
-            <div className="overflow-x-auto rounded-lg shadow-md">
-              <table className="min-w-full bg-white">
-                <thead className="whitespace-nowrap">
-                  <tr className="tracking-wide text-left text-white uppercase bg-cyan-600 h-16">
-                    <th className="p-4">
-                      <input
-                        id="checkbox"
-                        type="checkbox"
-                        className="hidden peer"
-                        onChange={(e) => setSelectId(e.target.checked ? products.data.map((product) => product.id) : [])}
-                        checked={selectId.length === products.data.length}
-                      />
-                      <label
-                        htmlFor="checkbox"
-                        className="relative flex items-center justify-center p-0.5 peer gosh-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-cyan-600 border border-white rounded overflow-hidden"
-                      >
-                        <FaCheck className="w-full h-3.5 fill-white" />
-                      </label>
-                    </th>
-                    <th className="p-4">Sno</th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Product
-                      </div>
-                    </th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Quantity
-
-                      </div>
-                    </th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Purchase Price
-
-                      </div>
-                    </th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Selling Price
-                      </div>
-                    </th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Category
-                        <select
-                          className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                          value={filters.category}
-                          onChange={(e) => updateFilter('category', e.target.value)}
-                        >
-                          <option value="">All</option>
-                          {categories.map((category) => (
-                            <option key={category.name} value={category.name}>
-                              {category.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Brand
-                        <select
-                          className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                          value={filters.brand}
-                          onChange={(e) => updateFilter('brand', e.target.value)}
-                        >
-                          <option value="">All</option>
-                          {brands.map((brand) => (
-                            <option key={brand.name} value={brand.name}>
-                              {brand.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </th>
-                    <th className="p-4">
-                      <div className="flex items-center gap-2">
-                        Stock Status
-                        <select
-                          className="appearance-none bg-cyan-600 text-white text-xs rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-300"
-                          value={filters.status}
-                          onChange={(e) => updateFilter('status', e.target.value)}
-                        >
-                          <option value="">All</option>
-                          <option value="1">In Stock</option>
-                          <option value="0">Out of Stock</option>
-                        </select>
-                      </div>
-                    </th>
-                    <th className="p-4">Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody className="whitespace-nowrap">
-                  {products.data.length === 0 && (
-                    <tr>
-                      <td colSpan="10" className="p-6 text-center text-gray-500">
-                        No products found.
-                      </td>
-                    </tr>
-                  )}
-                  {products.data.map((product, index) => (
-                    <tr
-                      key={product.id}
-                      className={`h-16 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
-                        ? 'bg-red-50 hover:bg-red-100'
-                        : 'odd:bg-white even:bg-gray-50 hover:bg-gray-100'
-                        } ${selectId.includes(product.id) ? 'border-cyan-200 border-b' : 'border-gray-200 border-b'}`}
-                      onContextMenu={(e) => {
-                        e.preventDefault();
-                        show({ event: e, props: product });
-                      }}
-                    >
-                      <td className="p-4">
-                        <input
-                          id={`checkbox-${product.id}`}
-                          type="checkbox"
-                          className="hidden peer"
-                          value={product.id}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectId((prev) => [...prev, product.id]);
-                            } else {
-                              setSelectId((prev) => prev.filter((id) => id !== product.id));
-                            }
-                          }}
-                          checked={selectId.includes(product.id)}
-                        />
-                        <label
-                          htmlFor={`checkbox-${product.id}`}
-                          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-cyan-600 border border-gray-300 rounded overflow-hidden"
-                        >
-                          <FaCheck className="w-full h-3.5 fill-white" />
-                        </label>
-                      </td>
-
-                      <td className="p-4 text-gray-700">{index + 1}</td>
-                      <td className="p-4">
-                        <div
-                          className="cursor-pointer hover:text-cyan-600 transition"
-                          onClick={() => router.get(route('product.edit', product.id))}
-                        >
-                          <p className="text-gray-800 font-medium">{product.name}</p>
-                          {product.model && <p className="text-sm text-gray-500">Model: {product.model}</p>}
-                        </div>
-                      </td>
-                      <td className="p-4 text-gray-700">{product?.stock?.quantity || 0}</td>
-                      <td className="p-4 text-gray-700">{product.purchase_price || 'N/A'}</td>
-                      <td className="p-4 text-gray-700">{product.selling_price || 'N/A'}</td>
-                      <td className="p-4 text-gray-700">
-                        {product?.categories?.map((category) => category.name).join(', ') || 'N/A'}
-                      </td>
-                      <td className="p-4 text-gray-700">
-                        {product?.brands?.map((brand) => brand.name).join(', ') || 'N/A'}
-                      </td>
-                      <td className="p-4">
-                        <label className="relative cursor-pointer">
-                          <input
-                            type="checkbox"
-                            onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })}
-                            className="sr-only peer"
-                            checked={product?.stock?.status || false}
-                          />
-                          <div className="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
-                        </label>
-                      </td>
-                      <td className="p-4">
-                        <div className="flex items-center space-x-4">
-                          <a
-                            href={route('product.show', product.code || product.id)}
-                            className="text-cyan-500 hover:text-cyan-700 transition text-sm flex items-center gap-1"
-                            title="View"
-                          >
-                            <FaEye className="w-4 h-4" />
-                          </a>
-                          <a
-                            href={route('product.edit', product.id)}
-                            className="text-yellow-500 hover:text-yellow-700 transition text-sm flex items-center gap-1"
-                            title="Edit"
-                          >
-                            <FaPencil className="w-4 h-4" />
-                          </a>
-                          <button
-                            onClick={() => setIsDeleteModalOpen(product)}
-                            className="text-red-500 hover:text-red-700 transition text-sm flex items-center gap-1"
-                            title="Delete"
-                          >
-                            <FaTrash className="w-4 h-4" />
-                          </button>
-                          {product.identity_type !== 'imei' && (
-                            <a
-                              href={route('stock.index', { product_id: product.id })}
-                              className="text-green-500 hover:text-green-700 transition text-sm flex items-center gap-1"
-                              title="Stock"
-                            >
-                              <FaBox className="w-4 h-4" />
-                            </a>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="overflow-x-auto ">
+              <ProductGrid
+                products={products}
+                selectId={selectId}
+                setSelectId={setSelectId}
+                filters={filters}
+                updateFilter={updateFilter}
+                categories={categories}
+                brands={brands}
+                router={router}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+                show={show}
+              />
             </div>
           </div>
 
