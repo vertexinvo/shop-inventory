@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -10,6 +10,7 @@ import { FaBox } from "react-icons/fa";
 import FormatDate from '@/Helpers/FormatDate';
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { MdKeyboardBackspace } from "react-icons/md";
+import { SiMicrosoftexcel } from "react-icons/si";
 import Dropdown from '@/Components/Dropdown';
 import Modal from '@/Components/Modal';
 import { QRCode } from 'react-qrcode-logo';
@@ -20,8 +21,7 @@ import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
-import { FaCalendarCheck, FaQrcode, FaTrash, FaXmark } from 'react-icons/fa6';
-import ProductGrid from './ProductGrid';
+import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
 
 
 
@@ -234,9 +234,9 @@ export default function List(props) {
 
             <div className="flex items-center justify-between gap-4 mb-6">
 
-              <FloatingCreateButton routeName="product.create" title="Create" />
+              {/* <FloatingCreateButton routeName="product.create" title="Create" /> */}
 
-
+              {/* create a simple button to create a new product */}
               <Formik
                 enableReinitialize
                 initialValues={{ search: params.get('search') || '' }}
@@ -324,6 +324,13 @@ export default function List(props) {
                 </>
               )}
 
+              <Link href={route('product.create')}
+                className="text-white w-full md:w-64 lg:w-48 py-2 px-4 bg-cyan-700 rounded-lg hover:bg-cyan-800 flex justify-center items-center gap-2"
+              >
+                <FaPlus className="w-4 h-4" />
+                Create
+              </Link>
+
               <button
                 onClick={() => setDaterangeModel(true)}
                 className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
@@ -334,21 +341,270 @@ export default function List(props) {
 
 
             </div>
- 
+
             {/* Table */}
-            <div className="overflow-x-auto ">
-              <ProductGrid
-                products={products}
-                selectId={selectId}
-                setSelectId={setSelectId}
-                filters={filters}
-                updateFilter={updateFilter}
-                categories={categories}
-                brands={brands}
-                router={router}
-                setIsDeleteModalOpen={setIsDeleteModalOpen}
-                show={show}
-              />
+            <div className="overflow-x-auto rounded-lg shadow-md">
+              <table className="w-full table-fixed bg-white">
+                <thead className="whitespace-nowrap">
+                  <tr className="tracking-wide text-left text-white uppercase bg-cyan-600">
+                    <th className="px-4 py-3 w-10">
+                      {/* Select All Checkbox */}
+                      <input
+                        type="checkbox"
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectId(products.data.map((product) => product.id));
+                          } else {
+                            setSelectId([]);
+                          }
+                        }}
+                        checked={selectId.length === products.data.length}
+                        className="cursor-pointer"
+                      />
+
+                    </th>
+                    <th className="px-2 py-3 w-48 truncate">Product</th>
+                    <th className="px-2 py-3 w-20">Quantity</th>
+                    <th className="px-2 py-3 w-28">Purchase Price</th>
+                    <th className="px-2 py-3 w-28">Selling Price</th>
+                    <th className="px-2 py-3 w-48">Category</th>
+                    <th className="px-2 py-3 w-48">Brand</th>
+                    <th className="px-2 py-3 w-40">Stock Status</th>
+                    <th className="px-2 py-3 w-32">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody className="whitespace-nowrap">
+                  {products.data.length === 0 && (
+                    <tr>
+                      <td colSpan="9" className="p-4 text-center text-gray-500">
+                        No products found.
+                      </td>
+                    </tr>
+                  )}
+
+                  {products.data.map((product, index) => (
+                    <tr
+                      key={product.id}
+                      className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                        ? 'bg-red-50 hover:bg-red-100'
+                        : 'odd:bg-white even:bg-gray-50 hover:bg-gray-100'
+                        } ${selectId.includes(product.id) ? 'border-cyan-200 border-b' : 'border-gray-200 border-b'}`}
+                    >
+                      <td className="px-4 py-3">
+                        {/* Individual checkbox */}
+                        <input
+                          type="checkbox"
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSelectId((prev) => [...prev, product.id]);
+                            } else {
+                              setSelectId((prev) => prev.filter((id) => id !== product.id));
+                            }
+                          }
+                          }
+                          checked={selectId.includes(product.id)}
+                          className="cursor-pointer"
+                        />
+                      </td>
+
+                      <td className="px-2 py-3 w-48 truncate">
+                        <div className="cursor-pointer hover:text-cyan-600 transition">
+                          <p className="text-gray-800 font-medium truncate">{product.name}</p>
+                          {product.model && (
+                            <p className="text-sm text-gray-500 truncate">Model: {product.model}</p>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="px-2 py-3 text-gray-700">{product?.stock?.quantity || 0}</td>
+                      <td className="px-2 py-3 text-gray-700">{product.purchase_price || 'N/A'}</td>
+                      <td className="px-2 py-3 text-gray-700">{product.selling_price || 'N/A'}</td>
+
+                      <td className="px-2 py-3 text-gray-700 w-48">
+                        {product?.categories?.length > 0 ? (
+                          <div className="flex flex-wrap gap-1 overflow-hidden">
+                            {product.categories.slice(0, 3).map((category) => (
+                              <span key={category.name} className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-700 bg-white truncate max-w-[6rem]">
+                                {category.name}
+                              </span>
+                            ))}
+                            {product.categories.length > 3 && (
+                              <span className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-600 bg-gray-100">
+                                +{product.categories.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span>N/A</span>
+                        )}
+                      </td>
+
+
+                      <td className="px-2 py-3 text-gray-700 w-48">
+                        {product?.brands?.length > 0 ? (
+                          <div className="flex flex-wrap gap-1 overflow-hidden">
+                            {product.brands.slice(0, 3).map((brand) => (
+                              <span key={brand.name} className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-700 bg-white truncate max-w-[6rem]">
+                                {brand.name}
+                              </span>
+                            ))}
+                            {product.brands.length > 3 && (
+                              <span className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-600 bg-gray-100">
+                                +{product.brands.length - 3}
+                              </span>
+                            )}
+                          </div>
+                        ) : (
+                          <span>N/A</span>
+                        )}
+                      </td>
+
+
+                      <td className="px-2 py-3 w-40">
+                        <label className="relative cursor-pointer">
+                          <input
+                            type="checkbox"
+                            onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })}
+                            className="sr-only peer"
+                            checked={product?.stock?.status || false}
+                          />
+                          <div className="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
+                        </label>
+                      </td>
+
+                      <td className="px-2 py-3 w-32">
+                        <div className="flex items-center space-x-2">
+                          {/* View, Edit, Delete, Stock buttons */}
+                          <Link href={route('product.show', product.code || product.id)}
+                            className="text-cyan-500 hover:text-cyan-700 transition text-sm flex items-center gap-1"
+                            title="View"
+                          >
+                            <FaEye className="w-4 h-4" />
+
+                          </Link>
+
+                          <Link href={route('product.edit', product.id)}
+                            className="text-yellow-500 hover:text-yellow-700 transition text-sm flex items-center gap-1"
+                            title="Edit"
+
+                          >
+                            <FaEdit className="w-4 h-4" />
+
+                          </Link>
+                          <button
+
+                            onClick={() => setIsDeleteModalOpen(product)}
+                            className="text-red-500 hover:text-red-700 transition text-sm flex items-center gap-1"
+                            title="Delete"
+                          >
+                            <FaTrash className="w-4 h-4" />
+
+                          </button>
+                          <Link href={route('stock.index', { product_id: product.id })}
+
+                            className="text-green-500 hover:text-green-700 transition text-sm flex items-center gap-1"
+                            title="Stock"
+                          >
+                            <FaBoxes className="w-4 h-4" />
+
+                          </Link>
+
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* pagination */}
+            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
+              <span class="flex items-center col-span-3"> Showing {products.from} - {products.to} of {products.total} </span>
+              <span class="col-span-2"></span>
+
+              <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+
+
+                <nav aria-label="Table navigation">
+                  <ul class="inline-flex items-center">
+                    <li>
+                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '', category: params.get('category') || '', brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '', supplierinvoiceno: params.get('supplierinvoiceno') || '', invoicecode: params.get('invoicecode') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                          <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    </li>
+                    {(() => {
+                      let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
+                      const activeIndex = products.links.findIndex((l) => l.active);
+
+                      return products.links
+                        .slice(1, -1) // Exclude the first and last items
+                        .filter((link, index, array) => {
+                          const currentIndex = parseInt(link.label, 10); // Parse label as number
+                          if (isNaN(currentIndex)) return true; // Always include non-numeric items like "..."
+
+                          // Adjust range dynamically based on the active index
+                          const rangeStart = Math.max(0, activeIndex - 2); // Start range around active
+                          const rangeEnd = Math.min(array.length - 1, activeIndex + 2); // End range around active
+
+                          // Show links within the range or first/last few
+                          return (
+                            index < 3 || // First 3 pages
+                            index > array.length - 4 || // Last 3 pages
+                            (index >= rangeStart && index <= rangeEnd) // Pages close to the active page
+                          );
+                        })
+                        .map((link, index, array) => {
+                          const currentIndex = parseInt(link.label, 10); // Parse label as a number
+                          const isEllipsis =
+                            !isNaN(currentIndex) &&
+                            lastShownIndex !== -1 &&
+                            currentIndex - lastShownIndex > 1; // Check for gaps
+
+                          // Update lastShownIndex only for valid numeric labels
+                          if (!isNaN(currentIndex)) {
+                            lastShownIndex = currentIndex;
+                          }
+
+                          return (
+                            <li key={index}>
+                              {isEllipsis ? (
+                                <span className="px-3 py-1">...</span>
+                              ) : link.active ? (
+                                // Active page button
+                                <button
+                                  className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                  aria-current="page"
+                                >
+                                  {link.label}
+                                </button>
+                              ) : (
+                                // Inactive link button
+                                <button
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)}
+                                  className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                >
+                                  {link.label}
+                                </button>
+                              )}
+                            </li>
+                          );
+                        });
+                    })()}
+
+
+                    <li>
+                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                          <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </span>
             </div>
           </div>
 
