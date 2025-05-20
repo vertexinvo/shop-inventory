@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus, FaChevronDown, FaChevronRight } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -22,14 +22,14 @@ import "react-contexify/dist/ReactContexify.css";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
 import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
-
+import { Fragment } from "react";
 
 
 export default function List(props) {
   const { auth, stock, startdate, enddate, products, totalstock, totalstockavailable, totalstocknotavailable, totalStockValue, totaliteminstock, categories, brands } = props
   const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
-
+  const [expanded, setExpanded] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
@@ -78,6 +78,35 @@ export default function List(props) {
 
       } else {
         console.error("Please select a CSV file."); // Handle non-CSV file selection
+      }
+    }
+  };
+
+
+  const [stockLogs, setStockLogs] = useState({}); // { [productId]: [...] }
+  const [loadingLogs, setLoadingLogs] = useState({});
+  const toggleExpand = async (id) => {
+    if (expanded.includes(id)) {
+      setExpanded((prev) => prev.filter((e) => e !== id));
+    } else {
+      setExpanded((prev) => [...prev, id]);
+
+      // Only fetch if not already loaded
+      if (!stockLogs[id]) {
+        setLoadingLogs((prev) => ({ ...prev, [id]: true }));
+        try {
+          const res = await axios.get(`/dashboard/product/${id}/stock-logs`);
+          setStockLogs((prev) => ({
+            ...prev,
+            [id]: res.data.stocklogs?.data || [],
+          }));
+
+        } catch (err) {
+          console.error("Error fetching stock logs:", err);
+          setStockLogs((prev) => ({ ...prev, [id]: [] }));
+        } finally {
+          setLoadingLogs((prev) => ({ ...prev, [id]: false }));
+        }
       }
     }
   };
@@ -344,176 +373,232 @@ export default function List(props) {
 
             {/* Table */}
             <div className="overflow-x-auto rounded-lg shadow-md">
-              <table className="w-full table-fixed bg-white">
-                <thead className="whitespace-nowrap">
-                  <tr className="tracking-wide text-left text-white uppercase bg-cyan-600">
-                    <th className="px-4 py-3 w-10">
-                      {/* Select All Checkbox */}
+              <table className="w-full table-fixed bg-white text-sm rounded-xl shadow overflow-hidden">
+                <thead className="whitespace-nowrap text-xs uppercase bg-gray-200 text-gray-700 tracking-wide border-b">
+                  <tr>
+                    <th className="px-4 py-3 w-8">
                       <input
                         type="checkbox"
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setSelectId(products.data.map((product) => product.id));
+                            setSelectId(products.data.map((p) => p.id));
                           } else {
                             setSelectId([]);
                           }
                         }}
                         checked={selectId.length === products.data.length}
-                        className="cursor-pointer"
+                        className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300"
                       />
-
                     </th>
-                    <th className="px-2 py-3 w-48 truncate">Product</th>
-                    <th className="px-2 py-3 w-20">Quantity</th>
+                    <th className="px-2 py-3 w-6"></th>
+                    <th className="px-2 py-3 w-40 truncate">Product</th>
+                    <th className="px-2 py-3 w-20">Inventory</th>
                     <th className="px-2 py-3 w-28">Purchase Price</th>
                     <th className="px-2 py-3 w-28">Selling Price</th>
-                    <th className="px-2 py-3 w-48">Category</th>
-                    <th className="px-2 py-3 w-48">Brand</th>
-                    <th className="px-2 py-3 w-40">Stock Status</th>
-                    <th className="px-2 py-3 w-32">Actions</th>
+                    <th className="px-2 py-3 w-40">Category</th>
+                    <th className="px-2 py-3 w-40">Brand</th>
+                    <th className="px-2 py-3 w-20">Stock Status</th>
+                    <th className="px-2 py-3 w-32 text-center">Actions</th>
                   </tr>
                 </thead>
 
-                <tbody className="whitespace-nowrap">
+                <tbody className="whitespace-nowrap text-gray-800">
                   {products.data.length === 0 && (
                     <tr>
-                      <td colSpan="9" className="p-4 text-center text-gray-500">
+                      <td colSpan="10" className="p-4 text-center text-gray-500">
                         No products found.
                       </td>
                     </tr>
                   )}
 
-                  {products.data.map((product, index) => (
-                    <tr
-                      key={product.id}
-                      className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
-                        ? 'bg-red-50 hover:bg-red-100'
-                        : 'odd:bg-white even:bg-gray-50 hover:bg-gray-100'
-                        } ${selectId.includes(product.id) ? 'border-cyan-200 border-b' : 'border-gray-200 border-b'}`}
-                    >
-                      <td className="px-4 py-3">
-                        {/* Individual checkbox */}
-                        <input
-                          type="checkbox"
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectId((prev) => [...prev, product.id]);
-                            } else {
-                              setSelectId((prev) => prev.filter((id) => id !== product.id));
-                            }
-                          }
-                          }
-                          checked={selectId.includes(product.id)}
-                          className="cursor-pointer"
-                        />
-                      </td>
+                  {products.data.map((product) => {
+                    const isExpanded = expanded.includes(product.id);
+                    return (
+                      <Fragment key={product.id}>
+                        <tr
+                          className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                              ? "bg-red-100 hover:bg-red-200"
+                              : product?.stock?.quantity < 5
+                                ? "bg-yellow-100 hover:bg-yellow-200"
+                                : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
+                            } ${selectId.includes(product.id) ? "border-cyan-200 border-b" : "border-gray-200 border-b"}`}
+                        >
+                          <td className="px-4 py-3">
+                            <input
+                              type="checkbox"
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setSelectId((prev) => [...prev, product.id]);
+                                } else {
+                                  setSelectId((prev) => prev.filter((id) => id !== product.id));
+                                }
+                              }}
+                              checked={selectId.includes(product.id)}
+                              className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300"
+                            />
+                          </td>
 
-                      <td className="px-2 py-3 w-48 truncate">
-                        <div className="cursor-pointer hover:text-cyan-600 transition">
-                          <p className="text-gray-800 font-medium truncate">{product.name}</p>
-                          {product.model && (
-                            <p className="text-sm text-gray-500 truncate">Model: {product.model}</p>
-                          )}
-                        </div>
-                      </td>
+                          <td className="px-2 py-3">
+                            <button
+                              onClick={() => toggleExpand(product.id)}
+                              className="text-gray-500 hover:text-gray-700 transition"
+                              title="Toggle stock details"
+                            >
+                              {isExpanded ? <FaChevronDown className="w-4 h-4" /> : <FaChevronRight className="w-4 h-4" />}
+                            </button>
+                          </td>
 
-                      <td className="px-2 py-3 text-gray-700">{product?.stock?.quantity || 0}</td>
-                      <td className="px-2 py-3 text-gray-700">{product.purchase_price || 'N/A'}</td>
-                      <td className="px-2 py-3 text-gray-700">{product.selling_price || 'N/A'}</td>
+                          <td className="px-2 py-3 w-48 truncate">
+                            <div className="cursor-pointer hover:text-cyan-600 transition">
+                              <p className="text-gray-800 font-medium truncate">{product.name}</p>
+                              {product.model && (
+                                <p className="text-sm text-gray-500 truncate">Model: {product.model}</p>
+                              )}
+                            </div>
+                          </td>
 
-                      <td className="px-2 py-3 text-gray-700 w-48">
-                        {product?.categories?.length > 0 ? (
-                          <div className="flex flex-wrap gap-1 overflow-hidden">
-                            {product.categories.slice(0, 3).map((category) => (
-                              <span key={category.name} className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-700 bg-white truncate max-w-[6rem]">
-                                {category.name}
-                              </span>
-                            ))}
-                            {product.categories.length > 3 && (
-                              <span className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-600 bg-gray-100">
-                                +{product.categories.length - 3}
-                              </span>
+                          <td
+                            className={`px-2 py-3 text-center font-medium ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                              ? 'text-red-600'
+                              : product?.stock?.quantity < 5
+                                ? 'text-yellow-600'
+                                : 'text-gray-800'
+                              }`}
+                          >
+                            {product?.stock?.quantity ?? 0}
+                            <span className="text-xs text-gray-500 ms-1">Unit</span>
+                          </td>
+
+                          <td className="px-2 py-3 text-center">{product.purchase_price || "N/A"}</td>
+                          <td className="px-2 py-3 text-center">{product.selling_price || "N/A"}</td>
+
+                          <td className="px-2 py-3 text-left">
+                            {product?.categories?.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {product.categories.slice(0, 3).map((category) => (
+                                  <span key={category.name} className="px-2 py-1 border border-gray-300 rounded text-xs truncate bg-white">
+                                    {category.name}
+                                  </span>
+                                ))}
+                                {product.categories.length > 3 && (
+                                  <span className="px-2 py-1 border border-gray-300 rounded text-xs bg-gray-100">
+                                    +{product.categories.length - 3}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <span>N/A</span>
                             )}
-                          </div>
-                        ) : (
-                          <span>N/A</span>
-                        )}
-                      </td>
+                          </td>
 
-
-                      <td className="px-2 py-3 text-gray-700 w-48">
-                        {product?.brands?.length > 0 ? (
-                          <div className="flex flex-wrap gap-1 overflow-hidden">
-                            {product.brands.slice(0, 3).map((brand) => (
-                              <span key={brand.name} className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-700 bg-white truncate max-w-[6rem]">
-                                {brand.name}
-                              </span>
-                            ))}
-                            {product.brands.length > 3 && (
-                              <span className="inline-block px-2 py-1 border border-gray-300 rounded text-sm text-gray-600 bg-gray-100">
-                                +{product.brands.length - 3}
-                              </span>
+                          <td className="px-2 py-3 text-left">
+                            {product?.brands?.length > 0 ? (
+                              <div className="flex flex-wrap gap-1">
+                                {product.brands.slice(0, 3).map((brand) => (
+                                  <span key={brand.name} className="px-2 py-1 border border-gray-300 rounded text-xs truncate bg-white">
+                                    {brand.name}
+                                  </span>
+                                ))}
+                                {product.brands.length > 3 && (
+                                  <span className="px-2 py-1 border border-gray-300 rounded text-xs bg-gray-100">
+                                    +{product.brands.length - 3}
+                                  </span>
+                                )}
+                              </div>
+                            ) : (
+                              <span>N/A</span>
                             )}
-                          </div>
-                        ) : (
-                          <span>N/A</span>
+                          </td>
+
+                          <td className="px-2 py-3 w-40">
+                            <label className="relative cursor-pointer inline-block">
+                              <input
+                                type="checkbox"
+                                onClick={() =>
+                                  router.put(route("product.status", product.id), {}, { preserveScroll: true })
+                                }
+                                className="sr-only peer "
+                                checked={product?.stock?.status || false}
+                              />
+                              <div className="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-cyan-600 relative transition">
+                                <div className="absolute left-[2px] top-[1px] w-5 h-5 bg-white border border-gray-300 rounded-full transition peer-checked:translate-x-full"></div>
+                              </div>
+                            </label>
+                          </td>
+
+                          <td className="px-2 py-3 text-center">
+                            <div className="flex justify-center items-center gap-2">
+                              <Link
+                                href={route("product.show", product.code || product.id)}
+                                title="View"
+                                className="text-cyan-500 hover:text-cyan-700"
+                              >
+                                <FaEye className="w-4 h-4" />
+                              </Link>
+
+                              <Link
+                                href={route("product.edit", product.id)}
+                                title="Edit"
+                                className="text-yellow-500 hover:text-yellow-700"
+                              >
+                                <FaEdit className="w-4 h-4" />
+                              </Link>
+
+                              <button
+                                onClick={() => setIsDeleteModalOpen(product)}
+                                title="Delete"
+                                className="text-red-500 hover:text-red-700"
+                              >
+                                <FaTrash className="w-4 h-4" />
+                              </button>
+
+                              <Link
+                                href={route("stock.index", { product_id: product.id })}
+                                title="Stock"
+                                className="text-green-500 hover:text-green-700"
+                              >
+                                <FaBoxes className="w-4 h-4" />
+                              </Link>
+                            </div>
+                          </td>
+                        </tr>
+
+                        {/* Expanded row for stock info */}
+                        {isExpanded && (
+                          <tr className="bg-gray-50 text-sm border-t border-gray-200">
+                            <td colSpan="10" className="px-10 py-4 text-gray-600">
+                              <div className="space-y-4">
+                                <div>
+                                  {loadingLogs[product.id] ? (
+                                    <p className="text-sm text-gray-500 mt-1 animate-pulse">Loading logs...</p>
+                                  ) : stockLogs[product.id]?.length > 0 ? (
+                                    <div className="grid grid-cols-4 gap-2 text-sm ms-12 font-medium ">
+                                      {/* Grid Header */}
+                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-l-xl">Available</div>
+                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2">Type</div>
+                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2">Remarks</div>
+                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-r-xl">Date</div>
+                                      {/* Grid Rows */}
+                                      {stockLogs[product.id].map((log) => (
+                                        <div key={log.id} className="contents">
+                                          <div className="p-1 text-gray-800">{log?.quantity || '-'}</div>
+                                          <div className="p-1 text-gray-800">{log?.type || '-'}</div>
+                                          <div className="p-1 text-gray-800">{log?.remarks || '-'}</div>
+                                          <div className="p-1 text-gray-800">{new Date(log?.created_at).toLocaleString()}</div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  ) : (
+                                    <p className="text-sm text-gray-500 mt-1">No stock logs available.</p>
+                                  )}
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
                         )}
-                      </td>
-
-
-                      <td className="px-2 py-3 w-40">
-                        <label className="relative cursor-pointer">
-                          <input
-                            type="checkbox"
-                            onClick={() => router.put(route('product.status', product.id), {}, { preserveScroll: true })}
-                            className="sr-only peer"
-                            checked={product?.stock?.status || false}
-                          />
-                          <div className="w-11 h-6 flex items-center bg-gray-300 rounded-full peer peer-checked:after:translate-x-full after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-600"></div>
-                        </label>
-                      </td>
-
-                      <td className="px-2 py-3 w-32">
-                        <div className="flex items-center space-x-2">
-                          {/* View, Edit, Delete, Stock buttons */}
-                          <Link href={route('product.show', product.code || product.id)}
-                            className="text-cyan-500 hover:text-cyan-700 transition text-sm flex items-center gap-1"
-                            title="View"
-                          >
-                            <FaEye className="w-4 h-4" />
-
-                          </Link>
-
-                          <Link href={route('product.edit', product.id)}
-                            className="text-yellow-500 hover:text-yellow-700 transition text-sm flex items-center gap-1"
-                            title="Edit"
-
-                          >
-                            <FaEdit className="w-4 h-4" />
-
-                          </Link>
-                          <button
-
-                            onClick={() => setIsDeleteModalOpen(product)}
-                            className="text-red-500 hover:text-red-700 transition text-sm flex items-center gap-1"
-                            title="Delete"
-                          >
-                            <FaTrash className="w-4 h-4" />
-
-                          </button>
-                          <Link href={route('stock.index', { product_id: product.id })}
-
-                            className="text-green-500 hover:text-green-700 transition text-sm flex items-center gap-1"
-                            title="Stock"
-                          >
-                            <FaBoxes className="w-4 h-4" />
-
-                          </Link>
-
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                      </Fragment>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -12,6 +12,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::get('product/csv/csvexport', [ProductController::class, 'csvExport'])->name('product.csvexport');
     Route::post('product/bulkdestroy', [ProductController::class, 'bulkdestroy'])->name('product.bulkdestroy');
     Route::post('/product/csvstore', [ProductController::class, 'csvstore'])->name('product.csvstore');
+    Route::get('/product/{product}/stock-logs', [ProductController::class, 'stockLogs'])->name('product.stockLogs');
     Route::get('/product/printqr/{id}', [ProductController::class, 'printqr'])->name('product.printqr');
 });
 
@@ -26,4 +27,6 @@ Route::prefix('qrcode')->group(function () {
         return view('ProductDetail',compact('product'));
     })->name('product.detail'); 
 });
+
+
 
