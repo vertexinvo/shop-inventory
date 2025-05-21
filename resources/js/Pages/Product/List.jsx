@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus, FaChevronDown, FaChevronRight } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus, FaChevronDown, FaChevronRight, FaFilter } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -391,13 +391,77 @@ export default function List(props) {
                       />
                     </th>
                     <th className="px-2 py-3 w-6"></th>
-                    <th className="px-2 py-3 w-40 truncate">Product</th>
+                    <th className="px-2 py-3 w-40 truncate text-left">Product</th>
                     <th className="px-2 py-3 w-20">Inventory</th>
                     <th className="px-2 py-3 w-28">Purchase Price</th>
                     <th className="px-2 py-3 w-28">Selling Price</th>
-                    <th className="px-2 py-3 w-40">Category</th>
-                    <th className="px-2 py-3 w-40">Brand</th>
-                    <th className="px-2 py-3 w-20">Stock Status</th>
+                    <th className="px-2 py-3 w-36">
+                      <div className='flex items-center justify-between'>
+                        Categories
+                        <div>
+                          <Dropdown>
+                            <Dropdown.Trigger>
+                              <button className="text-gray-500 hover:text-gray-700 transition">
+                                <FaFilter className="w-4 h-4" />
+                              </button>
+                            </Dropdown.Trigger>
+                          </Dropdown>
+                          <Dropdown.Content>
+                            <Dropdown.Item>
+                              <div className="flex items-center gap-2">
+                                <input type="checkbox" className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300" />
+                                <span className="text-gray-700">Category 1</span>
+                              </div>
+                            </Dropdown.Item>
+                          </Dropdown.Content>
+                        </div>
+                      </div>
+                    </th>
+                    <th className="px-2 py-3 w-28">
+                      <div className='flex items-center justify-between'>
+                        Brands
+                        <div>
+                          <Dropdown>
+                            <Dropdown.Trigger>
+                              <button className="text-gray-500 hover:text-gray-700 transition">
+                                <FaFilter className="w-4 h-4" />
+                              </button>
+                            </Dropdown.Trigger>
+                          </Dropdown>
+                          <Dropdown.Content>
+                            <Dropdown.Item>
+                              <div className="flex items-center gap-2">
+                                <input type="checkbox" className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300" />
+                                <span className="text-gray-700">Brand 1</span>
+                              </div>
+                            </Dropdown.Item>
+                          </Dropdown.Content>
+                        </div>
+                      </div>
+                    </th>
+                    <th className="px-2 py-3 w-20">
+                      <div className='flex items-center justify-between'>
+                        Status
+                        <div>
+                          <Dropdown>
+                            <Dropdown.Trigger>
+                              <button className="text-gray-500 hover:text-gray-700 transition">
+                                <FaFilter className="w-4 h-4" />
+                              </button>
+                            </Dropdown.Trigger>
+                            <Dropdown.Content>
+                              <Dropdown.Item>
+                                <div className="flex items-center gap-2">
+                                  <input type="checkbox" className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300" />
+                                  <span className="text-gray-700">Available</span>
+
+                                </div>
+                              </Dropdown.Item>
+                            </Dropdown.Content>
+                          </Dropdown>
+                        </div>
+                      </div>
+                    </th>
                     <th className="px-2 py-3 w-32 text-center">Actions</th>
                   </tr>
                 </thead>
@@ -417,10 +481,10 @@ export default function List(props) {
                       <Fragment key={product.id}>
                         <tr
                           className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
-                              ? "bg-red-100 hover:bg-red-200"
-                              : product?.stock?.quantity < 5
-                                ? "bg-yellow-100 hover:bg-yellow-200"
-                                : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
+                            ? "bg-red-100 hover:bg-red-200"
+                            : product?.stock?.quantity < 5
+                              ? "bg-yellow-100 hover:bg-yellow-200"
+                              : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
                             } ${selectId.includes(product.id) ? "border-cyan-200 border-b" : "border-gray-200 border-b"}`}
                         >
                           <td className="px-4 py-3">
