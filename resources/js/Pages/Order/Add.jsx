@@ -64,18 +64,23 @@ export default function Add(props) {
   return (
     <AuthenticatedLayout
       header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('order.index'))}
-            title="Back"
-          /><h2 className="font-semibold text-xl text-gray-800 leading-tight"> {order ? 'Edit Sale' : 'Add Sale'}</h2>
-        </>}
+        <div className="flex items-center justify-between py-2">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => window.history.back()}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">{order ? 'Edit Sale' : 'Add Sale'}</h2>
+          </div>
+        </div>
+      }
     >
       <Head title="Sale" />
       <Formik enableReinitialize initialValues={{
-        status : order?.status || 'pending',
+        status: order?.status || 'pending',
         name: order?.name || '',
         email: order?.email || '',
         phone: order?.phone || '',
@@ -111,11 +116,11 @@ export default function Add(props) {
         exchange: order?.exchange || 0,
         payment_note: order?.payment_note || '',
         payment_details: order?.payment_details || {},
-        note : order?.note || '',
+        note: order?.note || '',
         bill_no: order?.bill_no || '',
       }}
         validationSchema={Yup.object({
-          status : Yup.string().oneOf(['pending', 'completed', 'cancel'], 'Invalid status').required('Status is required'),
+          status: Yup.string().oneOf(['pending', 'completed', 'cancel'], 'Invalid status').required('Status is required'),
           bill_no: Yup.string(),
           name: Yup.string().required('Name is required'),
           email: Yup.string().email('Invalid email address'),
@@ -237,7 +242,7 @@ export default function Add(props) {
             );
             const discount = parseFloat(values.discount || 0);
             setFieldValue('total', totalAmount);
-            setFieldValue('payable_amount',  (totalAmount+parseFloat(values.extra_charges)+parseFloat(values.tax)+parseFloat(values.shipping_charges))  - (discount +  parseFloat(values.exchange||0)));
+            setFieldValue('payable_amount', (totalAmount + parseFloat(values.extra_charges) + parseFloat(values.tax) + parseFloat(values.shipping_charges)) - (discount + parseFloat(values.exchange || 0)));
           }, [values.items, values.discount, setFieldValue, values.exchange, values.extra_charges, values.tax, values.shipping_charges]);
 
 
@@ -323,9 +328,9 @@ export default function Add(props) {
                           </div>
 
                           <div className="mb-4">
-                              <label className="block text-grey-darker text-sm  mb-2" >Bill No</label>
-                              <Field name="bill_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Bill No" />
-                              <ErrorMessage name="bill_no" component="div" className="text-red-500 text-xs mt-1" />
+                            <label className="block text-grey-darker text-sm  mb-2" >Bill No</label>
+                            <Field name="bill_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Bill No" />
+                            <ErrorMessage name="bill_no" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
 
@@ -396,16 +401,16 @@ export default function Add(props) {
                             </div>
                           </div>
 
-                           <div className="mb-4">
-                              <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
-                              <Field as="select" name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker">
-                              
-                                <option value="pending">Pending</option>
-                                <option value="completed">Completed</option>
-                                <option value="cancel">Cancelled</option>
-                              </Field>
-                              <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
-                              </div>
+                          <div className="mb-4">
+                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Status</label>
+                            <Field as="select" name="status" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker">
+
+                              <option value="pending">Pending</option>
+                              <option value="completed">Completed</option>
+                              <option value="cancel">Cancelled</option>
+                            </Field>
+                            <ErrorMessage name="status" component="div" className="text-red-500 text-xs mt-1" />
+                          </div>
 
 
                           <div className="mb-4">
@@ -482,7 +487,7 @@ export default function Add(props) {
                                 <div class="font-[sans-serif] ">
                                   <table class="min-w-full bg-white">
 
-                                    <thead  className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100 border border-red-200' : ''} "whitespace-nowrap  "`}>
+                                    <thead className={`${selectedItems?.data?.stock?.quantity == 0 ? 'bg-red-100 border border-red-200' : ''} "whitespace-nowrap  "`}>
                                       <tr class="odd:bg-gray-50">
 
                                         <th class="p-4 text-left text-sm font-semibold text-black">
@@ -719,11 +724,11 @@ export default function Add(props) {
                           </div>
 
                           {values.method === "partial" && (
-                          <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2 font-bold" >Payment Note</label>
-                            <Field as="textarea"  rows="4" name="payment_note" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"></Field>
-                            <ErrorMessage name="payment_note" component="div" className="text-red-500 text-xs mt-1" />
-                          </div>
+                            <div className="mb-4">
+                              <label className="block text-grey-darker text-sm  mb-2 font-bold" >Payment Note</label>
+                              <Field as="textarea" rows="4" name="payment_note" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"></Field>
+                              <ErrorMessage name="payment_note" component="div" className="text-red-500 text-xs mt-1" />
+                            </div>
                           )}
 
 
@@ -735,7 +740,7 @@ export default function Add(props) {
                             <>
                               <div className="mb-4">
                                 <label className="block text-grey-darker text-sm mb-2">
-                                  Cheque No 
+                                  Cheque No
                                 </label>
                                 <Field
                                   name="cheque_no"
@@ -855,17 +860,17 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <div className="flex gap-4 items-center mb-2">
-                            <label className="block text-grey-darker text-sm   font-bold" >Select Tax</label>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setFieldValue('tax', '');
-                                setFieldValue('tax_id', '');
-                              }}
-                              className="text-sm font-semibold text-red-500   underline leading-tight"
-                            >
-                              Reset
-                            </button>
+                              <label className="block text-grey-darker text-sm   font-bold" >Select Tax</label>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setFieldValue('tax', '');
+                                  setFieldValue('tax_id', '');
+                                }}
+                                className="text-sm font-semibold text-red-500   underline leading-tight"
+                              >
+                                Reset
+                              </button>
                             </div>
                             <Field
                               name="tax_id"
@@ -892,22 +897,22 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <div className="flex gap-4 items-center mb-2">
-                            <label className="block  text-sm font-bold" >Select Shipping Cost</label>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setFieldValue('shipping_id', '');
-                                setFieldValue('shipping_charges', 0);
-                                setSelectedShippingrate(null);
-                              }}
-                              className="text-sm font-semibold text-red-500   underline leading-tight"
-                            >
-                              Reset
-                            </button>
+                              <label className="block  text-sm font-bold" >Select Shipping Cost</label>
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setFieldValue('shipping_id', '');
+                                  setFieldValue('shipping_charges', 0);
+                                  setSelectedShippingrate(null);
+                                }}
+                                className="text-sm font-semibold text-red-500   underline leading-tight"
+                              >
+                                Reset
+                              </button>
                             </div>
                             <Select
                               onChange={(e) => {
- 
+
                                 setSelectedShippingrate(e);
                                 setFieldValue('shipping_id', e.value);
                                 setFieldValue('shipping_charges', e.fee);
@@ -941,7 +946,7 @@ export default function Add(props) {
 
                           <div className="mb-4">
                             <label className="block text-grey-darker text-sm  mb-2 font-bold" >Note</label>
-                            <Field as="textarea"  rows="4" name="note" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"></Field>
+                            <Field as="textarea" rows="4" name="note" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"></Field>
                             <ErrorMessage name="note" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
@@ -1362,12 +1367,12 @@ export default function Add(props) {
                                         value={
                                           (values.items.reduce(
                                             (total, item) => total + item.quantity * item.data.selling_price,
-                                            0 
+                                            0
                                           ) +
-                                          (parseFloat(values.extra_charges || 0) +
-                                          parseFloat(values.tax || 0) +
-                                          parseFloat(values.shipping_charges || 0))) -
-                                          ( parseFloat(values.exchange|| 0) + parseFloat(values.discount || 0))
+                                            (parseFloat(values.extra_charges || 0) +
+                                              parseFloat(values.tax || 0) +
+                                              parseFloat(values.shipping_charges || 0))) -
+                                          (parseFloat(values.exchange || 0) + parseFloat(values.discount || 0))
                                         }
                                         className="appearance-none border rounded disabled:bg-gray-200 disabled:hover:bg-gray-200 py-2 px-3 text-grey-darker"
                                         disabled

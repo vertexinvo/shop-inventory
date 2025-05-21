@@ -18,14 +18,20 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Brand={auth.Brand}
-      header={<>
-        <MdKeyboardBackspace
-          size={20}
-          className="mr-2 cursor-pointer"
-          onClick={() => router.get(route('setting'))}
-          title="Back"
-        /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Brand</h2>
-      </>}
+      header={
+        <div className="flex items-center justify-between py-2">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+            <MdKeyboardBackspace
+              size={20}
+              className="cursor-pointer text-gray-600 hover:text-gray-800"
+              onClick={() => window.history.back()}
+              title="Back"
+            />
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Brand</h2>
+          </div>
+        </div>
+      }
     >
       <Head title="Brand" />
 

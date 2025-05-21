@@ -13,14 +13,22 @@ export default function Edit(props) {
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={ <>
-        <MdKeyboardBackspace
-             size={20}
-             className="mr-2 cursor-pointer"
-             onClick={() => router.get(route('customer.index'))}
-             title="Back"
-         /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit Customer</h2>
-        </>}
+      header={
+
+        <div className="flex items-center justify-between py-2">
+        {/* Title */}
+        <div className="flex items-center space-x-3">
+          <MdKeyboardBackspace
+            size={20}
+            className="cursor-pointer text-gray-600 hover:text-gray-800"
+            onClick={() => window.history.back()}
+            title="Back"
+          />
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Edit customer</h2>
+        </div>
+      </div>
+
+      }
     >
       <Head title="User" />
 
@@ -31,7 +39,7 @@ export default function Edit(props) {
             <div class="w-full bg-grey-lightest">
               <div class="container mx-auto py-3 px-5">
                 <div class="w-full lg:w-full mx-auto bg-white rounded shadow">
-                  <Formik enableReinitialize initialValues={{ name: user?.name || '', email: user?.email || '' , phone: user?.phone || '', address: user?.address || '' }}
+                  <Formik enableReinitialize initialValues={{ name: user?.name || '', email: user?.email || '', phone: user?.phone || '', address: user?.address || '' }}
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
 
@@ -73,7 +81,7 @@ export default function Edit(props) {
 
                         <div class="flex items-center justify-start gap-1 mt-8">
                           <button class="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
-                          Update
+                            Update
                           </button>
                           <button onClick={() => router.get(route('customer.index'))} class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg" type="button">
                             Close

@@ -13,6 +13,7 @@ Route::middleware(['auth'])->prefix('dashboard')->group(function(){
     Route::post('product/bulkdestroy', [ProductController::class, 'bulkdestroy'])->name('product.bulkdestroy');
     Route::post('/product/csvstore', [ProductController::class, 'csvstore'])->name('product.csvstore');
     Route::post('/product/updatewithimage/{product}', [ProductController::class, 'updatewithimage'])->name('product.updatewithimage');
+    Route::get('/product/{product}/stock-logs', [ProductController::class, 'stockLogs'])->name('product.stockLogs');
     Route::get('/product/printqr/{id}', [ProductController::class, 'printqr'])->name('product.printqr');
 });
 
@@ -27,4 +28,6 @@ Route::prefix('qrcode')->group(function () {
         return view('ProductDetail',compact('product'));
     })->name('product.detail'); 
 });
+
+
 
