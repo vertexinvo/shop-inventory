@@ -95,6 +95,7 @@ return [
         // Model::class => PathGenerator::class
         // or
         // 'model_morph_alias' => PathGenerator::class
+      //  Spatie\MediaLibrary\MediaCollections\Models\Media::class => App\MediaLibrary\TenantPathGenerator::class,
     ],
 
     /*
