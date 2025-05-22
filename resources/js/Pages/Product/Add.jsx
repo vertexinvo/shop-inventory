@@ -75,7 +75,7 @@ export default function Add(props) {
                     , identity_type: 'none', identity_value: '', warranty_type: 'none', is_warranty: '0',
                     categories: [],
                     brands: [], quantity: 1,
-                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type: 'new'
+                    description: '', supplier_invoice_no: '', weight: '', is_supplier: '0', customfield: [], type : 'new'
                   }}
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
@@ -126,8 +126,20 @@ export default function Add(props) {
 
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
+                      const formData = new FormData();
+                      // Append all regular fields
+                      Object.keys(values).forEach(key => {
+                        if (key !== 'image') {
+                          formData.append(key, values[key]);
+                        }
+                      });
+                      
+                      // Append the image file if exists
+                      if (values.image) {
+                        formData.append('image', values.image);
+                      }
 
-                      router.post(route('product.store'), values, { onSuccess: ({ props }) => { if (!props.flash.error) { resetForm(); } }, preserveScroll: true });
+                      router.post(route('product.store'), formData, {  forceFormData: true, onSuccess: ({ props }) => { if (!props.flash.error) { resetForm();  } }, preserveScroll: true });
                     }}
                   >
 
@@ -704,13 +716,11 @@ export default function Add(props) {
                             <ErrorMessage name="customfield" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
 
-                          {/* Action Buttons */}
-                          <div className="flex items-center gap-4 mt-10">
-                            <button
-                              className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-8 rounded-lg transition duration-200 shadow-md"
-                              type="submit"
-                            >
-                              Save Product
+
+
+                          <div className="flex items-center justify-start gap-1 mt-8">
+                            <button className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg" type="submit">
+                              Save
                             </button>
                             <button
                               onClick={() => router.get(route('product.index'))}

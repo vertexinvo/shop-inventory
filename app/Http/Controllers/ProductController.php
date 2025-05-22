@@ -433,9 +433,10 @@ class ProductController extends Controller
             'is_supplier' => 'required',
             'customfield' => 'nullable',
             'type' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-
+      
+      
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
             return back();
@@ -446,8 +447,8 @@ class ProductController extends Controller
                 return back();
             }
         }
-
-        $data = $request->except(['categories', 'brands']);
+        
+        $data = $request->except(['categories', 'brands','image']);
         $data['customfield'] = json_encode($request->customfield);
         $product = Product::create($data);
         if ($request->categories) {
@@ -457,6 +458,10 @@ class ProductController extends Controller
             $product->brands()->sync($request->brands);
         }
 
+        if ($request->hasFile('image')) {
+            $product->addMediaFromRequest('image')->toMediaCollection('product');
+        }
+        
         session()->flash('message', 'Product created successfully');
         return back();
     }
@@ -582,6 +587,14 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+
+    
+    }
+
+    //updatewithimage
+    public function updatewithimage(UpdateProductRequest $request, Product $product)
+    {
+   
         $this->authorize('update', $product);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
@@ -608,6 +621,8 @@ class ProductController extends Controller
             'is_supplier' => 'required',
             'customfield' => 'nullable',
             'type' => 'required',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'remove_image' => 'nullable|boolean',
         ]);
 
 
@@ -645,6 +660,16 @@ class ProductController extends Controller
         //     'quantity' => $request->quantity,
         //     'status' => 1
         // ]);
+
+
+        // Handle image update
+        if ($request->hasFile('image')) {
+            $product->updateImage($request->file('image'));
+        }
+        // Handle image removal if checkbox is checked
+        elseif ($request->remove_image) {
+            $product->deleteImage();
+        }
 
         session()->flash('message', 'Product updated successfully');
         return back();

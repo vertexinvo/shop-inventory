@@ -40,7 +40,6 @@ export default function View(props) {
   };
 
 
-
   return (
     <AuthenticatedLayout
       Product={auth.Product}
@@ -89,7 +88,8 @@ export default function View(props) {
                     weight: product?.weight || '',
                     is_supplier: product?.is_supplier ? '1' : '0',
                     customfield: JSON.parse(product?.customfield) || [],
-                    type: product?.type || 'new'
+                    type: product?.type || 'new',
+                    image_url : product?.image_url || '',
                   }}
                     validationSchema={Yup.object({
                       name: Yup.string().required('Name is required'),
@@ -144,7 +144,23 @@ export default function View(props) {
 
                     {({ values, errors, touched, setFieldValue, isSubmitting }) => (
                       <Form>
+
+                       
+                        
                         <div className="py-4 px-8">
+
+                        {values.image_url && (
+                        <div className="mb-4">
+
+                              <label className="block text-grey-darker text-sm  mb-2" for="type">Image </label>
+                              <div className="flex">
+                                <div className="w-1/2 mr-1">
+                                  <img src={values.image_url} height={200} width={200} className='object-cover border border-gray-300 rounded-lg' alt="product" />
+                                </div>
+
+                              </div>
+                          </div>
+                          )}
                           <div className="flex mb-4">
                             <div className="w-1/2 mr-1">
                               <label className="block text-grey-darker text-sm font-bold mb-2" for="first_name">Name</label>

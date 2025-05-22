@@ -21,5 +21,7 @@ class Stocklog extends Model
         'user_id',
         'remarks',
         'datetime',
+        'purchase_price',
+        'product_id',
     ];
 }

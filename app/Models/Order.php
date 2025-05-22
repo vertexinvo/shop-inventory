@@ -74,6 +74,7 @@ class Order extends Model
         'note',
         'payment_details',
         'bill_no',
+        'platform_user_id'
     ];
 
     protected $appends = ['tax_fee','pending_amount']; 
