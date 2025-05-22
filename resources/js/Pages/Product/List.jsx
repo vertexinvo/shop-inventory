@@ -23,6 +23,7 @@ import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
 import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
 import { Fragment } from "react";
+import { useEffect } from 'react';
 
 
 export default function List(props) {
@@ -36,6 +37,7 @@ export default function List(props) {
   const [isPrintQRModalOpen, setIsPrintQRModalOpen] = useState(false);
   const [daterangeModel, setDaterangeModel] = useState(false);
   const [importCsvModel, setImportCsvModel] = useState(false);
+
   const [dateRange, setDateRange] = useState(
     {
       startDate: new Date(),
@@ -49,6 +51,12 @@ export default function List(props) {
     category: '',
     status: '',
   });
+  const [contextMenu, setContextMenu] = useState({ visible: false, x: 0, y: 0, product: null });
+  useEffect(() => {
+    const handleClick = () => setContextMenu({ ...contextMenu, visible: false });
+    window.addEventListener("click", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, [contextMenu]);
 
   const updateFilter = (key, value) => {
     let newFilters = { ...filters, [key]: value };
@@ -548,6 +556,15 @@ export default function List(props) {
                     return (
                       <Fragment key={product.id}>
                         <tr
+                          onContextMenu={(e) => {
+                            e.preventDefault();
+                            setContextMenu({
+                              visible: true,
+                              x: e.pageX,
+                              y: e.pageY,
+                              product: product,
+                            });
+                          }}
                           className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
                             ? "bg-red-100 hover:bg-red-200"
                             : product?.stock?.quantity < 5
@@ -1017,6 +1034,53 @@ export default function List(props) {
           }
         </style>
       </Modal>
+
+      {/* Right click menu */}
+      {contextMenu.visible && contextMenu.product && (
+        <div
+          className="fixed z-50 bg-white border rounded shadow-lg text-sm text-gray-700 w-40"
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+          onClick={() => setContextMenu({ ...contextMenu, visible: false })}
+        >
+          <ul>
+            <li>
+              <Link
+                href={route("product.show", contextMenu.product.code || contextMenu.product.id)}
+                className="block px-4 py-2 hover:bg-gray-100 "
+              >
+                View
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={route("product.edit", contextMenu.product.id)}
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Edit
+              </Link>
+            </li>
+            <li>
+              <button
+                onClick={() => {
+                  setIsDeleteModalOpen(contextMenu.product);
+                  setContextMenu({ ...contextMenu, visible: false });
+                }}
+                className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+              >
+                Delete
+              </button>
+            </li>
+            <li>
+              <Link
+                href={route("stock.index", { product_id: contextMenu.product.id })}
+                className="block px-4 py-2 hover:bg-gray-100"
+              >
+                Stock
+              </Link>
+            </li>
+          </ul>
+        </div>
+      )}
 
       <Modal
         show={daterangeModel}
