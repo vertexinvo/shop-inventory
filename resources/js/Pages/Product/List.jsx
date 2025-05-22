@@ -215,7 +215,7 @@ export default function List(props) {
         {/* Total Items in Stock */}
         <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
           <div>
-            <p className="text-gray-600 text-sm font-medium">Items in Stock</p>
+            <p className="text-gray-600 text-sm font-medium">Stock keeping unit</p>
             <p className="text-xl font-bold">{totaliteminstock}</p>
           </div>
           <FaBoxes size={36} className="text-green-500" />
@@ -396,71 +396,139 @@ export default function List(props) {
                     <th className="px-2 py-3 w-28">Purchase Price</th>
                     <th className="px-2 py-3 w-28">Selling Price</th>
                     <th className="px-2 py-3 w-36">
-                      <div className='flex items-center justify-between'>
-                        Categories
-                        <div>
-                          <Dropdown>
-                            <Dropdown.Trigger>
-                              <button className="text-gray-500 hover:text-gray-700 transition">
-                                <FaFilter className="w-4 h-4" />
-                              </button>
-                            </Dropdown.Trigger>
-                          </Dropdown>
-                          <Dropdown.Content>
-                            <Dropdown.Item>
-                              <div className="flex items-center gap-2">
-                                <input type="checkbox" className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300" />
-                                <span className="text-gray-700">Category 1</span>
-                              </div>
-                            </Dropdown.Item>
-                          </Dropdown.Content>
-                        </div>
-                      </div>
+
+                      <Dropdown>
+                        <Dropdown.Trigger>
+                          <div className="flex items-center justify-between cursor-pointer">
+                            {`Category (${params.get('category') || 'All'})`}
+                            <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Categories">
+                              <FaFilter className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content >
+                          <select
+                            onClick={(e) => e.stopPropagation()}
+                            name="category"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) =>
+                              router.get(
+                                route('product.index'),
+                                {
+                                  category: e.target.value,
+                                  status: params.get('status'),
+                                  brand: params.get('brand'),
+                                  search: params.get('search'),
+                                  startdate: startdate,
+                                  enddate: enddate,
+                                  supplierinvoiceno: params.get('supplierinvoiceno'),
+                                  invoicecode: params.get('invoicecode'),
+                                },
+                                { preserveState: true, preserveScroll: true }
+                              )
+                            }
+                            value={params.get('category') || ''}
+                          >
+                            <option value="">All Categories</option>
+                            {categories.map((category) => (
+                              <option key={category.name} value={category.name}>
+                                {category.name} ({category.total_products})
+                              </option>
+                            ))}
+                          </select>
+                        </Dropdown.Content>
+                      </Dropdown>
+
                     </th>
                     <th className="px-2 py-3 w-28">
-                      <div className='flex items-center justify-between'>
-                        Brands
-                        <div>
-                          <Dropdown>
-                            <Dropdown.Trigger>
-                              <button className="text-gray-500 hover:text-gray-700 transition">
-                                <FaFilter className="w-4 h-4" />
-                              </button>
-                            </Dropdown.Trigger>
-                          </Dropdown>
-                          <Dropdown.Content>
-                            <Dropdown.Item>
-                              <div className="flex items-center gap-2">
-                                <input type="checkbox" className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300" />
-                                <span className="text-gray-700">Brand 1</span>
-                              </div>
-                            </Dropdown.Item>
-                          </Dropdown.Content>
-                        </div>
-                      </div>
+
+                      {/* {`Brands (${params.get('brand') || 'All'})`} */}
+                      <Dropdown>
+                        <Dropdown.Trigger>
+                          <div className="flex items-center justify-between cursor-pointer">
+                            {`Brands (${params.get('brand') || 'All'})`}
+                            <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Brands">
+                              <FaFilter className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content>
+                          <select
+                            onClick={(e) => e.stopPropagation()}
+                            name="brand"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) =>
+                              router.get(
+                                route('product.index'),
+                                {
+                                  brand: e.target.value,
+                                  category: params.get('category'),
+                                  status: params.get('status'),
+                                  search: params.get('search'),
+                                  startdate: startdate,
+                                  enddate: enddate,
+                                  supplierinvoiceno: params.get('supplierinvoiceno'),
+                                  invoicecode: params.get('invoicecode'),
+                                },
+                                { preserveState: true, preserveScroll: true }
+                              )
+                            }
+                            value={params.get('brand') || ''}
+                          >
+                            <option value="">All Brands</option>
+                            {brands.map((brand) => (
+                              <option key={brand.name} value={brand.name}>
+                                {brand.name} ({brand.total_products})
+                              </option>
+                            ))}
+                          </select>
+                        </Dropdown.Content>
+                      </Dropdown>
+
                     </th>
                     <th className="px-2 py-3 w-20">
-                      <div className='flex items-center justify-between'>
-                        Status
-                        <div>
-                          <Dropdown>
-                            <Dropdown.Trigger>
-                              <button className="text-gray-500 hover:text-gray-700 transition">
-                                <FaFilter className="w-4 h-4" />
-                              </button>
-                            </Dropdown.Trigger>
-                            <Dropdown.Content>
-                              <Dropdown.Item>
-                                <div className="flex items-center gap-2">
-                                  <input type="checkbox" className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300" />
-                                  <span className="text-gray-700">Available</span>
 
-                                </div>
-                              </Dropdown.Item>
-                            </Dropdown.Content>
-                          </Dropdown>
-                        </div>
-                      </div>
+                      <Dropdown>
+
+                        <Dropdown.Trigger>
+                          <div className="flex items-center justify-between cursor-pointer">
+                            {`Status (${params.get('status') === '1' ? 'In Stock' : params.get('status') === '0' ? 'Out of Stock' : 'All'})`}
+                            <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Status">
+                              <FaFilter className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </Dropdown.Trigger>
+
+                        <Dropdown.Content>
+                          <select
+                            onClick={(e) => e.stopPropagation()}
+                            name="status"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            onChange={(e) =>
+                              router.get(
+                                route('product.index'),
+                                {
+                                  status: e.target.value,
+                                  category: params.get('category'),
+                                  brand: params.get('brand'),
+                                  search: params.get('search'),
+                                  startdate: startdate,
+                                  enddate: enddate,
+                                  supplierinvoiceno: params.get('supplierinvoiceno'),
+                                  invoicecode: params.get('invoicecode'),
+                                },
+                                { preserveState: true }
+                              )
+                            }
+                            value={params.get('status') || ''}
+                          >
+                            <option value="">All Statuses</option>
+                            <option value="1">In Stock</option>
+                            <option value="0">Out of Stock</option>
+                          </select>
+                        </Dropdown.Content>
+                      </Dropdown>
+
                     </th>
                     <th className="px-2 py-3 w-32 text-center">Actions</th>
                   </tr>
@@ -487,7 +555,7 @@ export default function List(props) {
                               : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
                             } ${selectId.includes(product.id) ? "border-cyan-200 border-b" : "border-gray-200 border-b"}`}
                         >
-                          <td className="px-4 py-3">
+                          <td className="px-4 pb-2">
                             <input
                               type="checkbox"
                               onChange={(e) => {
