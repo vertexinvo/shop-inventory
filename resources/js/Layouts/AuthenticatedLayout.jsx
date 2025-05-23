@@ -16,7 +16,7 @@ import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
-import { FaPlusCircle } from 'react-icons/fa';
+import { FaChevronDown, FaPlusCircle } from 'react-icons/fa';
 
 
 export default function AuthenticatedLayout({ header, headerTitle, children }) {
@@ -87,24 +87,24 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                         type="button"
                                                         className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                                     >
-                                                        create new
-                                                        <FaPlusCircle className="ms-2 h-4 w-4" />
+                                                        Create
+                                                        <FaChevronDown className="ms-2 h-3 w-3" />
                                                     </button>
                                                 </span>
                                             </Dropdown.Trigger>
                                             <Dropdown.Content>
-                                                <div className="px-4 py-2 text-sm font-semibold text-gray-800">
-                                                    Create
-                                                </div>
-                                                <hr className="border-gray-200" />
+                                                
                                                 <Dropdown.Link href={route('customer.create')}>
-                                                    Create Customer
+                                                    Customer
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('order.create')}>
-                                                    Create Order
+                                                     Invoice
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('product.create')}>
-                                                    Create Product
+                                                     Product
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('supplier.create')}>
+                                                     Supplier
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
                                         </Dropdown>
@@ -119,18 +119,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                     className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                                 >
                                                     {user.name}
-                                                    <svg
-                                                        className="-me-0.5 ms-2 h-4 w-4"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                            clipRule="evenodd"
-                                                        />
-                                                    </svg>
+                                                    <FaChevronDown className="ms-2 h-3 w-3" />
                                                 </button>
                                             </span>
                                         </Dropdown.Trigger>
@@ -337,9 +326,22 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </li>
 
                                 <li>
-                                    <NavLink href={route('product.scan')} active={route().current('product.scan')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdOutlineQrCodeScanner className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
+                                    <NavLink href={route('product.scan')} active={route().current('product.scan')} className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100   group">
+                                        <MdOutlineQrCodeScanner className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-black  ' />
                                         <span class="ms-3">Scanner</span>
+                                    </NavLink>
+                                </li>
+                                <li className='mt-1'>
+                                    <NavLink
+                                        href={route('profile.generated-via-qr')}
+                                        active={route().current('profile.generated-via-qr')}
+                                        className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group"
+                                    >
+                                        <MdOutlinePhoneAndroid className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-black  ' />
+                                        <span className="ms-3 flex items-center justify-start gap-2">
+                                            Link Mobile App
+                                            <span className="text-xs bg-yellow-300 text-yellow-900 px-2 py-0.5 rounded-full">Beta</span>
+                                        </span>
                                     </NavLink>
                                 </li>
                                 {/* <li>
@@ -349,25 +351,10 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                     </NavLink>
                                 </li> */}
                             </ul>
-                            <span className="block text-center text-xs text-gray-400 mb-4">powered by solinvo</span>
-                            <hr />
+                            <span className="block text-center text-xs text-gray-400 mt-2">powered by solinvo</span>
                             {/* profile.generated-via-qr */}
 
-                            <div className='mt-1'>
-                                <NavLink
-                                    href={route('profile.generated-via-qr')}
-                                    active={route().current('profile.generated-via-qr')}
-                                    className="flex items-center p-2 text-black rounded-lg hover:bg-gray-100 group"
-                                    fill="currentColor"
-                                    viewBox="0 0 18 20"
-                                >
-                                    <MdOutlinePhoneAndroid className='flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75 group-hover:text-black' />
-                                    <span className="ms-3 flex items-center gap-2">
-                                        Link Mobile App
-                                        <span className="text-xs bg-yellow-300 text-yellow-900 px-2 py-0.5 rounded-full">Beta</span>
-                                    </span>
-                                </NavLink>
-                            </div>
+
 
                             {/* <div className='mt-1'>
                                 <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
@@ -471,7 +458,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         </main>
                     </div>
                 </div>
-            </div>
+            </div >
 
 
             <ConfirmModal isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} title="Are you sure you want to logout?" onConfirm={() => {
