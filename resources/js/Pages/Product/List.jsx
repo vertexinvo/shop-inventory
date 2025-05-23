@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus, FaChevronDown, FaChevronRight, FaFilter } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaBoxes, FaFileDownload, FaCalendar, FaSearch, FaPlus, FaChevronDown, FaChevronRight, FaFilter, FaAlignJustify } from 'react-icons/fa'
 import { MdDelete, MdManageHistory } from 'react-icons/md';
 import { GiMoneyStack, GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -21,7 +21,7 @@ import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
-import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
+import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaRotateRight, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
 import { Fragment } from "react";
 
 
@@ -144,55 +144,41 @@ export default function List(props) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-3">
-            {/* <button
-              onClick={() => router.get(route('customer.import'))} // Assuming a route for importing
-              className="flex items-center space-x-1 text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-400"
-            >
-              <BiImport size={18} />
-              <span>Import</span>
-            </button> */}
-            <a
-              href={route('product.csvexport')}
-              download
-              className="inline-flex items-center justify-center rounded-lg border border-transparent bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
-            >
-              <BiExport className="mr-2 h-5 w-5" />
-              Export CSV File
-            </a>
+          <div className="flex flex-wrap items-center gap-3">
 
-            {/* <div>
-              <input
-                id="csv-upload"
-                type="file"
-                accept=".csv"
-                onChange={handleFileSelect}
-                className="hidden"
-              />
-              <label
-                htmlFor="csv-upload"
-                className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
-              >
-                <BiImport className="mr-2 h-5 w-5" />
-                Import CSV File
-              </label>
-            </div> */}
-
-            <div>
-              {/* Trigger Button */}
-              <div>
-                <button
-                  className="cursor-pointer inline-flex items-center justify-center rounded-lg border border-transparent bg-green-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-cyan-300"
-                  onClick={() => setImportCsvModel(true)}
-                >
-                  <BiImport className="mr-2 h-5 w-5" />
-                  Import CSV File
+            {/* File Dropdown */}
+            {/* Create Button */}
+            <Link
+              href={route('product.create')}
+              className="flex items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none w-full focus:ring-4 focus:ring-cyan-300 md:w-64 lg:w-32"
+            >
+              <FaPlus className="h-3 w-3" />
+              Create
+            </Link>
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  File
+                  <FaChevronDown className="h-3 w-3" />
                 </button>
-              </div>
+              </Dropdown.Trigger>
 
-
-            </div>
-
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <a
+                  href={route('product.csvexport')}
+                  download
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Export Excel (.csv)
+                </a>
+                <button
+                  onClick={() => setImportCsvModel(true)}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Import Excel (.csv)
+                </button>
+              </Dropdown.Content>
+            </Dropdown>
           </div>
         </div>
       }
@@ -353,19 +339,26 @@ export default function List(props) {
                 </>
               )}
 
-              <Link href={route('product.create')}
-                className="text-white w-full md:w-64 lg:w-48 py-2 px-4 bg-cyan-700 rounded-lg hover:bg-cyan-800 flex justify-center items-center gap-2"
-              >
-                <FaPlus className="w-4 h-4" />
-                Create
-              </Link>
+
 
               <button
                 onClick={() => setDaterangeModel(true)}
-                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-900 md:w-auto"
               >
-                <FaCalendarCheck />
+                <FaCalendarCheck className='h-4 w-4' />
                 Date&nbsp;Range&nbsp;Filter
+              </button>
+              
+
+              {/* reset filters */}
+              <button
+                onClick={() => {
+                  router.get(route('product.index'))
+                }}
+                className="text-gray-700 flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg  bg-gray-200 hover:bg-slate-300 md:w-auto"
+              >
+                <FaRotateRight className='h-4 w-4' />
+                Reset&nbsp;Filters
               </button>
 
 
