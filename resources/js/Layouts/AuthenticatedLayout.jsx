@@ -17,6 +17,7 @@ import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
 import { FaChevronDown, FaPlusCircle } from 'react-icons/fa';
+import { FaCircleArrowLeft, FaCircleArrowRight, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
 
 
 export default function AuthenticatedLayout({ header, headerTitle, children }) {
@@ -59,14 +60,14 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                     <div className="px-4 sm:px-6 lg:px-8">
                         <div className="flex h-16 justify-between">
                             <div className="flex">
-                                <div className="flex shrink-0 items-center gap-2">
-                                    <IoMdMenu size={30} className='cursor-pointer' onClick={() => setIsMinimizeSidebar(!isMinimizeSidebar)} />
+                                <div className="flex shrink-0 items-center gap-x-24">
                                     <Link href="/">
                                         <img src={setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
                                     </Link>
+                                    {/* hide on responsive mobile */}
+
 
                                 </div>
-
                                 {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route('dashboard')}
@@ -76,7 +77,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </NavLink>
                             </div> */}
                             </div>
-                            <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                            <div className="hidden sm:ms-6 sm:flex sm:items-center sm:justify-between">
                                 <div className="flex items-baseline justify-end relative ms-3">
                                     {/* Create New Dropdown */}
                                     <div className="flex items-center gap-2">
@@ -93,18 +94,18 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                 </span>
                                             </Dropdown.Trigger>
                                             <Dropdown.Content>
-                                                
+
                                                 <Dropdown.Link href={route('customer.create')}>
                                                     Customer
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('order.create')}>
-                                                     Invoice
+                                                    Invoice
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('product.create')}>
-                                                     Product
+                                                    Product
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('supplier.create')}>
-                                                     Supplier
+                                                    Supplier
                                                 </Dropdown.Link>
                                             </Dropdown.Content>
                                         </Dropdown>
@@ -269,180 +270,272 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         </div>
                     </div>
                 </nav>
-                {!isMinimizeSidebar ?
-                    <aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0    " aria-label="Sidebar">
-                        <div class="h-full px-3 pb-4 overflow-y-auto bg-white   flex flex-col">
-                            <ul class="space-y-2 font-medium flex-grow">
+                {!isMinimizeSidebar ? (
+                    <aside
+                        id="logo-sidebar"
+                        className="no-print fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-white border-r border-gray-200 sm:translate-x-0"
+                        aria-label="Sidebar"
+                    >
+                        <div className="h-full px-3 pb-4 overflow-y-auto bg-white flex flex-col">
+                            <ul className="space-y-2 font-medium flex-grow">
                                 <li>
-                                    <NavLink href={route('dashboard')} active={route().current('dashboard')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
-                                        <svg class="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <NavLink
+                                        href={route('dashboard')}
+                                        active={route().current('dashboard')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <svg
+                                            className="w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 22 21"
+                                        >
                                             <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
                                             <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                                         </svg>
-                                        <span class="ms-3">Dashboard</span>
+                                        <span className="ml-3">Dashboard</span>
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink href={route('customer.index')} active={route().current('customer.index')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
-                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
-                                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+                                    <NavLink
+                                        href={route('customer.index')}
+                                        active={route().current('customer.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <svg
+                                            className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 18"
+                                        >
+                                            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2 a5.006 5.006 0 0 0-5-5Z" />
                                         </svg>
-                                        <span class="ms-3">Customers</span>
+                                        <span className="ml-3">Customers</span>
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                                    <NavLink
+                                        href={route('product.index')}
+                                        active={route().current('product.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <svg
+                                            className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 18 20"
+                                        >
                                             <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
                                         </svg>
-                                        <span class="ms-3">Purchases</span>
+                                        <span className="ml-3">Purchases</span>
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('order.index')} active={route().current('order.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <HiMiniShoppingCart className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                        <span class="ms-3">Sales</span>
+                                    <NavLink
+                                        href={route('order.index')}
+                                        active={route().current('order.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <HiMiniShoppingCart className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3">Sales</span>
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('supplier.index')} active={route().current('supplier.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <TbInvoice className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                        <span class="ms-3">Suppliers</span>
+                                    <NavLink
+                                        href={route('supplier.index')}
+                                        active={route().current('supplier.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <TbInvoice className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3">Suppliers</span>
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <GiExpense className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                        <span class="ms-3">Expense</span>
+                                    <NavLink
+                                        href={route('expense.index')}
+                                        active={route().current('expense.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <GiExpense className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3">Expense</span>
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdFormatListBulleted className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                        <span class="ms-3">Sales Ledger</span>
+                                    <NavLink
+                                        href={route('ledger.sales')}
+                                        active={route().current('ledger.sales')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <MdFormatListBulleted className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3">Sales Ledger</span>
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink href={route('product.scan')} active={route().current('product.scan')} className="flex items-center p-2 text-gray-900 rounded-lg hover:bg-gray-100   group">
-                                        <MdOutlineQrCodeScanner className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-black  ' />
-                                        <span class="ms-3">Scanner</span>
+                                    <NavLink
+                                        href={route('product.scan')}
+                                        active={route().current('product.scan')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                                    >
+                                        <MdOutlineQrCodeScanner className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3">Scanner</span>
                                     </NavLink>
                                 </li>
-                                <li className='mt-1'>
+                                <li className="mt-1">
                                     <NavLink
                                         href={route('profile.generated-via-qr')}
                                         active={route().current('profile.generated-via-qr')}
-                                        className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group"
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <MdOutlinePhoneAndroid className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-black  ' />
-                                        <span className="ms-3 flex items-center justify-start gap-2">
+                                        <MdOutlinePhoneAndroid className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3 flex items-center gap-2">
                                             Link Mobile App
-                                            <span className="text-xs bg-yellow-300 text-yellow-900 px-2 py-0.5 rounded-full">Beta</span>
+                                            <span className="text-xs bg-yellow-200 text-yellow-800 px-2 py-0.5 rounded-full">Beta</span>
                                         </span>
                                     </NavLink>
                                 </li>
-                                {/* <li>
-                                    <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <GoGraph className='w-5 h-5 flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-                                        <span class="ms-3">Sales</span>
-                                    </NavLink>
-                                </li> */}
                             </ul>
+                            <hr className="my-2 border-gray-200" />
+                            <button
+                                onClick={() => setIsMinimizeSidebar(!isMinimizeSidebar)}
+                                className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
+                            >
+                                <FaCircleArrowLeft className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                <span className="ml-3">Collapse Menu</span>
+                            </button>
                             <span className="block text-center text-xs text-gray-400 mt-2">powered by solinvo</span>
-                            {/* profile.generated-via-qr */}
-
-
-
-                            {/* <div className='mt-1'>
-                                <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                    <CiSettings className=' flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                                    <span class="ms-3">Settings</span>
-                                </NavLink>
-
-                            </div>
-                            <div>
-                                <button onClick={() => setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
-                                    <BiLogOut className='flex-shrink-0 w-5 h-5 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                                    <span class="ms-3">Log Out</span>
-                                </button>
-
-                            </div> */}
                         </div>
                     </aside>
-                    :
-                    <aside id="logo-sidebar" class="no-print fixed top-0 left-0 z-40 w-15 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0    " aria-label="Sidebar">
-                        <div class="h-full px-3 pb-4 overflow-y-auto bg-white   flex flex-col">
-                            <ul class="space-y-2 font-medium flex-grow">
+                ) : (
+                    <aside
+                        id="logo-sidebar"
+                        className="no-print fixed top-0 left-0 z-40 w-16 h-screen pt-20 transition-transform bg-white border-r border-gray-200 sm:translate-x-0"
+                        aria-label="Sidebar"
+                    >
+                        <div className="h-full px-3 pb-4 overflow-y-auto bg-white flex flex-col">
+                            <ul className="space-y-2 font-medium flex-grow">
                                 <li>
-                                    <NavLink href={route('dashboard')} active={route().current('dashboard')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
-                                        <svg class="w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
+                                    <NavLink
+                                        href={route('dashboard')}
+                                        active={route().current('dashboard')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <svg
+                                            className="w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 22 21"
+                                        >
                                             <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
                                             <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                                         </svg>
-
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink href={route('customer.index')} active={route().current('customer.index')} className="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100  group">
-                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75  group-hover:text-gray-900 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 18">
+                                    <NavLink
+                                        href={route('customer.index')}
+                                        active={route().current('customer.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <svg
+                                            className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 18"
+                                        >
                                             <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                                         </svg>
                                     </NavLink>
                                 </li>
-
                                 <li>
-                                    <NavLink href={route('product.index')} active={route().current('product.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-gray-900  " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 20">
+                                    <NavLink
+                                        href={route('product.index')}
+                                        active={route().current('product.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <svg
+                                            className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
+                                            aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor"
+                                            viewBox="0 0 18 20"
+                                        >
                                             <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
                                         </svg>
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('order.index')} active={route().current('order.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <HiMiniShoppingCart className=' flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-
+                                    <NavLink
+                                        href={route('order.index')}
+                                        active={route().current('order.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <HiMiniShoppingCart className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('supplier.index')} active={route().current('supplier.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <TbInvoice className=' flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-
+                                    <NavLink
+                                        href={route('supplier.index')}
+                                        active={route().current('supplier.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <TbInvoice className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('expense.index')} active={route().current('expense.index')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <GiExpense className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-
+                                    <NavLink
+                                        href={route('expense.index')}
+                                        active={route().current('expense.index')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <GiExpense className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                     </NavLink>
                                 </li>
                                 <li>
-                                    <NavLink href={route('ledger.sales')} active={route().current('ledger.sales')} className="flex items-center p-2 text-gray-900 rounded-lg   hover:bg-gray-100   group">
-                                        <MdFormatListBulleted className='flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75   group-hover:text-black  ' />
-
+                                    <NavLink
+                                        href={route('ledger.sales')}
+                                        active={route().current('ledger.sales')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <MdFormatListBulleted className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                     </NavLink>
                                 </li>
-
+                                <li>
+                                    <NavLink
+                                        href={route('product.scan')}
+                                        active={route().current('product.scan')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <MdOutlineQrCodeScanner className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                    </NavLink>
+                                </li>
+                                <li className="mt-1">
+                                    <NavLink
+                                        href={route('profile.generated-via-qr')}
+                                        active={route().current('profile.generated-via-qr')}
+                                        className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                    >
+                                        <MdOutlinePhoneAndroid className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                    </NavLink>
+                                </li>
                             </ul>
-
-                            <hr />
-                            <div className='mt-1'>
-                                <NavLink href={route('setting')} active={route().current('setting')} className="flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group" fill="currentColor" viewBox="0 0 18 20">
-                                    <CiSettings className='w-5 h-5 flex-shrink-0 text-gray-800 transition duration-75   group-hover:text-black  ' />
-                                </NavLink>
-                            </div>
-                            <div>
-                                <button onClick={() => setIsLogoutModalOpen(true)} className="mt-1 w-full flex items-center p-2 text-black rounded-lg   hover:bg-gray-100   group " fill="currentColor" viewBox="0 0 18 20">
-                                    <BiLogOut className='w-5 h-5 flex-shrink-0 text-gray-800 transition duration-75  group-hover:text-black  ' />
+                            <hr className="my-2 border-gray-200" />
+                            <div className="mt-1">
+                                <button
+                                    onClick={() => setIsMinimizeSidebar(!isMinimizeSidebar)}
+                                    className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200 justify-center"
+                                >
+                                    <FaCircleArrowRight className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                 </button>
-
                             </div>
+                            <span className="block text-center text-xs text-gray-400 mt-2">solinvo</span>
                         </div>
                     </aside>
-                }
+                )}
 
                 <div class={isMinimizeSidebar ? "sm:ml-14" : "sm:ml-64"}>
                     <div className="mt-14">
@@ -464,10 +557,6 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
             <ConfirmModal isOpen={isLogoutModalOpen} onClose={() => setIsLogoutModalOpen(false)} title="Are you sure you want to logout?" onConfirm={() => {
                 router.post(route('logout'))
             }} />
-
-
-
-
         </>
     );
 }
