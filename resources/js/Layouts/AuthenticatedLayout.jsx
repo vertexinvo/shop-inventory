@@ -57,15 +57,14 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
             <ToastContainer />
             <div className="min-h-screen bg-gray-100 overflow-hidden">
                 <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">
-                    <div className="px-4 sm:px-6 lg:px-8">
+                    <div className="px-4 sm:px-6 lg:px-4">
                         <div className="flex h-16 justify-between">
                             <div className="flex">
-                                <div className="flex shrink-0 items-center gap-x-24">
+                                <div className="flex shrink-0 items-center">
                                     <Link href="/">
                                         <img src={setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
                                     </Link>
                                     {/* hide on responsive mobile */}
-
 
                                 </div>
                                 {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
