@@ -6,8 +6,8 @@ import ConfirmModal from '@/Components/ConfirmModal';
 import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
 import { PiListChecksFill } from "react-icons/pi";
-import { FaBoxOpen } from "react-icons/fa6";
-import { FaCheck, FaEdit, FaEye, FaPen, FaTrash } from "react-icons/fa";
+import { FaBoxOpen, FaXmark } from "react-icons/fa6";
+import { FaCheck, FaEdit, FaEye, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
@@ -330,53 +330,69 @@ export default function List(props) {
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
             <Formik
               enableReinitialize
-              initialValues={{ search: '' }}
+              initialValues={{ search: params.get('search') || '' }}
               onSubmit={(values) => {
-                router.get(route('order.index'), { search: values.search, searchuserid: params.get('searchuserid'), status: params.get('status'), startdate: params.get('startdate'), enddate: params.get('enddate') }, { preserveState: true });
+                router.get(
+                  route('order.index'),
+                  {
+                    search: values.search,
+                    searchuserid: params.get('searchuserid'),
+                    status: params.get('status'),
+                    startdate: params.get('startdate'),
+                    enddate: params.get('enddate'),
+                  },
+                  {
+                    preserveState: true,
+                    preserveScroll: true,
+                  }
+                );
               }}
             >
-              {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
-                  <div className="relative w-full md:w-auto">
-                    <Field
-                      name="search"
-                      type="text"
-                      placeholder="Search..."
-                      className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFieldValue('search', '');
-                        router.get(route('order.index'));
-                      }}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                    >
-                      ✖
-                    </button>
+              {({ values, setFieldValue, handleSubmit }) => (
+                <Form className="w-full flex items-center gap-3">
+                  <div className="relative w-full md:max-w-md">
+                    <Field name="search">
+                      {({ field, form }) => (
+                        <div className="relative">
+                          <input
+                            {...field}
+                            type="text"
+                            placeholder="Search orders..."
+                            className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300 bg-white shadow-sm hover:shadow-md placeholder-gray-400 text-gray-800"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSubmit();
+                            }}
+                          />
+                          {/* Search Icon */}
+                          <button
+                            type="submit"
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-500 focus:outline-none transition-colors"
+                            aria-label="Search"
+                          >
+                            <FaSearch className="w-4 h-4" />
+                          </button>
+                          {/* Clear Icon */}
+                          {field.value && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                form.setFieldValue('search', '');
+                                router.get(route('order.index'));
+                              }}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
+                              aria-label="Clear search"
+                            >
+                              <FaXmark className="w-4 h-4" />
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </Field>
                   </div>
-
-                  <button
-                    type="submit"
-                    className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                  >
-                    Search
-                  </button>
-                  {/* <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                    >
-                      <SiMicrosoftexcel className="mr-2 h-5 w-5" />
-                      Export Excel
-                    </button> */}
-
-
-
                 </Form>
-
               )}
-
             </Formik>
+
 
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
               <button
@@ -451,13 +467,12 @@ export default function List(props) {
                       <FaCheck className="w-full fill-white" />
                     </label>
                   </th>
-                  <th className="px-4 py-3 text-left">Sale Date</th>
-                  <th className="px-4 py-3 text-left">Bill No.</th>
+                  <th className="px-4 py-3 text-left">Sale ID</th>
                   <th className="px-4 py-3 text-left">Sale Info</th>
+                  <th className="px-4 py-3 text-left">Bill No.</th>
                   <th className="px-4 py-3 text-left">Payable</th>
                   <th className="px-4 py-3 text-left">Paid</th>
                   <th className="px-4 py-3 text-left">Status</th>
-                  <th className="px-4 py-3 text-left">Sale ID</th>
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>
               </thead>
@@ -465,7 +480,7 @@ export default function List(props) {
               <tbody className="divide-y divide-gray-200 text-sm">
                 {orders.data.length === 0 && (
                   <tr>
-                    <td colSpan="9" className="px-4 py-4 text-center text-gray-500">No order found.</td>
+                    <td colSpan="8" className="px-4 py-4 text-center text-gray-500">No order found.</td>
                   </tr>
                 )}
 
@@ -483,6 +498,7 @@ export default function List(props) {
                       show({ event: e, props: order });
                     }}
                   >
+                    {/* Checkbox */}
                     <td className="px-4 py-2 w-8">
                       <input
                         id={`checkbox-${order.id}`}
@@ -506,9 +522,20 @@ export default function List(props) {
                       </label>
                     </td>
 
-                    <td className="px-4 py-2 text-gray-800">{order.order_date || "N/A"}</td>
-                    <td className="px-4 py-2 text-gray-800">{order.bill_no || "N/A"}</td>
+                    {/* Sale ID */}
+                    <td className="px-4 py-2 text-blue-600 cursor-pointer">
+                      <button
+                        onClick={() =>
+                          router.get(route("order.show", order.code || order.id))
+                        }
+                        title="View"
+                        type="button"
+                      >
+                        {order.code || order.id}
+                      </button>
+                    </td>
 
+                    {/* Sale Info */}
                     <td className="px-4 py-2">
                       <div className="flex items-center">
                         <div className="ml-2">
@@ -520,8 +547,13 @@ export default function List(props) {
                       </div>
                     </td>
 
+                    {/* Bill No. */}
+                    <td className="px-4 py-2 text-gray-800">{order.bill_no || "N/A"}</td>
+
+                    {/* Payable */}
                     <td className="px-4 py-2 text-gray-800">{order.payable_amount}</td>
 
+                    {/* Paid (Editable input) */}
                     <td className="px-4 py-2">
                       <div className="flex items-center w-[130px]">
                         <input
@@ -543,6 +575,7 @@ export default function List(props) {
                       </div>
                     </td>
 
+                    {/* Status */}
                     <td className="px-4 py-2">
                       <button
                         onClick={() => {
@@ -564,18 +597,7 @@ export default function List(props) {
                       </button>
                     </td>
 
-                    <td className="px-4 py-2 text-blue-600 cursor-pointer">
-                      <button
-                        onClick={() =>
-                          router.get(route("order.show", order.code || order.id))
-                        }
-                        title="View"
-                        type="button"
-                      >
-                        {order.code || order.id}
-                      </button>
-                    </td>
-
+                    {/* Actions */}
                     <td className="px-4 py-2">
                       <div className="flex space-x-2">
                         <button
@@ -605,6 +627,7 @@ export default function List(props) {
                 ))}
               </tbody>
             </table>
+
 
 
 
