@@ -348,7 +348,7 @@ export default function List(props) {
                 <FaCalendarCheck className='h-4 w-4' />
                 Date&nbsp;Range&nbsp;Filter
               </button>
-              
+
 
               {/* reset filters */}
               <button
@@ -365,23 +365,28 @@ export default function List(props) {
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto rounded-lg shadow-md">
-              <table className="w-full table-fixed bg-white text-sm rounded-xl shadow overflow-hidden">
+            <div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
+              <table className="min-w-full divide-y divide-gray-200">
                 <thead className="whitespace-nowrap text-xs uppercase bg-gray-200 text-gray-700 tracking-wide border-b">
                   <tr>
-                    <th className="px-4 py-3 w-8">
+                    <th className="px-4 py-3 w-6">
                       <input
+                        id="checkbox"
                         type="checkbox"
+                        className="hidden peer"
                         onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectId(products.data.map((p) => p.id));
-                          } else {
-                            setSelectId([]);
-                          }
+                          setSelectId(
+                            e.target.checked ? products.data.map((order) => order.id) : []
+                          )
                         }}
                         checked={selectId.length === products.data.length}
-                        className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300"
                       />
+                      <label
+                        htmlFor="checkbox"
+                        className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                      >
+                        <FaCheck className="w-full fill-white" />
+                      </label>
                     </th>
                     <th className="px-2 py-3 w-6"></th>
                     <th className="px-2 py-3 w-40 truncate text-left">Product</th>
@@ -433,7 +438,7 @@ export default function List(props) {
                       </Dropdown>
 
                     </th>
-                    <th className="px-2 py-3 w-28">
+                    <th className="px-2 py-3 w-32">
 
                       {/* {`Brands (${params.get('brand') || 'All'})`} */}
                       <Dropdown>
@@ -480,9 +485,7 @@ export default function List(props) {
 
                     </th>
                     <th className="px-2 py-3 w-20">
-
                       <Dropdown>
-
                         <Dropdown.Trigger>
                           <div className="flex items-center justify-between cursor-pointer">
                             {`Status (${params.get('status') === '1' ? 'In Stock' : params.get('status') === '0' ? 'Out of Stock' : 'All'})`}
@@ -554,7 +557,10 @@ export default function List(props) {
                         >
                           <td className="px-4 pb-2">
                             <input
+                              id={`checkbox-${product.id}`}
                               type="checkbox"
+                              className="hidden peer"
+                              value={product.id}
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   setSelectId((prev) => [...prev, product.id]);
@@ -563,8 +569,13 @@ export default function List(props) {
                                 }
                               }}
                               checked={selectId.includes(product.id)}
-                              className="cursor-pointer rounded-sm border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300"
                             />
+                            <label
+                              htmlFor={`checkbox-${product.id}`}
+                              className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                            >
+                              <FaCheck className="w-full fill-white" />
+                            </label>
                           </td>
 
                           <td className="px-2 py-3">
@@ -639,21 +650,35 @@ export default function List(props) {
                             )}
                           </td>
 
-                          <td className="px-2 py-3 w-40">
+                          <td className="px-2 py-3 w-20">
                             <label className="relative cursor-pointer inline-block">
                               <input
                                 type="checkbox"
                                 onClick={() =>
                                   router.put(route("product.status", product.id), {}, { preserveScroll: true })
                                 }
-                                className="sr-only peer "
+                                className="sr-only peer"
                                 checked={product?.stock?.status || false}
                               />
-                              <div className="w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-cyan-600 relative transition">
-                                <div className="absolute left-[2px] top-[1px] w-5 h-5 bg-white border border-gray-300 rounded-full transition peer-checked:translate-x-full"></div>
+
+                              <div
+                                className={`flex items-center w-24 h-10 px-1 rounded-full transition relative 
+        ${product?.stock?.status ? "bg-green-100 justify-start" : "bg-red-100 justify-end"}`}
+                              >
+                                <span
+                                  className={`absolute w-full text-[11px] text-center z-0 font-medium transition duration-200 
+          ${product?.stock?.status ? "text-green-700" : "text-red-700"}`}
+                                >
+                                  {product?.stock?.status ? "Active" : "Inactive"}
+                                </span>
+
+                                <div className="w-6 h-6 bg-white border border-gray-300 rounded-full z-10 transition peer-checked:translate-x-full"></div>
                               </div>
                             </label>
                           </td>
+
+
+
 
                           <td className="px-2 py-3 text-center">
                             <div className="flex justify-center items-center gap-2">

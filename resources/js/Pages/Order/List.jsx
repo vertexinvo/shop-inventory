@@ -7,7 +7,7 @@ import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
 import { PiListChecksFill } from "react-icons/pi";
 import { FaBoxOpen } from "react-icons/fa6";
-import { FaPen } from "react-icons/fa";
+import { FaCheck, FaEdit, FaEye, FaPen, FaTrash } from "react-icons/fa";
 import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
@@ -47,6 +47,48 @@ export default function List(props) {
   )
   const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
+
+
+  const handleEdit = (orderId) => {
+    router.get(route("order.edit", orderId));
+  };
+  const handleView = (orderId) => {
+    router.get(route("order.show", orderId));
+  };
+  const handleDelete = (orderId) => {
+    setIsDeleteModalOpen(orderId);
+  };
+  const handleBulkDelete = () => {
+    if (selectId.length === 0) {
+      toast.error("Please select at least one order to delete.");
+      return;
+    }
+    setIsBulkDeleteModalOpen(false);
+    router.delete(route("order.bulkdelete"), {
+      data: { ids: selectId },
+      preserveState: true,
+      onSuccess: () => {
+        setSelectId([]);
+        toast.success("Selected orders deleted successfully.");
+      },
+      onError: () => {
+        toast.error("Failed to delete selected orders.");
+      },
+    });
+  };
+  const handleDaterangeSubmit = () => {
+    const startDate = dateRange.startDate.toISOString().split('T')[0];
+    const endDate = dateRange.endDate.toISOString().split('T')[0];
+
+    router.get(route('order.index'), {
+      startdate: startDate,
+      enddate: endDate,
+      search: params.get('search') || '',
+      searchuserid: params.get('searchuserid') || '',
+      status: params.get('status') || ''
+    }, { preserveState: true });
+    setDaterangeModel(false);
+  };
 
   const handleAmountChange = (e, orderId) => {
     const updatedAmount = e.target.value;
@@ -344,7 +386,7 @@ export default function List(props) {
                 Instant Sale
               </button>
 
-              
+
               <select
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
@@ -385,366 +427,212 @@ export default function List(props) {
           </div>
 
 
-          <div className="overflow-x-auto">
-            <div class="font-[sans-serif] overflow-x-auto">
-              <table class="min-w-full bg-white">
-                <thead class="whitespace-nowrap">
-                  <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                    <th class="pl-4 w-8">
-                      <input id="checkbox" type="checkbox" class="hidden peer"
-                        onChange={(e) => setSelectId(e.target.checked ? orders.data.map((order) => order.id) : [])}
-                        checked={selectId.length === orders.data.length}
-                      />
-                      <label for="checkbox"
-                        class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                          <path
-                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            data-name="7-Check" data-original="#000000" />
-                        </svg>
-                      </label>
-                    </th>
-                    <th class="pl-4 text-left text-sm font-semibold ">
-                      Sale Date
-                    </th>
-                    <th class="pl-4 text-left text-sm font-semibold ">
-                      Bill No.
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Sale Info
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Payable Amount
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Remaining Amount
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Paid Amount
-                    </th>
 
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Status
-                    </th>
-
-                    <th class="pl-4 text-left text-sm font-semibold ">
-                      Sale ID
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Phone
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Address
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Payment Info
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total
-                    </th>
-
-
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Charges Info
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-
-                      Adjustment
-                    </th>
-                    {/* <th class="p-4 text-left text-sm font-semibold ">
-                      Installment Info
-                    </th> */}
-
-
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody class="whitespace-nowrap">
-
-                  {orders.data.length === 0 && (
-                    <tr>
-                      <td colSpan="12" className="p-4 text-center">
-                        No order found.
-                      </td>
-                    </tr>
-                  )}
-                  {orders.data.map((order, index) => (
-
-
-                    <tr className={`  ${(order.status === 'pending' && order.paid_amount <= 0) ? 'bg-red-100' : (order.status === 'pending' && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)) ? 'bg-yellow-100' : ' bg-white '} ${selectId.includes(order.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}
-                      onContextMenu={(e) => {
-                        e.preventDefault(); // Prevents default right-click menu
-                        show({ event: e, props: order }); // Shows custom menu
+          <div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-100 text-xs font-semibold uppercase text-gray-700">
+                <tr>
+                  <th className="px-4 py-3 w-8">
+                    <input
+                      id="checkbox"
+                      type="checkbox"
+                      className="hidden peer"
+                      onChange={(e) => {
+                        setSelectId(
+                          e.target.checked ? orders.data.map((order) => order.id) : []
+                        )
                       }}
+                      checked={selectId.length === orders.data.length}
+                    />
+                    <label
+                      htmlFor="checkbox"
+                      className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
                     >
+                      <FaCheck className="w-full fill-white" />
+                    </label>
+                  </th>
+                  <th className="px-4 py-3 text-left">Sale Date</th>
+                  <th className="px-4 py-3 text-left">Bill No.</th>
+                  <th className="px-4 py-3 text-left">Sale Info</th>
+                  <th className="px-4 py-3 text-left">Payable</th>
+                  <th className="px-4 py-3 text-left">Paid</th>
+                  <th className="px-4 py-3 text-left">Status</th>
+                  <th className="px-4 py-3 text-left">Sale ID</th>
+                  <th className="px-4 py-3 text-left">Actions</th>
+                </tr>
+              </thead>
 
-                      <td className="pl-4 w-8">
+              <tbody className="divide-y divide-gray-200 text-sm">
+                {orders.data.length === 0 && (
+                  <tr>
+                    <td colSpan="9" className="px-4 py-4 text-center text-gray-500">No order found.</td>
+                  </tr>
+                )}
+
+                {orders.data.map((order) => (
+                  <tr
+                    key={order.id}
+                    className={`hover:bg-gray-50 ${order.status === "pending" && order.paid_amount <= 0
+                      ? "bg-red-50"
+                      : order.status === "pending" && parseFloat(order.paid_amount) < parseFloat(order.payable_amount)
+                        ? "bg-yellow-50"
+                        : ""
+                      } ${selectId.includes(order.id) ? "border-l-4 border-black" : ""}`}
+                    onContextMenu={(e) => {
+                      e.preventDefault();
+                      show({ event: e, props: order });
+                    }}
+                  >
+                    <td className="px-4 py-2 w-8">
+                      <input
+                        id={`checkbox-${order.id}`}
+                        type="checkbox"
+                        className="hidden peer"
+                        value={order.id}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectId((prev) => [...prev, order.id]);
+                          } else {
+                            setSelectId((prev) => prev.filter((id) => id !== order.id));
+                          }
+                        }}
+                        checked={selectId.includes(order.id)}
+                      />
+                      <label
+                        htmlFor={`checkbox-${order.id}`}
+                        className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                      >
+                        <FaCheck className="w-full fill-white" />
+                      </label>
+                    </td>
+
+                    <td className="px-4 py-2 text-gray-800">{order.order_date || "N/A"}</td>
+                    <td className="px-4 py-2 text-gray-800">{order.bill_no || "N/A"}</td>
+
+                    <td className="px-4 py-2">
+                      <div className="flex items-center">
+                        <div className="ml-2">
+                          <p className="text-sm font-medium text-gray-900">{order.name}</p>
+                          {order.email && (
+                            <p className="text-xs text-gray-500">{order.email}</p>
+                          )}
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-2 text-gray-800">{order.payable_amount}</td>
+
+                    <td className="px-4 py-2">
+                      <div className="flex items-center w-[130px]">
                         <input
-                          id={`checkbox-${order.id}`} // Unique id for each checkbox
-                          type="checkbox"
-                          className="hidden peer"
-                          value={order.id}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectId((prev) => [...prev, order.id]); // Add user ID to state
-                            } else {
-                              setSelectId((prev) => prev.filter((id) => id !== order.id)); // Remove user ID from state
-                            }
-                          }}
-                          checked={selectId.includes(order.id)} // Bind state to checkbox
+                          className="border rounded px-2 py-1 text-sm focus:ring-black focus:border-black w-full"
+                          type="number"
+                          step="0.01"
+                          value={orderAmounts[order.id] || order.paid_amount || 0}
+                          onChange={(e) => handleAmountChange(e, order.id)}
                         />
-                        <label
-                          htmlFor={`checkbox-${order.id}`} // Match label with checkbox id
-                          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-full fill-white"
-                            viewBox="0 0 520 520"
-                          >
-                            <path
-                              d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            />
-                          </svg>
-                        </label>
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4">
-                            <p class="text-sm text-black">{order.order_date || 'N/A'}</p>
-                          </div>
-                        </div>
-
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {order.bill_no || 'N/A'}
-                      </td>
-
-                      <td class="text-sm text-black">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4 ">
-                            <p class="text-sm text-black ">{order.name}</p>
-                            {order.email && <p class="text-xs text-gray-500 mt-0.5">{order.email} </p>}
-                          </div>
-                        </div>
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-
-
-                        {order.payable_amount || 'N/A'}
-
-                      </td>
-                      <td class="p-4 text-sm text-black">
-
-
-                        {order.pending_amount}
-
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        <div className="flex items-center w-[130px] ">
-                          <input
-                            className="appearance-none border rounded py-2 px-3 focus:ring-black focus:border-black text-grey-darker w-full"
-                            type="number"
-                            step="0.01"
-                            value={orderAmounts[order.id] || order.paid_amount || 0} // Use order-specific value
-                            onChange={(e) => handleAmountChange(e, order.id)} // Pass the order id
-
-                          />
-                          <IoIosSave className="ml-2 cursor-pointer" size={30} onClick={async () => {
-                            await router.put(route('order.amountupdate', order.id), { paid_amount: orderAmounts[order.id] || order.paid_amount || 0 });
-                          }} />
-                        </div>
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-
-                        <button
-                          onClick={() => {
-                            if (order.status === "cancel") {
-                              toast.error("You can't change the status because it is already canceled.");
-                            } else {
-                              setIsStatusModalOpen(order);
-                            }
+                        <IoIosSave
+                          className="ml-2 cursor-pointer text-gray-600 hover:text-black"
+                          size={24}
+                          onClick={async () => {
+                            await router.put(route("order.amountupdate", order.id), {
+                              paid_amount: orderAmounts[order.id] || order.paid_amount || 0,
+                            });
                           }}
-                          className={`${order.status === "pending"
-                            ? "flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                            : order.status === "completed"
-                              ? "flex items-center bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                              : order.status === "cancel"
-                                ? "flex items-center bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded  "
-                                : ""
-                            }`}
+                        />
+                      </div>
+                    </td>
+
+                    <td className="px-4 py-2">
+                      <button
+                        onClick={() => {
+                          if (order.status === "cancel") {
+                            toast.error("You can't change the status because it is already canceled.");
+                          } else {
+                            setIsStatusModalOpen(order);
+                          }
+                        }}
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded flex items-center ${order.status === "pending"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : order.status === "completed"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
+                          }`}
+                      >
+                        {order.status || "N/A"}
+                        {order.status !== "cancel" && <FaPen className="ml-1" />}
+                      </button>
+                    </td>
+
+                    <td className="px-4 py-2 text-blue-600 cursor-pointer">
+                      <button
+                        onClick={() =>
+                          router.get(route("order.show", order.code || order.id))
+                        }
+                        title="View"
+                        type="button"
+                      >
+                        {order.code || order.id}
+                      </button>
+                    </td>
+
+                    <td className="px-4 py-2">
+                      <div className="flex space-x-2">
+                        <button
+                          onClick={() => handleView(order.id)}
+                          title="View"
+                          className="text-cyan-500 hover:text-cyan-700"
                         >
-                          {order.status || "N/A"}
-                          {order.status !== "cancel" && <FaPen className="ms-1" />}
+                          <FaEye className="w-4 h-4" />
                         </button>
-                      </td>
-
-
-
-                      <td class="pl-4 text-sm text-black cursor-pointer">
-                        <button onClick={() => router.get(route('order.show', order.code || order.id))} className='text-blue-600' title="Edit" type='button'>
-                          {order.code || order.id}
+                        <button
+                          onClick={() => handleEdit(order.id)}
+                          title="Edit"
+                          className="text-yellow-500 hover:text-yellow-700"
+                        >
+                          <FaEdit className="w-4 h-4" />
                         </button>
-                      </td>
+                        <button
+                          onClick={() => handleDelete(order)}
+                          title="Delete"
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <FaTrash className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
 
 
 
-                      <td class="p-4 text-sm text-black">
-                        {order.phone || 'N/A'}
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        {order.address || 'N/A'}
-                      </td>
-                      <td class="text-sm text-black">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4">
-                            <p class="text-sm text-black">{order.method}</p>
-                            {order.method === "cheque" && (
-                              <>
-                                <p class="text-sm text-black">Cheque No: <span class="text-xs text-gray-500">{order.cheque_no}</span></p>
-                                <p class="text-sm text-black">Bank Name: <span class="text-xs text-gray-500">{order.bank_name}</span></p>
-                                <p class="text-sm text-black">Bank Branch: <span class="text-xs text-gray-500">{order.bank_branch}</span></p>
-                                <p class="text-sm text-black">Bank Amount: <span class="text-xs text-gray-500">{order.bank_account}</span></p>
-                              </>
-                            )}
-                            {order.method === "online" && order.online_payment_link}
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        {order.total || 'N/A'}
-                      </td>
-                      {/* <td class=" text-sm text-black">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4 ">
-                            <p class="text-sm text-black ">{order.method}</p>
-                            <p class="text-sm text-black ">Cheque No : <span class="text-xs text-gray-500 mt-0.5">{order.cheque_no}</span></p>
-                            <p class="text-sm text-black ">Bank Name : <span class="text-xs text-gray-500 mt-0.5">{order.bank_name}</span></p>
-                            <p class="text-sm text-black ">Bank Branch : <span class="text-xs text-gray-500 mt-0.5">{order.bank_branch}</span></p>
-                            <p class="text-sm text-black ">Bank Amount : <span class="text-xs text-gray-500 mt-0.5">{order.bank_account}</span></p>
-                          
-                               </div>
-                        </div>
-                      </td> */}
+            {/* Context Menu */}
+            <Menu id="context-menu">
+              <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
+                View
+              </Item>
+              <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
+                Edit
+              </Item>
+              {/* Show Stock option only if identity_type is not 'imei' */}
+
+              <Item
+                onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
+                className="text-red-600"
+              >
+                Delete
+              </Item>
 
 
+            </Menu>
 
-
-
-                      {order.method === "check" && (
-                        <td class="text-sm text-black">
-
-                          <div class="flex items-center cursor-pointer w-max">
-                            <div class="ml-4">
-                              <p class="text-sm text-black ">{order.method}</p>
-
-                            </div>
-                          </div>
-
-                        </td>)}
-
-
-
-                      <td class=" text-sm text-black">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4 ">
-                            <p class="text-sm text-black ">Extra Charges : {order.extra_charges || '0'}</p>
-                            <p class="text-sm text-black ">Shipping Charges : {order.shipping_charges || '0'}</p>
-                            <p class="text-sm text-black ">Tax : {order.tax || '0'}</p>
-
-                          </div>
-                        </div>
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        <p class="text-sm text-black "> Discount : {order.discount || 'N/A'}</p>
-                        <p class="text-sm text-black ">Exchange : {order.exchange || '0'}</p>
-                      </td>
-                      {/* <td class=" pt-4 pb-4 text-sm text-black">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4 ">
-                            {!order.is_installment ? <p class="text-sm text-black ">No</p> : <>
-                              <p class="text-sm text-black ">Installment Amount : <span class="text-xs text-gray-500 mt-0.5">{order.installment_amount || 'N/A'}</span></p>
-                              <p class="text-sm text-black ">Installment Period : <span class="text-xs text-gray-500 mt-0.5">{order.installment_period || 'N/A'}</span></p>
-                              <p class="text-sm text-black ">Installment Count : <span class="text-xs text-gray-500 mt-0.5">{order.installment_count || 'N/A'}</span></p>
-                              <p class="text-sm text-black ">Installment Start Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_start_date || 'N/A'}</span></p>
-                              <p class="text-sm text-black ">Installment End Date : <span class="text-xs text-gray-500 mt-0.5">{order.installment_end_date || 'N/A'}</span></p>
-                            </>}
-                          </div>
-                        </div>
-                      </td> */}
-
-
-
-
-                      <td class="p-4 flex items-center gap-2">
-
-
-                        <Dropdown >
-                          <Dropdown.Trigger>
-                            <button className="text-gray-500 hover:text-black focus:outline-none">
-                              <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                              </svg>
-                            </button>
-                          </Dropdown.Trigger>
-                          <Dropdown.Content>
-                            <Dropdown.Link href={route('order.show', { id: order.id })}>View</Dropdown.Link>
-                            <Dropdown.Link href={route('order.edit', order.id)}>Edit</Dropdown.Link>
-                            <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() => setIsDeleteModalOpen(order)} >Delete</button>
-
-
-                          </Dropdown.Content>
-                        </Dropdown>
-
-
-                      </td>
-
-
-                    </tr>
-                  ))}
-
-                </tbody>
-              </table>
-
-
-
-              {/* Context Menu */}
-              <Menu id="context-menu">
-                <Item onClick={({ props }) => handleMenuClick({ props, action: "view" })}>
-                  View
-                </Item>
-                <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
-                  Edit
-                </Item>
-                {/* Show Stock option only if identity_type is not 'imei' */}
-
-                <Item
-                  onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
-                  className="text-red-600"
-                >
-                  Delete
-                </Item>
-
-
-              </Menu>
-
-            </div>
+            {/* Pagination */}
             <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
               <span class="flex items-center col-span-3"> Showing {orders.from} - {orders.to} of {orders.total} </span>
               <span class="col-span-2"></span>
+
 
               <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
                 <nav aria-label="Table navigation">
@@ -829,8 +717,6 @@ export default function List(props) {
               </span>
             </div>
           </div>
-
-
         </div>
       </div>
       <Modal
