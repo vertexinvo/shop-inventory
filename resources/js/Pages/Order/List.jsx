@@ -6,8 +6,8 @@ import ConfirmModal from '@/Components/ConfirmModal';
 import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
 import { PiListChecksFill } from "react-icons/pi";
-import { FaBoxOpen, FaXmark } from "react-icons/fa6";
-import { FaCheck, FaEdit, FaEye, FaPen, FaSearch, FaTrash } from "react-icons/fa";
+import { FaBoxOpen, FaRotateRight, FaXmark } from "react-icons/fa6";
+import { FaCalendarCheck, FaCheck, FaEdit, FaEye, FaFilter, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
@@ -171,156 +171,127 @@ export default function List(props) {
         </select>
       </div> */}
 
-      <div class=" mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+  {/* TODAY'S PROFIT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">TODAY'S PROFIT</p>
+      <p className="text-xl font-bold">
+        {rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
+      </p>
+    </div>
+    <GrMoney size={36} className="text-emerald-600" />
+  </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">TODAY'S PROFIT</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todayProfit) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <GrMoney size={40} />
-            </div>
-          </div>
-        </div>
+  {/* TODAY'S PENDING AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">TODAY'S PENDING AMOUNT</p>
+      <p className="text-xl font-bold">
+        {rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : 'No Access'}
+      </p>
+    </div>
+    <CiTimer size={36} className="text-yellow-500" />
+  </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">TODAY'S PENDING AMOUNT</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <CiTimer size={40} />
-            </div>
-          </div>
-        </div>
-
-
-        <Link href={route('order.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">TODAYS ORDERS</p>
-                <p class="text-lg">{todaysOrder}</p>
-              </div>
-              <div class="my-auto">
-                <VscGraph size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-        <Link href={route('order.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">TOTAL ORDERS</p>
-                <p class="text-lg">{total}</p>
-              </div>
-              <div class="my-auto">
-                <VscGraph size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        <Link href={route('order.index', { status: 'pending' })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">PENDING ORDERS</p>
-                <p class="text-lg">{pendingCount}</p>
-              </div>
-              <div class="my-auto">
-                <FaBoxOpen size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-        <Link href={route('order.index', { status: 'completed' })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">COMPLETED ORDERS</p>
-                <p class="text-lg">{completedCount}</p>
-              </div>
-              <div class="my-auto">
-                <PiListChecksFill size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL COMPLETED AMOUNT</p>
-              <p class="text-lg">{totalPaidAmount}</p>
-            </div>
-            <div class="my-auto">
-              <MdOutlinePayments size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TOTAL PENDING AMOUNT</p>
-              <p class="text-lg">{parseFloat(totalPendingAmount).toFixed(2)}</p>
-            </div>
-            <div class="my-auto">
-              <FaMoneyBills size={40} />
-            </div>
-          </div>
-        </div>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">MONTHLY COMPLETED AMOUNT</p>
-              <p class="text-lg">{parseFloat(monthlyTotalPaidAmount).toFixed(2)}</p>
-            </div>
-            <div class="my-auto">
-              <FaMoneyBills size={40} />
-            </div>
-          </div>
-        </div>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">MONTHLY PENDING AMOUNT</p>
-              <p class="text-lg">{parseFloat(monthlyTotalPendingAmount).toFixed(2)}</p>
-            </div>
-            <div class="my-auto">
-              <FaMoneyBills size={40} />
-            </div>
-          </div>
-        </div>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">YEARLY COMPLETED AMOUNT</p>
-              <p class="text-lg">{parseFloat(yearlyTotalPaidAmount).toFixed(2)}</p>
-            </div>
-            <div class="my-auto">
-              <FaMoneyBills size={40} />
-            </div>
-          </div>
-        </div>
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">YEARLY PENDING AMOUNT</p>
-              <p class="text-lg">{parseFloat(yearlyTotalPendingAmount).toFixed(2)}</p>
-            </div>
-            <div class="my-auto">
-              <FaMoneyBills size={40} />
-            </div>
-          </div>
-        </div>
-
+  {/* TODAY'S ORDERS */}
+  <Link href={route('order.index')}>
+    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+      <div>
+        <p className="text-gray-600 text-sm font-medium">TODAY'S ORDERS</p>
+        <p className="text-xl font-bold">{todaysOrder}</p>
       </div>
+      <VscGraph size={36} className="text-blue-500" />
+    </div>
+  </Link>
+
+  {/* TOTAL ORDERS */}
+  <Link href={route('order.index')}>
+    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+      <div>
+        <p className="text-gray-600 text-sm font-medium">TOTAL ORDERS</p>
+        <p className="text-xl font-bold">{total}</p>
+      </div>
+      <VscGraph size={36} className="text-indigo-500" />
+    </div>
+  </Link>
+
+  {/* PENDING ORDERS */}
+  <Link href={route('order.index', { status: 'pending' })}>
+    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+      <div>
+        <p className="text-gray-600 text-sm font-medium">PENDING ORDERS</p>
+        <p className="text-xl font-bold">{pendingCount}</p>
+      </div>
+      <FaBoxOpen size={36} className="text-yellow-600" />
+    </div>
+  </Link>
+
+  {/* COMPLETED ORDERS */}
+  <Link href={route('order.index', { status: 'completed' })}>
+    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+      <div>
+        <p className="text-gray-600 text-sm font-medium">COMPLETED ORDERS</p>
+        <p className="text-xl font-bold">{completedCount}</p>
+      </div>
+      <PiListChecksFill size={36} className="text-green-600" />
+    </div>
+  </Link>
+
+  {/* TOTAL COMPLETED AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">TOTAL COMPLETED AMOUNT</p>
+      <p className="text-xl font-bold text-emerald-600">{totalPaidAmount}</p>
+    </div>
+    <MdOutlinePayments size={36} className="text-emerald-500" />
+  </div>
+
+  {/* TOTAL PENDING AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">TOTAL PENDING AMOUNT</p>
+      <p className="text-xl font-bold">{parseFloat(totalPendingAmount).toFixed(2)}</p>
+    </div>
+    <FaMoneyBills size={36} className="text-yellow-600" />
+  </div>
+
+  {/* MONTHLY COMPLETED AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">MONTHLY COMPLETED AMOUNT</p>
+      <p className="text-xl font-bold">{parseFloat(monthlyTotalPaidAmount).toFixed(2)}</p>
+    </div>
+    <FaMoneyBills size={36} className="text-green-500" />
+  </div>
+
+  {/* MONTHLY PENDING AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">MONTHLY PENDING AMOUNT</p>
+      <p className="text-xl font-bold">{parseFloat(monthlyTotalPendingAmount).toFixed(2)}</p>
+    </div>
+    <FaMoneyBills size={36} className="text-red-500" />
+  </div>
+
+  {/* YEARLY COMPLETED AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">YEARLY COMPLETED AMOUNT</p>
+      <p className="text-xl font-bold">{parseFloat(yearlyTotalPaidAmount).toFixed(2)}</p>
+    </div>
+    <FaMoneyBills size={36} className="text-blue-500" />
+  </div>
+
+  {/* YEARLY PENDING AMOUNT */}
+  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+    <div>
+      <p className="text-gray-600 text-sm font-medium">YEARLY PENDING AMOUNT</p>
+      <p className="text-xl font-bold">{parseFloat(yearlyTotalPendingAmount).toFixed(2)}</p>
+    </div>
+    <FaMoneyBills size={36} className="text-orange-500" />
+  </div>
+</div>
 
 
 
@@ -395,14 +366,14 @@ export default function List(props) {
 
 
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-              <button
+              {/* <button
                 onClick={() => router.get(route('order.instantorder'))}
                 className="text-white w-full md:w-64  py-2 px-4 rounded-lg bg-black hover:bg-gray-600"
               >
                 Instant Sale
-              </button>
+              </button> */}
 
-
+              {/* 
               <select
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
@@ -416,7 +387,7 @@ export default function List(props) {
                 <option value="pending">Pending</option>
                 <option value="completed">Completed</option>
                 <option value="cancel">Cancelled</option>
-              </select>
+              </select> */}
 
               {selectId.length > 0 && (
                 <button
@@ -427,17 +398,28 @@ export default function List(props) {
                 </button>
               )}
 
-              <FloatingCreateButton routeName="order.create" title="Create" />
+              {/* <FloatingCreateButton routeName="order.create" title="Create" /> */}
 
 
 
               <button
                 onClick={() => setDaterangeModel(true)}
-                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-900 md:w-auto"
               >
+                <FaCalendarCheck className='h-4 w-4' />
                 Date&nbsp;Range&nbsp;Filter
               </button>
 
+              {/* reset filter */}
+              <button
+                onClick={() => {
+                  router.get(route('order.index'))
+                }}
+                className="text-gray-700 flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg  bg-gray-200 hover:bg-slate-300 md:w-auto"
+              >
+                <FaRotateRight className='h-4 w-4' />
+                Reset&nbsp;Filters
+              </button>
 
             </div>
           </div>
@@ -472,7 +454,53 @@ export default function List(props) {
                   <th className="px-4 py-3 text-left">Bill No.</th>
                   <th className="px-4 py-3 text-left">Payable</th>
                   <th className="px-4 py-3 text-left">Paid</th>
-                  <th className="px-4 py-3 text-left">Status</th>
+                  <th className="px-4 py-3 text-left">
+                    <Dropdown>
+                      <Dropdown.Trigger>
+                        <div className="flex items-center justify-between cursor-pointer">
+                          {`Status (${params.get('status') === 'pending'
+                            ? 'Pending'
+                            : params.get('status') === 'completed'
+                              ? 'Completed'
+                              : params.get('status') === 'cancel'
+                                ? 'Cancelled'
+                                : 'All'})`}
+                          <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Status">
+                            <FaFilter className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </Dropdown.Trigger>
+
+                      <Dropdown.Content>
+                        <select
+                          onClick={(e) => e.stopPropagation()}
+                          name="status"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          onChange={(e) =>
+                            router.get(
+                              route('order.index'),
+                              {
+                                status: e.target.value,
+                                startdate: params.get('startdate'),
+                                enddate: params.get('enddate'),
+                                search: params.get('search'),
+                                searchuserid: params.get('searchuserid'),
+                              },
+                              { preserveState: true }
+                            )
+                          }
+                          value={params.get('status') || ''}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="pending">Pending</option>
+                          <option value="completed">Completed</option>
+                          <option value="cancel">Cancelled</option>
+                        </select>
+                      </Dropdown.Content>
+                    </Dropdown>
+
+
+                  </th>
                   <th className="px-4 py-3 text-left">Actions</th>
                 </tr>
               </thead>
