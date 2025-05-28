@@ -171,6 +171,9 @@ export default function List(props) {
                     <th class="p-4 text-left text-sm font-semibold ">
                       type
                     </th>
+                     <th class="p-4 text-left text-sm font-semibold ">
+                      Purchase Price
+                    </th>
                     {/* <th class="p-4 text-left text-sm font-semibold ">
                       Supplier Invoice
                     </th> */}
@@ -237,6 +240,9 @@ export default function List(props) {
                       </td>
                       <td class="p-4 text-sm text-black">
                         {product?.type || 'N/A'}
+                      </td>
+                      <td class="p-4 text-sm text-black">
+                        {product?.purchase_price || 'N/A'}
                       </td>
                       {/* <td class="p-4 text-sm text-black">
                         {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}

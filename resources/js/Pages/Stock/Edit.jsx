@@ -49,7 +49,7 @@ export default function Add(props) {
                                             datetime: stocklogs.datetime || '',
                                             supplier_invoice_no: stocklogs.supplier_invoice_no || '',
                                             remarks: stocklogs.remarks || '',
-
+                                            purchase_price:  stocklogs.purchase_price || '',
                                         }}
                                         validationSchema={Yup.object({
                                             quantity: Yup.number().min(1).required('Quantity is required'),
@@ -61,6 +61,11 @@ export default function Add(props) {
                                                 then: scheme => scheme.required(),
                                                 otherwise: scheme => scheme.optional()
                                             }),
+                                            purchase_price: Yup.number().when('type', {
+                                                                            is: 'addition',
+                                                                            then: scheme => scheme.required(),
+                                                                            otherwise: scheme => scheme.optional()
+                                                                }),
                                         })}
                                         onSubmit={(values, { setSubmitting, resetForm }) => {
                                             router.post(route('stocklog.store'), values, { onSuccess: () => resetForm() });
@@ -92,6 +97,23 @@ export default function Add(props) {
                                                             <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
                                                         </div>
                                                     </div>
+
+
+                                                       {values.type === 'addition' && (
+                                                        <div className="flex mb-4">
+                                                            <div className="w-full mr-1">
+                                                                <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="postal_code">Purchase Price (Required)</label>
+                                                                <Field
+                                                                name="purchase_price"
+                                                                className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker"
+                                                                id="purchase_price"
+                                                                type="number" step="any"
+                                                                placeholder="Enter Purchase Price"
+                                                                />
+                                                                <ErrorMessage name="purchase_price" component="div" className="text-red-500 text-xs mt-1" />
+                                                            </div>
+                                                        </div>
+                                                        )}
 
                                                     <div className="flex mb-4">
                                                         <div className="w-1/2 mr-1">

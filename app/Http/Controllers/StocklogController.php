@@ -64,6 +64,7 @@ class StocklogController extends Controller
             'supplier_invoice_no' => 'nullable|exists:supplierinvoices,invoice_no',
             'product_id' => 'required|exists:products,id',
             'datetime' => 'required',
+            'purchase_price' => 'nullable|numeric|min:0',
            ]);
     
            if ($validator->fails()) {
