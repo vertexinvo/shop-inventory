@@ -125,6 +125,75 @@ export default function List(props) {
 
   const rolename = auth.user.roles.map((role) => role.name);
 
+  const [showAll, setShowAll] = useState(false);
+  const cards = [
+    {
+      label: "TODAY'S PROFIT",
+      value: rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access',
+      icon: <GrMoney size={36} className="text-emerald-600" />,
+    },
+    {
+      label: "TODAY'S PENDING AMOUNT",
+      value: rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : 'No Access',
+      icon: <CiTimer size={36} className="text-yellow-500" />,
+    },
+    {
+      label: "TODAY'S ORDERS",
+      value: todaysOrder,
+      icon: <VscGraph size={36} className="text-blue-500" />,
+      link: route('order.index'),
+    },
+    {
+      label: "TOTAL ORDERS",
+      value: total,
+      icon: <VscGraph size={36} className="text-indigo-500" />,
+      link: route('order.index'),
+    },
+    {
+      label: "PENDING ORDERS",
+      value: pendingCount,
+      icon: <FaBoxOpen size={36} className="text-yellow-600" />,
+      link: route('order.index', { status: 'pending' }),
+    },
+    {
+      label: "COMPLETED ORDERS",
+      value: completedCount,
+      icon: <PiListChecksFill size={36} className="text-green-600" />,
+      link: route('order.index', { status: 'completed' }),
+    },
+    {
+      label: "TOTAL COMPLETED AMOUNT",
+      value: totalPaidAmount,
+      icon: <MdOutlinePayments size={36} className="text-emerald-500" />,
+    },
+    {
+      label: "TOTAL PENDING AMOUNT",
+      value: parseFloat(totalPendingAmount).toFixed(2),
+      icon: <FaMoneyBills size={36} className="text-yellow-600" />,
+    },
+    {
+      label: "MONTHLY COMPLETED AMOUNT",
+      value: parseFloat(monthlyTotalPaidAmount).toFixed(2),
+      icon: <FaMoneyBills size={36} className="text-green-500" />,
+    },
+    {
+      label: "MONTHLY PENDING AMOUNT",
+      value: parseFloat(monthlyTotalPendingAmount).toFixed(2),
+      icon: <FaMoneyBills size={36} className="text-red-500" />,
+    },
+    {
+      label: "YEARLY COMPLETED AMOUNT",
+      value: parseFloat(yearlyTotalPaidAmount).toFixed(2),
+      icon: <FaMoneyBills size={36} className="text-blue-500" />,
+    },
+    {
+      label: "YEARLY PENDING AMOUNT",
+      value: parseFloat(yearlyTotalPendingAmount).toFixed(2),
+      icon: <FaMoneyBills size={36} className="text-orange-500" />,
+    },
+  ];
+
+  const visibleCards = showAll ? cards : cards.slice(0, 5);
 
   return (
     <AuthenticatedLayout
@@ -171,127 +240,38 @@ export default function List(props) {
         </select>
       </div> */}
 
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
-  {/* TODAY'S PROFIT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">TODAY'S PROFIT</p>
-      <p className="text-xl font-bold">
-        {rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
-      </p>
-    </div>
-    <GrMoney size={36} className="text-emerald-600" />
-  </div>
+ <div className="p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-all">
+        {visibleCards.map((card, index) => {
+          const content = (
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">{card.label}</p>
+                <p className="text-xl font-bold">{card.value}</p>
+              </div>
+              {card.icon}
+            </div>
+          );
 
-  {/* TODAY'S PENDING AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">TODAY'S PENDING AMOUNT</p>
-      <p className="text-xl font-bold">
-        {rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : 'No Access'}
-      </p>
-    </div>
-    <CiTimer size={36} className="text-yellow-500" />
-  </div>
-
-  {/* TODAY'S ORDERS */}
-  <Link href={route('order.index')}>
-    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-      <div>
-        <p className="text-gray-600 text-sm font-medium">TODAY'S ORDERS</p>
-        <p className="text-xl font-bold">{todaysOrder}</p>
+          return (
+            <div key={index}>
+              {card.link ? <Link href={card.link}>{content}</Link> : content}
+            </div>
+          );
+        })}
       </div>
-      <VscGraph size={36} className="text-blue-500" />
-    </div>
-  </Link>
 
-  {/* TOTAL ORDERS */}
-  <Link href={route('order.index')}>
-    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-      <div>
-        <p className="text-gray-600 text-sm font-medium">TOTAL ORDERS</p>
-        <p className="text-xl font-bold">{total}</p>
-      </div>
-      <VscGraph size={36} className="text-indigo-500" />
+      {cards.length > 5 && (
+        <div className="flex justify-end mt-4">
+          <button
+            onClick={() => setShowAll(!showAll)}
+            className="text-sm px-4 py-1 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition"
+          >
+            {showAll ? 'Show Less ↑' : 'Show More ↓'}
+          </button>
+        </div>
+      )}
     </div>
-  </Link>
-
-  {/* PENDING ORDERS */}
-  <Link href={route('order.index', { status: 'pending' })}>
-    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-      <div>
-        <p className="text-gray-600 text-sm font-medium">PENDING ORDERS</p>
-        <p className="text-xl font-bold">{pendingCount}</p>
-      </div>
-      <FaBoxOpen size={36} className="text-yellow-600" />
-    </div>
-  </Link>
-
-  {/* COMPLETED ORDERS */}
-  <Link href={route('order.index', { status: 'completed' })}>
-    <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-      <div>
-        <p className="text-gray-600 text-sm font-medium">COMPLETED ORDERS</p>
-        <p className="text-xl font-bold">{completedCount}</p>
-      </div>
-      <PiListChecksFill size={36} className="text-green-600" />
-    </div>
-  </Link>
-
-  {/* TOTAL COMPLETED AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">TOTAL COMPLETED AMOUNT</p>
-      <p className="text-xl font-bold text-emerald-600">{totalPaidAmount}</p>
-    </div>
-    <MdOutlinePayments size={36} className="text-emerald-500" />
-  </div>
-
-  {/* TOTAL PENDING AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">TOTAL PENDING AMOUNT</p>
-      <p className="text-xl font-bold">{parseFloat(totalPendingAmount).toFixed(2)}</p>
-    </div>
-    <FaMoneyBills size={36} className="text-yellow-600" />
-  </div>
-
-  {/* MONTHLY COMPLETED AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">MONTHLY COMPLETED AMOUNT</p>
-      <p className="text-xl font-bold">{parseFloat(monthlyTotalPaidAmount).toFixed(2)}</p>
-    </div>
-    <FaMoneyBills size={36} className="text-green-500" />
-  </div>
-
-  {/* MONTHLY PENDING AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">MONTHLY PENDING AMOUNT</p>
-      <p className="text-xl font-bold">{parseFloat(monthlyTotalPendingAmount).toFixed(2)}</p>
-    </div>
-    <FaMoneyBills size={36} className="text-red-500" />
-  </div>
-
-  {/* YEARLY COMPLETED AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">YEARLY COMPLETED AMOUNT</p>
-      <p className="text-xl font-bold">{parseFloat(yearlyTotalPaidAmount).toFixed(2)}</p>
-    </div>
-    <FaMoneyBills size={36} className="text-blue-500" />
-  </div>
-
-  {/* YEARLY PENDING AMOUNT */}
-  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-    <div>
-      <p className="text-gray-600 text-sm font-medium">YEARLY PENDING AMOUNT</p>
-      <p className="text-xl font-bold">{parseFloat(yearlyTotalPendingAmount).toFixed(2)}</p>
-    </div>
-    <FaMoneyBills size={36} className="text-orange-500" />
-  </div>
-</div>
 
 
 
