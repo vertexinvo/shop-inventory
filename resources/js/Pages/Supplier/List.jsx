@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaCheck, FaSearch } from 'react-icons/fa'
 import { MdDelete, MdPending } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -10,7 +10,7 @@ import { BiCopy, BiExport } from 'react-icons/bi';
 import { toast } from 'react-toastify';
 import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { PiListChecksFill } from 'react-icons/pi';
-import { FaBoxOpen } from 'react-icons/fa6';
+import { FaBoxOpen, FaXmark } from 'react-icons/fa6';
 import { VscGraph } from 'react-icons/vsc';
 import { MdKeyboardBackspace } from "react-icons/md";
 import { SiMicrosoftexcel } from "react-icons/si";
@@ -137,41 +137,49 @@ export default function List(props) {
                   router.get(route('supplier.index'), { search: values.search }, { preserveState: true });
                 }}
               >
-                {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
-                    <div className="relative w-full md:w-auto">
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-
-
-
-                        className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFieldValue('search', '');
-                          router.get(route('supplier.index'));
-                        }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                      >
-                        ✖
-                      </button>
+                {({ values, setFieldValue, handleSubmit }) => (
+                  <Form className="w-full flex items-center gap-3">
+                    <div className="relative w-full md:max-w-md">
+                      <Field name="search">
+                        {({ field, form }) => (
+                          <div className="relative">
+                            <input
+                              {...field}
+                              type="text"
+                              placeholder="Search suppliers..."
+                              className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300 bg-white shadow-sm hover:shadow-md placeholder-gray-400 text-gray-800"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSubmit();
+                              }}
+                            />
+                            {/* Search Icon */}
+                            <button
+                              type="submit"
+                              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-500 focus:outline-none transition-colors"
+                              aria-label="Search"
+                            >
+                              <FaSearch className="w-4 h-4" />
+                            </button>
+                            {/* Clear Icon */}
+                            {field.value && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  form.setFieldValue('search', '');
+                                  router.get(route('supplier.index'));
+                                }}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
+                                aria-label="Clear search"
+                              >
+                                <FaXmark className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </Field>
                     </div>
-
-                    <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                    >
-                      Search
-                    </button>
-
                   </Form>
-
                 )}
-
               </Formik>
               <select
                 name="filter"
@@ -205,246 +213,219 @@ export default function List(props) {
 
 
 
-          <div className="overflow-x-auto">
-            <div class="font-[sans-serif] overflow-x-auto">
-              <table class="min-w-full bg-white">
-                <thead class="whitespace-nowrap">
-                  <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                    <th class="pl-4 w-8">
-                      <input id="checkbox" type="checkbox" class="hidden peer"
-                        onChange={(e) => setSelectId(e.target.checked ? suppliers.data.map((item) => item.id) : [])}
-                        checked={selectId.length === suppliers.data.length}
-                      />
-                      <label for="checkbox"
-                        class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
-                          <path
-                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            data-name="7-Check" data-original="#000000" />
-                        </svg>
-                      </label>
+          <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+            <table className="min-w-full divide-y divide-gray-200 bg-white">
+              <thead className="whitespace-nowrap text-xs uppercase bg-gray-200 text-gray-700 tracking-wide border-b">
+                <tr>
+                  <th className="px-4 py-3 w-8">
+                    <input
+                      id="checkbox"
+                      type="checkbox"
+                      className="hidden peer"
+                      onChange={(e) =>
+                        setSelectId(
+                          e.target.checked ? suppliers.data.map((item) => item.id) : []
+                        )
+                      }
+                      checked={selectId.length === suppliers.data.length}
+                    />
+                    <label
+                      htmlFor="checkbox"
+                      className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                    >
+                      <FaCheck className="w-full fill-white" />
+                    </label>
+                  </th>
+                  {[
+                    "Supplier Info",
+                    "Contact",
+                    "Address",
+                    "Code",
+                    "Total Invoices",
+                    "Total Amount",
+                    "Amount Paid",
+                    "Amount Pending",
+                    "Action",
+                  ].map((heading) => (
+                    <th key={heading} className="px-4 py-3 text-left">
+                      {heading}
                     </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Supplier Info
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Contact
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Address
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Code
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Invoices
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Amount
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Amount Paid
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Amount Pending
-                    </th>
-
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody class="whitespace-nowrap">
-
-                  {suppliers.data.length === 0 && (
-                    <tr>
-                      <td colSpan="12" className="p-4 text-center">
-                        No Supplier found.
-                      </td>
-                    </tr>
-                  )}
-                  {suppliers.data.map((item, index) => (
-
-                    <tr
-                      onContextMenu={(e) => {
-                        e.preventDefault(); // Prevents default right-click menu
-                        show({ event: e, props: item }); // Shows custom menu
-                      }}
-                      className={`${item?.total_amount_paid == 0 && item?.total_amount > 0 ? 'bg-red-100' : item?.total_amount_paid > 0 && item?.total_amount_pending > 0 ? 'bg-yellow-100' : ''}  ${selectId.includes(item.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
-
-                      <td className="pl-4 w-8">
-                        <input
-                          id={`checkbox-${item.id}`} // Unique id for each checkbox
-                          type="checkbox"
-                          className="hidden peer"
-                          value={item.id}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSelectId((prev) => [...prev, item.id]); // Add user ID to state
-                            } else {
-                              setSelectId((prev) => prev.filter((id) => id !== item.id)); // Remove user ID from state
-                            }
-                          }}
-                          checked={selectId.includes(item.id)} // Bind state to checkbox
-                        />
-                        <label
-                          htmlFor={`checkbox-${item.id}`} // Match label with checkbox id
-                          className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-full fill-white"
-                            viewBox="0 0 520 520"
-                          >
-                            <path
-                              d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                            />
-                          </svg>
-                        </label>
-                      </td>
-
-
-                      <td class=" text-sm">
-                        <div class="flex items-center cursor-pointer w-max">
-                          <div class="ml-4 ">
-                            <p class="text-sm text-black ">Person Name : {item.person_name}</p>
-                            {item.email && <p class="text-xs text-gray-500 mt-0.5">Email :{item.email} </p>}
-
-                          </div>
-                        </div>
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {item?.contact || 'N/A'}
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {item?.address || 'N/A'}
-                      </td>
-                      <td class="p-4 text-sm text-black flex items-center">
-                        <Link className='text-blue-600' href={route('product.index', { invoicecode: item.code })} >{item?.code || 'N/A'}</Link> <BiCopy size={20} onClick={() => { navigator.clipboard.writeText(item.code); toast.success('Copied!'); }} className="ml-2 cursor-pointer" />
-                      </td>
-
-                      <td class="p-4 text-sm text-black">
-                        {item?.total_supplierinvoices || 0}
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        {item?.total_amount || 0}
-                      </td>
-
-                      {/* total_total_amount_paid */}
-                      <td class="p-4 text-sm text-black">
-                        {item?.total_amount_paid || 0}
-                      </td>
-                      <td class="p-4 text-sm text-black">
-                        {item?.total_amount_pending || 0}
-                      </td>
-
-
-
-                      <td class="p-4 flex items-center">
-
-                        <Dropdown >
-                          <Dropdown.Trigger>
-                            <button className="text-gray-500 hover:text-black focus:outline-none">
-                              <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                              </svg>
-                            </button>
-                          </Dropdown.Trigger>
-                          <Dropdown.Content>
-                            <Dropdown.Link href={route('supplier.invoices', item.id)}>Invoice</Dropdown.Link>
-                            <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.code || item.id)}>Ledger</Dropdown.Link>
-                            <Dropdown.Link href={route('supplier.edit', item.id)}>Edit</Dropdown.Link>
-                            <button class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 transition duration-150 ease-in-out " type='button' onClick={() => setIsDeleteModalOpen(item)} >Delete</button>
-
-
-                          </Dropdown.Content>
-                        </Dropdown>
-
-
-
-
-
-                      </td>
-                    </tr>
                   ))}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {suppliers.data.length === 0 && (
+                  <tr>
+                    <td colSpan="10" className="px-4 py-3 text-center text-gray-500">
+                      No Supplier found.
+                    </td>
+                  </tr>
+                )}
 
-                </tbody>
-              </table>
+                {suppliers.data.map((item) => (
+                  <tr
+                    key={item.id}
+                    onContextMenu={(e) => {
+                      e.preventDefault()
+                      show({ event: e, props: item })
+                    }}
+                    className={`${item?.total_amount_paid === 0 && item?.total_amount > 0
+                      ? 'bg-red-50'
+                      : item?.total_amount_paid > 0 && item?.total_amount_pending > 0
+                        ? 'bg-yellow-50'
+                        : ''
+                      } ${selectId.includes(item.id) ? 'border-l-4 border-black' : ''}`}
+                  >
+                    {/* Checkbox */}
+                    <td className="px-4 py-3 w-8">
+                      <input
+                        id={`checkbox-${item.id}`}
+                        type="checkbox"
+                        className="hidden peer"
+                        value={item.id}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectId((prev) => [...prev, item.id])
+                          } else {
+                            setSelectId((prev) => prev.filter((id) => id !== item.id))
+                          }
+                        }}
+                        checked={selectId.includes(item.id)}
+                      />
+                      <label
+                        htmlFor={`checkbox-${item.id}`}
+                        className="relative flex items-center justify-center w-5 h-5 bg-black border border-gray-400 rounded cursor-pointer p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white"
+                      >
+                        <FaCheck className="w-full fill-white" />
+                      </label>
+                    </td>
 
+                    {/* Supplier Info */}
+                    <td className="px-4 py-3 text-gray-800">
+                      <div>
+                        <p className="font-medium">Person: {item.person_name}</p>
+                        {item.email && (
+                          <p className="text-xs text-gray-500">Email: {item.email}</p>
+                        )}
+                      </div>
+                    </td>
 
-              {/* Context Menu */}
-              <Menu id="context-menu">
-                <Item onClick={({ props }) => handleMenuClick({ props, action: "invoice" })}>
-                  Invoice
-                </Item>
-                <Item
-                  onClick={({ props }) => handleMenuClick({ props, action: "ledger" })}
-                  className="text-red-600"
-                >
-                  Ledger
-                </Item>
-                <Item onClick={({ props }) => handleMenuClick({ props, action: "edit" })}>
-                  Edit
-                </Item>
-                <Item
-                  onClick={({ props }) => handleMenuClick({ props, action: "delete" })}
-                  className="text-red-600"
-                >
-                  Delete
-                </Item>
-              </Menu>
+                    {/* Contact */}
+                    <td className="px-4 py-3 text-gray-700">{item?.contact || 'N/A'}</td>
 
+                    {/* Address */}
+                    <td className="px-4 py-3 text-gray-700">{item?.address || 'N/A'}</td>
 
-            </div>
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9">
-              <span class="flex items-center col-span-3">
+                    {/* Code */}
+                    <td className="px-4 py-3 flex items-center text-blue-600">
+                      <Link
+                        href={route('product.index', { invoicecode: item.code })}
+                        className="hover:underline"
+                      >
+                        {item?.code || 'N/A'}
+                      </Link>
+                      <BiCopy
+                        size={18}
+                        onClick={() => {
+                          navigator.clipboard.writeText(item.code)
+                          toast.success('Copied!')
+                        }}
+                        className="ml-2 text-gray-500 cursor-pointer hover:text-black"
+                      />
+                    </td>
+
+                    {/* Invoices & Amounts */}
+                    <td className="px-4 py-3 text-gray-700 text-right">
+                      {item?.total_supplierinvoices || 0}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 text-right">
+                      {item?.total_amount || 0}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 text-right">
+                      {item?.total_amount_paid || 0}
+                    </td>
+                    <td className="px-4 py-3 text-gray-700 text-right">
+                      {item?.total_amount_pending || 0}
+                    </td>
+
+                    {/* Action */}
+                    <td className="px-4 py-3">
+                      <Dropdown>
+                        <Dropdown.Trigger>
+                          <button className="text-gray-500 hover:text-black focus:outline-none">
+                            <svg
+                              className="w-5 h-5"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M6 10a2 2 0 11-4 0 2 2..." />
+                            </svg>
+                          </button>
+                        </Dropdown.Trigger>
+                        <Dropdown.Content>
+                          <Dropdown.Link href={route('supplier.invoices', item.id)}>Invoice</Dropdown.Link>
+                          <Dropdown.Link href={route('ledger.supplier.supplierLedger', item.code || item.id)}>Ledger</Dropdown.Link>
+                          <Dropdown.Link href={route('supplier.edit', item.id)}>Edit</Dropdown.Link>
+                          <button
+                            type="button"
+                            onClick={() => setIsDeleteModalOpen(item)}
+                            className="block w-full px-4 py-2 text-start text-sm text-red-600 hover:bg-gray-100"
+                          >
+                            Delete
+                          </button>
+                        </Dropdown.Content>
+                      </Dropdown>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* Pagination */}
+            <div className="flex items-center justify-between px-4 py-3 text-xs text-gray-500 bg-gray-50 border-t">
+              <span>
                 Showing {suppliers.from} - {suppliers.to} of {suppliers.total}
               </span>
-              <span class="col-span-2"></span>
-
-              <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                {/* Load More Button - Hide when all data is loaded */}
+              <div className="space-x-2">
                 {suppliers.to < suppliers.total && (
                   <button
-                    type="button"
                     onClick={() =>
                       router.get(route('supplier.index'), {
                         status: status || '',
                         search: search || '',
-                        per_page: params.get('per_page') ? parseInt(params.get('per_page')) + 10 : 20,
+                        per_page: params.get('per_page')
+                          ? parseInt(params.get('per_page')) + 10
+                          : 20,
                       })
                     }
-                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                    className="px-3 py-1 bg-white border rounded shadow hover:bg-gray-100"
                   >
                     Load More
                   </button>
                 )}
-
-                {/* Load Less Button - Hide when at minimum per_page */}
-                {params.get('per_page') && parseInt(params.get('per_page')) > 10 && (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      router.get(route('supplier.index'), {
-                        status: status || '',
-                        search: search || '',
-                        per_page: Math.max(10, parseInt(params.get('per_page')) - 10),
-                      })
-                    }
-                    class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                  >
-                    Load Less
-                  </button>
-                )}
-              </span>
+                {params.get('per_page') &&
+                  parseInt(params.get('per_page')) > 10 && (
+                    <button
+                      onClick={() =>
+                        router.get(route('supplier.index'), {
+                          status: status || '',
+                          search: search || '',
+                          per_page: Math.max(
+                            10,
+                            parseInt(params.get('per_page')) - 10
+                          ),
+                        })
+                      }
+                      className="px-3 py-1 bg-white border rounded shadow hover:bg-gray-100"
+                    >
+                      Load Less
+                    </button>
+                  )}
+              </div>
             </div>
-
           </div>
+
+
 
 
         </div>

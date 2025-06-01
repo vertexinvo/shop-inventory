@@ -114,8 +114,6 @@ class ProductController extends Controller
         $products = $products->paginate(50);
 
         $stock = Product::with('stock')->get();
-        // dd($stock);
-        // total products
 
         $totalstock = Product::with('stock')->whereHas('stock')->count();
 
