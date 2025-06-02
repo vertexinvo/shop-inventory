@@ -79,47 +79,41 @@ export default function List(props) {
     >
       <Head title="Supplier" />
 
-      <div class="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 mt-10">
+      <div className="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 gap-4 mt-10">
+        {/* Total Suppliers */}
         <Link href={route('supplier.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">TOTAL SUPPLIERS</p>
-                <p class="text-lg">{totalSuppliers}</p>
-              </div>
-              <div class="my-auto">
-                <VscGraph size={40} />
-              </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Total Suppliers</p>
+              <p className="text-xl font-bold">{totalSuppliers}</p>
             </div>
+            <VscGraph size={36} className="text-indigo-500" />
           </div>
         </Link>
+
+        {/* Pending Amount */}
         <Link href={route('supplier.index', { status: 'pending' })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">PENDING AMOUNT</p>
-                <p class="text-lg">{totalPendingAmount}</p>
-              </div>
-              <div class="my-auto">
-                <FaBoxOpen size={40} />
-              </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Pending Amount</p>
+              <p className="text-xl font-bold text-orange-500">{totalPendingAmount}</p>
             </div>
+            <FaBoxOpen size={36} className="text-yellow-500" />
           </div>
         </Link>
+
+        {/* Completed Amount */}
         <Link href={route('supplier.index', { status: 'paid' })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-              <div class="my-auto">
-                <p class="font-bold">COMPLETED AMOUNT</p>
-                <p class="text-lg">{totalPaidAmount}</p>
-              </div>
-              <div class="my-auto">
-                <PiListChecksFill size={40} />
-              </div>
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Completed Amount</p>
+              <p className="text-xl font-bold text-emerald-600">{totalPaidAmount}</p>
             </div>
+            <PiListChecksFill size={36} className="text-green-600" />
           </div>
         </Link>
       </div>
+
 
 
 

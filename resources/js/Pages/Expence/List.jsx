@@ -15,7 +15,7 @@ import Modal from '@/Components/Modal';
 import { set } from 'date-fns';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { FaCheck } from 'react-icons/fa';
-
+import { FaMoneyBillWave, FaClock, FaCalendarAlt, FaHourglassHalf, FaChartLine, FaFileInvoiceDollar } from 'react-icons/fa';
 export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const { auth, expences, startdate, enddate, todayTotal, todayPending, monthTotal, monthPending, yearTotal, yearPending } = props
@@ -52,84 +52,57 @@ export default function List(props) {
     >
       <Head title="Expense" />
 
-      <div class="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TODAY'S TOTAL EXPENSE</p>
-              <p class="text-lg">{todayTotal}</p>
-            </div>
-            <div class="my-auto">
+      <div className="mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 py-5">
 
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Today's Total Expense</p>
+            <p className="text-xl font-bold text-blue-600">{todayTotal}</p>
           </div>
+          <FaMoneyBillWave size={36} className="text-blue-500" />
         </div>
 
-
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TODAY'S PENDING AMOUNT</p>
-              <p class="text-lg">{todayPending}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Today's Pending Amount</p>
+            <p className="text-xl font-bold text-orange-600">{todayPending}</p>
           </div>
+          <FaClock size={36} className="text-orange-500" />
         </div>
 
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">MONTH'S TOTAL EXPENSE</p>
-              <p class="text-lg">{monthTotal}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Month's Total Expense</p>
+            <p className="text-xl font-bold text-indigo-600">{monthTotal}</p>
           </div>
+          <FaChartLine size={36} className="text-indigo-500" />
         </div>
 
-
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">MONTH'S PENDING AMOUNT</p>
-              <p class="text-lg">{monthPending}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Month's Pending Amount</p>
+            <p className="text-xl font-bold text-amber-600">{monthPending}</p>
           </div>
+          <FaHourglassHalf size={36} className="text-amber-500" />
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">YEAR'S PENDING AMOUNT</p>
-              <p class="text-lg">{yearTotal}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Year's Total Expense</p>
+            <p className="text-xl font-bold text-emerald-600">{yearTotal}</p>
           </div>
+          <FaCalendarAlt size={36} className="text-emerald-500" />
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">YEAR'S PENDING AMOUNT</p>
-              <p class="text-lg">{yearPending}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Year's Pending Amount</p>
+            <p className="text-xl font-bold text-rose-600">{yearPending}</p>
           </div>
+          <FaFileInvoiceDollar size={36} className="text-rose-500" />
         </div>
+
       </div>
 
 
