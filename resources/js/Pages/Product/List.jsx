@@ -140,21 +140,13 @@ export default function List(props) {
               onClick={() => router.get(route('dashboard'))}
               title="Back"
             />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Purchases</h2>
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Products</h2>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3">
 
-            {/* File Dropdown */}
-            {/* Create Button */}
-            <Link
-              href={route('product.create')}
-              className="flex items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none w-full focus:ring-4 focus:ring-cyan-300 md:w-64 lg:w-32"
-            >
-              <FaPlus className="h-3 w-3" />
-              Create
-            </Link>
+            {/* Import/Export Dropdown */}
             <Dropdown>
               <Dropdown.Trigger>
                 <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
@@ -177,6 +169,25 @@ export default function List(props) {
                 >
                   Import Excel (.csv)
                 </button>
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Create Button dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  Add new
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+
+                  href={route('product.create')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Product
+                </Link>
               </Dropdown.Content>
             </Dropdown>
           </div>
@@ -956,7 +967,7 @@ export default function List(props) {
         maxWidth="6xl"
       >
         <div className="my-4 text-center hide-print">
-          <h1 className="text-2xl font-bold mb-4">Purchases QR Codes</h1>
+          <h1 className="text-2xl font-bold mb-4">Products QR Codes</h1>
         </div>
 
         <div>

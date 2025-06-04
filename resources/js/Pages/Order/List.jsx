@@ -7,7 +7,7 @@ import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
 import { PiListChecksFill } from "react-icons/pi";
 import { FaBoxOpen, FaRotateRight, FaXmark } from "react-icons/fa6";
-import { FaCalendarCheck, FaCheck, FaEdit, FaEye, FaFilter, FaPen, FaSearch, FaTrash } from "react-icons/fa";
+import { FaCalendarCheck, FaCheck, FaChevronDown, FaEdit, FaEye, FaFilter, FaPen, FaSearch, FaTrash } from "react-icons/fa";
 import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
@@ -212,17 +212,45 @@ export default function List(props) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-3">
-            <a
-              href={route('order.csvexport')}
-              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-            >
-              <span className="flex items-center gap-x-1 transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                <BiExport className="h-5 w-5" />
-                Export CSV File
-              </span>
-            </a>
+          <div className="flex flex-wrap items-center gap-3">
 
+            {/* Import/Export Dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  File
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <a
+                  href={route('order.csvexport')}
+                  download
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Export Excel (.csv)
+                </a>
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Create Button dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  Add new
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+                  href={route('order.create')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Invoice
+                </Link>
+              </Dropdown.Content>
+            </Dropdown>
           </div>
         </div>
       }
