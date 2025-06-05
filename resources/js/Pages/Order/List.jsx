@@ -7,7 +7,7 @@ import Modal from '@/Components/Modal';
 import { VscGraph } from "react-icons/vsc";
 import { PiListChecksFill } from "react-icons/pi";
 import { FaBoxOpen, FaRotateRight, FaXmark } from "react-icons/fa6";
-import { FaCalendarCheck, FaCheck, FaChevronDown, FaEdit, FaEye, FaFilter, FaPen, FaSearch, FaTrash } from "react-icons/fa";
+import { FaCalendarCheck, FaCheck, FaChevronDown, FaEdit, FaEye, FaFilter, FaPen, FaSearch, FaThLarge, FaTrash } from "react-icons/fa";
 import * as Yup from 'yup';
 import './order.css'
 import { IoIosSave } from "react-icons/io";
@@ -38,6 +38,8 @@ export default function List(props) {
   const [selectId, setSelectId] = useState([]);
   const [orderAmounts, setOrderAmounts] = useState({});
   const [daterangeModel, setDaterangeModel] = useState(false);
+  const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
+
   const [dateRange, setDateRange] = useState(
     {
       startDate: new Date(),
@@ -268,45 +270,80 @@ export default function List(props) {
         </select>
       </div> */}
 
- <div className="p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-all">
-        {visibleCards.map((card, index) => {
-          const content = (
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">{card.label}</p>
-                <p className="text-xl font-bold">{card.value}</p>
-              </div>
-              {card.icon}
-            </div>
-          );
+      <div className="flex gap-2 mt-4 mx-4">
+        <button
+          onClick={() => setActiveTab('cards')}
+          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'cards'
+            ? 'bg-gray-800 text-white'
+            : 'bg-gray-100 text-gray-700'
+            }`}
+        >
+          <FaThLarge />
+          Cards
+        </button>
 
-          return (
-            <div key={index}>
-              {card.link ? <Link href={card.link}>{content}</Link> : content}
-            </div>
-          );
-        })}
+        <button
+          onClick={() => setActiveTab('filters')}
+          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'filters'
+            ? 'bg-gray-800 text-white'
+            : 'bg-gray-100 text-gray-700'
+            }`}
+        >
+          <FaFilter className="inline mr-1" />
+          Filters
+        </button>
       </div>
 
-      {cards.length > 5 && (
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={() => setShowAll(!showAll)}
-            className="text-sm px-4 py-1 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition"
-          >
-            {showAll ? 'Show Less ↑' : 'Show More ↓'}
-          </button>
+      {activeTab === 'cards' && (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-all mt-4 mx-4">
+            {visibleCards.map((card, index) => {
+              const content = (
+                <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+                  <div>
+                    <p className="text-gray-600 text-sm font-medium">
+                      {card.label}
+                    </p>
+                    <p className="text-xl font-bold">{card.value}</p>
+                  </div>
+                  {card.icon}
+                </div>
+              );
+
+              return (
+                <div key={index}>
+                  {card.link ? <Link href={card.link}>{content}</Link> : content}
+                </div>
+              );
+            })}
+          </div>
+
+          {cards.length > 5 && (
+            <div className="flex justify-end mt-4 mx-4">
+              <button
+                onClick={() => setShowAll(!showAll)}
+                className="text-sm px-4 py-1 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition"
+              >
+                {showAll ? 'Show Less ↑' : 'Show More ↓'}
+              </button>
+            </div>
+          )}
+        </>
+      )}
+
+      {activeTab === 'filters' && (
+        <div className="mx-4 mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+          Filters
         </div>
       )}
-    </div>
+
 
 
 
       <div className="flex flex-col px-4 mx-auto w-full">
         <div className="w-full ">
 
-          <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
+          <div className="flex flex-col md:flex-row justify-end items-center mt-4 mb-4">
             <Formik
               enableReinitialize
               initialValues={{ search: params.get('search') || '' }}
@@ -591,9 +628,9 @@ export default function List(props) {
 
                     {/* Paid (Editable input) */}
                     <td className="px-4 py-2">
-                      <div className="flex items-center w-[130px]">
+                      <div className="flex items-center w-[110px]">
                         <input
-                          className="border rounded px-2 py-1 text-sm focus:ring-black focus:border-black w-full"
+                          className="border rounded-xl px-2 py-1 text-sm focus:ring-black focus:border-black w-full"
                           type="number"
                           step="0.01"
                           value={orderAmounts[order.id] || order.paid_amount || 0}
@@ -621,7 +658,7 @@ export default function List(props) {
                             setIsStatusModalOpen(order);
                           }
                         }}
-                        className={`text-xs font-medium px-2.5 py-0.5 rounded flex items-center ${order.status === "pending"
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-xl flex items-center ${order.status === "pending"
                           ? "bg-yellow-100 text-yellow-800"
                           : order.status === "completed"
                             ? "bg-green-100 text-green-800"

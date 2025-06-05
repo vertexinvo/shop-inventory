@@ -1,6 +1,6 @@
 import { Formik, Form, Field } from 'formik'
 import React, { useState } from 'react'
-import { FaWallet, FaEdit, FaCheck, FaSearch } from 'react-icons/fa'
+import { FaWallet, FaEdit, FaCheck, FaSearch, FaEllipsisV, FaChevronDown } from 'react-icons/fa'
 import { MdDelete, MdPending } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
@@ -18,16 +18,17 @@ import { Menu, Item, useContextMenu } from "react-contexify";
 import "react-contexify/dist/ReactContexify.css";
 import Dropdown from '@/Components/Dropdown';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
-
+import { FaFilter, FaThLarge } from "react-icons/fa"; // Optional: for icons
 export default function List(props) {
   const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers, status, search } = props
-  console.log(totalSuppliers)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
   const { url } = usePage();
   const params = new URLSearchParams(url.split('?')[1]);
 
+
+  const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
   const { show } = useContextMenu({ id: "context-menu" });
 
   const handleMenuClick = ({ props, action }) => {
@@ -62,64 +63,134 @@ export default function List(props) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-3">
-            <a
-              href={route('supplier.csvexport')}
-              className='group relative flex items-center justify-center p-0.5 text-center font-medium transition-all focus:z-10 focus:outline-none border border-transparent bg-cyan-700 text-white focus:ring-4 focus:ring-cyan-300 enabled:hover:bg-cyan-800 dark:bg-cyan-600 dark:focus:ring-cyan-800 dark:enabled:hover:bg-cyan-700 rounded-lg'
-            >
-              <span className="flex items-center gap-x-1 transition-all duration-200 rounded-md px-4 py-2 text-sm">
-                <BiExport className="h-5 w-5" />
-                Export CSV File
-              </span>
-            </a>
+          <div className="flex flex-wrap items-center gap-3">
 
+            {/* Import/Export Dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  File
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <a
+                  href={route('supplier.csvexport')}
+                  download
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Export Excel (.csv)
+                </a>
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Create Button dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  Add new
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+                  href={route('supplier.create')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Supplier
+                </Link>
+              </Dropdown.Content>
+            </Dropdown>
           </div>
         </div>
       }
     >
       <Head title="Supplier" />
 
-      <div className="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 gap-4 mt-10">
-        {/* Total Suppliers */}
-        <Link href={route('supplier.index')}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Total Suppliers</p>
-              <p className="text-xl font-bold">{totalSuppliers}</p>
-            </div>
-            <VscGraph size={36} className="text-indigo-500" />
-          </div>
-        </Link>
-
-        {/* Pending Amount */}
-        <Link href={route('supplier.index', { status: 'pending' })}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Pending Amount</p>
-              <p className="text-xl font-bold text-orange-500">{totalPendingAmount}</p>
-            </div>
-            <FaBoxOpen size={36} className="text-yellow-500" />
-          </div>
-        </Link>
-
-        {/* Completed Amount */}
-        <Link href={route('supplier.index', { status: 'paid' })}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Completed Amount</p>
-              <p className="text-xl font-bold text-emerald-600">{totalPaidAmount}</p>
-            </div>
-            <PiListChecksFill size={36} className="text-green-600" />
-          </div>
-        </Link>
+      <div className="flex gap-2 mt-4 mx-4">
+        <button
+          onClick={() => setActiveTab('cards')}
+          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'cards' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
+        >
+          <FaThLarge className='' />
+          Cards
+        </button>
+        <button
+          onClick={() => setActiveTab('filters')}
+          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2  ${activeTab === 'filters' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
+        >
+          <FaFilter className="inline mr-1" />
+          Filters
+        </button>
       </div>
 
+      {activeTab === 'cards' && (
+
+        <div className="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 gap-4 mt-4">
+          {/* Total Suppliers */}
+          <Link href={route('supplier.index')}>
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Total Suppliers</p>
+                <p className="text-xl font-bold">{totalSuppliers}</p>
+              </div>
+              <VscGraph size={36} className="text-indigo-500" />
+            </div>
+          </Link>
+
+          {/* Pending Amount */}
+          <Link href={route('supplier.index', { status: 'pending' })}>
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Pending Amount</p>
+                <p className="text-xl font-bold text-orange-500">{totalPendingAmount}</p>
+              </div>
+              <FaBoxOpen size={36} className="text-yellow-500" />
+            </div>
+          </Link>
+
+          {/* Completed Amount */}
+          <Link href={route('supplier.index', { status: 'paid' })}>
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Completed Amount</p>
+                <p className="text-xl font-bold text-emerald-600">{totalPaidAmount}</p>
+              </div>
+              <PiListChecksFill size={36} className="text-green-600" />
+            </div>
+          </Link>
+        </div>
+
+
+      )}
+
+      {/* Filter Options */}
+      {activeTab === 'filters' && (
+        <div className="mx-4 mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+          <h3 className="text-lg font-semibold mb-2">Filter Options</h3>
+          <select
+            name="filter"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                                          w-full md:w-[150px] p-2.5  pr-10  
+                                              
+                                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
+            value={status}
+          >
+            <option value="">Select Status</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+          </select>
+        </div>
+      )}
 
 
 
 
 
-      <div className="flex flex-col px-4 mt-7 mx-auto w-full">
+
+      <div className="flex flex-col px-4 mt-4 mx-auto w-full">
         <div className="w-full ">
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
@@ -175,7 +246,7 @@ export default function List(props) {
                   </Form>
                 )}
               </Formik>
-              <select
+              {/* <select
                 name="filter"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
                                           w-full md:w-[150px] p-2.5  pr-10  
@@ -188,7 +259,7 @@ export default function List(props) {
                 <option value="pending">Pending</option>
                 <option value="paid">Paid</option>
 
-              </select>
+              </select> */}
               {selectId.length > 0 && (
                 <button
                   onClick={() => setIsBulkDeleteModalOpen(true)}
@@ -198,12 +269,10 @@ export default function List(props) {
                 </button>
               )}
 
-              <FloatingCreateButton routeName="supplier.create" title="Create" />
+            
 
             </div>
           </div>
-
-
 
 
 
@@ -230,21 +299,15 @@ export default function List(props) {
                       <FaCheck className="w-full fill-white" />
                     </label>
                   </th>
-                  {[
-                    "Supplier Info",
-                    "Contact",
-                    "Address",
-                    "Code",
-                    "Total Invoices",
-                    "Total Amount",
-                    "Amount Paid",
-                    "Amount Pending",
-                    "Action",
-                  ].map((heading) => (
-                    <th key={heading} className="px-4 py-3 text-left">
-                      {heading}
-                    </th>
-                  ))}
+                  <th className="px-4 py-3 text-left ">Supplier Info</th>
+                  <th className="px-4 py-3 text-left">Contact</th>
+                  <th className="px-4 py-3 text-left">Address</th>
+                  <th className="px-4 py-3 text-left">Code</th>
+                  <th className="px-4 py-3 ">Total Invoices</th>
+                  <th className="px-4 py-3 ">Total Amount</th>
+                  <th className="px-4 py-3 ">Amount Paid</th>
+                  <th className="px-4 py-3 ">Amount Pending</th>
+                  <th className="px-4 py-3 ">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -260,8 +323,8 @@ export default function List(props) {
                   <tr
                     key={item.id}
                     onContextMenu={(e) => {
-                      e.preventDefault()
-                      show({ event: e, props: item })
+                      e.preventDefault();
+                      show({ event: e, props: item });
                     }}
                     className={`${item?.total_amount_paid === 0 && item?.total_amount > 0
                       ? 'bg-red-50'
@@ -279,9 +342,9 @@ export default function List(props) {
                         value={item.id}
                         onChange={(e) => {
                           if (e.target.checked) {
-                            setSelectId((prev) => [...prev, item.id])
+                            setSelectId((prev) => [...prev, item.id]);
                           } else {
-                            setSelectId((prev) => prev.filter((id) => id !== item.id))
+                            setSelectId((prev) => prev.filter((id) => id !== item.id));
                           }
                         }}
                         checked={selectId.includes(item.id)}
@@ -321,39 +384,33 @@ export default function List(props) {
                       <BiCopy
                         size={18}
                         onClick={() => {
-                          navigator.clipboard.writeText(item.code)
-                          toast.success('Copied!')
+                          navigator.clipboard.writeText(item.code);
+                          toast.success('Copied!');
                         }}
                         className="ml-2 text-gray-500 cursor-pointer hover:text-black"
                       />
                     </td>
 
                     {/* Invoices & Amounts */}
-                    <td className="px-4 py-3 text-gray-700 text-right">
+                    <td className="px-4 py-3 text-gray-700 text-center">
                       {item?.total_supplierinvoices || 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 text-right">
+                    <td className="px-4 py-3 text-gray-700 text-center">
                       {item?.total_amount || 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 text-right">
+                    <td className="px-4 py-3 text-gray-700 text-center">
                       {item?.total_amount_paid || 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 text-right">
+                    <td className="px-4 py-3 text-gray-700 text-center">
                       {item?.total_amount_pending || 0}
                     </td>
 
                     {/* Action */}
-                    <td className="px-4 py-3">
+                    <td className="px-4 py-3 text-center">
                       <Dropdown>
                         <Dropdown.Trigger>
                           <button className="text-gray-500 hover:text-black focus:outline-none">
-                            <svg
-                              className="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                            >
-                              <path d="M6 10a2 2 0 11-4 0 2 2..." />
-                            </svg>
+                            <FaEllipsisV className="w-5 h-5" />
                           </button>
                         </Dropdown.Trigger>
                         <Dropdown.Content>
@@ -418,7 +475,6 @@ export default function List(props) {
               </div>
             </div>
           </div>
-
 
 
 

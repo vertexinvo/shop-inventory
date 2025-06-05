@@ -14,8 +14,9 @@ import { DateRangePicker } from 'react-date-range';
 import Modal from '@/Components/Modal';
 import { set } from 'date-fns';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
-import { FaCheck } from 'react-icons/fa';
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
 import { FaMoneyBillWave, FaClock, FaCalendarAlt, FaHourglassHalf, FaChartLine, FaFileInvoiceDollar } from 'react-icons/fa';
+import Dropdown from '@/Components/Dropdown';
 export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const { auth, expences, startdate, enddate, todayTotal, todayPending, monthTotal, monthPending, yearTotal, yearPending } = props
@@ -46,6 +47,47 @@ export default function List(props) {
               title="Back"
             />
             <h2 className="text-xl text-gray-800 leading-tight">Expense</h2>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+
+            {/* Import/Export Dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  File
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <a
+                  // href={route('expense.csvexport')}
+                  download
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  coming soon
+                </a>
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Create Button dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  Add new
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+                  href={route('expense.create')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Expense
+                </Link>
+              </Dropdown.Content>
+            </Dropdown>
           </div>
         </div>
       }
