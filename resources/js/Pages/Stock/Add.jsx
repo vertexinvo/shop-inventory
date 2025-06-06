@@ -8,6 +8,8 @@ import Modal from '@/Components/Modal';
 import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { MdKeyboardBackspace } from "react-icons/md";
+import SupplierForm from '@/Partials/SupplierForm';
+import SupplierinvoiceForm from '@/Partials/SupplierinvoiceForm';
 
 export default function Add(props) {
   const { auth,suppliers,supplierinvoices ,product_id, } = props;
@@ -174,6 +176,36 @@ export default function Add(props) {
       </div>
 
 
+
+
+         <Modal show={isNewSupplierModel} onClose={() => setIsNewSupplierModel(false)}>
+            <div className="overflow-y-auto max-h-[80vh]">
+              <div className="flex justify-center p-10">
+                <div className="text-2xl font-medium text-[#5d596c] ">
+                  Create New Supplier
+                </div>
+              </div>
+    
+              <div className="px-10 mb-5">
+                        <SupplierForm codeRoute="product.create" setIsNewSupplierModel={setIsNewSupplierModel} />
+              </div>
+            </div>
+          </Modal>
+    
+    
+          <Modal show={isNewSupplierInvoiceModel} onClose={() => setIsNewSupplierInvoiceModel(false)}>
+            <div className="overflow-y-auto max-h-[80vh]">
+              <div className="flex justify-center p-10">
+                <div className="text-2xl font-medium text-[#5d596c] ">
+                  Create New Invoice
+                </div>
+              </div>
+    
+              <div className="px-10 mb-5">
+                        <SupplierinvoiceForm codeRoute="product.create" setIsNewSupplierInvoiceModel={setIsNewSupplierInvoiceModel} />
+              </div>
+            </div>
+          </Modal>
 
 
     </AuthenticatedLayout>
