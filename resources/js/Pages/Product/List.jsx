@@ -23,7 +23,7 @@ import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
 import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaRotateRight, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
 import { Fragment } from "react";
-
+import { FaThLarge } from "react-icons/fa"; // Optional: for icons
 
 export default function List(props) {
   const { auth, stock, startdate, enddate, products, totalstock, totalstockavailable, totalstocknotavailable, totalStockValue, totaliteminstock, categories, brands } = props
@@ -36,6 +36,7 @@ export default function List(props) {
   const [isPrintQRModalOpen, setIsPrintQRModalOpen] = useState(false);
   const [daterangeModel, setDaterangeModel] = useState(false);
   const [importCsvModel, setImportCsvModel] = useState(false);
+  const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
   const [dateRange, setDateRange] = useState(
     {
       startDate: new Date(),
@@ -140,21 +141,13 @@ export default function List(props) {
               onClick={() => router.get(route('dashboard'))}
               title="Back"
             />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Purchases</h2>
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Products</h2>
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3">
 
-            {/* File Dropdown */}
-            {/* Create Button */}
-            <Link
-              href={route('product.create')}
-              className="flex items-center justify-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none w-full focus:ring-4 focus:ring-cyan-300 md:w-64 lg:w-32"
-            >
-              <FaPlus className="h-3 w-3" />
-              Create
-            </Link>
+            {/* Import/Export Dropdown */}
             <Dropdown>
               <Dropdown.Trigger>
                 <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
@@ -179,6 +172,25 @@ export default function List(props) {
                 </button>
               </Dropdown.Content>
             </Dropdown>
+
+            {/* Create Button dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  Add new
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+
+                  href={route('product.create')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Product
+                </Link>
+              </Dropdown.Content>
+            </Dropdown>
           </div>
         </div>
       }
@@ -186,669 +198,700 @@ export default function List(props) {
 
       <Head title="Purchase" />
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
-        {/* Total Products */}
-        <Link href={route('product.index')}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Total Products</p>
-              <p className="text-xl font-bold">{totalstock}</p>
-            </div>
-            <FaBoxes size={36} className="text-blue-500" />
-          </div>
-        </Link>
 
-        {/* Total Items in Stock */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Stock keeping unit</p>
-            <p className="text-xl font-bold">{totaliteminstock}</p>
-          </div>
-          <FaBoxes size={36} className="text-green-500" />
-        </div>
-
-        {/* Total Product Out of Stock */}
-        <Link href={route('product.index', { status: 0 })}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Out of Stock</p>
-              <p className="text-xl font-bold">{totalstocknotavailable}</p>
-            </div>
-            <HiMiniArchiveBoxXMark size={36} className="text-red-500" />
-          </div>
-        </Link>
-
-        {/* Total Product In Stock */}
-        <Link href={route('product.index', { status: 1 })}>
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">In Stock</p>
-              <p className="text-xl font-bold">{totalstockavailable}</p>
-            </div>
-            <FaBox size={36} className="text-green-600" />
-          </div>
-        </Link>
-
-        {/* Total Stock Value */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Total Stock Value</p>
-            <p className="text-xl font-bold text-emerald-600">{totalStockValue}</p>
-          </div>
-          <GiMoneyStack size={36} className="text-yellow-500" />
-        </div>
+      <div className="flex gap-2 mt-4 mx-4">
+        <button
+          onClick={() => setActiveTab('cards')}
+          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'cards' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
+        >
+          <FaThLarge className='' />
+          Cards
+        </button>
+        <button
+          onClick={() => setActiveTab('filters')}
+          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2  ${activeTab === 'filters' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
+        >
+          <FaFilter className="inline mr-1" />
+          Filters
+        </button>
       </div>
 
-
-      <div className="flex flex-col px-4 mx-auto w-full">
-        <div className="w-full ">
-
-
-          <div className="p-6 bg-gray-50 rounded-2xl shadow-lg">
-            {/* Filter Dropdowns */}
-
-            <div className="flex items-center justify-between gap-4 mb-6">
-
-              {/* <FloatingCreateButton routeName="product.create" title="Create" /> */}
-
-              {/* create a simple button to create a new product */}
-              <Formik
-                enableReinitialize
-                initialValues={{ search: params.get('search') || '' }}
-                onSubmit={(values) => {
-                  router.get(
-                    route('product.index'),
-                    {
-                      search: values.search,
-                      status: params.get('status'),
-                      brand: params.get('brand'),
-                      category: params.get('category'),
-                      startdate: startdate,
-                      enddate: enddate,
-                      supplierinvoiceno: params.get('supplierinvoiceno'),
-                      invoicecode: params.get('invoicecode'),
-                    },
-                    {
-                      preserveState: true,
-                      preserveScroll: true,
-                    }
-                  );
-                }}
-              >
-                {({ values, setFieldValue, handleSubmit }) => (
-                  <Form className="w-full flex items-center gap-3">
-                    <div className="relative w-full md:max-w-md">
-                      <Field name="search">
-                        {({ field, form }) => (
-                          <div className="relative">
-                            <input
-                              {...field}
-                              type="text"
-                              placeholder="Search products..."
-                              className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300 bg-white shadow-sm hover:shadow-md placeholder-gray-400 text-gray-800"
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') handleSubmit();
-                              }}
-                            />
-                            {/* Search Icon */}
-                            <button
-                              type="submit"
-                              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-500 focus:outline-none transition-colors"
-                              aria-label="Search"
-                            >
-                              <FaSearch className="w-4 h-4" />
-                            </button>
-                            {/* Clear Icon */}
-                            {field.value && (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  form.setFieldValue('search', '');
-                                  router.get(route('product.index'));
-                                }}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
-                                aria-label="Clear search"
-                              >
-                                <FaXmark className="w-4 h-4" />
-                              </button>
-                            )}
-                          </div>
-                        )}
-                      </Field>
-                    </div>
-                  </Form>
-                )}
-              </Formik>
-
-              {selectId.length > 0 && (
-                <>
-                  <Link href={route('product.printqr', { id: selectId.join(',') })}
-                    className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
-                  >
-                    <FaQrcode className="w-4 h-4" />
-                    Print&nbsp;QR
-                  </Link>
-
-                  <button
-                    onClick={() => setIsBulkDeleteModalOpen(true)}
-                    className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
-                  >
-                    <FaTrash className="w-4 h-4" />
-                    Bulk&nbsp;Delete
-                  </button>
-                </>
-              )}
+      {activeTab === 'cards' && (
 
 
 
-              <button
-                onClick={() => setDaterangeModel(true)}
-                className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-900 md:w-auto"
-              >
-                <FaCalendarCheck className='h-4 w-4' />
-                Date&nbsp;Range&nbsp;Filter
-              </button>
-
-
-              {/* reset filters */}
-              <button
-                onClick={() => {
-                  router.get(route('product.index'))
-                }}
-                className="text-gray-700 flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg  bg-gray-200 hover:bg-slate-300 md:w-auto"
-              >
-                <FaRotateRight className='h-4 w-4' />
-                Reset&nbsp;Filters
-              </button>
-
-
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
+          {/* Total Products */}
+          <Link href={route('product.index')}>
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Total Products</p>
+                <p className="text-xl font-bold">{totalstock}</p>
+              </div>
+              <FaBoxes size={36} className="text-blue-500" />
             </div>
+          </Link>
 
-            {/* Table */}
-            <div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="whitespace-nowrap text-xs uppercase bg-gray-200 text-gray-700 tracking-wide border-b">
-                  <tr>
-                    <th className="px-4 py-3 w-6">
-                      <input
-                        id="checkbox"
-                        type="checkbox"
-                        className="hidden peer"
-                        onChange={(e) => {
-                          setSelectId(
-                            e.target.checked ? products.data.map((order) => order.id) : []
-                          )
-                        }}
-                        checked={selectId.length === products.data.length}
-                      />
-                      <label
-                        htmlFor="checkbox"
-                        className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
-                      >
-                        <FaCheck className="w-full fill-white" />
-                      </label>
-                    </th>
-                    <th className="px-2 py-3 w-6"></th>
-                    <th className="px-2 py-3 w-40 truncate text-left">Product</th>
-                    <th className="px-2 py-3 w-20">Inventory</th>
-                    <th className="px-2 py-3 w-28">Purchase Price</th>
-                    <th className="px-2 py-3 w-28">Selling Price</th>
-                    <th className="px-2 py-3 w-36">
+          {/* Total Items in Stock */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Stock keeping unit</p>
+              <p className="text-xl font-bold">{totaliteminstock}</p>
+            </div>
+            <FaBoxes size={36} className="text-green-500" />
+          </div>
 
-                      <Dropdown>
-                        <Dropdown.Trigger>
-                          <div className="flex items-center justify-between cursor-pointer">
-                            {`Category (${params.get('category') || 'All'})`}
-                            <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Categories">
-                              <FaFilter className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content >
-                          <select
-                            onClick={(e) => e.stopPropagation()}
-                            name="category"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={(e) =>
-                              router.get(
-                                route('product.index'),
-                                {
-                                  category: e.target.value,
-                                  status: params.get('status'),
-                                  brand: params.get('brand'),
-                                  search: params.get('search'),
-                                  startdate: startdate,
-                                  enddate: enddate,
-                                  supplierinvoiceno: params.get('supplierinvoiceno'),
-                                  invoicecode: params.get('invoicecode'),
-                                },
-                                { preserveState: true, preserveScroll: true }
-                              )
-                            }
-                            value={params.get('category') || ''}
+          {/* Total Product Out of Stock */}
+          <Link href={route('product.index', { status: 0 })}>
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">Out of Stock</p>
+                <p className="text-xl font-bold">{totalstocknotavailable}</p>
+              </div>
+              <HiMiniArchiveBoxXMark size={36} className="text-red-500" />
+            </div>
+          </Link>
+
+          {/* Total Product In Stock */}
+          <Link href={route('product.index', { status: 1 })}>
+            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+              <div>
+                <p className="text-gray-600 text-sm font-medium">In Stock</p>
+                <p className="text-xl font-bold">{totalstockavailable}</p>
+              </div>
+              <FaBox size={36} className="text-green-600" />
+            </div>
+          </Link>
+
+          {/* Total Stock Value */}
+          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
+            <div>
+              <p className="text-gray-600 text-sm font-medium">Total Stock Value</p>
+              <p className="text-xl font-bold text-emerald-600">{totalStockValue}</p>
+            </div>
+            <GiMoneyStack size={36} className="text-yellow-500" />
+          </div>
+        </div>
+
+      )}
+
+      {activeTab === 'filters' && (
+
+        <div className="mx-4 mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+          Filters
+        </div>
+
+      )}
+
+
+      <div className="flex flex-col px-4 mx-auto w-full mt-4">
+        <div className="w-full ">
+          {/* Filter Dropdowns */}
+
+          <div className="flex items-center justify-between gap-4 mb-6">
+
+            {/* <FloatingCreateButton routeName="product.create" title="Create" /> */}
+
+            {/* create a simple button to create a new product */}
+            <Formik
+              enableReinitialize
+              initialValues={{ search: params.get('search') || '' }}
+              onSubmit={(values) => {
+                router.get(
+                  route('product.index'),
+                  {
+                    search: values.search,
+                    status: params.get('status'),
+                    brand: params.get('brand'),
+                    category: params.get('category'),
+                    startdate: startdate,
+                    enddate: enddate,
+                    supplierinvoiceno: params.get('supplierinvoiceno'),
+                    invoicecode: params.get('invoicecode'),
+                  },
+                  {
+                    preserveState: true,
+                    preserveScroll: true,
+                  }
+                );
+              }}
+            >
+              {({ values, setFieldValue, handleSubmit }) => (
+                <Form className="w-full flex items-center gap-3">
+                  <div className="relative w-full md:max-w-md">
+                    <Field name="search">
+                      {({ field, form }) => (
+                        <div className="relative">
+                          <input
+                            {...field}
+                            type="text"
+                            placeholder="Search products..."
+                            className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300 bg-white shadow-sm hover:shadow-md placeholder-gray-400 text-gray-800"
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleSubmit();
+                            }}
+                          />
+                          {/* Search Icon */}
+                          <button
+                            type="submit"
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-500 focus:outline-none transition-colors"
+                            aria-label="Search"
                           >
-                            <option value="">All Categories</option>
-                            {categories.map((category) => (
-                              <option key={category.name} value={category.name}>
-                                {category.name} ({category.total_products})
-                              </option>
-                            ))}
-                          </select>
-                        </Dropdown.Content>
-                      </Dropdown>
-
-                    </th>
-                    <th className="px-2 py-3 w-32">
-
-                      {/* {`Brands (${params.get('brand') || 'All'})`} */}
-                      <Dropdown>
-                        <Dropdown.Trigger>
-                          <div className="flex items-center justify-between cursor-pointer">
-                            {`Brands (${params.get('brand') || 'All'})`}
-                            <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Brands">
-                              <FaFilter className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </Dropdown.Trigger>
-                        <Dropdown.Content>
-                          <select
-                            onClick={(e) => e.stopPropagation()}
-                            name="brand"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={(e) =>
-                              router.get(
-                                route('product.index'),
-                                {
-                                  brand: e.target.value,
-                                  category: params.get('category'),
-                                  status: params.get('status'),
-                                  search: params.get('search'),
-                                  startdate: startdate,
-                                  enddate: enddate,
-                                  supplierinvoiceno: params.get('supplierinvoiceno'),
-                                  invoicecode: params.get('invoicecode'),
-                                },
-                                { preserveState: true, preserveScroll: true }
-                              )
-                            }
-                            value={params.get('brand') || ''}
-                          >
-                            <option value="">All Brands</option>
-                            {brands.map((brand) => (
-                              <option key={brand.name} value={brand.name}>
-                                {brand.name} ({brand.total_products})
-                              </option>
-                            ))}
-                          </select>
-                        </Dropdown.Content>
-                      </Dropdown>
-
-                    </th>
-                    <th className="px-2 py-3 w-20">
-                      <Dropdown>
-                        <Dropdown.Trigger>
-                          <div className="flex items-center justify-between cursor-pointer">
-                            {`Status (${params.get('status') === '1' ? 'In Stock' : params.get('status') === '0' ? 'Out of Stock' : 'All'})`}
-                            <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Status">
-                              <FaFilter className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </Dropdown.Trigger>
-
-                        <Dropdown.Content>
-                          <select
-                            onClick={(e) => e.stopPropagation()}
-                            name="status"
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            onChange={(e) =>
-                              router.get(
-                                route('product.index'),
-                                {
-                                  status: e.target.value,
-                                  category: params.get('category'),
-                                  brand: params.get('brand'),
-                                  search: params.get('search'),
-                                  startdate: startdate,
-                                  enddate: enddate,
-                                  supplierinvoiceno: params.get('supplierinvoiceno'),
-                                  invoicecode: params.get('invoicecode'),
-                                },
-                                { preserveState: true }
-                              )
-                            }
-                            value={params.get('status') || ''}
-                          >
-                            <option value="">All Statuses</option>
-                            <option value="1">In Stock</option>
-                            <option value="0">Out of Stock</option>
-                          </select>
-                        </Dropdown.Content>
-                      </Dropdown>
-
-                    </th>
-                    <th className="px-2 py-3 w-32 text-center">Actions</th>
-                  </tr>
-                </thead>
-
-                <tbody className="whitespace-nowrap text-gray-800">
-                  {products.data.length === 0 && (
-                    <tr>
-                      <td colSpan="10" className="p-4 text-center text-gray-500">
-                        No products found.
-                      </td>
-                    </tr>
-                  )}
-
-                  {products.data.map((product) => {
-                    const isExpanded = expanded.includes(product.id);
-                    return (
-                      <Fragment key={product.id}>
-                        <tr
-                          onContextMenu={(e) => {
-                            e.preventDefault(); // Prevents default right-click menu
-                            show({ event: e, props: product }); // Shows custom menu
-                          }}
-                          className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
-                            ? "bg-red-100 hover:bg-red-200"
-                            : product?.stock?.quantity < 5
-                              ? "bg-yellow-100 hover:bg-yellow-200"
-                              : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
-                            } ${selectId.includes(product.id) ? "border-cyan-200 border-b" : "border-gray-200 border-b"}`}
-                        >
-                          <td className="px-4 pb-2">
-                            <input
-                              id={`checkbox-${product.id}`}
-                              type="checkbox"
-                              className="hidden peer"
-                              value={product.id}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  setSelectId((prev) => [...prev, product.id]);
-                                } else {
-                                  setSelectId((prev) => prev.filter((id) => id !== product.id));
-                                }
-                              }}
-                              checked={selectId.includes(product.id)}
-                            />
-                            <label
-                              htmlFor={`checkbox-${product.id}`}
-                              className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
-                            >
-                              <FaCheck className="w-full fill-white" />
-                            </label>
-                          </td>
-
-                          <td className="px-2 py-3">
+                            <FaSearch className="w-4 h-4" />
+                          </button>
+                          {/* Clear Icon */}
+                          {field.value && (
                             <button
-                              onClick={() => toggleExpand(product.id)}
-                              className="text-gray-500 hover:text-gray-700 transition"
-                              title="Toggle stock details"
+                              type="button"
+                              onClick={() => {
+                                form.setFieldValue('search', '');
+                                router.get(route('product.index'));
+                              }}
+                              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
+                              aria-label="Clear search"
                             >
-                              {isExpanded ? <FaChevronDown className="w-4 h-4" /> : <FaChevronRight className="w-4 h-4" />}
+                              <FaXmark className="w-4 h-4" />
                             </button>
-                          </td>
+                          )}
+                        </div>
+                      )}
+                    </Field>
+                  </div>
+                </Form>
+              )}
+            </Formik>
 
-                          <td className="px-2 py-3 w-48 truncate">
-                            <div className="cursor-pointer hover:text-cyan-600 transition">
-                              <p className="text-gray-800 font-medium truncate">{product.name}</p>
+            {selectId.length > 0 && (
+              <>
+                <Link href={route('product.printqr', { id: selectId.join(',') })}
+                  className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-black rounded-lg hover:bg-gray-600 flex justify-center items-center gap-2"
+                >
+                  <FaQrcode className="w-4 h-4" />
+                  Print&nbsp;QR
+                </Link>
+
+                <button
+                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                  className="text-white w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 flex justify-center items-center gap-2"
+                >
+                  <FaTrash className="w-4 h-4" />
+                  Bulk&nbsp;Delete
+                </button>
+              </>
+            )}
+
+
+
+            <button
+              onClick={() => setDaterangeModel(true)}
+              className="text-white flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg bg-slate-800 hover:bg-slate-900 md:w-auto"
+            >
+              <FaCalendarCheck className='h-4 w-4' />
+              Date&nbsp;Range&nbsp;Filter
+            </button>
+
+
+            {/* reset filters */}
+            <button
+              onClick={() => {
+                router.get(route('product.index'))
+              }}
+              className="text-gray-700 flex justify-center items-center gap-2 w-full py-2 px-4 rounded-lg  bg-gray-200 hover:bg-slate-300 md:w-auto"
+            >
+              <FaRotateRight className='h-4 w-4' />
+              Reset&nbsp;Filters
+            </button>
+
+
+          </div>
+
+          {/* Table */}
+          <div className="overflow-x-auto bg-white rounded-xl shadow-md border border-gray-200">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="whitespace-nowrap text-xs uppercase bg-gray-100 text-gray-700 tracking-wide border-b">
+                <tr>
+                  <th className="px-4 py-3 w-6">
+                    <input
+                      id="checkbox"
+                      type="checkbox"
+                      className="hidden peer"
+                      onChange={(e) => {
+                        setSelectId(
+                          e.target.checked ? products.data.map((order) => order.id) : []
+                        )
+                      }}
+                      checked={selectId.length === products.data.length}
+                    />
+                    <label
+                      htmlFor="checkbox"
+                      className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                    >
+                      <FaCheck className="w-full fill-white" />
+                    </label>
+                  </th>
+
+                  <th className="px-2 py-3 w-40 truncate text-left">Product</th>
+                  <th className="px-2 py-3 w-20">Inventory</th>
+                  <th className="px-2 py-3 w-28">Purchase Price</th>
+                  <th className="px-2 py-3 w-28">Selling Price</th>
+                  <th className="px-2 py-3 w-36">
+
+                    <Dropdown>
+                      <Dropdown.Trigger>
+                        <div className="flex items-center justify-between cursor-pointer">
+                          {`Category (${params.get('category') || 'All'})`}
+                          <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Categories">
+                            <FaFilter className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </Dropdown.Trigger>
+                      <Dropdown.Content >
+                        <select
+                          onClick={(e) => e.stopPropagation()}
+                          name="category"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          onChange={(e) =>
+                            router.get(
+                              route('product.index'),
+                              {
+                                category: e.target.value,
+                                status: params.get('status'),
+                                brand: params.get('brand'),
+                                search: params.get('search'),
+                                startdate: startdate,
+                                enddate: enddate,
+                                supplierinvoiceno: params.get('supplierinvoiceno'),
+                                invoicecode: params.get('invoicecode'),
+                              },
+                              { preserveState: true, preserveScroll: true }
+                            )
+                          }
+                          value={params.get('category') || ''}
+                        >
+                          <option value="">All Categories</option>
+                          {categories.map((category) => (
+                            <option key={category.name} value={category.name}>
+                              {category.name} ({category.total_products})
+                            </option>
+                          ))}
+                        </select>
+                      </Dropdown.Content>
+                    </Dropdown>
+
+                  </th>
+                  <th className="px-2 py-3 w-32">
+
+                    {/* {`Brands (${params.get('brand') || 'All'})`} */}
+                    <Dropdown>
+                      <Dropdown.Trigger>
+                        <div className="flex items-center justify-between cursor-pointer">
+                          {`Brands (${params.get('brand') || 'All'})`}
+                          <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Brands">
+                            <FaFilter className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </Dropdown.Trigger>
+                      <Dropdown.Content>
+                        <select
+                          onClick={(e) => e.stopPropagation()}
+                          name="brand"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          onChange={(e) =>
+                            router.get(
+                              route('product.index'),
+                              {
+                                brand: e.target.value,
+                                category: params.get('category'),
+                                status: params.get('status'),
+                                search: params.get('search'),
+                                startdate: startdate,
+                                enddate: enddate,
+                                supplierinvoiceno: params.get('supplierinvoiceno'),
+                                invoicecode: params.get('invoicecode'),
+                              },
+                              { preserveState: true, preserveScroll: true }
+                            )
+                          }
+                          value={params.get('brand') || ''}
+                        >
+                          <option value="">All Brands</option>
+                          {brands.map((brand) => (
+                            <option key={brand.name} value={brand.name}>
+                              {brand.name} ({brand.total_products})
+                            </option>
+                          ))}
+                        </select>
+                      </Dropdown.Content>
+                    </Dropdown>
+
+                  </th>
+                  <th className="px-2 py-3 w-20">
+                    <Dropdown>
+                      <Dropdown.Trigger>
+                        <div className="flex items-center justify-between cursor-pointer">
+                          {`Status (${params.get('status') === '1' ? 'In Stock' : params.get('status') === '0' ? 'Out of Stock' : 'All'})`}
+                          <button className="text-gray-500 hover:text-gray-700 transition" title="Filter Status">
+                            <FaFilter className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </Dropdown.Trigger>
+
+                      <Dropdown.Content>
+                        <select
+                          onClick={(e) => e.stopPropagation()}
+                          name="status"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          onChange={(e) =>
+                            router.get(
+                              route('product.index'),
+                              {
+                                status: e.target.value,
+                                category: params.get('category'),
+                                brand: params.get('brand'),
+                                search: params.get('search'),
+                                startdate: startdate,
+                                enddate: enddate,
+                                supplierinvoiceno: params.get('supplierinvoiceno'),
+                                invoicecode: params.get('invoicecode'),
+                              },
+                              { preserveState: true }
+                            )
+                          }
+                          value={params.get('status') || ''}
+                        >
+                          <option value="">All Statuses</option>
+                          <option value="1">In Stock</option>
+                          <option value="0">Out of Stock</option>
+                        </select>
+                      </Dropdown.Content>
+                    </Dropdown>
+
+                  </th>
+                  <th className="px-2 py-3 w-32 text-center">Actions</th>
+                </tr>
+              </thead>
+
+              <tbody className="whitespace-nowrap text-gray-800">
+                {products.data.length === 0 && (
+                  <tr>
+                    <td colSpan="10" className="p-4 text-center text-gray-500">
+                      No products found.
+                    </td>
+                  </tr>
+                )}
+
+                {products.data.map((product) => {
+                  const isExpanded = expanded.includes(product.id);
+                  return (
+                    <Fragment key={product.id}>
+                      <tr
+                        onContextMenu={(e) => {
+                          e.preventDefault(); // Prevents default right-click menu
+                          show({ event: e, props: product }); // Shows custom menu
+                        }}
+                        className={`h-12 transition duration-200 ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                          ? "bg-red-100 hover:bg-red-200"
+                          : product?.stock?.quantity < 5
+                            ? "bg-yellow-100 hover:bg-yellow-200"
+                            : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
+                          } ${selectId.includes(product.id) ? "border-cyan-200 border-b" : "border-gray-200 border-b"}`}
+                      >
+                        <td className="px-4 pb-2">
+                          <input
+                            id={`checkbox-${product.id}`}
+                            type="checkbox"
+                            className="hidden peer"
+                            value={product.id}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setSelectId((prev) => [...prev, product.id]);
+                              } else {
+                                setSelectId((prev) => prev.filter((id) => id !== product.id));
+                              }
+                            }}
+                            checked={selectId.includes(product.id)}
+                          />
+                          <label
+                            htmlFor={`checkbox-${product.id}`}
+                            className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                          >
+                            <FaCheck className="w-full fill-white" />
+                          </label>
+                        </td>
+
+
+
+
+
+                        <td className="px-2 py-3 truncate flex cursor-pointer hover:text-cyan-600 transition" onClick={() => toggleExpand(product.id)}>
+                          {/* <button
+                            onClick={() => toggleExpand(product.id)}
+                            className="text-gray-500 hover:text-gray-700 transition"
+                            title="Toggle stock details"
+                          > */}
+                          <div className='flex items-center gap-4'>
+                            {isExpanded ? <FaChevronDown className="w-3 h-3" /> : <FaChevronRight className="w-3 h-3" />}
+                            <div>
+                              <p className="text-gray-800  truncate">{product.name}</p>
                               {product.model && (
                                 <p className="text-sm text-gray-500 truncate">Model: {product.model}</p>
                               )}
                             </div>
-                          </td>
+                          </div>
+                          {/* </button> */}
+                        </td>
 
-                          <td
-                            className={`px-2 py-3 text-center font-medium ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
-                              ? 'text-red-600'
-                              : product?.stock?.quantity < 5
-                                ? 'text-yellow-600'
-                                : 'text-gray-800'
-                              }`}
-                          >
-                            {product?.stock?.quantity ?? 0}
-                            <span className="text-xs text-gray-500 ms-1">Unit</span>
-                          </td>
+                        <td
+                          className={`px-2 py-3 text-center font-medium ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                            ? 'text-red-600'
+                            : product?.stock?.quantity < 5
+                              ? 'text-yellow-600'
+                              : 'text-gray-800'
+                            }`}
+                        >
+                          {product?.stock?.quantity ?? 0}
+                          <span className="text-xs text-gray-500 ms-1">Unit</span>
+                        </td>
 
-                          <td className="px-2 py-3 text-center">{product.purchase_price || "N/A"}</td>
-                          <td className="px-2 py-3 text-center">{product.selling_price || "N/A"}</td>
+                        <td className="px-2 py-3 text-center">{product.purchase_price || "N/A"}</td>
+                        <td className="px-2 py-3 text-center">{product.selling_price || "N/A"}</td>
 
-                          <td className="px-2 py-3 text-left">
-                            {product?.categories?.length > 0 ? (
-                              <div className="flex flex-wrap gap-1">
-                                {product.categories.slice(0, 3).map((category) => (
-                                  <span key={category.name} className="px-2 py-1 border border-gray-300 rounded text-xs truncate bg-white">
-                                    {category.name}
-                                  </span>
-                                ))}
-                                {product.categories.length > 3 && (
-                                  <span className="px-2 py-1 border border-gray-300 rounded text-xs bg-gray-100">
-                                    +{product.categories.length - 3}
-                                  </span>
-                                )}
-                              </div>
-                            ) : (
-                              <span>N/A</span>
-                            )}
-                          </td>
-
-                          <td className="px-2 py-3 text-left">
-                            {product?.brands?.length > 0 ? (
-                              <div className="flex flex-wrap gap-1">
-                                {product.brands.slice(0, 3).map((brand) => (
-                                  <span key={brand.name} className="px-2 py-1 border border-gray-300 rounded text-xs truncate bg-white">
-                                    {brand.name}
-                                  </span>
-                                ))}
-                                {product.brands.length > 3 && (
-                                  <span className="px-2 py-1 border border-gray-300 rounded text-xs bg-gray-100">
-                                    +{product.brands.length - 3}
-                                  </span>
-                                )}
-                              </div>
-                            ) : (
-                              <span>N/A</span>
-                            )}
-                          </td>
-
-                          <td className="px-2 py-3 w-20">
-                            <label className="relative cursor-pointer inline-block">
-                              <input
-                                type="checkbox"
-                                onClick={() =>
-                                  router.put(route("product.status", product.id), {}, { preserveScroll: true })
-                                }
-                                className="sr-only peer"
-                                checked={product?.stock?.status || false}
-                              />
-
-                              <div
-                                className={`flex items-center w-24 h-10 px-1 rounded-full transition relative 
-        ${product?.stock?.status ? "bg-green-100 justify-start" : "bg-red-100 justify-end"}`}
-                              >
-                                <span
-                                  className={`absolute w-full text-[11px] text-center z-0 font-medium transition duration-200 
-          ${product?.stock?.status ? "text-green-700" : "text-red-700"}`}
-                                >
-                                  {product?.stock?.status ? "Active" : "Inactive"}
+                        <td className="px-2 py-3 text-left">
+                          {product?.categories?.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {product.categories.slice(0, 3).map((category) => (
+                                <span key={category.name} className="px-2 py-1 border border-gray-300 rounded text-xs truncate bg-white">
+                                  {category.name}
                                 </span>
+                              ))}
+                              {product.categories.length > 3 && (
+                                <span className="px-2 py-1 border border-gray-300 rounded text-xs bg-gray-100">
+                                  +{product.categories.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span>N/A</span>
+                          )}
+                        </td>
 
-                                <div className="w-6 h-6 bg-white border border-gray-300 rounded-full z-10 transition peer-checked:translate-x-full"></div>
+                        <td className="px-2 py-3 text-left">
+                          {product?.brands?.length > 0 ? (
+                            <div className="flex flex-wrap gap-1">
+                              {product.brands.slice(0, 3).map((brand) => (
+                                <span key={brand.name} className="px-2 py-1 border border-gray-300 rounded text-xs truncate bg-white">
+                                  {brand.name}
+                                </span>
+                              ))}
+                              {product.brands.length > 3 && (
+                                <span className="px-2 py-1 border border-gray-300 rounded text-xs bg-gray-100">
+                                  +{product.brands.length - 3}
+                                </span>
+                              )}
+                            </div>
+                          ) : (
+                            <span>N/A</span>
+                          )}
+                        </td>
+
+                        <td className="px-2 py-3 w-20">
+                          <label className="relative cursor-pointer inline-block">
+                            <input
+                              type="checkbox"
+                              onClick={() =>
+                                router.put(route("product.status", product.id), {}, { preserveScroll: true })
+                              }
+                              className="sr-only peer"
+                              checked={product?.stock?.status || false}
+                            />
+
+                            <div
+                              className={`flex items-center w-24 h-10 px-1 rounded-full transition relative 
+        ${product?.stock?.status ? "bg-green-100 justify-start" : "bg-red-100 justify-end"}`}
+                            >
+                              <span
+                                className={`absolute w-full text-[11px] text-center z-0 font-medium transition duration-200 
+          ${product?.stock?.status ? "text-green-700" : "text-red-700"}`}
+                              >
+                                {product?.stock?.status ? "Active" : "Inactive"}
+                              </span>
+
+                              <div className="w-6 h-6 bg-white border border-gray-300 rounded-full z-10 transition peer-checked:translate-x-full"></div>
+                            </div>
+                          </label>
+                        </td>
+
+
+
+
+                        <td className="px-2 py-3 text-center">
+                          <div className="flex justify-center items-center gap-2">
+                            <Link
+                              href={route("product.show", product.code || product.id)}
+                              title="View"
+                              className="text-cyan-500 hover:text-cyan-700"
+                            >
+                              <FaEye className="w-4 h-4" />
+                            </Link>
+
+                            <Link
+                              href={route("product.edit", product.id)}
+                              title="Edit"
+                              className="text-yellow-500 hover:text-yellow-700"
+                            >
+                              <FaEdit className="w-4 h-4" />
+                            </Link>
+
+                            <button
+                              onClick={() => setIsDeleteModalOpen(product)}
+                              title="Delete"
+                              className="text-red-500 hover:text-red-700"
+                            >
+                              <FaTrash className="w-4 h-4" />
+                            </button>
+
+                            <Link
+                              href={route("stock.index", { product_id: product.id })}
+                              title="Stock"
+                              className="text-green-500 hover:text-green-700"
+                            >
+                              <FaBoxes className="w-4 h-4" />
+                            </Link>
+                          </div>
+                        </td>
+                      </tr>
+
+                      {/* Expanded row for stock info */}
+                      {isExpanded && (
+                        <tr className="bg-gray-50 text-sm border-t border-gray-200">
+                          <td colSpan="10" className="px-10 py-4 text-gray-600">
+                            <div className="space-y-4">
+                              <div>
+                                {loadingLogs[product.id] ? (
+                                  <p className="text-sm text-gray-500 mt-1 animate-pulse">Loading logs...</p>
+                                ) : stockLogs[product.id]?.length > 0 ? (
+                                  <div className="grid grid-cols-4 gap-2 text-sm ms-12 font-medium ">
+                                    {/* Grid Header */}
+                                    <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-l-xl">Available</div>
+                                    <div className="font-semibold text-gray-700 bg-slate-200 p-2">Type</div>
+                                    <div className="font-semibold text-gray-700 bg-slate-200 p-2">Remarks</div>
+                                    <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-r-xl">Date</div>
+                                    {/* Grid Rows */}
+                                    {stockLogs[product.id].map((log) => (
+                                      <div key={log.id} className="contents">
+                                        <div className="p-1 text-gray-800">{log?.quantity || '-'}</div>
+                                        <div className="p-1 text-gray-800">{log?.type || '-'}</div>
+                                        <div className="p-1 text-gray-800">{log?.remarks || '-'}</div>
+                                        <div className="p-1 text-gray-800">{new Date(log?.created_at).toLocaleString()}</div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <p className="text-sm text-gray-500 mt-1">No stock logs available.</p>
+                                )}
                               </div>
-                            </label>
-                          </td>
-
-
-
-
-                          <td className="px-2 py-3 text-center">
-                            <div className="flex justify-center items-center gap-2">
-                              <Link
-                                href={route("product.show", product.code || product.id)}
-                                title="View"
-                                className="text-cyan-500 hover:text-cyan-700"
-                              >
-                                <FaEye className="w-4 h-4" />
-                              </Link>
-
-                              <Link
-                                href={route("product.edit", product.id)}
-                                title="Edit"
-                                className="text-yellow-500 hover:text-yellow-700"
-                              >
-                                <FaEdit className="w-4 h-4" />
-                              </Link>
-
-                              <button
-                                onClick={() => setIsDeleteModalOpen(product)}
-                                title="Delete"
-                                className="text-red-500 hover:text-red-700"
-                              >
-                                <FaTrash className="w-4 h-4" />
-                              </button>
-
-                              <Link
-                                href={route("stock.index", { product_id: product.id })}
-                                title="Stock"
-                                className="text-green-500 hover:text-green-700"
-                              >
-                                <FaBoxes className="w-4 h-4" />
-                              </Link>
                             </div>
                           </td>
                         </tr>
-
-                        {/* Expanded row for stock info */}
-                        {isExpanded && (
-                          <tr className="bg-gray-50 text-sm border-t border-gray-200">
-                            <td colSpan="10" className="px-10 py-4 text-gray-600">
-                              <div className="space-y-4">
-                                <div>
-                                  {loadingLogs[product.id] ? (
-                                    <p className="text-sm text-gray-500 mt-1 animate-pulse">Loading logs...</p>
-                                  ) : stockLogs[product.id]?.length > 0 ? (
-                                    <div className="grid grid-cols-4 gap-2 text-sm ms-12 font-medium ">
-                                      {/* Grid Header */}
-                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-l-xl">Available</div>
-                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2">Type</div>
-                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2">Remarks</div>
-                                      <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-r-xl">Date</div>
-                                      {/* Grid Rows */}
-                                      {stockLogs[product.id].map((log) => (
-                                        <div key={log.id} className="contents">
-                                          <div className="p-1 text-gray-800">{log?.quantity || '-'}</div>
-                                          <div className="p-1 text-gray-800">{log?.type || '-'}</div>
-                                          <div className="p-1 text-gray-800">{log?.remarks || '-'}</div>
-                                          <div className="p-1 text-gray-800">{new Date(log?.created_at).toLocaleString()}</div>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  ) : (
-                                    <p className="text-sm text-gray-500 mt-1">No stock logs available.</p>
-                                  )}
-                                </div>
-                              </div>
-                            </td>
-                          </tr>
-                        )}
-                      </Fragment>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-
-            {/* pagination */}
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
-              <span class="flex items-center col-span-3"> Showing {products.from} - {products.to} of {products.total} </span>
-              <span class="col-span-2"></span>
-
-              <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-
-
-                <nav aria-label="Table navigation">
-                  <ul class="inline-flex items-center">
-                    <li>
-                      <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '', category: params.get('category') || '', brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '', supplierinvoiceno: params.get('supplierinvoiceno') || '', invoicecode: params.get('invoicecode') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
-                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                          <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </li>
-                    {(() => {
-                      let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
-                      const activeIndex = products.links.findIndex((l) => l.active);
-
-                      return products.links
-                        .slice(1, -1) // Exclude the first and last items
-                        .filter((link, index, array) => {
-                          const currentIndex = parseInt(link.label, 10); // Parse label as number
-                          if (isNaN(currentIndex)) return true; // Always include non-numeric items like "..."
-
-                          // Adjust range dynamically based on the active index
-                          const rangeStart = Math.max(0, activeIndex - 2); // Start range around active
-                          const rangeEnd = Math.min(array.length - 1, activeIndex + 2); // End range around active
-
-                          // Show links within the range or first/last few
-                          return (
-                            index < 3 || // First 3 pages
-                            index > array.length - 4 || // Last 3 pages
-                            (index >= rangeStart && index <= rangeEnd) // Pages close to the active page
-                          );
-                        })
-                        .map((link, index, array) => {
-                          const currentIndex = parseInt(link.label, 10); // Parse label as a number
-                          const isEllipsis =
-                            !isNaN(currentIndex) &&
-                            lastShownIndex !== -1 &&
-                            currentIndex - lastShownIndex > 1; // Check for gaps
-
-                          // Update lastShownIndex only for valid numeric labels
-                          if (!isNaN(currentIndex)) {
-                            lastShownIndex = currentIndex;
-                          }
-
-                          return (
-                            <li key={index}>
-                              {isEllipsis ? (
-                                <span className="px-3 py-1">...</span>
-                              ) : link.active ? (
-                                // Active page button
-                                <button
-                                  className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                  aria-current="page"
-                                >
-                                  {link.label}
-                                </button>
-                              ) : (
-                                // Inactive link button
-                                <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)}
-                                  className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                >
-                                  {link.label}
-                                </button>
-                              )}
-                            </li>
-                          );
-                        });
-                    })()}
-
-
-                    <li>
-                      <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                          <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </span>
-            </div>
+                      )}
+                    </Fragment>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
 
+          {/* pagination */}
+          <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
+            <span class="flex items-center col-span-3"> Showing {products.from} - {products.to} of {products.total} </span>
+            <span class="col-span-2"></span>
 
+            <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+
+
+              <nav aria-label="Table navigation">
+                <ul class="inline-flex items-center">
+                  <li>
+                    <button onClick={() => products.links[0].url ? router.get(products.links[0].url, { status: params.get('status') || '', search: params.get('search') || '', category: params.get('category') || '', brand: params.get('brand') || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '', supplierinvoiceno: params.get('supplierinvoiceno') || '', invoicecode: params.get('invoicecode') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                      </svg>
+                    </button>
+                  </li>
+                  {(() => {
+                    let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
+                    const activeIndex = products.links.findIndex((l) => l.active);
+
+                    return products.links
+                      .slice(1, -1) // Exclude the first and last items
+                      .filter((link, index, array) => {
+                        const currentIndex = parseInt(link.label, 10); // Parse label as number
+                        if (isNaN(currentIndex)) return true; // Always include non-numeric items like "..."
+
+                        // Adjust range dynamically based on the active index
+                        const rangeStart = Math.max(0, activeIndex - 2); // Start range around active
+                        const rangeEnd = Math.min(array.length - 1, activeIndex + 2); // End range around active
+
+                        // Show links within the range or first/last few
+                        return (
+                          index < 3 || // First 3 pages
+                          index > array.length - 4 || // Last 3 pages
+                          (index >= rangeStart && index <= rangeEnd) // Pages close to the active page
+                        );
+                      })
+                      .map((link, index, array) => {
+                        const currentIndex = parseInt(link.label, 10); // Parse label as a number
+                        const isEllipsis =
+                          !isNaN(currentIndex) &&
+                          lastShownIndex !== -1 &&
+                          currentIndex - lastShownIndex > 1; // Check for gaps
+
+                        // Update lastShownIndex only for valid numeric labels
+                        if (!isNaN(currentIndex)) {
+                          lastShownIndex = currentIndex;
+                        }
+
+                        return (
+                          <li key={index}>
+                            {isEllipsis ? (
+                              <span className="px-3 py-1">...</span>
+                            ) : link.active ? (
+                              // Active page button
+                              <button
+                                className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                aria-current="page"
+                              >
+                                {link.label}
+                              </button>
+                            ) : (
+                              // Inactive link button
+                              <button
+                                onClick={() => link.url && window.location.assign(link.url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)}
+                                className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                              >
+                                {link.label}
+                              </button>
+                            )}
+                          </li>
+                        );
+                      });
+                  })()}
+
+
+                  <li>
+                    <button onClick={() => products.links[products.links.length - 1].url && window.location.assign(products.links[products.links.length - 1].url + `&status=${params.get('status') || ''}` + `&search=${params.get('search') || ''}` + `&category=${params.get('category') || ''}` + `&brand=${params.get('brand') || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&supplierinvoiceno=${params.get('supplierinvoiceno') || ''}` + `&invoicecode=${params.get('invoicecode') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
+                        <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
+                      </svg>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </span>
+          </div>
         </div>
+
+
       </div>
 
 
@@ -957,7 +1000,7 @@ export default function List(props) {
         maxWidth="6xl"
       >
         <div className="my-4 text-center hide-print">
-          <h1 className="text-2xl font-bold mb-4">Purchases QR Codes</h1>
+          <h1 className="text-2xl font-bold mb-4">Products QR Codes</h1>
         </div>
 
         <div>

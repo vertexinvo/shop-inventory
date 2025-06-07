@@ -14,7 +14,9 @@ import { DateRangePicker } from 'react-date-range';
 import Modal from '@/Components/Modal';
 import { set } from 'date-fns';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
-
+import { FaCheck, FaChevronDown } from 'react-icons/fa';
+import { FaMoneyBillWave, FaClock, FaCalendarAlt, FaHourglassHalf, FaChartLine, FaFileInvoiceDollar } from 'react-icons/fa';
+import Dropdown from '@/Components/Dropdown';
 export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const { auth, expences, startdate, enddate, todayTotal, todayPending, monthTotal, monthPending, yearTotal, yearPending } = props
@@ -34,7 +36,7 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       user={auth}
-     header={
+      header={
         <div className="flex items-center justify-between py-2">
           {/* Title */}
           <div className="flex items-center space-x-3">
@@ -44,96 +46,104 @@ export default function List(props) {
               onClick={() => window.history.back()}
               title="Back"
             />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Expense</h2>
+            <h2 className="text-xl text-gray-800 leading-tight">Expense</h2>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+
+            {/* Import/Export Dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  File
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <a
+                  // href={route('expense.csvexport')}
+                  download
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  coming soon
+                </a>
+              </Dropdown.Content>
+            </Dropdown>
+
+            {/* Create Button dropdown */}
+            <Dropdown>
+              <Dropdown.Trigger>
+                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                  Add new
+                  <FaChevronDown className="h-3 w-3" />
+                </button>
+              </Dropdown.Trigger>
+              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Link
+                  href={route('expense.create')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Expense
+                </Link>
+              </Dropdown.Content>
+            </Dropdown>
           </div>
         </div>
       }
     >
       <Head title="Expense" />
 
-      <div class="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-2 py-5">
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TODAY'S TOTAL EXPENSE</p>
-              <p class="text-lg">{todayTotal}</p>
-            </div>
-            <div class="my-auto">
+      <div className="mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 py-5">
 
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Today's Total Expense</p>
+            <p className="text-xl font-bold text-blue-600">{todayTotal}</p>
           </div>
+          <FaMoneyBillWave size={36} className="text-blue-500" />
         </div>
 
-
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">TODAY'S PENDING AMOUNT</p>
-              <p class="text-lg">{todayPending}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Today's Pending Amount</p>
+            <p className="text-xl font-bold text-orange-600">{todayPending}</p>
           </div>
+          <FaClock size={36} className="text-orange-500" />
         </div>
 
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">MONTH'S TOTAL EXPENSE</p>
-              <p class="text-lg">{monthTotal}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Month's Total Expense</p>
+            <p className="text-xl font-bold text-indigo-600">{monthTotal}</p>
           </div>
+          <FaChartLine size={36} className="text-indigo-500" />
         </div>
 
-
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">MONTH'S PENDING AMOUNT</p>
-              <p class="text-lg">{monthPending}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Month's Pending Amount</p>
+            <p className="text-xl font-bold text-amber-600">{monthPending}</p>
           </div>
+          <FaHourglassHalf size={36} className="text-amber-500" />
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">YEAR'S PENDING AMOUNT</p>
-              <p class="text-lg">{yearTotal}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Year's Total Expense</p>
+            <p className="text-xl font-bold text-emerald-600">{yearTotal}</p>
           </div>
+          <FaCalendarAlt size={36} className="text-emerald-500" />
         </div>
 
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div class="flex w-full h-full py-2 px-4 bg-white rounded-lg justify-between">
-            <div class="my-auto">
-              <p class="font-bold">YEAR'S PENDING AMOUNT</p>
-              <p class="text-lg">{yearPending}</p>
-            </div>
-            <div class="my-auto">
-
-            </div>
+        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
+          <div>
+            <p className="text-gray-600 text-sm font-medium">Year's Pending Amount</p>
+            <p className="text-xl font-bold text-rose-600">{yearPending}</p>
           </div>
+          <FaFileInvoiceDollar size={36} className="text-rose-500" />
         </div>
-
-
-
-
-
 
       </div>
 
@@ -144,7 +154,6 @@ export default function List(props) {
 
           <div className="flex flex-col md:flex-row w-full md:justify-start space-y-2 md:space-y-0 md:space-x-2">
 
-
             {selectId.length > 0 && (
               <button
                 onClick={() => setIsBulkDeleteModalOpen(true)}
@@ -153,7 +162,7 @@ export default function List(props) {
                 Bulk Delete
               </button>
             )}
-               <FloatingCreateButton routeName="expense.create" title="Create" />
+            <FloatingCreateButton routeName="expense.create" title="Create" />
 
 
             {/* Date range filter button */}
@@ -168,168 +177,166 @@ export default function List(props) {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
-          <div class="font-[sans-serif] overflow-x-auto">
-            <table class="min-w-full bg-white">
-              <thead class="whitespace-nowrap">
-                <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                  <th class="pl-4 w-8">
-                    <input id="checkbox" type="checkbox" class="hidden peer"
-                      onChange={(e) => setSelectId(e.target.checked ? expences.data.map((user) => user.id) : [])}
-                      checked={selectId.length === expences.data.length}
+
+        <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+          <table className="min-w-full divide-y divide-gray-200 bg-white">
+            <thead className="whitespace-nowrap text-xs uppercase bg-gray-200 text-gray-700 tracking-wide border-b">
+              <tr>
+                <th className="px-4 py-3 w-8">
+                  <input id="checkbox" type="checkbox" className="hidden peer"
+                    onChange={(e) => setSelectId(e.target.checked ? expences.data.map((user) => user.id) : [])}
+                    checked={selectId.length === expences.data.length}
+                  />
+                  <label
+                    htmlFor="checkbox"
+                    className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                  >
+                    <FaCheck className="w-full fill-white" />
+                  </label>
+                </th>
+                <th class="p-4 text-left  ">
+                  Name
+                </th>
+                <th class="p-4 text-left  ">
+                  Type
+                </th>
+                <th class="p-4 text-left ">
+                  DateTime
+                </th>
+                <th class="p-4 text-left ">
+                  Description
+                </th>
+                <th class="p-4 text-left ">
+                  Amount
+                </th>
+
+                <th class="p-4 text-left ">
+                  Status
+                </th>
+                <th class="p-4 text-left ">
+                  Pending Amount
+                </th>
+                <th class="p-4 text-left ">
+                  User Info
+                </th>
+                <th class="p-4 text-left ">
+                  Action
+                </th>
+              </tr>
+            </thead>
+
+            <tbody class="whitespace-nowrap">
+
+              {expences.data.length === 0 ? (
+                <tr>
+                  <td colSpan="9" className="p-4 text-center">
+                    No data available
+                  </td>
+                </tr>
+              ) : null}
+
+              {expences.data.map((expance, index) => (
+                <tr key={expance.id} class={`odd:bg-gray-50  ${selectId.includes(expance.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
+                  <td className="pl-4 w-8">
+                    <input
+                      id={`checkbox-${expance.id}`} // Unique id for each checkbox
+                      type="checkbox"
+                      className="hidden peer"
+                      value={expance.id}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSelectId((prev) => [...prev, expance.id]); // Add user ID to state
+                        } else {
+                          setSelectId((prev) => prev.filter((id) => id !== expance.id)); // Remove user ID from state
+                        }
+                      }}
+                      checked={selectId.includes(expance.id)} // Bind state to checkbox
                     />
-                    <label for="checkbox"
-                      class="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="w-full fill-white" viewBox="0 0 520 520">
+                    <label
+                      htmlFor={`checkbox-${expance.id}`} // Match label with checkbox id
+                      className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-full fill-white"
+                        viewBox="0 0 520 520"
+                      >
                         <path
                           d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                          data-name="7-Check" data-original="#000000" />
+                        />
                       </svg>
                     </label>
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Name
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Type
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    DateTime
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Description
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Amount
-                  </th>
+                  </td>
+                  <td class="p-4 text-sm">{expance.name || 'N/A'}</td>
+                  <td class="p-4 text-sm">{expance.type || 'N/A'}</td>
+                  <td class="p-4 text-sm">{FormatDate(expance.datetime) || 'N/A'}</td>
+                  <td class="p-4 text-sm">{expance.description ? expance.description?.substring(0, 50) + `...` : 'N/A'}</td>
+                  <td class="p-4 text-sm">{expance.amount || 0}</td>
+                  <td class="p-4 text-sm">{expance.status || 'N/A'}</td>
+                  <td class="p-4 text-sm">{expance.pending_amount || 0}</td>
+                  <td class="p-4 text-sm">{
+                    expance.user ? (
+                      <>
+                        <p class="text-sm  leading-tight text-gray-800 mb-2">
+                          ID : {expance.user.code || expance.user.id}
+                        </p>
+                        <p class="text-sm  leading-tight text-gray-800 mb-2">
+                          Name : {expance.user.name || 'N/A'}
+                        </p>
+                        <p class="text-sm  leading-tight text-gray-800 mb-2">
+                          Email : {expance.user.email || 'N/A'}
+                        </p>
+                        <p class="text-sm  leading-tight text-gray-800 mb-2">
+                          Phone : {expance.user.phone || 'N/A'}
+                        </p>
+                      </>
+                    ) : 'N/A'
+                  }</td>
 
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Status
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Pending Amount
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    User Info
-                  </th>
-                  <th class="p-4 text-left text-sm font-semibold ">
-                    Action
-                  </th>
+                  <td class="p-4 flex items-center gap-2">
+                    <button
+                      onClick={() => router.get(route('expense.edit', expance))}
+                      title="Edit"
+                      className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 rounded text-white px-3 py-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-6 fill-black" viewBox="0 0 348.882 348.882">
+                        <path
+                          d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
+                        />
+                        <path
+                          d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
+                        />
+                      </svg>
+                      <span className="text-white hover:text-black">Edit</span>
+                    </button>
+
+                    <button
+                      onClick={() => setIsDeleteModalOpen(expance)}
+                      title="Delete"
+                      className="flex items-center space-x-2 bg-red-500 hover:bg-red-600 rounded text-white px-3 py-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-6 fill-black" viewBox="0 0 24 24">
+                        <path
+                          d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+                        />
+                        <path
+                          d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+                        />
+                      </svg>
+                      <span className="text-white hover:text-black">Delete</span>
+                    </button>
+
+
+
+                  </td>
                 </tr>
-              </thead>
+              ))}
 
-              <tbody class="whitespace-nowrap">
-
-                {expences.data.length === 0 ? (
-                  <tr>
-                    <td colSpan="9" className="p-4 text-center">
-                      No data available
-                    </td>
-                  </tr>
-                ) : null}
-
-                {expences.data.map((expance, index) => (
-                  <tr key={expance.id} class={`odd:bg-gray-50  ${selectId.includes(expance.id) ? 'border-black border-4' : 'border-gray-300 border-b'}`}>
-                    <td className="pl-4 w-8">
-                      <input
-                        id={`checkbox-${expance.id}`} // Unique id for each checkbox
-                        type="checkbox"
-                        className="hidden peer"
-                        value={expance.id}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setSelectId((prev) => [...prev, expance.id]); // Add user ID to state
-                          } else {
-                            setSelectId((prev) => prev.filter((id) => id !== expance.id)); // Remove user ID from state
-                          }
-                        }}
-                        checked={selectId.includes(expance.id)} // Bind state to checkbox
-                      />
-                      <label
-                        htmlFor={`checkbox-${expance.id}`} // Match label with checkbox id
-                        className="relative flex items-center justify-center p-0.5 peer-checked:before:hidden before:block before:absolute before:w-full before:h-full before:bg-white w-5 h-5 cursor-pointer bg-black border border-gray-400 rounded overflow-hidden"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="w-full fill-white"
-                          viewBox="0 0 520 520"
-                        >
-                          <path
-                            d="M79.423 240.755a47.529 47.529 0 0 0-36.737 77.522l120.73 147.894a43.136 43.136 0 0 0 36.066 16.009c14.654-.787 27.884-8.626 36.319-21.515L486.588 56.773a6.13 6.13 0 0 1 .128-.2c2.353-3.613 1.59-10.773-3.267-15.271a13.321 13.321 0 0 0-19.362 1.343q-.135.166-.278.327L210.887 328.736a10.961 10.961 0 0 1-15.585.843l-83.94-76.386a47.319 47.319 0 0 0-31.939-12.438z"
-                          />
-                        </svg>
-                      </label>
-                    </td>
-                    <td class="p-4 text-sm">{expance.name || 'N/A'}</td>
-                    <td class="p-4 text-sm">{expance.type || 'N/A'}</td>
-                    <td class="p-4 text-sm">{FormatDate(expance.datetime) || 'N/A'}</td>
-                    <td class="p-4 text-sm">{expance.description ? expance.description?.substring(0, 50) + `...` : 'N/A'}</td>
-                    <td class="p-4 text-sm">{expance.amount || 0}</td>
-                    <td class="p-4 text-sm">{expance.status || 'N/A'}</td>
-                    <td class="p-4 text-sm">{expance.pending_amount || 0}</td>
-                    <td class="p-4 text-sm">{
-                      expance.user ? (
-                        <>
-                          <p class="text-sm  leading-tight text-gray-800 mb-2">
-                            ID : {expance.user.code || expance.user.id}
-                          </p>
-                          <p class="text-sm  leading-tight text-gray-800 mb-2">
-                            Name : {expance.user.name || 'N/A'}
-                          </p>
-                          <p class="text-sm  leading-tight text-gray-800 mb-2">
-                            Email : {expance.user.email || 'N/A'}
-                          </p>
-                          <p class="text-sm  leading-tight text-gray-800 mb-2">
-                            Phone : {expance.user.phone || 'N/A'}
-                          </p>
-                        </>
-                      ) : 'N/A'
-                    }</td>
-
-                    <td class="p-4 flex items-center gap-2">
-                      <button
-                        onClick={() => router.get(route('expense.edit', expance))}
-                        title="Edit"
-                        className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 rounded text-white px-3 py-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 fill-black" viewBox="0 0 348.882 348.882">
-                          <path
-                            d="m333.988 11.758-.42-.383A43.363 43.363 0 0 0 304.258 0a43.579 43.579 0 0 0-32.104 14.153L116.803 184.231a14.993 14.993 0 0 0-3.154 5.37l-18.267 54.762c-2.112 6.331-1.052 13.333 2.835 18.729 3.918 5.438 10.23 8.685 16.886 8.685h.001c2.879 0 5.693-.592 8.362-1.76l52.89-23.138a14.985 14.985 0 0 0 5.063-3.626L336.771 73.176c16.166-17.697 14.919-45.247-2.783-61.418zM130.381 234.247l10.719-32.134.904-.99 20.316 18.556-.904.99-31.035 13.578zm184.24-181.304L182.553 197.53l-20.316-18.556L294.305 34.386c2.583-2.828 6.118-4.386 9.954-4.386 3.365 0 6.588 1.252 9.082 3.53l.419.383c5.484 5.009 5.87 13.546.861 19.03z"
-                          />
-                          <path
-                            d="M303.85 138.388c-8.284 0-15 6.716-15 15v127.347c0 21.034-17.113 38.147-38.147 38.147H68.904c-21.035 0-38.147-17.113-38.147-38.147V100.413c0-21.034 17.113-38.147 38.147-38.147h131.587c8.284 0 15-6.716 15-15s-6.716-15-15-15H68.904C31.327 32.266.757 62.837.757 100.413v180.321c0 37.576 30.571 68.147 68.147 68.147h181.798c37.576 0 68.147-30.571 68.147-68.147V153.388c.001-8.284-6.715-15-14.999-15z"
-                          />
-                        </svg>
-                        <span className="text-white hover:text-black">Edit</span>
-                      </button>
-
-                      <button
-                        onClick={() => setIsDeleteModalOpen(expance)}
-                        title="Delete"
-                        className="flex items-center space-x-2 bg-red-500 hover:bg-red-600 rounded text-white px-3 py-2"
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 fill-black" viewBox="0 0 24 24">
-                          <path
-                            d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
-                          />
-                          <path
-                            d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
-                          />
-                        </svg>
-                        <span className="text-white hover:text-black">Delete</span>
-                      </button>
+            </tbody>
+          </table>
 
 
-
-                    </td>
-                  </tr>
-                ))}
-
-              </tbody>
-            </table>
-          </div>
-
-          <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
+          <div class="grid px-4 py-3 text-xs tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
             <span class="flex items-center col-span-3"> Showing {expences.from} - {expences.to} of {expences.total} </span>
             <span class="col-span-2"></span>
 
