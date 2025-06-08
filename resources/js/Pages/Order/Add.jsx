@@ -14,6 +14,7 @@ import { RiAiGenerate } from "react-icons/ri";
 import { toast } from 'react-toastify';
 import { MdKeyboardBackspace } from "react-icons/md";
 import './order.css'
+import CustomerForm from '@/Partials/CustomerForm';
 
 
 export default function Add(props) {
@@ -29,6 +30,8 @@ export default function Add(props) {
   const [loading3, setLoading3] = useState(false);
 
   const [exchangeItems, setExchangeItems] = useState(null);
+
+  const [addCustmerModal, setAddCustomerModal] = useState(false);
 
   const customStyles = {
     control: (base, state) => ({
@@ -120,6 +123,7 @@ export default function Add(props) {
         bill_no: order?.bill_no || '',
       }}
         validationSchema={Yup.object({
+          user_id: Yup.string().required('Customer is required'),
           status: Yup.string().oneOf(['pending', 'completed', 'cancel'], 'Invalid status').required('Status is required'),
           bill_no: Yup.string(),
           name: Yup.string().required('Name is required'),
@@ -338,8 +342,10 @@ export default function Add(props) {
                           <div className="mb-4">
 
 
-
-                            <label className="block text-grey-darker text-sm  mb-2 " for="shop_name">Select Customer (Existing)</label>
+                            <div className="flex items-center justify-between mb-2">
+                            <label className="block text-grey-darker text-sm " for="shop_name">Select Customer (Existing)</label>
+                            <button type="button" className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline" onClick={() => setAddCustomerModal(true)}>Add Customer</button>
+                            </div>
                             <Select
                               onChange={(e) => {
                                 setFieldValue('user_id', e.value);
@@ -371,6 +377,7 @@ export default function Add(props) {
                               styles={customStyles}
 
                             />
+                            <ErrorMessage name="user_id" component="div" className="text-red-500 text-xs mt-1" />
 
                           </div>
 
@@ -1419,6 +1426,22 @@ export default function Add(props) {
           )
         }}
       </Formik>
+
+
+    <Modal show={addCustmerModal} onClose={() => setAddCustomerModal(false)}>
+        <div className="overflow-y-auto max-h-[80vh]">
+          <div className="flex justify-center p-10">
+            <div className="text-2xl font-medium text-[#5d596c] ">
+              Create Customer
+            </div>
+          </div>
+
+          <div className="px-10 mb-5">
+                    <CustomerForm  />
+          </div>
+        </div>
+      </Modal>
+
 
     </AuthenticatedLayout>
   );

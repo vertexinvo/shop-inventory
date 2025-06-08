@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import { use } from 'react';
 import './order.css'
 import { MdKeyboardBackspace } from "react-icons/md";
+import Modal from '@/Components/Modal';
+import CustomerForm from '@/Partials/CustomerForm';
 
 
 export default function InstantOrder(props) {
@@ -27,6 +29,8 @@ export default function InstantOrder(props) {
   const [loading3, setLoading3] = useState(false);
 
   const [exchangeItems, setExchangeItems] = useState(null);
+
+  const [addCustmerModal, setAddCustomerModal] = useState(false);
 
   const customStyles = {
     control: (base, state) => ({
@@ -78,6 +82,7 @@ export default function InstantOrder(props) {
         exchange: 0
       }}
         validationSchema={Yup.object({
+          user_id: Yup.string().required('Customer is required'),
           bill_no: Yup.string(),
           status: Yup.string().required('Status is required'),
           name: Yup.string().required('Name is required'),
@@ -213,7 +218,10 @@ export default function InstantOrder(props) {
 
 
 
-                            <label className="block text-grey-darker text-sm  mb-2 " for="shop_name">Select Customer (Existing)</label>
+                            <div className="flex items-center justify-between mb-2">
+                            <label className="block text-grey-darker text-sm " for="shop_name">Select Customer (Existing)</label>
+                            <button type="button" className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline" onClick={() => setAddCustomerModal(true)}>Add Customer</button>
+                            </div>
                             <Select
                               onChange={(e) => {
                                 setFieldValue('user_id', e.value);
@@ -243,8 +251,8 @@ export default function InstantOrder(props) {
                               className="basic-single "
                               classNamePrefix="select "
                               styles={customStyles}
-
                             />
+                            <ErrorMessage name="user_id" component="div" className="text-red-500 text-xs mt-1" />
 
                           </div>
 
@@ -979,6 +987,21 @@ export default function InstantOrder(props) {
           )
         }}
       </Formik>
+
+
+          <Modal show={addCustmerModal} onClose={() => setAddCustomerModal(false)}>
+              <div className="overflow-y-auto max-h-[80vh]">
+                <div className="flex justify-center p-10">
+                  <div className="text-2xl font-medium text-[#5d596c] ">
+                    Create Customer
+                  </div>
+                </div>
+      
+                <div className="px-10 mb-5">
+                          <CustomerForm  />
+                </div>
+              </div>
+            </Modal>
 
     </AuthenticatedLayout>
   );

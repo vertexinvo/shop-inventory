@@ -97,7 +97,7 @@ class CustomerController extends Controller
         session()->flash('message', 'Customer created successfully');
         UserService::forgetCache($request->search ?? '', 'customer');
 
-        return back();
+        return redirect()->back();
     }
 
     /**

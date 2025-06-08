@@ -1,5 +1,7 @@
 import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { BiCloset } from 'react-icons/bi';
+import { MdClose } from 'react-icons/md';
 
 export default function Modal({ children, show = false, maxWidth = '2xl', closeable = true, onClose = () => {} }) {
     const close = () => {
@@ -51,6 +53,15 @@ export default function Modal({ children, show = false, maxWidth = '2xl', closea
                     <Dialog.Panel
                         className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
                     >
+                        {closeable && (
+                            <button
+                                onClick={close}
+                                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+                                aria-label="Close"
+                            >
+                                <MdClose className="w-5 h-5" />
+                            </button>
+                        )}
                         {children}
                     </Dialog.Panel>
                 </Transition.Child>

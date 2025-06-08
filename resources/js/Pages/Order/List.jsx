@@ -251,6 +251,12 @@ export default function List(props) {
                 >
                   Invoice
                 </Link>
+                 <Link
+                  href={route('order.instantorder')}
+                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  Instant Invoice
+                </Link>
               </Dropdown.Content>
             </Dropdown>
           </div>

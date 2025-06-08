@@ -229,7 +229,7 @@ class OrderController extends Controller
         //     $query->where('name', 'like', "%$searchuser%")
         //           ->orWhere('phone', 'like', "%$searchuser%");
         // })->limit(6)->get();
-        $userrec = User::role('customer')->where('status',true)->get();
+        $userrec = User::role('customer')->where('status',true)->orderBy('created_at', 'desc')->get();
         
         $users = $userrec->map(function ($item) {
             return [
@@ -284,6 +284,7 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
    
         $validator = Validator::make($request->all(), [
+            'user_id' => 'nullable|exists:users,id',
             'bill_no' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
@@ -398,7 +399,7 @@ class OrderController extends Controller
         //     $query->where('name', 'like', "%$searchuser%")
         //           ->orWhere('phone', 'like', "%$searchuser%");
         // })->limit(6)->get();
-        $userrec = User::role('customer')->where('status',true)->get();
+        $userrec = User::role('customer')->where('status',true)->orderBy('created_at', 'desc')->get();
 
         $users = $userrec->map(function ($item) {
             return [
@@ -462,6 +463,7 @@ class OrderController extends Controller
         $this->authorize('create', Order::class);
       
         $validator = Validator::make($request->all(), [
+            'user_id' => 'nullable|exists:users,id',
             'bill_no' => 'nullable|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
