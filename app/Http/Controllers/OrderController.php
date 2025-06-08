@@ -254,7 +254,7 @@ class OrderController extends Controller
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' ) ?? '',
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' ) . ( " - Qty: " . $item->stock->quantity) ?? '',
                 'data' => $item,
                 'quantity' => 1
             ];
@@ -423,7 +423,7 @@ class OrderController extends Controller
         $items = $itemrec->map(function ($item) {
             return [
                 'value' => $item->id,
-                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' ) ?? '',
+                'label' => $item->name . ( $item->model ?  ' - ' .$item->model : '' ) . ( $item->identity_value ?  ' - ' .$item->identity_value : '' ) . ( $item->supplier_name ?  ' - ' .$item->supplier_name : '' ) . ( " - Qty: " . $item->stock->quantity) ?? '',
                 'data' => $item,
                 'quantity' => 1
             ];

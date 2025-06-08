@@ -4,7 +4,7 @@ import { FaWallet, FaEdit, FaTrash, FaPlusCircle, FaCheck, FaCheckCircle } from 
 import { MdClear, MdContentPaste, MdDelete } from 'react-icons/md';
 import { GiTwoCoins } from 'react-icons/gi';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import * as Yup from 'yup';
 import Select from 'react-select';
 import 'react-quill/dist/quill.snow.css';
@@ -380,6 +380,8 @@ export default function InstantOrder(props) {
                                               <p class="text-sm text-black ">Name : {selectedItems?.data?.name}</p>
                                               {selectedItems?.data?.model && <p class="text-xs text-gray-500 mt-0.5">Model :{selectedItems?.data?.model} </p>}
                                               {selectedItems?.data?.identity_type !== 'none' && <p class="text-xs text-gray-500 mt-0.5">{selectedItems?.data?.identity_type}:{selectedItems?.data?.identity_value} </p>}
+                                              <a  href={route("product.show", selectedItems?.data?.code || selectedItems?.data?.id)} target='_blank' className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline" >View Item</a>
+                                     
                                             </div>
                                           </div>
                                         </td>
@@ -472,8 +474,10 @@ export default function InstantOrder(props) {
                                         <th class="p-4 text-left text-sm font-semibold text-black">
                                           Stock  Quantity
                                         </th>
-                                        <td class="p-4 text-sm text-black">
-                                          {selectedItems?.data?.stock?.quantity || 0}
+                                        <td class="p-4 text-sm text-black flex items-center justify-between">
+                                         <span> {selectedItems?.data?.stock?.quantity || 0} </span>   
+                                         <a  href={route('stock.index',{ product_id: selectedItems?.data?.id})} target='_blank' className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline" >Manage Stock</a>
+                          
                                         </td>
                                       </tr>
 
