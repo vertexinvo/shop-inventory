@@ -210,11 +210,13 @@ export default function Edit(props) {
                           <ErrorMessage name="description" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
+                       {values.identity_type === 'imei' && (
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="purchase_price">Purchase Price</label>
                           <Field name="purchase_price" className="appearance-none border rounded w-full py-2 px-3 text-grey-darker" id="purchase_price" type="number" step="0.01" placeholder="Enter purchase price" />
                           <ErrorMessage name="purchase_price" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
+                      )}
 
                       <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2" for="selling_price">Selling Price</label>
@@ -471,7 +473,7 @@ export default function Edit(props) {
                           </>
                       )}
 
-
+                      {values.identity_type === 'imei' && (<>
                 <div className="mb-4">
                           <label className="block text-grey-darker text-sm font-bold mb-2">Is Supplier</label>
                           <div className="flex items-center">
@@ -485,8 +487,8 @@ export default function Edit(props) {
                           <ErrorMessage name="is_supplier" component="div" className="text-red-500 text-xs mt-1" />
                       </div>
 
-
-                      {values.is_supplier === '1' && (
+                      
+                      { values.is_supplier === '1' && (
 
                             <div className="mb-4">
                           <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Supplier Invoice No (Existing)</label>
@@ -501,6 +503,7 @@ export default function Edit(props) {
 
                       )}
 
+                  </>)}
 
 
                   <div className="mb-4">

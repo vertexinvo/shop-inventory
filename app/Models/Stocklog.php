@@ -24,4 +24,18 @@ class Stocklog extends Model
         'purchase_price',
         'product_id',
     ];
+
+     protected $appends = ['supplier_name'];
+
+    // supplier
+    public function supplierInvoice()
+    {
+        return $this->belongsTo(Supplierinvoice::class, 'supplier_invoice_no', 'invoice_no');
+    }
+
+    public function getSupplierNameAttribute()
+    {
+        return $this->supplierInvoice ? $this->supplierInvoice->supplier->person_name . ' - ' . $this->supplierInvoice->supplier->code : '';
+    }
+
 }

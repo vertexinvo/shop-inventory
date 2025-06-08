@@ -770,10 +770,11 @@ export default function List(props) {
                                 {loadingLogs[product.id] ? (
                                   <p className="text-sm text-gray-500 mt-1 animate-pulse">Loading logs...</p>
                                 ) : stockLogs[product.id]?.length > 0 ? (
-                                  <div className="grid grid-cols-4 gap-2 text-sm ms-12 font-medium ">
+                                  <div className="grid grid-cols-5 gap-2 text-sm ms-12 font-medium ">
                                     {/* Grid Header */}
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-l-xl">Available</div>
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2">Type</div>
+                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2">Supplier Invoice</div>
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2">Remarks</div>
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-r-xl">Date</div>
                                     {/* Grid Rows */}
@@ -781,6 +782,7 @@ export default function List(props) {
                                       <div key={log.id} className="contents">
                                         <div className="p-1 text-gray-800">{log?.quantity || '-'}</div>
                                         <div className="p-1 text-gray-800">{log?.type || '-'}</div>
+                                        <div className="p-1 text-gray-800">{(log?.supplier_invoice_no + `(${log?.supplier_name })`) || '-'}</div>
                                         <div className="p-1 text-gray-800">{log?.remarks || '-'}</div>
                                         <div className="p-1 text-gray-800">{new Date(log?.created_at).toLocaleString()}</div>
                                       </div>

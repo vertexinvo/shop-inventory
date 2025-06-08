@@ -142,7 +142,110 @@ export default function Add(props) {
                        
                        
 
+                          {/* Supplier */}
+                                                   <div className="mb-8">
+                                                     <label className="block text-gray-700 text-sm font-medium mb-3">Supplier <span className="text-red-500">*</span></label>
+                                                     <div className="flex items-center gap-8">
+                                                       <label className="flex items-center">
+                                                         <Field
+                                                           name="is_supplier"
+                                                           type="radio"
+                                                           value="1"
+                                                           className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                                         />
+                                                         <span className="text-sm text-gray-700">Yes</span>
+                                                       </label>
+                                                       <label className="flex items-center">
+                                                         <Field
+                                                           name="is_supplier"
+                                                           type="radio"
+                                                           value="0"
+                                                           className="mr-2 focus:ring-cyan-500 text-cyan-500"
+                                                         />
+                                                         <span className="text-sm text-gray-700">No</span>
+                                                       </label>
+                                                     </div>
+                                                     <ErrorMessage name="is_supplier" component="div" className="text-red-500 text-xs mt-1" />
+                                                   </div>
                          
+                                                   {/* Supplier Invoice */}
+                                                   {values.is_supplier === "1" && (
+                                                     <div className="mb-8">
+                                                       <div className="flex items-center justify-between mb-2">
+                                                         <label className="block text-gray-700 text-sm font-medium">Supplier Invoice No</label>
+                                                         <button
+                                                           type="button"
+                                                           onClick={() => {
+                                                             setNotRemember(!notremember);
+                                                             setFieldValue('supplier_invoice_no', '');
+                                                           }}
+                                                           className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                                         >
+                                                           {notremember ? 'Remember' : 'Not remember?'}
+                                                         </button>
+                                                       </div>
+                                                       {!notremember ? (
+                                                         <Field
+                                                           name="supplier_invoice_no"
+                                                           className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                                           id="supplier_invoice_no"
+                                                           type="text"
+                                                           placeholder="Enter supplier invoice no"
+                                                         />
+                                                       ) : (
+                                                         <>
+                                                           <select
+                                                             onChange={(e) => {
+                                                               setFieldValue('supplier_invoice_no', '');
+                                                               setSupplierId(e.target.value);
+                                                               router.get(route('stocklog.create', { product_id: product_id}) , { supplier_id: e.target.value }, { preserveState: true, preserveScroll: true });
+                                                             }}
+                                                             className="appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                                             id="supplier_invoice_no"
+                                                           >
+                                                             <option value="">Select supplier</option>
+                                                             {suppliers.map((supplier) => (
+                                                               <option key={supplier.id} value={supplier.id}>
+                                                                 {supplier.person_name + ' - ' + supplier.code + ' - ' + supplier.contact}
+                                                               </option>
+                                                             ))}
+                                                           </select>
+                                                           {supplierinvoices.length > 0 && (
+                                                             <Field
+                                                               as="select"
+                                                               name="supplier_invoice_no"
+                                                               className="mt-3 appearance-none border border-gray-300 rounded-lg w-full py-3 px-4 text-gray-700 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition duration-200 bg-white shadow-sm"
+                                                               id="supplier_invoice_no"
+                                                             >
+                                                               <option value="">Select supplier invoice no</option>
+                                                               {supplierinvoices.map((item) => (
+                                                                 <option key={item.id} value={item.invoice_no}>
+                                                                   {item.invoice_no}
+                                                                 </option>
+                                                               ))}
+                                                             </Field>
+                                                           )}
+                                                         </>
+                                                       )}
+                                                       <ErrorMessage name="supplier_invoice_no" component="div" className="text-red-500 text-xs mt-1" />
+                                                       <div className="flex items-center gap-4 mt-3">
+                                                         <button
+                                                           type="button"
+                                                           onClick={() => setIsNewSupplierInvoiceModel(true)}
+                                                           className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                                         >
+                                                           Create new invoice
+                                                         </button>
+                                                         <button
+                                                           type="button"
+                                                           onClick={() => setIsNewSupplierModel(true)}
+                                                           className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                                         >
+                                                           Create new supplier
+                                                         </button>
+                                                       </div>
+                                                     </div>
+                                                   )}
 
                        
 
@@ -187,7 +290,7 @@ export default function Add(props) {
               </div>
     
               <div className="px-10 mb-5">
-                        <SupplierForm codeRoute="product.create" setIsNewSupplierModel={setIsNewSupplierModel} />
+                        <SupplierForm codeRoute={"stocklog.create"} id={{"product_id" : product_id}} setIsNewSupplierModel={setIsNewSupplierModel} />
               </div>
             </div>
           </Modal>
@@ -200,9 +303,9 @@ export default function Add(props) {
                   Create New Invoice
                 </div>
               </div>
-    
+                       
               <div className="px-10 mb-5">
-                        <SupplierinvoiceForm codeRoute="product.create" setIsNewSupplierInvoiceModel={setIsNewSupplierInvoiceModel} />
+                        <SupplierinvoiceForm codeRoute={"stocklog.create"} id={{"product_id" : product_id}} setIsNewSupplierInvoiceModel={setIsNewSupplierInvoiceModel} />
               </div>
             </div>
           </Modal>
