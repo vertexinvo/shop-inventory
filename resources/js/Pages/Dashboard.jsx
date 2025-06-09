@@ -19,7 +19,7 @@ import "react-calendar/dist/Calendar.css";
 import { CiTimer } from 'react-icons/ci';
 
 export default function Dashboard(props) {
-  const { auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount } = props;
+  const {date, auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount } = props;
 
 
   const [chartdata, setChartData] = useState({
@@ -65,13 +65,27 @@ export default function Dashboard(props) {
           <Calendar value={new Date()} />
         </div> */}
       {/* </div> */}
+      <div className="flex justify-between items-center pt-5 mx-4">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <div class="relative max-w-sm " >
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+              </svg>
+            </div>
+            <input value={date}  onChange={(e) => router.get(route('dashboard'), { date: e.target.value })}    id="default-datepicker" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"/>
+      </div>
+      </div>
+
 
       <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-4">
+
+        
 
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
             <div className="my-auto">
-              <p className="font-bold">TODAY'S PROFIT</p>
+              <p className="font-bold">TODAY'S PROFIT {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
               <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todayProfit) : <p>No Access</p>}</p>
             </div>
             <div className="my-auto">
@@ -84,7 +98,7 @@ export default function Dashboard(props) {
         <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
           <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
             <div className="my-auto">
-              <p className="font-bold">TODAY'S PENDING AMOUNT</p>
+              <p className="font-bold">TODAY'S PENDING AMOUNT {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
               <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
             </div>
             <div className="my-auto">
@@ -133,7 +147,7 @@ export default function Dashboard(props) {
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
-                <p className="font-bold">TOTAL (ORDERS)</p>
+                <p className="font-bold">TOTAL (ORDERS) {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
                 <p className="text-lg"> {auth.permissions.includes('viewAny Order') ? totalOrder : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
@@ -146,7 +160,7 @@ export default function Dashboard(props) {
           <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
             <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
               <div className="my-auto">
-                <p className="font-bold">TODAY'S ORDERS</p>
+                <p className="font-bold">TODAY'S ORDERS {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
                 <p className="text-lg"> {auth.permissions.includes('viewAny Order') ? todaysOrder : <p>No Access</p>}</p>
               </div>
               <div className="my-auto">
@@ -302,6 +316,7 @@ export default function Dashboard(props) {
         </div>
 
         <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
+          {date && <span className="text-sm text-green-500">Filter Applied</span>}
           {auth.permissions.includes('viewAny Order') ? <RecentOrder recentOrder={latestOrder} /> :
             <p>You don't have permission to view this area</p>
           }

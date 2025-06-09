@@ -25,6 +25,7 @@ class ProductObserver
             'type' => 'addition',
             'is_supplier' => $request->is_supplier,
             'supplier_invoice_no' => $request->supplier_invoice_no,
+            'purchase_price' => $request->purchase_price,
             'datetime' => date('Y-m-d H:i:s'),
         ];
 

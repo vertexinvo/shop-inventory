@@ -45,7 +45,11 @@ Route::get('/', function () {
 
 
 Route::get('/dashboard', function (Request $request) {
-    $totalOrder = Order::whereNotIn('status', ['cancel'])->count();
+    $date = $request->date ?? null;
+    $filterDate = $date ? Carbon::parse($date) : Carbon::today();
+    
+    
+    $totalOrder = Order::whereNotIn('status', ['cancel'])->whereDate('order_date', $filterDate)->count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
         $query->where('quantity', '>', 0)->orWhere('status', true);
     })->count();
@@ -62,7 +66,7 @@ Route::get('/dashboard', function (Request $request) {
 
     $supplierBalanceRecord = Supplier::withPendingAmount()->paginate(6);
 
-    $latestOrder = Order::latest()->paginate(4);
+    $latestOrder = Order::whereDate('order_date', $filterDate)->latest()->paginate(4);
 
 
     $period = $request->period ?? 'day';
@@ -101,16 +105,16 @@ Route::get('/dashboard', function (Request $request) {
         return $supplier->total_amount_pending; // Use the accessor
     });
 
-    $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', Carbon::today())->count();
+    $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', $filterDate)->count();
 
-    $todayProfit = OrderService::getTodayNetProfit();
+    $todayProfit = OrderService::getTodayNetProfit($filterDate);
     $weekProfit = OrderService::getThisWeekNetProfit();
     $monthProfit = OrderService::getThisMonthNetProfit();
     $yearProfit = OrderService::getThisYearNetProfit();
 
-    $todaysPendingOrderAmount = Order::todaysPendingAmount();
+    $todaysPendingOrderAmount = Order::todaysPendingAmount($filterDate);
     
-    return Inertia::render('Dashboard',compact('todaysOrder','todaysPendingOrderAmount','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+    return Inertia::render('Dashboard',compact('date','todaysOrder','todaysPendingOrderAmount','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 

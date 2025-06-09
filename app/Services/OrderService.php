@@ -30,9 +30,9 @@ class OrderService
         return $totalSales - $totalCost - $totalExpenses;
     }
 
-    public function getTodayNetProfit()
+    public function getTodayNetProfit($filterDate = null)
     {
-        $today = Carbon::today();
+        $today = $filterDate ?? Carbon::today();
         return $this->getNetProfit($today, $today);
     }
 
