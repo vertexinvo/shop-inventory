@@ -22,4 +22,10 @@ class Stock extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+    //stock log
+    public function stockLogs()
+    {
+        return $this->hasMany(Stocklog::class, 'stock_id', 'id');
+    }
 }

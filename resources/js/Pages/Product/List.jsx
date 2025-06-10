@@ -653,7 +653,7 @@ export default function List(props) {
                           <span className="text-xs text-gray-500 ms-1">Unit</span>
                         </td>
 
-                        <td className="px-2 py-3 text-center">{product.purchase_price || "N/A"}</td>
+                        <td className="px-2 py-3 text-center">{product.purchase_price_stocklog || "N/A"}</td>
                         <td className="px-2 py-3 text-center">{product.selling_price || "N/A"}</td>
 
                         <td className="px-2 py-3 text-left">
