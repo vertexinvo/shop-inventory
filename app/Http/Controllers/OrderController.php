@@ -248,7 +248,7 @@ class OrderController extends Controller
         //     $query->where('name', 'like', "%$searchitem%")
         //           ->orWhere('identity_value', 'like', "%$searchitem%");
         // })->limit(2)->get();
-        $itemrec = Product::with('stock', 'categories','brands')->get();
+        $itemrec = Product::with('stock', 'categories','brands')->latest()->get();
 
 
         $items = $itemrec->map(function ($item) {
@@ -418,7 +418,7 @@ class OrderController extends Controller
         //     $query->where('name', 'like', "%$searchitem%")
         //           ->orWhere('identity_value', 'like', "%$searchitem%");
         // })->limit(2)->get();
-        $itemrec = Product::with('stock', 'categories', 'categories','brands')->get();
+        $itemrec = Product::with('stock', 'categories', 'categories','brands')->latest()->get();
 
         $items = $itemrec->map(function ($item) {
             return [
