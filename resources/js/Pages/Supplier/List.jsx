@@ -313,7 +313,7 @@ export default function List(props) {
               <tbody className="divide-y divide-gray-100">
                 {suppliers.data.length === 0 && (
                   <tr>
-                    <td colSpan="10" className="px-4 py-3 text-center text-gray-500">
+                    <td colSpan="10" className="px-4 py-1 text-center text-gray-500">
                       No Supplier found.
                     </td>
                   </tr>
@@ -334,7 +334,7 @@ export default function List(props) {
                       } ${selectId.includes(item.id) ? 'border-l-4 border-black' : ''}`}
                   >
                     {/* Checkbox */}
-                    <td className="px-4 py-3 w-8">
+                    <td className="px-4 py-1 w-8">
                       <input
                         id={`checkbox-${item.id}`}
                         type="checkbox"
@@ -358,7 +358,7 @@ export default function List(props) {
                     </td>
 
                     {/* Supplier Info */}
-                    <td className="px-4 py-3 text-gray-800">
+                    <td className="px-4 py-1 text-gray-800">
                       <div>
                         <p className="font-medium">Person: {item.person_name}</p>
                         {item.email && (
@@ -368,13 +368,13 @@ export default function List(props) {
                     </td>
 
                     {/* Contact */}
-                    <td className="px-4 py-3 text-gray-700">{item?.contact || 'N/A'}</td>
+                    <td className="px-4 py-1 text-gray-700">{item?.contact || 'N/A'}</td>
 
                     {/* Address */}
-                    <td className="px-4 py-3 text-gray-700">{item?.address || 'N/A'}</td>
+                    <td className="px-4 py-1 text-gray-700">{item?.address || 'N/A'}</td>
 
                     {/* Code */}
-                    <td className="px-4 py-3 flex items-center text-blue-600">
+                    <td className="px-4 py-1 flex items-center text-blue-600">
                       <Link
                         href={route('product.index', { invoicecode: item.code })}
                         className="hover:underline"
@@ -392,16 +392,16 @@ export default function List(props) {
                     </td>
 
                     {/* Invoices & Amounts */}
-                    <td className="px-4 py-3 text-gray-700 text-center">
+                    <td className="px-4 py-1 text-gray-700 text-center">
                       {item?.total_supplierinvoices || 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 text-center">
+                    <td className="px-4 py-1 text-gray-700 text-center">
                       {item?.total_amount || 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 text-center">
+                    <td className="px-4 py-1 text-gray-700 text-center">
                       {item?.total_amount_paid || 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-700 text-center">
+                    <td className="px-4 py-1 text-gray-700 text-center">
                       {item?.total_amount_pending || 0}
                     </td>
 

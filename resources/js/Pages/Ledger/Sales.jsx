@@ -5,10 +5,11 @@ import { Head, Link, router } from '@inertiajs/react';
 import ConfirmModal from '@/Components/ConfirmModal';
 import { MdKeyboardBackspace } from "react-icons/md";
 import { HiOutlineShoppingBag } from 'react-icons/hi2';
-import { FaUserCheck, FaUserLock, FaUsers } from 'react-icons/fa6';
+import { FaUserCheck, FaUserLock, FaUsers, FaXmark } from 'react-icons/fa6';
 import { LiaFileInvoiceSolid } from "react-icons/lia";
 import { SiMicrosoftexcel } from "react-icons/si";
 import { BiExport } from 'react-icons/bi';
+import { FaSearch } from 'react-icons/fa';
 
 
 export default function Sales(props) {
@@ -51,7 +52,7 @@ export default function Sales(props) {
       }
     >
       <Head title="Sales Ledger" />
-      
+
 
       <div className="flex flex-col px-5  mt-10 mx-auto w-full">
         <div className="w-full ">
@@ -60,7 +61,6 @@ export default function Sales(props) {
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
 
 
-             
 
               <Formik
                 enableReinitialize
@@ -70,223 +70,238 @@ export default function Sales(props) {
                 }}
               >
                 {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
-                    <div className="relative w-full md:w-auto">
-                      <Field
-                        name="search"
-                        type="text"
-                        placeholder="Search..."
-                        className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setFieldValue('search', '');
-                          router.get(route('ledger.sales'));
-                        }}
-                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                      >
-                        ✖
-                      </button>
+                  <Form className="w-full flex items-center gap-3">
+                    <div className="relative w-full md:max-w-md">
+                      <Field name="search">
+                        {({ field, form }) => (
+                          <div className="relative">
+                            <input
+                              {...field}
+                              type="text"
+                              placeholder="Search..."
+                              className="w-full pl-10 pr-10 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none transition-all duration-300 bg-white shadow-sm hover:shadow-md placeholder-gray-400 text-gray-800"
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSubmit();
+                              }}
+                            />
+                            {/* Search Icon */}
+                            <button
+                              type="submit"
+                              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-cyan-500 focus:outline-none transition-colors"
+                              aria-label="Search"
+                            >
+                              <FaSearch className="w-4 h-4" />
+                            </button>
+                            {/* Clear Icon */}
+                            {field.value && (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setFieldValue('search', '');
+                                  router.get(route('ledger.sales'));
+                                }}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-500 focus:outline-none transition-colors"
+                                aria-label="Clear search"
+                              >
+                                <FaXmark className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        )}
+                      </Field>
                     </div>
-
-                    <button
-                      type="submit"
-                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                    >
-                      Search
-                    </button>
-
-                   
                   </Form>
                 )}
               </Formik>
             </div>
           </div>
 
+          <div className="overflow-x-auto rounded-xl border border-gray-200 shadow-sm">
+            <table className="min-w-full divide-y divide-gray-200 bg-white">
+              <thead className="whitespace-nowrap text-xs uppercase bg-gray-200 text-gray-700 tracking-wide border-b">
+                <tr>
+                  <th className="p-4 text-left text-sm font-semibold">User ID</th>
+                  <th className="p-4 text-left text-sm font-semibold">Person Info</th>
+                  <th className="p-4 text-left text-sm font-semibold">Contact</th>
+                  <th className="p-4 text-left text-sm font-semibold">Address</th>
+                  <th className="p-4 text-left text-sm font-semibold">Total Orders</th>
+                  <th className="p-4 text-left text-sm font-semibold">Total Amount</th>
+                  <th className="p-4 text-left text-sm font-semibold">Total Amount Paid</th>
+                  <th className="p-4 text-left text-sm font-semibold">Total Amount Pending</th>
+                  <th className="p-4 text-left text-sm font-semibold">Action</th>
+                </tr>
+              </thead>
 
-          <div className="overflow-x-auto">
-            <div class="font-[sans-serif] overflow-x-auto">
-              <table class="min-w-full bg-white">
-                <thead class="whitespace-nowrap">
-                  <tr className='text-xs font-semibold tracking-wide text-left text-white uppercase border-b bg-black'>
-                   
-                    <th class="p-4 text-left text-sm font-semibold ">User ID</th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Person Info
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Contact
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Address
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Orders
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Amount
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Amount Paid
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Total Amount Pending
-                    </th>
-                    <th class="p-4 text-left text-sm font-semibold ">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody class="whitespace-nowrap">
-
-                  {sales.data.length === 0 ? (
+              <tbody className="whitespace-nowrap">
+                {sales.data.length === 0 ? (
                   <tr>
-                    <td colSpan="5" className="p-4 text-center">
+                    <td colSpan="9" className="p-4 text-center">
                       No data available
                     </td>
-                  </tr> 
-                   ) : null} 
-
-                   {sales.data.map((item, index) => ( 
-                  <tr
-                    //  key={user.id} 
-                    class="odd:bg-gray-50 border-b border-gray-300">
-                    
-                    <td class="p-4 text-sm">{item.code || item.id}</td>
-                    <td class="p-4 text-sm">
-                      <div class="flex items-center cursor-pointer w-max">
-                        
-                        <div class="ml-4 ">    {/* persone name and email */}
-                            <p class="text-sm text-black ">Person Name :  { item.name || 'N/A'}
-                              </p>
-                            {item.email &&
-                             <p class="text-xs text-gray-500 mt-0.5">Email :{  item.email || 'N/A'}
-                              </p>
-                              } 
-
-                          </div>     
-                      </div>
-                    </td>
-
-                   
-
-                    <td class="p-4 text-sm">{  item.phone || 'N/A'}</td>{/* contact */}
-                    <td class="p-4 text-sm">{ item.address || 'N/A'}</td>{/* address */}
-                    <td class="p-4 text-sm">{ item.total_orders || 0}</td>{/* total order */}
-                    <td class="p-4 text-sm">{item.total_orders_amount || 0}</td>{/* total amount */}
-                    <td class="p-4 text-sm">{item.total_orders_amount_paid || 0}</td>{/* total amount paid */}
-                    <td class="p-4 text-sm">{item.total_order_amount_pending || 0}</td>{/* total amount pending */}
-                    <td class="p-4 flex items-center gap-2">
-                      <button
-                        onClick={() => router.get(route('ledger.customers.salesLedger', item.code || item.id))} className="mr-4 flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1" title="View Invoice"
-                      >
-                        <LiaFileInvoiceSolid className="w-6 fill-black " size={25} />
-                        <span className="text-white hover:text-black">Ledger</span>
-                      </button>
-                    </td>
                   </tr>
-                   ))} 
-
-                </tbody>
-              </table>
-            </div>
-
-            <div class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9    ">
-              <span class="flex items-center col-span-3"> Showing
-                {sales.from} - {sales.to} of {sales.total} 
-              </span>
-              <span class="col-span-2"></span>
-
-              <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                <nav aria-label="Table navigation">
-                  <ul class="inline-flex items-center">
-
-                    <li>
-                      <button
-                       onClick={() => sales.links[0].url ? router.get(sales.links[0].url) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous"
-                      >
-                        <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                          <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </li>
-                    {(() => {
-                      let lastShownIndex = -1; // Tracks the last index shown to handle ellipses
-                      const activeIndex = sales.links.findIndex((l) => l.active);
-
-                      return sales.links
-                        .slice(1, -1) // Exclude the first and last items
-                        .filter((link, index, array) => {
-                          const currentIndex = parseInt(link.label, 10); // Parse label as number
-                          if (isNaN(currentIndex)) return true; // Always include non-numeric items like "..."
-
-                          // Adjust range dynamically based on the active index
-                          const rangeStart = Math.max(0, activeIndex - 2); // Start range around active
-                          const rangeEnd = Math.min(array.length - 1, activeIndex + 2); // End range around active
-
-                          // Show links within the range or first/last few
-                          return (
-                            index < 3 || // First 3 pages
-                            index > array.length - 4 || // Last 3 pages
-                            (index >= rangeStart && index <= rangeEnd) // Pages close to the active page
-                          );
-                        })
-                        .map((link, index, array) => {
-                          const currentIndex = parseInt(link.label, 10); // Parse label as a number
-                          const isEllipsis =
-                            !isNaN(currentIndex) &&
-                            lastShownIndex !== -1 &&
-                            currentIndex - lastShownIndex > 1; // Check for gaps
-
-                          // Update lastShownIndex only for valid numeric labels
-                          if (!isNaN(currentIndex)) {
-                            lastShownIndex = currentIndex;
+                ) : (
+                  sales.data.map((item) => (
+                    <tr
+                      key={item.id || item.code}
+                      className="odd:bg-gray-50 border-b border-gray-300"
+                    >
+                      <td className="p-4 text-sm">{item.code || item.id}</td>
+                      <td className="p-4 text-sm">
+                        <div className="flex items-center">
+                          <div className="ml-4">
+                            <p className="text-sm text-black">
+                              Person Name: {item.name || 'N/A'}
+                            </p>
+                            {item.email && (
+                              <p className="text-xs text-gray-500 mt-0.5">
+                                Email: {item.email}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+                      <td className="p-4 text-sm">{item.phone || 'N/A'}</td>
+                      <td className="p-4 text-sm">{item.address || 'N/A'}</td>
+                      <td className="p-4 text-sm">{item.total_orders || 0}</td>
+                      <td className="p-4 text-sm">{item.total_orders_amount || 0}</td>
+                      <td className="p-4 text-sm">{item.total_orders_amount_paid || 0}</td>
+                      <td className="p-4 text-sm">{item.total_order_amount_pending || 0}</td>
+                      <td className="p-4 flex items-center gap-2">
+                        <button
+                          onClick={() =>
+                            router.get(
+                              route('ledger.customers.salesLedger', item.code || item.id)
+                            )
                           }
-
-                          return (
-                            <li key={index}>
-                              {isEllipsis ? (
-                                <span className="px-3 py-1">...</span>
-                              ) : link.active ? (
-                                // Active page button
-                                <button
-                                  className="px-3 py-1 text-white dark:text-gray-800 transition-colors duration-150 bg-black dark:bg-gray-100 border border-r-0 border-black dark:border-gray-100 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                  aria-current="page"
-                                >
-                                  {link.label}
-                                </button>
-                              ) : (
-                                // Inactive link button
-                                <button
-                                  onClick={() => link.url && window.location.assign(link.url)}
-                                  className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                                >
-                                  {link.label}
-                                </button>
-                              )}
-                            </li>
-                          );
-                        });
-                    })()}
-
-
-                    <li>
-                      <button onClick={() => sales.links[sales.links.length - 1].url && window.location.assign(sales.links[sales.links.length - 1].url)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
-                        <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
-                          <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
-                        </svg>
-                      </button>
-                    </li>
-                  </ul>
-                </nav>
-              </span>
-            </div>
+                          className="mr-4 flex items-center space-x-2 bg-blue-500 text-white rounded px-4 py-1"
+                          title="View Invoice"
+                        >
+                          <LiaFileInvoiceSolid className="w-5 h-5 text-white" />
+                          <span className="hover:text-black">Ledger</span>
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
 
+          {/* Pagination */}
+          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
+            <span className="flex items-center col-span-3">
+              Showing {sales.from} - {sales.to} of {sales.total}
+            </span>
+            <span className="col-span-2"></span>
 
+            <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+              <nav aria-label="Table navigation">
+                <ul className="inline-flex items-center">
+                  {/* Previous button */}
+                  <li>
+                    <button
+                      onClick={() => sales.links[0].url && router.visit(sales.links[0].url)}
+                      className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none"
+                      aria-label="Previous"
+                    >
+                      <svg
+                        className="w-4 h-4 fill-current"
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </li>
+
+                  {/* Page numbers */}
+                  {(() => {
+                    let lastShownIndex = -1;
+                    const activeIndex = sales.links.findIndex((l) => l.active);
+                    return sales.links
+                      .slice(1, -1)
+                      .filter((link, index, array) => {
+                        const currentIndex = parseInt(link.label, 10);
+                        if (isNaN(currentIndex)) return true;
+
+                        const rangeStart = Math.max(0, activeIndex - 2);
+                        const rangeEnd = Math.min(array.length - 1, activeIndex + 2);
+
+                        return (
+                          index < 3 ||
+                          index > array.length - 4 ||
+                          (index >= rangeStart && index <= rangeEnd)
+                        );
+                      })
+                      .map((link, index) => {
+                        const currentIndex = parseInt(link.label, 10);
+                        const isEllipsis =
+                          !isNaN(currentIndex) &&
+                          lastShownIndex !== -1 &&
+                          currentIndex - lastShownIndex > 1;
+
+                        if (!isNaN(currentIndex)) {
+                          lastShownIndex = currentIndex;
+                        }
+
+                        return (
+                          <li key={index}>
+                            {isEllipsis ? (
+                              <span className="px-3 py-1">...</span>
+                            ) : link.active ? (
+                              <button
+                                className="px-3 py-1 text-white bg-black rounded-md"
+                                aria-current="page"
+                              >
+                                {link.label}
+                              </button>
+                            ) : (
+                              <button
+                                onClick={() => link.url && router.visit(link.url)}
+                                className="px-3 py-1 rounded-md"
+                              >
+                                {link.label}
+                              </button>
+                            )}
+                          </li>
+                        );
+                      });
+                  })()}
+
+                  {/* Next button */}
+                  <li>
+                    <button
+                      onClick={() =>
+                        sales.links[sales.links.length - 1].url &&
+                        router.visit(sales.links[sales.links.length - 1].url)
+                      }
+                      className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none"
+                      aria-label="Next"
+                    >
+                      <svg
+                        className="w-4 h-4 fill-current"
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </span>
+          </div>
         </div>
+
+
       </div>
 
 

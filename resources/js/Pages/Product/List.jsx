@@ -596,7 +596,7 @@ export default function List(props) {
                             : "odd:bg-white even:bg-gray-50 hover:bg-gray-100"
                           } ${selectId.includes(product.id) ? "border-cyan-200 border-b" : "border-gray-200 border-b"}`}
                       >
-                        <td className="px-4 pb-2">
+                        <td className="px-4">
                           <input
                             id={`checkbox-${product.id}`}
                             type="checkbox"
@@ -623,7 +623,7 @@ export default function List(props) {
 
 
 
-                        <td className="px-2 py-3 truncate flex cursor-pointer hover:text-cyan-600 transition" onClick={() => toggleExpand(product.id)}>
+                        <td className="px-2 py-1 truncate flex cursor-pointer hover:text-cyan-600 transition" onClick={() => toggleExpand(product.id)}>
                           {/* <button
                             onClick={() => toggleExpand(product.id)}
                             className="text-gray-500 hover:text-gray-700 transition"
@@ -642,7 +642,7 @@ export default function List(props) {
                         </td>
 
                         <td
-                          className={`px-2 py-3 text-center font-medium ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
+                          className={`px-2 py-1 text-center font-medium ${product?.stock?.quantity === 0 || product?.stock?.quantity === null
                             ? 'text-red-600'
                             : product?.stock?.quantity < 5
                               ? 'text-yellow-600'
@@ -653,10 +653,10 @@ export default function List(props) {
                           <span className="text-xs text-gray-500 ms-1">Unit</span>
                         </td>
 
-                        <td className="px-2 py-3 text-center">{product.purchase_price || "N/A"}</td>
-                        <td className="px-2 py-3 text-center">{product.selling_price || "N/A"}</td>
+                        <td className="px-2 py-1 text-center">{product.purchase_price || "N/A"}</td>
+                        <td className="px-2 py-1 text-center">{product.selling_price || "N/A"}</td>
 
-                        <td className="px-2 py-3 text-left">
+                        <td className="px-2 py-1 text-left">
                           {product?.categories?.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {product.categories.slice(0, 3).map((category) => (
@@ -675,7 +675,7 @@ export default function List(props) {
                           )}
                         </td>
 
-                        <td className="px-2 py-3 text-left">
+                        <td className="px-2 py-1 text-left">
                           {product?.brands?.length > 0 ? (
                             <div className="flex flex-wrap gap-1">
                               {product.brands.slice(0, 3).map((brand) => (
@@ -694,7 +694,7 @@ export default function List(props) {
                           )}
                         </td>
 
-                        <td className="px-2 py-3 w-20">
+                        <td className="px-2 py-1 w-20">
                           <label className="relative cursor-pointer inline-block">
                             <input
                               type="checkbox"
@@ -706,11 +706,11 @@ export default function List(props) {
                             />
 
                             <div
-                              className={`flex items-center w-24 h-10 px-1 rounded-full transition relative 
+                              className={`flex items-center w-24 h-8 px-1 rounded-full transition relative 
         ${product?.stock?.status ? "bg-green-100 justify-start" : "bg-red-100 justify-end"}`}
                             >
                               <span
-                                className={`absolute w-full text-[11px] text-center z-0 font-medium transition duration-200 
+                                className={`absolute w-full text-xs text-center z-0 font-medium transition duration-200 
           ${product?.stock?.status ? "text-green-700" : "text-red-700"}`}
                               >
                                 {product?.stock?.status ? "Active" : "Inactive"}
