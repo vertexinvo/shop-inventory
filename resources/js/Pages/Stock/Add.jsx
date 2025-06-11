@@ -62,9 +62,9 @@ export default function Add(props) {
                         is_supplier: Yup.string().required('Is supplier is required'),
                         datetime: Yup.date().required('Date is required'),
                         purchase_price: Yup.number().when('type', {
-                                    is: 'addition',
-                                    then: scheme => scheme.required(),
-                                    otherwise: scheme => scheme.optional()
+                                    is: 'removal',
+                                    then: scheme => scheme.optional(),
+                                    otherwise: scheme => scheme.required(),
                         }),
                         
                     })}
@@ -98,7 +98,7 @@ export default function Add(props) {
                             <ErrorMessage name="type" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
                         </div>
-                      {values.type === 'addition' && (
+                      {values.type !== 'removal' && values.type !== '' && (
                         <div className="flex mb-4">
                           <div className="w-full mr-1">
                                 <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="postal_code">Purchase Price (Required)</label>

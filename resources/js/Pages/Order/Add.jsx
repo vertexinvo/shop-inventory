@@ -421,7 +421,30 @@ export default function Add(props) {
 
 
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2" for="shop_name">Select Items</label>
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="block text-grey-darker text-sm" for="shop_name">Select Items</label>
+                            <div className="flex items-center gap-2">
+                               <a 
+                                  href={route('product.create')}
+                                  className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                  target="_blank"
+                                >
+                                  Add New Item
+                                </a>
+                             <button 
+                                  type="button" 
+                                  className="text-cyan-600 text-sm font-medium hover:text-cyan-800 transition underline"
+                                  onClick={() => {
+                                    router.reload({
+                                      only: ['items'], // specify which props to refresh
+                                    })
+                                  }}
+                                >
+                                  Refresh
+                                </button>
+                            </div>
+                            
+                          </div>
                             <Select
                               onChange={(e) => {
                                 setSelectedItems(e);

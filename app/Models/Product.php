@@ -58,7 +58,7 @@ class Product extends Model  implements HasMedia
     ];
 
     // appends supplier name
-    protected $appends = ['supplier_name','image_url'];
+    protected $appends = ['supplier_name','image_url','purchase_price_stocklog'];
 
 
 
@@ -92,6 +92,19 @@ class Product extends Model  implements HasMedia
         $media = $this->getFirstMedia('product');
         return $media ? $media->getUrl() : null;
     }
+
+    //purchase_price_stocklog lastest value from stocklog
+    public function getPurchasePriceStocklogAttribute()
+    {
+        $stock = $this->stock;
+        if (!$stock) {
+            return null; // Return product's default purchase_price if no stock is associated
+        }
+
+        $stockLog = $stock->stockLogs()->latest('datetime')->first(); // Using 'id' as fallback if no timestamps
+        return $stockLog?->purchase_price ?: $this->purchase_price; // Return the latest purchase price from stock log or the product's default purchase price
+    }
+
 
 
    /**
