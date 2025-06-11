@@ -162,7 +162,7 @@ export default function List(props) {
                 Bulk Delete
               </button>
             )}
-            <FloatingCreateButton routeName="expense.create" title="Create" />
+
 
 
             {/* Date range filter button */}

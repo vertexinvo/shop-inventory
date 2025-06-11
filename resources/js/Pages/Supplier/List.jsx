@@ -374,10 +374,10 @@ export default function List(props) {
                     <td className="px-4 py-1 text-gray-700">{item?.address || 'N/A'}</td>
 
                     {/* Code */}
-                    <td className="px-4 py-1 flex items-center text-blue-600">
+                    <td className="px-4 py-3.5 flex items-center text-blue-600">
                       <Link
                         href={route('product.index', { invoicecode: item.code })}
-                        className="hover:underline"
+                        className="hover:underline "
                       >
                         {item?.code || 'N/A'}
                       </Link>

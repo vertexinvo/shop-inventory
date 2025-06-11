@@ -101,7 +101,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                     Invoice
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('product.create')}>
-                                                    Product
+                                                    Inventory
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('supplier.create')}>
                                                     Supplier
@@ -215,7 +215,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                             <ResponsiveNavLink
                                 href={route('product.index')}
                                 active={route().current('product.index')}>
-                                Products
+                                Inventory
                             </ResponsiveNavLink>
                         </div>
                         < div className='space-y-1 '>
@@ -329,7 +329,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         >
                                             <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
                                         </svg>
-                                        <span className="ml-3">Products</span>
+                                        <span className="ml-3">Inventory</span>
                                     </NavLink>
                                 </li>
                                 <li>
@@ -404,7 +404,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 <FaCircleArrowLeft className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                 <span className="ml-3">Collapse Menu</span>
                             </button>
-                            <span className="block text-center text-xs text-gray-400 mt-2">powered by solinvo</span>
+                            <span className="block text-center text-xs text-gray-400 mt-2">Powered by SOLINVO(Beta) v1.0</span>
                         </div>
                     </aside>
                 ) : (

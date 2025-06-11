@@ -32,7 +32,7 @@ export default function Sales(props) {
               onClick={() => window.history.back()}
               title="Back"
             />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales</h2>
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales Ledger</h2>
           </div>
 
           {/* Action Buttons */}
@@ -54,14 +54,10 @@ export default function Sales(props) {
       <Head title="Sales Ledger" />
 
 
-      <div className="flex flex-col px-5  mt-10 mx-auto w-full">
+      <div className="flex flex-col px-5  mt-4 mx-auto w-full">
         <div className="w-full ">
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
-
             <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-
-
-
               <Formik
                 enableReinitialize
                 initialValues={{ search: '' }}
@@ -185,120 +181,121 @@ export default function Sales(props) {
                 )}
               </tbody>
             </table>
+            <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
+              <span className="flex items-center col-span-3">
+                Showing {sales.from} - {sales.to} of {sales.total}
+              </span>
+              <span className="col-span-2"></span>
+
+              <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                <nav aria-label="Table navigation">
+                  <ul className="inline-flex items-center">
+                    {/* Previous button */}
+                    <li>
+                      <button
+                        onClick={() => sales.links[0].url && router.visit(sales.links[0].url)}
+                        className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none"
+                        aria-label="Previous"
+                      >
+                        <svg
+                          className="w-4 h-4 fill-current"
+                          viewBox="0 0 20 20"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </li>
+
+                    {/* Page numbers */}
+                    {(() => {
+                      let lastShownIndex = -1;
+                      const activeIndex = sales.links.findIndex((l) => l.active);
+                      return sales.links
+                        .slice(1, -1)
+                        .filter((link, index, array) => {
+                          const currentIndex = parseInt(link.label, 10);
+                          if (isNaN(currentIndex)) return true;
+
+                          const rangeStart = Math.max(0, activeIndex - 2);
+                          const rangeEnd = Math.min(array.length - 1, activeIndex + 2);
+
+                          return (
+                            index < 3 ||
+                            index > array.length - 4 ||
+                            (index >= rangeStart && index <= rangeEnd)
+                          );
+                        })
+                        .map((link, index) => {
+                          const currentIndex = parseInt(link.label, 10);
+                          const isEllipsis =
+                            !isNaN(currentIndex) &&
+                            lastShownIndex !== -1 &&
+                            currentIndex - lastShownIndex > 1;
+
+                          if (!isNaN(currentIndex)) {
+                            lastShownIndex = currentIndex;
+                          }
+
+                          return (
+                            <li key={index}>
+                              {isEllipsis ? (
+                                <span className="px-3 py-1">...</span>
+                              ) : link.active ? (
+                                <button
+                                  className="px-3 py-1 text-white bg-black rounded-md"
+                                  aria-current="page"
+                                >
+                                  {link.label}
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => link.url && router.visit(link.url)}
+                                  className="px-3 py-1 rounded-md"
+                                >
+                                  {link.label}
+                                </button>
+                              )}
+                            </li>
+                          );
+                        });
+                    })()}
+
+                    {/* Next button */}
+                    <li>
+                      <button
+                        onClick={() =>
+                          sales.links[sales.links.length - 1].url &&
+                          router.visit(sales.links[sales.links.length - 1].url)
+                        }
+                        className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none"
+                        aria-label="Next"
+                      >
+                        <svg
+                          className="w-4 h-4 fill-current"
+                          viewBox="0 0 20 20"
+                          aria-hidden="true"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </nav>
+              </span>
+            </div>
           </div>
 
           {/* Pagination */}
-          <div className="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t bg-gray-50 sm:grid-cols-9">
-            <span className="flex items-center col-span-3">
-              Showing {sales.from} - {sales.to} of {sales.total}
-            </span>
-            <span className="col-span-2"></span>
 
-            <span className="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-              <nav aria-label="Table navigation">
-                <ul className="inline-flex items-center">
-                  {/* Previous button */}
-                  <li>
-                    <button
-                      onClick={() => sales.links[0].url && router.visit(sales.links[0].url)}
-                      className="px-3 py-1 rounded-md rounded-l-lg focus:outline-none"
-                      aria-label="Previous"
-                    >
-                      <svg
-                        className="w-4 h-4 fill-current"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </li>
-
-                  {/* Page numbers */}
-                  {(() => {
-                    let lastShownIndex = -1;
-                    const activeIndex = sales.links.findIndex((l) => l.active);
-                    return sales.links
-                      .slice(1, -1)
-                      .filter((link, index, array) => {
-                        const currentIndex = parseInt(link.label, 10);
-                        if (isNaN(currentIndex)) return true;
-
-                        const rangeStart = Math.max(0, activeIndex - 2);
-                        const rangeEnd = Math.min(array.length - 1, activeIndex + 2);
-
-                        return (
-                          index < 3 ||
-                          index > array.length - 4 ||
-                          (index >= rangeStart && index <= rangeEnd)
-                        );
-                      })
-                      .map((link, index) => {
-                        const currentIndex = parseInt(link.label, 10);
-                        const isEllipsis =
-                          !isNaN(currentIndex) &&
-                          lastShownIndex !== -1 &&
-                          currentIndex - lastShownIndex > 1;
-
-                        if (!isNaN(currentIndex)) {
-                          lastShownIndex = currentIndex;
-                        }
-
-                        return (
-                          <li key={index}>
-                            {isEllipsis ? (
-                              <span className="px-3 py-1">...</span>
-                            ) : link.active ? (
-                              <button
-                                className="px-3 py-1 text-white bg-black rounded-md"
-                                aria-current="page"
-                              >
-                                {link.label}
-                              </button>
-                            ) : (
-                              <button
-                                onClick={() => link.url && router.visit(link.url)}
-                                className="px-3 py-1 rounded-md"
-                              >
-                                {link.label}
-                              </button>
-                            )}
-                          </li>
-                        );
-                      });
-                  })()}
-
-                  {/* Next button */}
-                  <li>
-                    <button
-                      onClick={() =>
-                        sales.links[sales.links.length - 1].url &&
-                        router.visit(sales.links[sales.links.length - 1].url)
-                      }
-                      className="px-3 py-1 rounded-md rounded-r-lg focus:outline-none"
-                      aria-label="Next"
-                    >
-                      <svg
-                        className="w-4 h-4 fill-current"
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </li>
-                </ul>
-              </nav>
-            </span>
-          </div>
         </div>
 
 
