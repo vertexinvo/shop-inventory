@@ -33,7 +33,7 @@ export default function List(props) {
               onClick={() => window.history.back()}
               title="Back"
             />
-            <h2 className=" text-xl text-gray-800 leading-tight">Customer</h2>
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Customer</h2>
           </div>
 
           {/* Action Buttons */}

@@ -217,9 +217,6 @@ export default function List(props) {
       </div>
 
       {activeTab === 'cards' && (
-
-
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
           {/* Total Products */}
           <Link href={route('product.index')}>

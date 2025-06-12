@@ -5,7 +5,7 @@ import { useState } from 'react';
 import OutofstockProduct from '@/Components/OutofstockProduct';
 import SupplierBalance from '@/Components/SupplierBalance';
 import { VscGraph } from "react-icons/vsc";
-import { FaBoxOpen } from "react-icons/fa6";
+import { FaBoxOpen, FaTruckField } from "react-icons/fa6";
 import { HiMiniArchiveBoxXMark } from "react-icons/hi2";
 import { BsGraphUp } from "react-icons/bs";
 import RecentOrder from '@/Components/RecentOrder';
@@ -17,9 +17,10 @@ import LiveClockUpdate from '@/Components/LiveClockUpdate';
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { CiTimer } from 'react-icons/ci';
+import Card from '@/Components/Cards';
 
 export default function Dashboard(props) {
-  const {date, auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount } = props;
+  const { auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount } = props;
 
 
   const [chartdata, setChartData] = useState({
@@ -40,7 +41,8 @@ export default function Dashboard(props) {
   });
 
   const rolename = auth.user.roles.map((role) => role.name);
-
+  const [selectedMetric, setSelectedMetric] = useState('all');
+  const [selectedTimeRange, setSelectedTimeRange] = useState('7');
   const formatProfit = (profit) => {
     if (profit < 0) {
       return <span className="text-red-500">Loss: {Math.abs(profit)}</span>;
@@ -49,235 +51,177 @@ export default function Dashboard(props) {
   };
 
   return (
-    <AuthenticatedLayout >
-      
+    <AuthenticatedLayout
+      auth={auth}
+      errors={props.errors}
+      header={
+        <div className="flex items-baseline justify-between">
+          {/* Title */}
+          <div className="flex items-center space-x-3">
+
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight mx-6">Dashboard</h2>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap items-center gap-3">
+
+            {/* create custom dashboard button modal */}
+
+          </div>
+        </div>
+      }
+
+    >
+
       <Head title="Dashboard" />
 
-    
-      {/* <div className="p-5 grid grid-cols-1 sm:grid-cols-3 gap-4 "> */}
-      {/* <div className=" mt-4 mx-4 bg-white p-5 rounded-lg shadow-md flex items-center justify-center">
-          <Clock live={true} hourMarkFormat="number" />
-        </div>
-        <div className=" mt-4 mx-4 bg-white p-5 rounded-lg shadow-md flex items-center justify-center">
-          <LiveClockUpdate />
-        </div>
-        <div className=" mt-4 mx-4 bg-white p-5 rounded-lg shadow-md flex items-center justify-center">
-          <Calendar value={new Date()} />
-        </div> */}
-      {/* </div> */}
-      <div className="flex justify-between items-center pt-5 mx-4">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <div class="relative max-w-sm " >
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-              <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-              </svg>
-            </div>
-            <input value={date}  onChange={(e) => router.get(route('dashboard'), { date: e.target.value })}    id="default-datepicker" type="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date"/>
-      </div>
+
+
+      <div className="flex items-center justify-between p-4 mx-6">
+        <h1 className="text-2xl font-bold text-gray-800">
+          Total Profit: {rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
+        </h1>
+        <select
+          value={selectedTimeRange}
+          onChange={(e) => setSelectedTimeRange(e.target.value)}
+          className="px-4 w-1/6 py-2 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+        >
+          <option value="7">Last 7 Days</option>
+          <option value="15">Last 15 Days</option>
+          <option value="30">Last 1 Month</option>
+          <option value="180">Last 6 Months</option>
+          <option value="365">Last 1 Year</option>
+        </select>
       </div>
 
+      <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        {/* <Card
+          title="Profit"
+          value={rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
+          icon={<GrMoney size={32} />}
+        /> */}
+        <Card
+          title="Orders"
+          value={auth.permissions.includes('viewAny Order') ? totalOrder : 'No Access'}
+          icon={<VscGraph size={32} />}
+          link={route('order.index')}
+        />
 
-      <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-4">
-
-        
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">TODAY'S PROFIT {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todayProfit) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <GrMoney size={40} />
-            </div>
-          </div>
-        </div>
-
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">TODAY'S PENDING AMOUNT {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <CiTimer size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">THIS WEEK PROFIT</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(weekProfit) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <GrMoney size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">THIS MONTH PROFIT</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(monthProfit) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <GrMoney size={40} />
-            </div>
-          </div>
-        </div>
-
-        <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-          <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-            <div className="my-auto">
-              <p className="font-bold">THIS YEAR PROFIT</p>
-              <p className="text-lg"> {rolename.includes('superadmin') ? formatProfit(yearProfit) : <p>No Access</p>}</p>
-            </div>
-            <div className="my-auto">
-              <GrMoney size={40} />
-            </div>
-          </div>
-        </div>
-
-        <Link href={route('order.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">TOTAL (ORDERS) {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
-                <p className="text-lg"> {auth.permissions.includes('viewAny Order') ? totalOrder : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <VscGraph size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-        <Link href={route('order.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">TODAY'S ORDERS {date && <span className="text-sm text-green-500">Filter Applied</span>}</p>
-                <p className="text-lg"> {auth.permissions.includes('viewAny Order') ? todaysOrder : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <VscGraph size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-        <Link href={route('product.index', { status: 1 })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">TOTAL PRODUCT IN STOCK</p>
-                <p className="text-lg">{auth.permissions.includes('viewAny Product') ? totalProductInStock : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <FaBoxOpen size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-        <Link href={route('product.index', { status: 1 })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">TOTAL ITEMS IN STOCK</p>
-                <p className="text-lg">{auth.permissions.includes('viewAny Product') ? totaliteminstock : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <FaBoxOpen size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        <Link href={route('product.index', { status: 0 })}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">TOTAL PRODUCT OUT OF STOCK</p>
-                <p className="text-lg">{auth.permissions.includes('viewAny Product') ? totalProductOutofStock : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <HiMiniArchiveBoxXMark size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-        <Link href={route('product.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">TOTAL STOCK VALUE</p>
-                <p className="text-lg">{auth.permissions.includes('viewAny Product') ? totalStockValue : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <GiMoneyStack size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-
-        <Link href={route('order.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">CUSTOMER PENDING BALANCE</p>
-                <p className="text-lg">{auth.permissions.includes('viewAny Order') ? totalOrderAmountPending : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <MdOutlinePendingActions size={40} />
-              </div>
-            </div>
-          </div>
-        </Link>
-
-
-        <Link href={route('order.index')}>
-          <div class="pl-1 w-full h-20 bg-black rounded-lg shadow-md">
-            <div className="flex w-full h-full py-2 px-4 bg-white shadow-md  rounded-lg justify-between">
-              <div className="my-auto">
-                <p className="font-bold">SUPPLIER PENDING BALANCE</p>
-                <p className="text-lg">{auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : <p>No Access</p>}</p>
-              </div>
-              <div className="my-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="40" height="40">
-                  <title>Supplier Pending Balance</title>
-                  <desc>Monochrome icon showing factory building with pending currency indicator</desc>
-
-
-                  <path fill="#000" d="M8 52V24l24-16 24 16v28H8z" />
-                  <path fill="#fff" d="M32 8l20 13.3V52H12V21.3L32 8z" />
-                  <path fill="#000" d="M16 28h8v24h-8zM28 28h8v24h-8zM40 28h8v24h-8z" />
-
-
-                  <circle cx="50" cy="14" r="10" fill="#000" />
-
-                  <path fill="#fff" d="M50 14v-4M50 14l3 3">
-                    <animateTransform
-                      attributeName="transform"
-                      type="rotate"
-                      from="0 50 14"
-                      to="360 50 14"
-                      dur="2s"
-                      repeatCount="indefinite" />
-                  </path>
-
-                  <path fill="#fff" d="M52 12h-1v-2h-2v2h-2v2h2v4h-3v2h3v1h2v-1h1v-2h-1v-4h3v-2h-3v-2z" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </Link>
-
+        <Card
+          title="Product In Stock"
+          value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
+          icon={<FaBoxOpen size={32} />}
+          link={route('product.index', { status: 1 })}
+        />
+        {/* <Card
+          title="Total Items In Stock"
+          value={auth.permissions.includes('viewAny Product') ? totaliteminstock : 'No Access'}
+          icon={<FaBoxOpen size={32} />}
+          link={route('product.index', { status: 1 })}
+        /> */}
+        <Card
+          title="Out of Stock"
+          value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
+          icon={<HiMiniArchiveBoxXMark size={32} />}
+          link={route('product.index', { status: 0 })}
+        />
+        <Card
+          title="Stock Value"
+          value={auth.permissions.includes('viewAny Product') ? totalStockValue : 'No Access'}
+          icon={<GiMoneyStack size={32} />}
+          link={route('product.index')}
+        />
+        <Card
+          title="Pending Balance"
+          value={auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : 'No Access'}
+          icon={<FaTruckField size={32} />}
+          link={route('order.index')}
+        />
       </div>
+      {/* <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <Card
+          title="Today's Profit"
+          value={rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
+          icon={<GrMoney size={32} />}
+        />
+        <Card
+          title="Today's Pending Amount"
+          value={rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : 'No Access'}
+          icon={<CiTimer size={32} />}
+        />
+        <Card
+          title="This Week Profit"
+          value={rolename.includes('superadmin') ? formatProfit(weekProfit) : 'No Access'}
+          icon={<GrMoney size={32} />}
+        />
+        <Card
+          title="This Month Profit"
+          value={rolename.includes('superadmin') ? formatProfit(monthProfit) : 'No Access'}
+          icon={<GrMoney size={32} />}
+        />
+        <Card
+          title="This Year Profit"
+          value={rolename.includes('superadmin') ? formatProfit(yearProfit) : 'No Access'}
+          icon={<GrMoney size={32} />}
+        />
+        <Card
+          title="Total Orders"
+          value={auth.permissions.includes('viewAny Order') ? totalOrder : 'No Access'}
+          icon={<VscGraph size={32} />}
+          link={route('order.index')}
+        />
+        <Card
+          title="Today's Orders"
+          value={auth.permissions.includes('viewAny Order') ? todaysOrder : 'No Access'}
+          icon={<VscGraph size={32} />}
+          link={route('order.index')}
+        />
+        <Card
+          title="Total Product In Stock"
+          value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
+          icon={<FaBoxOpen size={32} />}
+          link={route('product.index', { status: 1 })}
+        />
+        <Card
+          title="Total Items In Stock"
+          value={auth.permissions.includes('viewAny Product') ? totaliteminstock : 'No Access'}
+          icon={<FaBoxOpen size={32} />}
+          link={route('product.index', { status: 1 })}
+        />
+        <Card
+          title="Total Product Out of Stock"
+          value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
+          icon={<HiMiniArchiveBoxXMark size={32} />}
+          link={route('product.index', { status: 0 })}
+        />
+        <Card
+          title="Total Stock Value"
+          value={auth.permissions.includes('viewAny Product') ? totalStockValue : 'No Access'}
+          icon={<GiMoneyStack size={32} />}
+          link={route('product.index')}
+        />
+        <Card
+          title="Customer Pending Balance"
+          value={auth.permissions.includes('viewAny Order') ? totalOrderAmountPending : 'No Access'}
+          icon={<MdOutlinePendingActions size={32} />}
+          link={route('order.index')}
+        />
+        <Card
+          title="Supplier Pending Balance"
+          value={auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : 'No Access'}
+          icon={
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32">
+              <path fill="#000" d="M8 52V24l24-16 24 16v28H8z" />
+              <path fill="#fff" d="M32 8l20 13.3V52H12V21.3L32 8z" />
+              <path fill="#000" d="M16 28h8v24h-8zM28 28h8v24h-8zM40 28h8v24h-8z" />
+              <circle cx="50" cy="14" r="10" fill="#000" />
+              <path fill="#fff" d="M52 12h-1v-2h-2v2h-2v2h2v4h-3v2h3v1h2v-1h1v-2h-1v-4h3v-2h-3v-2z" />
+            </svg>
+          }
+          link={route('order.index')}
+        />
+      </div> */}
+
 
 
 
@@ -316,7 +260,6 @@ export default function Dashboard(props) {
         </div>
 
         <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          {date && <span className="text-sm text-green-500">Filter Applied</span>}
           {auth.permissions.includes('viewAny Order') ? <RecentOrder recentOrder={latestOrder} /> :
             <p>You don't have permission to view this area</p>
           }
