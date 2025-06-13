@@ -11,6 +11,8 @@ import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport, BiImport } from 'react-icons/bi';
 import { FaChevronDown, FaSearch } from 'react-icons/fa';
 import Dropdown from '@/Components/Dropdown';
+import TabSwitcher from '@/Components/TabSwitcher';
+import Card from '@/Components/Cards';
 
 
 export default function List(props) {
@@ -19,7 +21,7 @@ export default function List(props) {
   const { auth, users, totalcustomers, totalactivecus, totalinactivecus } = props
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
-
+  const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -88,34 +90,54 @@ export default function List(props) {
       }
     >
       <Head title="Customer" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 p-4">
-        {/* Total Customers */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Total Customers</p>
-            <p className="text-xl font-bold">{totalcustomers}</p>
-          </div>
-          <FaUsers size={36} className="text-blue-500" />
+      <div className="mt-4 mx-4 p-4 bg-white shadow-sm rounded-2xl">
+        {/* Top Bar: Tabs + Dropdown */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+          <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
+
+          {/* Dropdown only when 'cards' tab is active */}
+          {activeTab === 'cards' && (
+            <select
+              className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="15">Last 15 Days</option>
+              <option value="30">Last 1 Month</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 1 Year</option>
+            </select>
+          )}
         </div>
 
-        {/* Active Customers */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Active Customers</p>
-            <p className="text-xl font-bold">{totalactivecus}</p>
+        {/* Cards Section */}
+        {activeTab === 'cards' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+            <Card
+              title="Total Customers"
+              value={totalcustomers}
+              icon={<FaUsers size={36} />}
+            />
+            <Card
+              title="Active Customers"
+              value={totalactivecus}
+              icon={<FaUserCheck size={36}  />}
+            />
+            <Card
+              title="Inactive Customers"
+              value={totalinactivecus}
+              icon={<FaUserLock size={36}  />}
+            />
           </div>
-          <FaUserCheck size={36} className="text-green-500" />
-        </div>
+        )}
 
-        {/* Inactive Customers */}
-        <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Inactive Customers</p>
-            <p className="text-xl font-bold">{totalinactivecus}</p>
+        {/* Filters Section */}
+        {activeTab === 'filters' && (
+          <div className="mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+            Filters
           </div>
-          <FaUserLock size={36} className="text-red-500" />
-        </div>
+        )}
       </div>
+
 
 
       <div className="flex flex-col px-5  mx-auto w-full">

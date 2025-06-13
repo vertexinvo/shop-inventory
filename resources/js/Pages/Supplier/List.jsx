@@ -19,6 +19,8 @@ import "react-contexify/dist/ReactContexify.css";
 import Dropdown from '@/Components/Dropdown';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { FaFilter, FaThLarge } from "react-icons/fa"; // Optional: for icons
+import TabSwitcher from '@/Components/TabSwitcher';
+import Card from '@/Components/Cards';
 export default function List(props) {
   const { auth, suppliers, totalPendingAmount, totalPaidAmount, totalSuppliers, status, search } = props
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -107,83 +109,74 @@ export default function List(props) {
       }
     >
       <Head title="Supplier" />
+      <div className="mt-4 mx-4 p-4 bg-white shadow-sm rounded-2xl">
+        {/* Top Bar: Tabs only (no dropdown in this case) */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+          <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
+          {/* Dropdown Filter only when 'cards' tab is active */}
+          {activeTab === 'cards' && (
+            <select
+              className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
 
-      <div className="flex gap-2 mt-4 mx-4">
-        <button
-          onClick={() => setActiveTab('cards')}
-          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'cards' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
-        >
-          <FaThLarge className='' />
-          Cards
-        </button>
-        <button
-          onClick={() => setActiveTab('filters')}
-          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2  ${activeTab === 'filters' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
-        >
-          <FaFilter className="inline mr-1" />
-          Filters
-        </button>
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="15">Last 15 Days</option>
+              <option value="30">Last 1 Month</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 1 Year</option>
+            </select>
+          )}
+        </div>
+
+        {/* Cards Section */}
+        {activeTab === 'cards' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+            <Card
+              title="Total Suppliers"
+              value={totalSuppliers}
+              icon={<VscGraph size={36} />}
+              link={route('supplier.index')}
+            />
+            <Card
+              title="Pending Amount"
+              value={<span >{totalPendingAmount}</span>}
+              icon={<FaBoxOpen size={36} />}
+              link={route('supplier.index', { status: 'pending' })}
+            />
+            <Card
+              title="Completed Amount"
+              value={<span >{totalPaidAmount}</span>}
+              icon={<PiListChecksFill size={36} />}
+              link={route('supplier.index', { status: 'paid' })}
+            />
+          </div>
+        )}
+
+        {/* Filters Section */}
+        {activeTab === 'filters' && (
+          <div className="mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+            <h3 className="text-lg font-semibold mb-2">Filter Options</h3>
+            <select
+              name="filter"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
+                  w-full md:w-[150px] p-2.5 pr-10  
+                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              onChange={(e) =>
+                router.get(
+                  route('supplier.index'),
+                  { status: e.target.value },
+                  { preserveState: true }
+                )
+              }
+              value={status}
+            >
+              <option value="">Select Status</option>
+              <option value="pending">Pending</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+        )}
       </div>
-
-      {activeTab === 'cards' && (
-
-        <div className="mx-4 grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-5 gap-4 mt-4">
-          {/* Total Suppliers */}
-          <Link href={route('supplier.index')}>
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Total Suppliers</p>
-                <p className="text-xl font-bold">{totalSuppliers}</p>
-              </div>
-              <VscGraph size={36} className="text-indigo-500" />
-            </div>
-          </Link>
-
-          {/* Pending Amount */}
-          <Link href={route('supplier.index', { status: 'pending' })}>
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Pending Amount</p>
-                <p className="text-xl font-bold text-orange-500">{totalPendingAmount}</p>
-              </div>
-              <FaBoxOpen size={36} className="text-yellow-500" />
-            </div>
-          </Link>
-
-          {/* Completed Amount */}
-          <Link href={route('supplier.index', { status: 'paid' })}>
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Completed Amount</p>
-                <p className="text-xl font-bold text-emerald-600">{totalPaidAmount}</p>
-              </div>
-              <PiListChecksFill size={36} className="text-green-600" />
-            </div>
-          </Link>
-        </div>
-
-
-      )}
-
-      {/* Filter Options */}
-      {activeTab === 'filters' && (
-        <div className="mx-4 mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
-          <h3 className="text-lg font-semibold mb-2">Filter Options</h3>
-          <select
-            name="filter"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-                                          w-full md:w-[150px] p-2.5  pr-10  
-                                              
-                                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            onChange={(e) => router.get(route('supplier.index'), { status: e.target.value }, { preserveState: true })}
-            value={status}
-          >
-            <option value="">Select Status</option>
-            <option value="pending">Pending</option>
-            <option value="paid">Paid</option>
-          </select>
-        </div>
-      )}
 
 
 
@@ -269,7 +262,7 @@ export default function List(props) {
                 </button>
               )}
 
-            
+
 
             </div>
           </div>

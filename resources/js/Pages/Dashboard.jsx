@@ -59,7 +59,7 @@ export default function Dashboard(props) {
           {/* Title */}
           <div className="flex items-center space-x-3">
 
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight mx-6">Dashboard</h2>
+            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
           </div>
 
           {/* Action Buttons */}
@@ -74,71 +74,64 @@ export default function Dashboard(props) {
     >
 
       <Head title="Dashboard" />
+      <div className="mx-4">
+        <div className="p-4 bg-white shadow-sm rounded-2xl mt-10">
+          {/* Header with Profit & Filter */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between w-full gap-4 mb-6">
+            <h1 className="font-semibold text-xl text-gray-800">
+              Profit: {rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
+            </h1>
+            <select
+              value={selectedTimeRange}
+              onChange={(e) => setSelectedTimeRange(e.target.value)}
+              className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="15">Last 15 Days</option>
+              <option value="30">Last 1 Month</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 1 Year</option>
+            </select>
+          </div>
+
+          {/* Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            <Card
+              title="Orders"
+              value={auth.permissions.includes('viewAny Order') ? totalOrder : 'No Access'}
+              icon={<VscGraph size={32} />}
+              link={route('order.index')}
+            />
+            <Card
+              title="Product In Stock"
+              value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
+              icon={<FaBoxOpen size={32} />}
+              link={route('product.index', { status: 1 })}
+            />
+            <Card
+              title="Out of Stock"
+              value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
+              icon={<HiMiniArchiveBoxXMark size={32} />}
+              link={route('product.index', { status: 0 })}
+            />
+            <Card
+              title="Stock Value"
+              value={auth.permissions.includes('viewAny Product') ? totalStockValue : 'No Access'}
+              icon={<GiMoneyStack size={32} />}
+              link={route('product.index')}
+            />
+            <Card
+              title="Pending Balance"
+              value={auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : 'No Access'}
+              icon={<FaTruckField size={32} />}
+              link={route('order.index')}
+            />
+          </div>
+        </div>
 
 
 
-      <div className="flex items-center justify-between p-4 mx-6">
-        <h1 className="text-2xl font-bold text-gray-800">
-          Total Profit: {rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
-        </h1>
-        <select
-          value={selectedTimeRange}
-          onChange={(e) => setSelectedTimeRange(e.target.value)}
-          className="px-4 w-1/6 py-2 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
-        >
-          <option value="7">Last 7 Days</option>
-          <option value="15">Last 15 Days</option>
-          <option value="30">Last 1 Month</option>
-          <option value="180">Last 6 Months</option>
-          <option value="365">Last 1 Year</option>
-        </select>
-      </div>
-
-      <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-        {/* <Card
-          title="Profit"
-          value={rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
-          icon={<GrMoney size={32} />}
-        /> */}
-        <Card
-          title="Orders"
-          value={auth.permissions.includes('viewAny Order') ? totalOrder : 'No Access'}
-          icon={<VscGraph size={32} />}
-          link={route('order.index')}
-        />
-
-        <Card
-          title="Product In Stock"
-          value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
-          icon={<FaBoxOpen size={32} />}
-          link={route('product.index', { status: 1 })}
-        />
-        {/* <Card
-          title="Total Items In Stock"
-          value={auth.permissions.includes('viewAny Product') ? totaliteminstock : 'No Access'}
-          icon={<FaBoxOpen size={32} />}
-          link={route('product.index', { status: 1 })}
-        /> */}
-        <Card
-          title="Out of Stock"
-          value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
-          icon={<HiMiniArchiveBoxXMark size={32} />}
-          link={route('product.index', { status: 0 })}
-        />
-        <Card
-          title="Stock Value"
-          value={auth.permissions.includes('viewAny Product') ? totalStockValue : 'No Access'}
-          icon={<GiMoneyStack size={32} />}
-          link={route('product.index')}
-        />
-        <Card
-          title="Pending Balance"
-          value={auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : 'No Access'}
-          icon={<FaTruckField size={32} />}
-          link={route('order.index')}
-        />
-      </div>
-      {/* <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* <div className="p-5 mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <Card
           title="Today's Profit"
           value={rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
@@ -225,60 +218,61 @@ export default function Dashboard(props) {
 
 
 
-      <div className="p-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
-        <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          {auth.permissions.includes('viewAny Order') ? (<>
-            <div className='flex justify-between items-center my-4'>
-              <p className="text-xl font-semibold leading-tight text-gray-800 ">
-                Sales
-              </p>
-              <select
-                onChange={(e) => {
-                  router.get(route('dashboard'), { period: e.target.value }, { preserveScroll: true });
-                }}
-                value={period}
-                id="period"
-                className="bg-gray-50 w-full sm:w-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  ">
-                <option value="day">TODAY</option>
-                <option value="week">WEEK</option>
-                <option value="month">MONTH</option>
-                <option value="year">YEAR</option>
-                <option value="last_week">LAST WEEK</option>
-                <option value="last_month">LAST MONTH</option>
-                <option value="last_year">LAST YEAR</option>
-                <option value="quater_year">QUARTER YEAR</option>
-                <option value="half_year">HALF YEAR</option>
-              </select>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
+          <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
+            {auth.permissions.includes('viewAny Order') ? (<>
+              <div className='flex justify-between items-center my-4'>
+                <p className="text-xl font-semibold leading-tight text-gray-800 ">
+                  Sales
+                </p>
+                <select
+                  onChange={(e) => {
+                    router.get(route('dashboard'), { period: e.target.value }, { preserveScroll: true });
+                  }}
+                  value={period}
+                  id="period"
+                  className="bg-gray-50 w-full sm:w-[150px] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5  ">
+                  <option value="day">TODAY</option>
+                  <option value="week">WEEK</option>
+                  <option value="month">MONTH</option>
+                  <option value="year">YEAR</option>
+                  <option value="last_week">LAST WEEK</option>
+                  <option value="last_month">LAST MONTH</option>
+                  <option value="last_year">LAST YEAR</option>
+                  <option value="quater_year">QUARTER YEAR</option>
+                  <option value="half_year">HALF YEAR</option>
+                </select>
+              </div>
 
-            <div id="chart">
-              <Chart options={chartdata.options} series={chartdata.series} type="line" height={350} />
-            </div>
-          </>)
-            : <p>You don't have permission to view this area</p>
-          }
+              <div id="chart">
+                <Chart options={chartdata.options} series={chartdata.series} type="line" height={350} />
+              </div>
+            </>)
+              : <p>You don't have permission to view this area</p>
+            }
+          </div>
+
+          <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
+            {auth.permissions.includes('viewAny Order') ? <RecentOrder recentOrder={latestOrder} /> :
+              <p>You don't have permission to view this area</p>
+            }
+          </div>
         </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className=" mt-4 bg-white p-4 rounded-lg shadow-md">
 
-        <div className="mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          {auth.permissions.includes('viewAny Order') ? <RecentOrder recentOrder={latestOrder} /> :
-            <p>You don't have permission to view this area</p>
-          }
-        </div>
-      </div>
-      <div className="p-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
+            {auth.permissions.includes('viewAny Supplier') ? <SupplierBalance suppliers={supplierBalanceRecord} />
+              :
+              <p>You don't have permission to view this area</p>
+            }
 
-          {auth.permissions.includes('viewAny Supplier') ? <SupplierBalance suppliers={supplierBalanceRecord} />
-            :
-            <p>You don't have permission to view this area</p>
-          }
+          </div>
+          <div className=" mt-4 bg-white p-4 rounded-lg shadow-md">
+            {auth.permissions.includes('viewAny Product') ? <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} /> :
+              <p>You don't have permission to view this area</p>
+            }
 
-        </div>
-        <div className=" mt-4 mx-4 bg-white p-4 rounded-lg shadow-md">
-          {auth.permissions.includes('viewAny Product') ? <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} /> :
-            <p>You don't have permission to view this area</p>
-          }
-
+          </div>
         </div>
       </div>
     </AuthenticatedLayout>

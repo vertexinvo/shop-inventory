@@ -24,6 +24,8 @@ import { BiExport, BiImport } from 'react-icons/bi';
 import { FaCalendarCheck, FaCheck, FaCross, FaEye, FaPencil, FaQrcode, FaRotateRight, FaTrash, FaTrashCan, FaXmark } from 'react-icons/fa6';
 import { Fragment } from "react";
 import { FaThLarge } from "react-icons/fa"; // Optional: for icons
+import Card from '@/Components/Cards';
+import TabSwitcher from '@/Components/TabSwitcher';
 
 export default function List(props) {
   const { auth, stock, startdate, enddate, products, totalstock, totalstockavailable, totalstocknotavailable, totalStockValue, totaliteminstock, categories, brands } = props
@@ -198,86 +200,60 @@ export default function List(props) {
 
       <Head title="Purchase" />
 
+      <div className="mt-4 mx-4 p-4 bg-white shadow-sm rounded-2xl">
+        {/* Top Bar: Tabs + Dropdown */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
 
-      <div className="flex gap-2 mt-4 mx-4">
-        <button
-          onClick={() => setActiveTab('cards')}
-          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'cards' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
-        >
-          <FaThLarge className='' />
-          Cards
-        </button>
-        <button
-          onClick={() => setActiveTab('filters')}
-          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2  ${activeTab === 'filters' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-700'}`}
-        >
-          <FaFilter className="inline mr-1" />
-          Filters
-        </button>
+          {/* Group Button for Tabs */}
+          <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
+
+          {/* Dropdown Filter only when 'cards' tab is active */}
+          {activeTab === 'cards' && (
+            <select
+              className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="15">Last 15 Days</option>
+              <option value="30">Last 1 Month</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 1 Year</option>
+            </select>
+          )}
+        </div>
+
+        {/* Cards Section */}
+        {activeTab === 'cards' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            <Card title="Total Products"
+              value={totalstock}
+              icon={<FaBoxes size={36} />}
+              link={route('product.index')} />
+            <Card title="Stock keeping unit"
+              value={totaliteminstock}
+              icon={<FaBoxes size={36} />} />
+            <Card title="Out of Stock"
+              value={totalstocknotavailable}
+              icon={<HiMiniArchiveBoxXMark size={36} />} link={route('product.index', { status: 0 })} />
+            <Card title="In Stock"
+              value={totalstockavailable}
+              icon={<FaBox size={36} />}
+              link={route('product.index', { status: 1 })} />
+            <Card title="Total Stock Value"
+              value={<span>{totalStockValue}</span>}
+              icon={<GiMoneyStack size={36} />} />
+          </div>
+        )}
+
+        {/* Filters Section */}
+        {activeTab === 'filters' && (
+          <div className="mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+            Filters
+          </div>
+        )}
       </div>
 
-      {activeTab === 'cards' && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">
-          {/* Total Products */}
-          <Link href={route('product.index')}>
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Total Products</p>
-                <p className="text-xl font-bold">{totalstock}</p>
-              </div>
-              <FaBoxes size={36} className="text-blue-500" />
-            </div>
-          </Link>
 
-          {/* Total Items in Stock */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Stock keeping unit</p>
-              <p className="text-xl font-bold">{totaliteminstock}</p>
-            </div>
-            <FaBoxes size={36} className="text-green-500" />
-          </div>
-
-          {/* Total Product Out of Stock */}
-          <Link href={route('product.index', { status: 0 })}>
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">Out of Stock</p>
-                <p className="text-xl font-bold">{totalstocknotavailable}</p>
-              </div>
-              <HiMiniArchiveBoxXMark size={36} className="text-red-500" />
-            </div>
-          </Link>
-
-          {/* Total Product In Stock */}
-          <Link href={route('product.index', { status: 1 })}>
-            <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-              <div>
-                <p className="text-gray-600 text-sm font-medium">In Stock</p>
-                <p className="text-xl font-bold">{totalstockavailable}</p>
-              </div>
-              <FaBox size={36} className="text-green-600" />
-            </div>
-          </Link>
-
-          {/* Total Stock Value */}
-          <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center">
-            <div>
-              <p className="text-gray-600 text-sm font-medium">Total Stock Value</p>
-              <p className="text-xl font-bold text-emerald-600">{totalStockValue}</p>
-            </div>
-            <GiMoneyStack size={36} className="text-yellow-500" />
-          </div>
-        </div>
-      )}
-
-      {activeTab === 'filters' && (
-
-        <div className="mx-4 mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
-          Filters
-        </div>
-
-      )}
 
 
       <div className="flex flex-col px-4 mx-auto w-full mt-4">

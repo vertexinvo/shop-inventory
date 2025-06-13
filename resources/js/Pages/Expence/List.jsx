@@ -17,12 +17,15 @@ import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { FaCheck, FaChevronDown } from 'react-icons/fa';
 import { FaMoneyBillWave, FaClock, FaCalendarAlt, FaHourglassHalf, FaChartLine, FaFileInvoiceDollar } from 'react-icons/fa';
 import Dropdown from '@/Components/Dropdown';
+import TabSwitcher from '@/Components/TabSwitcher';
+import Card from '@/Components/Cards';
 export default function List(props) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
   const { auth, expences, startdate, enddate, todayTotal, todayPending, monthTotal, monthPending, yearTotal, yearPending } = props
   const [isBulkDeleteModalOpen, setIsBulkDeleteModalOpen] = useState(false);
   const [selectId, setSelectId] = useState([]);
   const [daterangeModel, setDaterangeModel] = useState(false);
+  const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
 
   const [dateRange, setDateRange] = useState(
     {
@@ -94,57 +97,52 @@ export default function List(props) {
     >
       <Head title="Expense" />
 
+      <div className="mt-4 mx-4 p-4 bg-white shadow-sm rounded-2xl">
+        {/* Top Bar: Tabs only (no dropdown needed) */}
+        <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
+          <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
+          {/* Dropdown Filter only when 'cards' tab is active */}
+          {activeTab === 'cards' && (
+            <select
+              className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
 
-      <div className="mx-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 py-5">
-
-        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Today's Total Expense</p>
-            <p className="text-xl font-bold text-blue-600">{todayTotal}</p>
-          </div>
-          <FaMoneyBillWave size={36} className="text-blue-500" />
+            >
+              <option value="7">Last 7 Days</option>
+              <option value="15">Last 15 Days</option>
+              <option value="30">Last 1 Month</option>
+              <option value="180">Last 6 Months</option>
+              <option value="365">Last 1 Year</option>
+            </select>
+          )}
         </div>
 
-        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Today's Pending Amount</p>
-            <p className="text-xl font-bold text-orange-600">{todayPending}</p>
+        {/* Cards Section */}
+        {activeTab === 'cards' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mt-4">
+            <Card
+              title="Total Expense"
+              value={<span >{todayTotal}</span>}
+              icon={<FaMoneyBillWave size={36} />}
+            />
+            <Card
+              title="Pending Amount"
+              value={<span >{todayPending}</span>}
+              icon={<FaClock size={36} />}
+            />
           </div>
-          <FaClock size={36} className="text-orange-500" />
-        </div>
+        )}
 
-        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Month's Total Expense</p>
-            <p className="text-xl font-bold text-indigo-600">{monthTotal}</p>
+        {/* Filters Section */}
+        {activeTab === 'filters' && (
+          <div className="mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+            <button
+              onClick={() => setDaterangeModel(true)}
+              className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+            >
+              Date Range Filter
+            </button>
           </div>
-          <FaChartLine size={36} className="text-indigo-500" />
-        </div>
-
-        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Month's Pending Amount</p>
-            <p className="text-xl font-bold text-amber-600">{monthPending}</p>
-          </div>
-          <FaHourglassHalf size={36} className="text-amber-500" />
-        </div>
-
-        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Year's Total Expense</p>
-            <p className="text-xl font-bold text-emerald-600">{yearTotal}</p>
-          </div>
-          <FaCalendarAlt size={36} className="text-emerald-500" />
-        </div>
-
-        <div className="bg-white border  rounded-2xl shadow p-4 flex justify-between items-center">
-          <div>
-            <p className="text-gray-600 text-sm font-medium">Year's Pending Amount</p>
-            <p className="text-xl font-bold text-rose-600">{yearPending}</p>
-          </div>
-          <FaFileInvoiceDollar size={36} className="text-rose-500" />
-        </div>
-
+        )}
       </div>
 
 
@@ -166,12 +164,7 @@ export default function List(props) {
 
 
             {/* Date range filter button */}
-            <button
-              onClick={() => setDaterangeModel(true)}
-              className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
-            >
-              Date Range Filter
-            </button>
+
 
 
           </div>
