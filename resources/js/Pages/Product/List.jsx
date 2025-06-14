@@ -86,31 +86,13 @@ export default function List(props) {
   };
 
 
-  const [stockLogs, setStockLogs] = useState({}); // { [productId]: [...] }
-  const [loadingLogs, setLoadingLogs] = useState({});
   const toggleExpand = async (id) => {
     if (expanded.includes(id)) {
       setExpanded((prev) => prev.filter((e) => e !== id));
     } else {
       setExpanded((prev) => [...prev, id]);
 
-      // Only fetch if not already loaded
-      if (!stockLogs[id]) {
-        setLoadingLogs((prev) => ({ ...prev, [id]: true }));
-        try {
-          const res = await axios.get(`/dashboard/product/${id}/stock-logs`);
-          setStockLogs((prev) => ({
-            ...prev,
-            [id]: res.data.stocklogs?.data || [],
-          }));
 
-        } catch (err) {
-          console.error("Error fetching stock logs:", err);
-          setStockLogs((prev) => ({ ...prev, [id]: [] }));
-        } finally {
-          setLoadingLogs((prev) => ({ ...prev, [id]: false }));
-        }
-      }
     }
   };
 
@@ -739,9 +721,7 @@ export default function List(props) {
                           <td colSpan="10" className="px-10 py-4 text-gray-600">
                             <div className="space-y-4">
                               <div>
-                                {loadingLogs[product.id] ? (
-                                  <p className="text-sm text-gray-500 mt-1 animate-pulse">Loading logs...</p>
-                                ) : stockLogs[product.id]?.length > 0 ? (
+                                { product?.stock?.stock_logs.length > 0 ? (
                                   <div className="grid grid-cols-5 gap-2 text-sm ms-12 font-medium ">
                                     {/* Grid Header */}
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-l-xl">Available</div>
@@ -750,7 +730,7 @@ export default function List(props) {
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2">Remarks</div>
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-r-xl">Date</div>
                                     {/* Grid Rows */}
-                                    {stockLogs[product.id].map((log) => (
+                                    {product?.stock?.stock_logs.map((log) => (
                                       <div key={log.id} className="contents">
                                         <div className="p-1 text-gray-800">{log?.quantity || '-'}</div>
                                         <div className="p-1 text-gray-800">{log?.type || '-'}</div>

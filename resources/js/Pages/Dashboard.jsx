@@ -86,6 +86,7 @@ export default function Dashboard(props) {
               onChange={(e) => setSelectedTimeRange(e.target.value)}
               className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
             >
+              <option value="7">Today</option>
               <option value="7">Last 7 Days</option>
               <option value="15">Last 15 Days</option>
               <option value="30">Last 1 Month</option>

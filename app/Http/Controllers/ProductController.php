@@ -53,7 +53,7 @@ class ProductController extends Controller
         //     default => now()->subDay(),
         // };
 
-        $products = Product::with('categories', 'stock', 'brands')
+        $products = Product::with('categories', 'stock', 'brands','stock.stockLogs')
             ->where(function ($query) use ($search) {
                 $query->where('name', 'like', "%$search%")
                     ->orWhere('model', 'like', "%$search%")
@@ -133,23 +133,11 @@ class ProductController extends Controller
 
         $brands = Brand::latest()->get();
         $categories = Category::latest()->get();
-
+     
         return Inertia::render('Product/List', compact('startdate', 'enddate', 'brands', 'categories', 'products', 'totaliteminstock', 'stock', 'search', 'totalstock', 'totalstockavailable', 'totalstocknotavailable', 'totalStockValue', ));
     }
 
 
-    public function stockLogs(Product $product)
-    {
-        $stock = $product->stock;
-        if (!$stock) {
-            return response()->json(['stocklogs' => []]);
-        }
-
-        $stocklogs = Stocklog::where('stock_id', $stock->id)->latest()->paginate(10);
-        return response()->json([
-            'stocklogs' => $stocklogs,
-        ]);
-    }
 
 
     public function csvstore(Request $request)
