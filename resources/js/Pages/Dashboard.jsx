@@ -75,7 +75,7 @@ export default function Dashboard(props) {
 
       <Head title="Dashboard" />
       <div className="mx-4">
-        <div className="p-4 bg-white shadow-sm rounded-2xl mt-10">
+        <div className="p-4 bg-white shadow-sm rounded-2xl mt-4">
           {/* Header with Profit & Filter */}
           <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between w-full gap-4 mb-6">
             <h1 className="font-semibold text-xl text-gray-800">
@@ -104,13 +104,13 @@ export default function Dashboard(props) {
               link={route('order.index')}
             />
             <Card
-              title="Product In Stock"
+              title="In Stock"
               value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
               icon={<FaBoxOpen size={32} />}
               link={route('product.index', { status: 1 })}
             />
             <Card
-              title="Out of Stock"
+              title="Out Stock"
               value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
               icon={<HiMiniArchiveBoxXMark size={32} />}
               link={route('product.index', { status: 0 })}
@@ -220,7 +220,7 @@ export default function Dashboard(props) {
 
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
-          <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
+          <div className="mt-4 bg-white p-4 rounded-2xl shadow-md">
             {auth.permissions.includes('viewAny Order') ? (<>
               <div className='flex justify-between items-center my-4'>
                 <p className="text-xl font-semibold leading-tight text-gray-800 ">
@@ -253,14 +253,14 @@ export default function Dashboard(props) {
             }
           </div>
 
-          <div className="mt-4 bg-white p-4 rounded-lg shadow-md">
+          <div className="mt-4 bg-white p-4 rounded-2xl shadow-md">
             {auth.permissions.includes('viewAny Order') ? <RecentOrder recentOrder={latestOrder} /> :
               <p>You don't have permission to view this area</p>
             }
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className=" mt-4 bg-white p-4 rounded-lg shadow-md">
+          <div className=" mt-4 bg-white p-4 rounded-2xl shadow-md">
 
             {auth.permissions.includes('viewAny Supplier') ? <SupplierBalance suppliers={supplierBalanceRecord} />
               :
@@ -268,7 +268,7 @@ export default function Dashboard(props) {
             }
 
           </div>
-          <div className=" mt-4 bg-white p-4 rounded-lg shadow-md">
+          <div className=" mt-4 bg-white p-4 rounded-2xl shadow-md">
             {auth.permissions.includes('viewAny Product') ? <OutofstockProduct outOfStockProductrecord={outOfStockProductrecord} /> :
               <p>You don't have permission to view this area</p>
             }

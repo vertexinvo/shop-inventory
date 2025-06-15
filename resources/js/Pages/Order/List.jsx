@@ -27,6 +27,8 @@ import { GrMoney } from 'react-icons/gr';
 import { CiTimer } from 'react-icons/ci';
 import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport } from 'react-icons/bi';
+import TabSwitcher from '@/Components/TabSwitcher';
+import Card from '@/Components/Cards';
 
 
 export default function List(props) {
@@ -132,66 +134,66 @@ export default function List(props) {
     {
       label: "TODAY'S PROFIT",
       value: rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access',
-      icon: <GrMoney size={36} className="text-emerald-600" />,
+      icon: <GrMoney size={36} />,
     },
     {
       label: "TODAY'S PENDING AMOUNT",
       value: rolename.includes('superadmin') ? formatProfit(todaysPendingOrderAmount) : 'No Access',
-      icon: <CiTimer size={36} className="text-yellow-500" />,
+      icon: <CiTimer size={36} />,
     },
     {
       label: "TODAY'S ORDERS",
       value: todaysOrder,
-      icon: <VscGraph size={36} className="text-blue-500" />,
+      icon: <VscGraph size={36} />,
       link: route('order.index'),
     },
     {
       label: "TOTAL ORDERS",
       value: total,
-      icon: <VscGraph size={36} className="text-indigo-500" />,
+      icon: <VscGraph size={36} />,
       link: route('order.index'),
     },
     {
       label: "PENDING ORDERS",
       value: pendingCount,
-      icon: <FaBoxOpen size={36} className="text-yellow-600" />,
+      icon: <FaBoxOpen size={36} />,
       link: route('order.index', { status: 'pending' }),
     },
     {
       label: "COMPLETED ORDERS",
       value: completedCount,
-      icon: <PiListChecksFill size={36} className="text-green-600" />,
+      icon: <PiListChecksFill size={36} />,
       link: route('order.index', { status: 'completed' }),
     },
     {
       label: "TOTAL COMPLETED AMOUNT",
       value: totalPaidAmount,
-      icon: <MdOutlinePayments size={36} className="text-emerald-500" />,
+      icon: <MdOutlinePayments size={36} />,
     },
     {
       label: "TOTAL PENDING AMOUNT",
       value: parseFloat(totalPendingAmount).toFixed(2),
-      icon: <FaMoneyBills size={36} className="text-yellow-600" />,
+      icon: <FaMoneyBills size={36} />,
     },
     {
       label: "MONTHLY COMPLETED AMOUNT",
       value: parseFloat(monthlyTotalPaidAmount).toFixed(2),
-      icon: <FaMoneyBills size={36} className="text-green-500" />,
+      icon: <FaMoneyBills size={36} />,
     },
     {
       label: "MONTHLY PENDING AMOUNT",
       value: parseFloat(monthlyTotalPendingAmount).toFixed(2),
-      icon: <FaMoneyBills size={36} className="text-red-500" />,
+      icon: <FaMoneyBills size={36} />,
     },
     {
       label: "YEARLY COMPLETED AMOUNT",
       value: parseFloat(yearlyTotalPaidAmount).toFixed(2),
-      icon: <FaMoneyBills size={36} className="text-blue-500" />,
+      icon: <FaMoneyBills size={36} />,
     },
     {
       label: "YEARLY PENDING AMOUNT",
       value: parseFloat(yearlyTotalPendingAmount).toFixed(2),
-      icon: <FaMoneyBills size={36} className="text-orange-500" />,
+      icon: <FaMoneyBills size={36} />,
     },
   ];
 
@@ -251,7 +253,7 @@ export default function List(props) {
                 >
                   Invoice
                 </Link>
-                 <Link
+                <Link
                   href={route('order.instantorder')}
                   className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                 >
@@ -275,73 +277,60 @@ export default function List(props) {
           <option value="year">Year</option>
         </select>
       </div> */}
+      <div className="mt-4 mx-4 p-4 bg-white shadow-sm rounded-2xl">
+        {/* Tabs */}
+        <TabSwitcher activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      <div className="flex gap-2 mt-4 mx-4">
-        <button
-          onClick={() => setActiveTab('cards')}
-          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'cards'
-            ? 'bg-gray-800 text-white'
-            : 'bg-gray-100 text-gray-700'
-            }`}
-        >
-          <FaThLarge />
-          Cards
-        </button>
+        {/* Cards View */}
+        {activeTab === 'cards' && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-all mt-4">
+              {visibleCards.map((card, index) => {
+                const cardContent = (
+                  <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
+                    <div>
+                      <p className="text-gray-600 text-sm font-medium">{card.label}</p>
+                      <p className="text-xl font-bold">{card.value}</p>
+                    </div>
+                    {card.icon}
+                  </div>
+                );
 
-        <button
-          onClick={() => setActiveTab('filters')}
-          className={`px-4 py-2 rounded-lg text-xs font-medium flex items-center justify-center gap-2 ${activeTab === 'filters'
-            ? 'bg-gray-800 text-white'
-            : 'bg-gray-100 text-gray-700'
-            }`}
-        >
-          <FaFilter className="inline mr-1" />
-          Filters
-        </button>
+                return (
+                  <div key={index}>
+                    <Card
+                      title={card.label}
+                      value={card.value}
+                      icon={card.icon}
+                      link={card.link}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Show More / Show Less Button */}
+            {cards.length > 5 && (
+              <div className="flex justify-end mt-4">
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="text-sm px-4 py-1 border border-gray-300 rounded-full text-gray-600 hover:bg-blue-50 transition"
+                >
+                  {showAll ? 'Show Less ↑' : 'Show More ↓'}
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Filters View */}
+        {activeTab === 'filters' && (
+          <div className="mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
+            Filters
+          </div>
+        )}
       </div>
 
-      {activeTab === 'cards' && (
-        <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 transition-all mt-4 mx-4">
-            {visibleCards.map((card, index) => {
-              const content = (
-                <div className="bg-white border border-gray-200 rounded-2xl shadow p-4 flex justify-between items-center hover:shadow-md transition">
-                  <div>
-                    <p className="text-gray-600 text-sm font-medium">
-                      {card.label}
-                    </p>
-                    <p className="text-xl font-bold">{card.value}</p>
-                  </div>
-                  {card.icon}
-                </div>
-              );
-
-              return (
-                <div key={index}>
-                  {card.link ? <Link href={card.link}>{content}</Link> : content}
-                </div>
-              );
-            })}
-          </div>
-
-          {cards.length > 5 && (
-            <div className="flex justify-end mt-4 mx-4">
-              <button
-                onClick={() => setShowAll(!showAll)}
-                className="text-sm px-4 py-1 border border-blue-600 rounded-full text-blue-600 hover:bg-blue-50 transition"
-              >
-                {showAll ? 'Show Less ↑' : 'Show More ↓'}
-              </button>
-            </div>
-          )}
-        </>
-      )}
-
-      {activeTab === 'filters' && (
-        <div className="mx-4 mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
-          Filters
-        </div>
-      )}
 
 
 
@@ -617,7 +606,7 @@ export default function List(props) {
                     {/* Sale Info */}
                     <td className="px-4 py-2">
                       <div className="flex items-center">
-                        <div className="ml-2">
+                        <div>
                           <p className="text-sm font-medium text-gray-900">{order.name}</p>
                           {order.email && (
                             <p className="text-xs text-gray-500">{order.email}</p>
