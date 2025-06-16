@@ -179,7 +179,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
                                         <Dropdown.Content>
                                             <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
-                                                Settings
+                                               User menu
                                             </div>
                                             <div className="flex flex-col">
                                                 <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
