@@ -30,192 +30,82 @@ export default function Setting(props) {
     >
       <Head title="Setting" />
 
-      <div className="flex flex-col px-4 mt-10 mx-auto w-full">
-  <div className="w-full scale-100">
-    <div className="font-sans antialiased bg-grey-lightest">
-      {/* Container with grid layout */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 container mx-auto py-3 px-5">
-        
-        {/* First column */}
-        <div className="w-full scale-100">
-          <Link href={route('role.index')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-16 h-16 rounded-full" src="images/role_setting.jpg" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Roles
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6  px-4 py-8">
+        {/* Roles */}
+        <Link href={route('role.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Roles</h2>
+            <p className="text-sm text-gray-500 mt-1">Manage system access roles.</p>
+          </div>
+        </Link>
 
-        {/* Second column */}
-        <div className="w-full scale-100">
-          <Link href={route('category.index')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-16 h-16 rounded-full" src="images/role_category.jpg" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Categories
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-        </div>
+        {/* Categories */}
+        <Link href={route('category.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Categories</h2>
+            <p className="text-sm text-gray-500 mt-1">Organize your product categories.</p>
+          </div>
+        </Link>
 
-        {/* Third column */}
-        <div className="w-full scale-100">
-          <Link href={route('brand.index')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-16 h-16 rounded-full" src="images/role_brands.jpg" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Brands
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-        </div>
+        {/* Brands */}
+        <Link href={route('brand.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Brands</h2>
+            <p className="text-sm text-gray-500 mt-1">Manage brand listings.</p>
+          </div>
+        </Link>
+
+        {/* User Management */}
+        <Link href={route('user.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">User Management</h2>
+            <p className="text-sm text-gray-500 mt-1">Control user accounts and permissions.</p>
+          </div>
+        </Link>
+
+        {/* Tax */}
+        <Link href={route('tax.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Tax</h2>
+            <p className="text-sm text-gray-500 mt-1">Set up applicable tax rules.</p>
+          </div>
+        </Link>
+
+        {/* Shipping Charges */}
+        <Link href={route('shippingrate.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Shipping Charges</h2>
+            <p className="text-sm text-gray-500 mt-1">Configure delivery rates by zone.</p>
+          </div>
+        </Link>
+
+        {/* Site Setting */}
+        <Link href={route('setting.edit')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Site Setting</h2>
+            <p className="text-sm text-gray-500 mt-1">Manage global site preferences.</p>
+          </div>
+        </Link>
+
+        {/* Backup Database */}
+        <a href={route('setting.db')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Backup Database</h2>
+            <p className="text-sm text-gray-500 mt-1">Export and download backups safely.</p>
+          </div>
+        </a>
+
+        {/* Activity Logs */}
+        <a href={route('setting.activitylog')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Activity Logs</h2>
+            <p className="text-sm text-gray-500 mt-1">Track recent user/system activities.</p>
+          </div>
+        </a>
       </div>
 
-      {/* Second row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 container mx-auto py-3 px-5">
-      <div className="w-full scale-100">
-          <Link href={route('user.index')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-16 h-16 rounded-full" src="images/user_managment.png" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    User Management
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-        </div>
 
-        <div className="w-full scale-100">
-          <Link href={route('tax.index')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-16 h-16 rounded-full" src="images/tax.png" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Tax
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-        </div>
 
-        <div className="w-full scale-100">
-          <Link href={route('shippingrate.index')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-auto h-16 rounded-full" src="images/shipping_charges.png" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Shipping Charges
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-        </div>
-        <div className="w-full scale-100">
-          <Link href={route('setting.edit')} className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-auto h-16 " src="images/settings.png" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Site Setting
-                  </span>
-                </div>
-              </div>
-            </button>
-          </Link>
-           
-        </div>
-        <div className="w-full scale-100">
-          <a href={route('setting.db')}  className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-auto h-16 " src="images/exportdb.png" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Backup Database
-                  </span>
-                </div>
-              </div>
-            </button>
-          </a>
-           
-        </div>
-        <div className="w-full scale-100">
-          <a href={route('setting.activitylog')}  className="w-full">
-            <button className="w-full bg-white border border-gray-300 rounded-lg shadow-lg hover:bg-gray-50 focus:ring-gray-400 focus:ring-2 p-4">
-              <div className="items-center">
-                <div className="flex justify-center mt-2">
-                  <img className="w-auto h-16 " src="images/activitylogs.png" alt="Role Setting" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center pb-5">
-                <div className="flex mt-4">
-                  <span className="py-2 px-4 ms-2 text-xl font-medium text-gray-900 rounded-lg border border-gray-200 focus:ring-gray-100     dark:border-gray-600  ">
-                    Activity Logs
-                  </span>
-                </div>
-              </div>
-            </button>
-          </a>
-           
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 

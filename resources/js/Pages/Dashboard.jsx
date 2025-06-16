@@ -18,10 +18,55 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import { CiTimer } from 'react-icons/ci';
 import Card from '@/Components/Cards';
-
+import { useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 export default function Dashboard(props) {
   const { auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount } = props;
 
+  const [timeString, setTimeString] = useState('');
+  const [greetingData, setGreetingData] = useState({ text: '', emoji: '' });
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+
+      const formattedTime = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true,
+      });
+      setTimeString(formattedTime);
+
+      // Greeting based on hour
+      const hour = now.getHours();
+      let greeting = '';
+      let emoji = '';
+
+      if (hour >= 5 && hour < 12) {
+        greeting = 'Good Morning';
+        emoji = '🌤️';
+      } else if (hour >= 12 && hour < 17) {
+        greeting = 'Good Afternoon';
+        emoji = '☀️';
+      } else if (hour >= 17 && hour < 21) {
+        greeting = 'Good Evening';
+        emoji = '🌇';
+      } else {
+        greeting = 'Good Night';
+        emoji = '🌙';
+      }
+
+      setGreetingData({ text: greeting, emoji });
+    };
+
+    updateTime(); // call once on load
+
+    // Jugaar: Update every second
+    const intervalId = setInterval(updateTime, 1000);
+
+    return () => clearInterval(intervalId); // clean up
+  }, []);
 
   const [chartdata, setChartData] = useState({
     options: {
@@ -56,19 +101,35 @@ export default function Dashboard(props) {
       errors={props.errors}
       header={
         <div className="flex items-baseline justify-between">
-          {/* Title */}
-          <div className="flex items-center space-x-3">
+          {/* Title and Greeting Section */}
+          <div className="flex items-center gap-3">
+            {/* Animated Emoji */}
+            <motion.span
+              initial={{ rotate: -15, scale: 0.9 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ duration: 0.4, ease: 'easeOut' }}
+              className="text-2xl"
+            >
+              {greetingData.emoji}
+            </motion.span>
 
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>
+            {/* Texts next to Emoji */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-800">
+                {greetingData.text}, {auth.user.name}
+              </h2>
+              <p className="text-xs text-gray-500 sm:border-s sm:pl-4">
+                {timeString}
+              </p>
+            </div>
           </div>
 
-          {/* Action Buttons */}
+          {/* Action Buttons (Right Side) */}
           <div className="flex flex-wrap items-center gap-3">
-
-            {/* create custom dashboard button modal */}
-
+            {/* Add buttons if needed */}
           </div>
         </div>
+
       }
 
     >

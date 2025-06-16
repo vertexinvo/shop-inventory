@@ -16,7 +16,7 @@ import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
-import { FaChevronDown, FaCog, FaPlus, FaPlusCircle } from 'react-icons/fa';
+import { FaChevronDown, FaCog, FaEdit, FaPen, FaPlus, FaPlusCircle, FaRegEdit } from 'react-icons/fa';
 import { FaCircleArrowLeft, FaCircleArrowRight, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
 
 
@@ -61,21 +61,24 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                     <div className="px-4 sm:px-6 lg:px-4">
                         <div className="flex h-16 justify-between">
                             <div className="flex">
-                                <div className="flex shrink-0 items-center">
+                                <div className="flex shrink-0 items-center ">
                                     <Link href="/">
-                                        <img src={setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
+                                        <img
+                                            src={setting.site_logo || "/images/logo2.png"}
+                                            className="block h-10 w-30 fill-current text-gray-800"
+                                            alt="Logo"
+                                        />
                                     </Link>
-                                    {/* hide on responsive mobile */}
 
+                                    {/* Small Edit Icon - only on sm and up */}
+                                    <Link
+                                        href={route("setting.edit")}
+                                        title="Edit Site Settings"
+                                        className="hidden sm:flex items-end justify-center w-6 h-6 rounded-full text-gray-500 hover:text-gray-800 transition"
+                                    >
+                                        <FaPen className="w-3 h-3" />
+                                    </Link>
                                 </div>
-                                {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                            </div> */}
                             </div>
 
                             <div className="flex justify-end items-center ms-3 sm:ms-6">
@@ -110,6 +113,12 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                 <Dropdown.Link href={route('supplier.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Supplier
                                                 </Dropdown.Link>
+                                                <Dropdown.Link href={route('brand.create')} className=" border-t border-gray-200 px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Brand
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('category.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Category
+                                                </Dropdown.Link>
                                             </div>
                                         </Dropdown.Content>
                                     </Dropdown>
@@ -136,26 +145,26 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                                 <Dropdown.Link href={route('role.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Roles
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('category.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                {/* <Dropdown.Link href={route('category.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Categories
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('brand.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Brands
-                                                </Dropdown.Link>
+                                                </Dropdown.Link> */}
                                                 <Dropdown.Link href={route('user.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     User Management
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('tax.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
-                                                    Tax
+                                                <Dropdown.Link href={route('setting.edit')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Site Settings
                                                 </Dropdown.Link>
                                                 <Dropdown.Link href={route('shippingrate.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
-                                                    Shipping Rates
+                                                    Shipping Charges
                                                 </Dropdown.Link>
                                                 <Dropdown.Link
                                                     href={route('setting')}
                                                     className="px-4 py-2 text-sm  hover:bg-gray-100"
                                                 >
-                                                    <span className='hover:underline text-blue-600'>View more</span>
+                                                    <span className='underline text-gray-800 font-semibold'>View more</span>
                                                 </Dropdown.Link>
 
                                             </div>
@@ -179,7 +188,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
                                         <Dropdown.Content>
                                             <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
-                                               User menu
+                                                User menu
                                             </div>
                                             <div className="flex flex-col">
                                                 <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>

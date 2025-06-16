@@ -43,8 +43,6 @@ const AnimatedSlider = () => {
                             </Link>
                         </div>
                     </div>
-            
-
                 ))}
                  
             </Slider>
