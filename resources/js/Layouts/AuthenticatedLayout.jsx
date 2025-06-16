@@ -16,7 +16,7 @@ import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
-import { FaChevronDown, FaPlusCircle } from 'react-icons/fa';
+import { FaChevronDown, FaCog, FaPlus, FaPlusCircle } from 'react-icons/fa';
 import { FaCircleArrowLeft, FaCircleArrowRight, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
 
 
@@ -51,7 +51,8 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
     const [isMinimizeSidebar, setIsMinimizeSidebar] = useState(false);
 
     const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
-
+    const firstName = user.name?.split(" ")[0] || ""; // Safe way to get first name
+    const firstInitial = firstName.charAt(0).toUpperCase();
     return (
         <>
             <ToastContainer />
@@ -76,71 +77,121 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </NavLink>
                             </div> */}
                             </div>
-                            <div className="hidden sm:ms-6 sm:flex sm:items-center sm:justify-between">
-                                <div className="flex items-baseline justify-end relative ms-3">
-                                    {/* Create New Dropdown */}
-                                    <div className="flex items-center gap-2">
-                                        <Dropdown>
-                                            <Dropdown.Trigger>
-                                                <span className="inline-flex rounded-md">
-                                                    <button
-                                                        type="button"
-                                                        className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                                    >
-                                                        Add new
-                                                        <FaChevronDown className="ms-2 h-3 w-3" />
-                                                    </button>
-                                                </span>
-                                            </Dropdown.Trigger>
-                                            <Dropdown.Content>
 
-                                                <Dropdown.Link href={route('customer.create')}>
+                            <div className="flex justify-end items-center ms-3 sm:ms-6">
+                                <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
+                                    {/* Add New Dropdown */}
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <span className="inline-flex rounded-full shadow" title="Add New">
+                                                <button
+                                                    type="button"
+                                                    className="inline-flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out w-10 h-10 border border-gray-300"
+                                                >
+                                                    <FaPlus className="h-4 w-4" />
+                                                </button>
+                                            </span>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Content className="rounded-xl shadow-lg bg-white border border-gray-100 divide-y divide-gray-200 min-w-[150px]">
+                                            <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
+                                                Add new
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <Dropdown.Link href={route('customer.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Customer
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('order.create')}>
+                                                <Dropdown.Link href={route('order.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Invoice
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('product.create')}>
+                                                <Dropdown.Link href={route('product.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Inventory
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('supplier.create')}>
+                                                <Dropdown.Link href={route('supplier.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Supplier
                                                 </Dropdown.Link>
-                                            </Dropdown.Content>
-                                        </Dropdown>
-                                    </div>
+                                            </div>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+
+
+
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <span className="inline-flex rounded-full shadow" title="Settings">
+                                                <button
+                                                    type="button"
+                                                    className="inline-flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out w-10 h-10 border border-gray-300"
+                                                >
+                                                    <FaCog className="h-4 w-4" />
+                                                </button>
+                                            </span>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Content className="rounded-xl shadow-lg bg-white border border-gray-100 divide-y divide-gray-200 min-w-[150px]">
+                                            <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
+                                                Settings
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <Dropdown.Link href={route('role.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Roles
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('category.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Categories
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('brand.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Brands
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('user.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    User Management
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('tax.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Tax
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('shippingrate.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Shipping Rates
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route('setting')}
+                                                    className="px-4 py-2 text-sm  hover:bg-gray-100"
+                                                >
+                                                    <span className='hover:underline text-blue-600'>View more</span>
+                                                </Dropdown.Link>
+
+                                            </div>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+
+
 
                                     {/* User Dropdown */}
                                     <Dropdown>
                                         <Dropdown.Trigger>
-                                            <span className="inline-flex rounded-md">
+                                            <span className="inline-flex rounded-full shadow" title="Profile">
                                                 <button
                                                     type="button"
-                                                    className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                    className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold transition duration-150 ease-in-out hover:brightness-110 focus:outline-none"
                                                 >
-                                                    {user.name}
-                                                    <FaChevronDown className="ms-2 h-3 w-3" />
+                                                    {firstInitial}
                                                 </button>
                                             </span>
                                         </Dropdown.Trigger>
+
                                         <Dropdown.Content>
-                                            <Dropdown.Link href={route('profile.edit')}>
-                                                Profile
-                                            </Dropdown.Link>
-                                            <Dropdown.Link href={route('setting')}>
-                                                Setting
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route('logout')}
-                                                method="post"
-                                                as="button"
-                                            >
-                                                Log Out
-                                            </Dropdown.Link>
+                                            <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
+                                                Settings
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                                <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                                            </div>
+
                                         </Dropdown.Content>
                                     </Dropdown>
                                 </div>
                             </div>
+
+
                             <div className="-me-2 flex items-center sm:hidden">
                                 <button
                                     onClick={() =>
