@@ -41,19 +41,24 @@ export default function List(props) {
   const [selectId, setSelectId] = useState([]);
   const [orderAmounts, setOrderAmounts] = useState({});
   const [daterangeModel, setDaterangeModel] = useState(false);
-  const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
+  const [activeTab, setActiveTab] = useState('cards');
   const fileOptions = [
-    { label: 'Export Excel (.csv)', href: '/order.csvexport', download: true },
+    {
+      label: 'Export Excel (.csv)',
+      href: route('order.csvexport'),
+      download: true
+    },
   ];
 
-  const createOptions = [{
-    label: 'Instant Invoice',
-    href: 'order.instantorder'
-  },
-  {
-    label: 'Invoice',
-    href: 'order.create'
-  }
+  const createOptions = [
+    {
+      label: 'Instant Invoice',
+      href: route('order.instantorder')
+    },
+    {
+      label: 'Invoice',
+      href: route('order.create')
+    }
   ];
 
   const [dateRange, setDateRange] = useState(

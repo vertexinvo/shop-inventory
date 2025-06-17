@@ -14,16 +14,7 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       user={auth.user}
-      header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('user.index'))}
-            title="Back"
-          />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add User</h2>
-        </>}
+      header
     >
       <Head title="User" />
 

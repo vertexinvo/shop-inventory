@@ -49,20 +49,7 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       Product={auth.Product}
-      header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('supplier.index'))}
-            title="Back"
-          />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Supplier #{suppliers.code}</h2>
-
-
-        </>
-
-      }
+      header
     >
       <Head title="Invoice" />
 

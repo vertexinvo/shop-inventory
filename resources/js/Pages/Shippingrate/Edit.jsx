@@ -6,21 +6,21 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { MdKeyboardBackspace } from "react-icons/md";
 
 export default function Edit(props) {
-  const { auth ,shippingrate} = props;
+  const { auth, shippingrate } = props;
 
   return (
     <AuthenticatedLayout
       tax={auth.tax}
       header={
         <>
-        <MdKeyboardBackspace
-             size={20}
-             className="mr-2 cursor-pointer"
-             onClick={() => router.get(route('shippingrate.index'))}
-             title="Back"
-         />
-      <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Shipping Rate</h2>
-        </>}  
+          <MdKeyboardBackspace
+            size={20}
+            className="mr-2 cursor-pointer"
+            onClick={() => router.get(route('shippingrate.index'))}
+            title="Back"
+          />
+          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Add Shipping Rate</h2>
+        </>}
     >
       <Head title="Shipping Rate" />
 
@@ -35,9 +35,9 @@ export default function Edit(props) {
                     initialValues={{
                       area_name: shippingrate ? shippingrate.area_name : '',
                       postal_code: shippingrate ? shippingrate.postal_code : '',
-                      city_name: 'Karachi',  
-                      state_name: 'Sindh',   
-                      country_name: 'Pakistan', 
+                      city_name: 'Karachi',
+                      state_name: 'Sindh',
+                      country_name: 'Pakistan',
                       fee: shippingrate ? shippingrate.fee : '',
                     }}
                     validationSchema={Yup.object({
@@ -48,7 +48,7 @@ export default function Edit(props) {
                       fee: Yup.string().required('Fee is required'),
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                      router.put(route('shippingrate.update',shippingrate.id), values, { onSuccess: () => resetForm() });
+                      router.put(route('shippingrate.update', shippingrate.id), values, { onSuccess: () => resetForm() });
                     }}
                   >
                     <Form>
@@ -91,7 +91,7 @@ export default function Edit(props) {
                               id="city_name"
                               type="text"
                               placeholder="Enter city name"
-                              
+
                             />
                             <ErrorMessage
                               name="city_name"
@@ -112,7 +112,7 @@ export default function Edit(props) {
                               id="state_name"
                               type="text"
                               placeholder="Enter state name"
-                              
+
                             />
                             <ErrorMessage
                               name="state_name"
@@ -123,7 +123,7 @@ export default function Edit(props) {
                         </div>
 
                         <div className="flex mb-4">
-                        <div className="w-1/2 mr-1">
+                          <div className="w-1/2 mr-1">
                             {/* Set default value to 'Pakistan' and hide the field */}
                             <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="country_name">
                               Country Name
@@ -142,7 +142,7 @@ export default function Edit(props) {
                               className="text-red-500 text-xs mt-1"
                             />
                           </div>
-                        <div className="w-1/2 ml-1">
+                          <div className="w-1/2 ml-1">
                             <label className="block text-grey-darker text-sm font-bold mb-2" htmlFor="fee">Fee</label>
                             <Field
                               name="fee"
@@ -153,9 +153,9 @@ export default function Edit(props) {
                             />
                             <ErrorMessage name="fee" component="div" className="text-red-500 text-xs mt-1" />
                           </div>
-                        
 
-                          
+
+
                         </div>
 
                         <div className="flex items-center justify-start gap-1 mt-8">
