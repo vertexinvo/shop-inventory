@@ -29,6 +29,7 @@ import FloatingCreateButton from '@/Components/FloatingCreateButton';
 import { BiExport } from 'react-icons/bi';
 import TabSwitcher from '@/Components/TabSwitcher';
 import Card from '@/Components/Cards';
+import DropdownComponent from '@/Components/DropdownComponent';
 
 
 export default function List(props) {
@@ -41,6 +42,19 @@ export default function List(props) {
   const [orderAmounts, setOrderAmounts] = useState({});
   const [daterangeModel, setDaterangeModel] = useState(false);
   const [activeTab, setActiveTab] = useState('cards'); // 'cards' ya 'filters'
+  const fileOptions = [
+    { label: 'Export Excel (.csv)', href: '/order.csvexport', download: true },
+  ];
+
+  const createOptions = [{
+    label: 'Instant Invoice',
+    href: 'order.instantorder'
+  },
+  {
+    label: 'Invoice',
+    href: 'order.create'
+  }
+  ];
 
   const [dateRange, setDateRange] = useState(
     {
@@ -203,66 +217,22 @@ export default function List(props) {
     <AuthenticatedLayout
       Order={auth.Order}
       header={
-        <div className="flex items-center justify-between">
-          {/* Title */}
-          <div className="flex items-center space-x-3">
-            <MdKeyboardBackspace
-              size={20}
-              className="cursor-pointer text-gray-600 hover:text-gray-800"
-              onClick={() => window.history.back()}
-              title="Back"
-            />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales</h2>
-          </div>
-
+        <>
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3">
-
-            {/* Import/Export Dropdown */}
-            <Dropdown>
-              <Dropdown.Trigger>
-                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
-                  File
-                  <FaChevronDown className="h-3 w-3" />
-                </button>
-              </Dropdown.Trigger>
-
-              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <a
-                  href={route('order.csvexport')}
-                  download
-                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Export Excel (.csv)
-                </a>
-              </Dropdown.Content>
-            </Dropdown>
-
-            {/* Create Button dropdown */}
-            <Dropdown>
-              <Dropdown.Trigger>
-                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
-                  Add new
-                  <FaChevronDown className="h-3 w-3" />
-                </button>
-              </Dropdown.Trigger>
-              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <Link
-                  href={route('order.create')}
-                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Invoice
-                </Link>
-                <Link
-                  href={route('order.instantorder')}
-                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Instant Invoice
-                </Link>
-              </Dropdown.Content>
-            </Dropdown>
+            {/* File Dropdown */}
+            <DropdownComponent
+              triggerText="File"
+              options={fileOptions}
+            />
+            {/* Create dropdown */}
+            <DropdownComponent
+              triggerText='Add new'
+              className='bg-gray-800 text-white hover:bg-gray-700'
+              options={createOptions}
+            />
           </div>
-        </div>
+        </>
       }
     >
       <Head title="Sale" />

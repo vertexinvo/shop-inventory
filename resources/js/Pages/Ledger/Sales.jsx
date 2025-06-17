@@ -28,23 +28,14 @@ export default function Sales({ auth, sales }) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <MdKeyboardBackspace
-              size={20}
-              className="cursor-pointer text-gray-600 hover:text-gray-800"
-              onClick={() => window.history.back()}
-              title="Back"
-            />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Sales Ledger</h2>
-          </div>
-          <a
-            href={route('ledger.sales.csvexport')}
-            className='group relative flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 rounded-lg focus:ring-4 focus:ring-cyan-300'
-          >
-            <BiExport className="mr-2 w-5 h-5" /> Export CSV File
-          </a>
-        </div>
+
+        <a
+          href={route('ledger.sales.csvexport')}
+          className='group relative flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-cyan-700 hover:bg-cyan-800 rounded-lg focus:ring-4 focus:ring-cyan-300'
+        >
+          <BiExport className="mr-2 w-5 h-5" /> Export CSV File
+        </a>
+
       }
     >
       <Head title="Sales Ledger" />

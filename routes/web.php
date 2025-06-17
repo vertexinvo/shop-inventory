@@ -39,7 +39,7 @@ use Modules\Master\Entities\Tenancy;
 
 Route::get('/', function () {
 
-    return Inertia::render('Welcome' );
+    return Inertia::render('Welcome');
 });
 
 
@@ -47,8 +47,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function (Request $request) {
     $date = $request->date ?? null;
     $filterDate = $date ? Carbon::parse($date) : Carbon::today();
-    
-    
+
+
     $totalOrder = Order::whereNotIn('status', ['cancel'])->whereDate('order_date', $filterDate)->count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
         $query->where('quantity', '>', 0)->orWhere('status', true);
@@ -77,13 +77,13 @@ Route::get('/dashboard', function (Request $request) {
     }
 
     $groupedDataLabels = LaravelMetrics::query(Order::query()->whereNotIn('status', ['cancel']))->dateColumn('order_date')->labelColumn('order_date')->trends();
-  
+
 
     $trend = Metrics::trends(
         Order::metrics()
-        ->dateColumn('order_date')
-        // check where status is not cancel
-        ->fillMissingData(),
+            ->dateColumn('order_date')
+            // check where status is not cancel
+            ->fillMissingData(),
         $period,
         $groupedDataLabels["labels"],
         'order_date'
@@ -113,8 +113,8 @@ Route::get('/dashboard', function (Request $request) {
     $yearProfit = OrderService::getThisYearNetProfit();
 
     $todaysPendingOrderAmount = Order::todaysPendingAmount($filterDate);
-    
-    return Inertia::render('Dashboard',compact('date','todaysOrder','todaysPendingOrderAmount','todayProfit','weekProfit','monthProfit','yearProfit','totalSupplierPendingAmount','totalOrderAmountPending','totaliteminstock', 'totalStockValue','trend','period','totalOrder','totalProductInStock','totalProductOutofStock','outOfStockProductrecord','supplierBalanceRecord','latestOrder'));
+
+    return Inertia::render('Dashboard', compact('date', 'todaysOrder', 'todaysPendingOrderAmount', 'todayProfit', 'weekProfit', 'monthProfit', 'yearProfit', 'totalSupplierPendingAmount', 'totalOrderAmountPending', 'totaliteminstock', 'totalStockValue', 'trend', 'period', 'totalOrder', 'totalProductInStock', 'totalProductOutofStock', 'outOfStockProductrecord', 'supplierBalanceRecord', 'latestOrder'));
 })->name('dashboard')->middleware(['auth']);
 
 
@@ -125,16 +125,16 @@ Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.up
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 Route::get('/generated-via-qr', function (Request $request) {
-    
+
     //Applogin 
     //generate unique a hash
-    $dataHash = Date('Y-m-d H:i:s').Str::random(10);
+    $dataHash = Date('Y-m-d H:i:s') . Str::random(10);
     $dataHash = Crypt::encryptString($dataHash);
     $dataHash = Hash::make($dataHash);
 
 
     $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
-    $tenant = Tenancy::where('domain',  $domainurl)->first();
+    $tenant = Tenancy::where('domain', $domainurl)->first();
 
     $qrLoginSession = Applogin::create([
         'token' => $dataHash,
@@ -144,14 +144,14 @@ Route::get('/generated-via-qr', function (Request $request) {
     ]);
 
     //get linked device to the tenant
-    $linkeddevices = $tenant->applogin()->where('status', 'active')->latest()->get(); 
-    return Inertia::render('Profile/GeneratedViaQr', compact('dataHash','linkeddevices'));
+    $linkeddevices = $tenant->applogin()->where('status', 'active')->latest()->get();
+    return Inertia::render('Profile/GeneratedViaQr', compact('dataHash', 'linkeddevices'));
 })->name('profile.generated-via-qr');
 
 //unlinkdevice
 Route::delete('/unlinkdevice/{token}', function (Request $request, $token) {
     $applogin = Applogin::where('token', $token)->first();
-    if(!$applogin){
+    if (!$applogin) {
         session()->flash('error', 'Device not found');
         return redirect()->route('profile.generated-via-qr');
     }
@@ -164,27 +164,27 @@ Route::delete('/unlinkdevice/{token}', function (Request $request, $token) {
 //removealldevice
 Route::delete('/removealldevice', function (Request $request) {
     $domainurl = $request->getScheme() . '://' . $request->getHttpHost();
-    $tenant = Tenancy::where('domain',  $domainurl)->first();
+    $tenant = Tenancy::where('domain', $domainurl)->first();
     $tenant->applogin()->update(['status' => 'logout']);
     session()->flash('message', 'All devices unlinked successfully');
     return redirect()->route('profile.generated-via-qr');
 })->name('profile.removealldevice');
 
 
-require __DIR__.'/auth.php';
-require __DIR__.'/dashboard/user.php';
-require __DIR__.'/dashboard/customer.php';
-require __DIR__.'/dashboard/product.php';
-require __DIR__.'/dashboard/setting.php';
-require __DIR__.'/dashboard/role.php';
-require __DIR__.'/dashboard/category.php';
-require __DIR__.'/dashboard/brand.php';
-require __DIR__.'/dashboard/supplier.php';
-require __DIR__.'/dashboard/supplierinvoice.php';
-require __DIR__.'/dashboard/order.php';
-require __DIR__.'/dashboard/tax.php';
-require __DIR__.'/dashboard/shippingrate.php';
-require __DIR__.'/dashboard/stock.php';
-require __DIR__.'/dashboard/stocklog.php';
-require __DIR__.'/dashboard/expence.php';
-require __DIR__.'/dashboard/ledger.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/dashboard/user.php';
+require __DIR__ . '/dashboard/customer.php';
+require __DIR__ . '/dashboard/product.php';
+require __DIR__ . '/dashboard/setting.php';
+require __DIR__ . '/dashboard/role.php';
+require __DIR__ . '/dashboard/category.php';
+require __DIR__ . '/dashboard/brand.php';
+require __DIR__ . '/dashboard/supplier.php';
+require __DIR__ . '/dashboard/supplierinvoice.php';
+require __DIR__ . '/dashboard/order.php';
+require __DIR__ . '/dashboard/tax.php';
+require __DIR__ . '/dashboard/shippingrate.php';
+require __DIR__ . '/dashboard/stock.php';
+require __DIR__ . '/dashboard/stocklog.php';
+require __DIR__ . '/dashboard/expence.php';
+require __DIR__ . '/dashboard/ledger.php';

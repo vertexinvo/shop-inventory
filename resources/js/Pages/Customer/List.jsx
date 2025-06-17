@@ -26,17 +26,7 @@ export default function List(props) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <div className="flex items-center justify-between">
-          {/* Title */}
-          <div className="flex items-center space-x-3">
-            <MdKeyboardBackspace
-              size={20}
-              className="cursor-pointer text-gray-600 hover:text-gray-800"
-              onClick={() => window.history.back()}
-              title="Back"
-            />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Customer</h2>
-          </div>
+        <>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3">
@@ -86,7 +76,8 @@ export default function List(props) {
               </Dropdown.Content>
             </Dropdown>
           </div>
-        </div>
+        </>
+
       }
     >
       <Head title="Customer" />

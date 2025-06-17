@@ -9,16 +9,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiLogOut } from "react-icons/bi";
 import ConfirmModal from '@/Components/ConfirmModal';
-import { MdFormatListBulleted, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
+import { MdFormatListBulleted, MdKeyboardBackspace, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbInvoice } from "react-icons/tb";
 import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
-import { FaChevronDown, FaCog, FaEdit, FaPen, FaPlus, FaPlusCircle, FaRegEdit } from 'react-icons/fa';
-import { FaCircleArrowLeft, FaCircleArrowRight, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
-
+import { FaChevronDown, FaCog, FaEdit, FaExpeditedssl, FaPen, FaPlus, FaPlusCircle, FaRegEdit, FaShip, FaTractor, FaTruck, FaWarehouse } from 'react-icons/fa';
+import { FaCircleArrowLeft, FaCircleArrowRight, FaHandHoldingDollar, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
+import Breadcrumb from '@/Components/Breadcrumb';
+import { motion } from "framer-motion";
+import BetaBadge from '@/Components/BetaBadge';
 
 export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
@@ -60,29 +62,25 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                 <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">
                     <div className="px-4 sm:px-6 lg:px-4">
                         <div className="flex h-16 justify-between">
-                            <div className="flex">
-                                <div className="flex shrink-0 items-center ">
-                                    <Link href="/">
-                                        <img
-                                            src={setting.site_logo || "/images/logo2.png"}
-                                            className="block h-10 w-30 fill-current text-gray-800"
-                                            alt="Logo"
-                                        />
-                                    </Link>
+                            <div className="flex shrink-0 items-center space-x-3">
+                                <Link href="/">
+                                    <motion.img
+                                        src={setting.site_logo || "/images/logo2.png"}
+                                        className="block h-12 w-auto object-contain"
+                                        alt="Logo"
+                                        whileHover={{
+                                            scale: 1.02,
 
-                                    {/* Small Edit Icon - only on sm and up */}
-                                    <Link
-                                        href={route("setting.edit")}
-                                        title="Edit Site Settings"
-                                        className="hidden sm:flex items-end justify-center w-6 h-6 rounded-full text-gray-500 hover:text-gray-800 transition"
-                                    >
-                                        <FaPen className="w-3 h-3" />
-                                    </Link>
-                                </div>
+                                            transition: { duration: 0.3, ease: "easeOut" },
+                                        }}
+                                        initial={{ scale: 1 }}
+                                    />
+                                </Link>
                             </div>
 
-                            <div className="flex justify-end items-center ms-3 sm:ms-6">
-                                <div className="flex items-center gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
+
+                            <div className="flex justify-end items-center">
+                                <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
                                     {/* Add New Dropdown */}
                                     <Dropdown>
                                         <Dropdown.Trigger>
@@ -380,15 +378,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         active={route().current('product.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <svg
-                                            className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 18 20"
-                                        >
-                                            <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                                        </svg>
+                                        <FaWarehouse className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-900 transition-colors duration-200" />
                                         <span className="ml-3">Inventory</span>
                                     </NavLink>
                                 </li>
@@ -408,7 +398,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         active={route().current('supplier.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <TbInvoice className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <FaTruck className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                         <span className="ml-3">Suppliers</span>
                                     </NavLink>
                                 </li>
@@ -418,7 +408,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         active={route().current('expense.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <GiExpense className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <FaHandHoldingDollar className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                         <span className="ml-3">Expense</span>
                                     </NavLink>
                                 </li>
@@ -451,7 +441,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         <MdOutlinePhoneAndroid className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                         <span className="ml-3 flex items-center gap-2">
                                             Link Mobile App
-                                            <span className="text-xs bg-yellow-200 text-yellow-800 px-2 py-0.5 rounded-full">Beta</span>
+                                            <BetaBadge text="Beta" className="text-xs" />
                                         </span>
                                     </NavLink>
                                 </li>
@@ -601,11 +591,24 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         {header && (
                             <header className="bg-white shadow no-print sticky top-0">
                                 <div className="mx-auto px-4 py-5 pt-6 sm:px-6 lg:px-8">
-                                    {header}
+                                    <div className="flex items-center justify-between">
+                                        {/* Title */}
+                                        <div className="flex items-center">
+                                            {/* <MdKeyboardBackspace
+                                                size={20}
+                                                className="cursor-pointer text-gray-600 hover:text-gray-800"
+                                                onClick={() => window.history.back()}
+                                                title="Back"
+                                            /> */}
+                                            <h2 className="font-semibold text-xl text-gray-800 leading-tight"><Breadcrumb /></h2>
+                                        </div>
+                                        {header}
+                                    </div>
                                 </div>
                             </header>
                         )}
                         <main className="mx-auto overflow-auto px-3">
+                            
                             {children}
                         </main>
                     </div>
