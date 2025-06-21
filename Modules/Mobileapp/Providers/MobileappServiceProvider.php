@@ -4,7 +4,7 @@ namespace Modules\Mobileapp\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
-
+use Modules\Mobileapp\Http\Middleware\CheckAppLoginToken;
 class MobileappServiceProvider extends ServiceProvider
 {
     /**
@@ -28,6 +28,8 @@ class MobileappServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+        $this->app['router']->aliasMiddleware('check.app.login', CheckAppLoginToken::class);
+       
     }
 
     /**
