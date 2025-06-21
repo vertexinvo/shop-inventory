@@ -23,7 +23,7 @@ use Modules\Master\Entities\Tenancy;
 //     return $request->user();
 // });
 
-Route::middleware('check.app.login')->prefix('mobileapp')->group(function() {
+Route::middleware(\Modules\Mobileapp\Http\Middleware\CheckAppLoginToken::class)->prefix('mobileapp')->group(function() {
 
     Route::prefix('products')->group(function() {
         Route::get('list', [MobileappController::class, 'productsList']);
