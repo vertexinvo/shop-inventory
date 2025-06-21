@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Setting;
+use App\Services\BreadcrumbService;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\Session;
@@ -17,14 +18,19 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
     protected Setting $setting;
-
+    protected BreadcrumbService $breadcrumbService;
     /**
      * Determine the current asset version.
      */
+
+    public function __construct(BreadcrumbService $breadcrumbService)
+    {
+        $this->breadcrumbService = $breadcrumbService;
+    }
     public function version(Request $request): string|null
     {
-        
-        
+
+
         return parent::version($request);
     }
 
@@ -39,18 +45,18 @@ class HandleInertiaRequests extends Middleware
 
         $message = Session::get('message');
         $error = Session::get('error');
-        
-        Session::forget(['message', 'error']); 
+
+        Session::forget(['message', 'error']);
 
         if ($this->setting && $this->setting->site_name) {
             Config::set('app.name', $this->setting->site_name);
         }
-        if($this->setting && $this->setting->site_logo){
+        if ($this->setting && $this->setting->site_logo) {
             Config::set('app.favicon', $this->setting->site_favicon);
         }
 
-      
-    
+
+
 
         return [
             ...parent::share($request),
@@ -63,7 +69,8 @@ class HandleInertiaRequests extends Middleware
                 'error' => $error,
             ],
             'setting' => $this->setting,
-            'name' => Config::get('app.name'), 
+            'breadcrumbs' => $this->breadcrumbService->generateBreadcrumbs(),
+            'name' => Config::get('app.name'),
         ];
     }
 }

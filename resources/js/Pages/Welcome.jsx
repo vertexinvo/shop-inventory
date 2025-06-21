@@ -175,13 +175,6 @@ const App = () => {
       <div className=' py-12'>
         <AnimatedSlider />
       </div>
-
-
-
-
-
-
-
       <section className='py-12' >
         <div class="py-8 px-8 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
           <div class="mx-auto max-w-screen-md text-center mb-8 lg:mb-12">

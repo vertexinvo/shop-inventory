@@ -40,59 +40,49 @@ export default function List(props) {
     <AuthenticatedLayout
       user={auth}
       header={
-        <div className="flex items-center justify-between py-2">
-          {/* Title */}
-          <div className="flex items-center space-x-3">
-            <MdKeyboardBackspace
-              size={20}
-              className="cursor-pointer text-gray-600 hover:text-gray-800"
-              onClick={() => window.history.back()}
-              title="Back"
-            />
-            <h2 className="text-xl text-gray-800 leading-tight">Expense</h2>
-          </div>
 
-          <div className="flex flex-wrap items-center gap-3">
 
-            {/* Import/Export Dropdown */}
-            <Dropdown>
-              <Dropdown.Trigger>
-                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
-                  File
-                  <FaChevronDown className="h-3 w-3" />
-                </button>
-              </Dropdown.Trigger>
+        <div className="flex flex-wrap items-center gap-3">
 
-              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <a
-                  // href={route('expense.csvexport')}
-                  download
-                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  coming soon
-                </a>
-              </Dropdown.Content>
-            </Dropdown>
+          {/* Import/Export Dropdown */}
+          <Dropdown>
+            <Dropdown.Trigger>
+              <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                File
+                <FaChevronDown className="h-3 w-3" />
+              </button>
+            </Dropdown.Trigger>
 
-            {/* Create Button dropdown */}
-            <Dropdown>
-              <Dropdown.Trigger>
-                <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
-                  Add new
-                  <FaChevronDown className="h-3 w-3" />
-                </button>
-              </Dropdown.Trigger>
-              <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                <Link
-                  href={route('expense.create')}
-                  className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                >
-                  Expense
-                </Link>
-              </Dropdown.Content>
-            </Dropdown>
-          </div>
+            <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <a
+                // href={route('expense.csvexport')}
+                download
+                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                coming soon
+              </a>
+            </Dropdown.Content>
+          </Dropdown>
+
+          {/* Create Button dropdown */}
+          <Dropdown>
+            <Dropdown.Trigger>
+              <button className="inline-flex items-center gap-2 rounded-lg bg-cyan-700 px-4 py-2 text-sm font-medium text-white transition hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300">
+                Add new
+                <FaChevronDown className="h-3 w-3" />
+              </button>
+            </Dropdown.Trigger>
+            <Dropdown.Content className="mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Link
+                href={route('expense.create')}
+                className="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Expense
+              </Link>
+            </Dropdown.Content>
+          </Dropdown>
         </div>
+
       }
     >
       <Head title="Expense" />

@@ -19,80 +19,72 @@ export default function List(props) {
   return (
     <AuthenticatedLayout
       tax={auth.tax}
-      header={
-       <>
-           <MdKeyboardBackspace
-                size={20}
-                className="mr-2 cursor-pointer"
-                onClick={() => router.get(route('setting'))}
-                title="Back"
-            /><h2 className="font-semibold text-xl text-gray-800 leading-tight">Shipping Rate</h2>
-       </>}
+      header
     >
       <Head title="Shipping Rate" />
 
       <div className="flex flex-col px-4  mt-10 mx-auto w-full">
         <div className="w-full ">
           <div className="flex flex-col md:flex-row justify-end items-center mt-2 mb-4">
-         
-                     <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
-         
-         
-                       {selectId.length > 0 && (
-                         <button
-                           onClick={() => setIsBulkDeleteModalOpen(true)}
-                           className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
-                           >
-                           Bulk Delete
-                         </button>
-                       )}
-                       <button
-                         onClick={() => router.get(route('shippingrate.create'))}
-                         className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
-                       >
-                         Create
-                       </button>
-         
-                       <Formik
-                         enableReinitialize
-                         initialValues={{ search: '' }}
-                         onSubmit={(values) => {
-                           router.get(route('shippingrate.index'), { search: values.search }, { preserveState: true });
-                         }}
-                       >
-                         {({ values, setFieldValue, handleSubmit, errors, touched }) => (
-                           <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
-                             <div className="relative w-full md:w-auto">
-                               <Field
-                                 name="search"
-                                 type="text"
-                                 placeholder="Search..."
-                                 className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
-                               />
-                               <button
-                                 type="button"
-                                 onClick={() => {
-                                   setFieldValue('search', '');
-                                   router.get(route('shippingrate.index'));
-                                 }}
-                                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-                               >
-                                 ✖
-                               </button>
-                             </div>
-         
-                             <button
-                               type="submit"
-                               className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
-                             >
-                               Search
-                             </button>
-         
-                           </Form>
-                         )}
-                       </Formik>
-                     </div>
-                   </div>
+
+            <div className="flex flex-col md:flex-row w-full md:justify-end space-y-2 md:space-y-0 md:space-x-2">
+
+
+              {selectId.length > 0 && (
+                <button
+                  onClick={() => setIsBulkDeleteModalOpen(true)}
+                  className="text-white  w-full md:w-64 lg:w-48  py-2 px-4 bg-red-500 rounded-lg hover:bg-red-600 "
+                >
+                  Bulk Delete
+                </button>
+              )}
+              <button
+                onClick={() => router.get(route('shippingrate.create'))}
+                className="text-white w-full py-2 px-4 rounded-lg bg-black hover:bg-gray-600 md:w-auto"
+              >
+                Create
+              </button>
+
+              <Formik
+                enableReinitialize
+                initialValues={{ search: '' }}
+                onSubmit={(values) => {
+                  router.get(route('shippingrate.index'), { search: values.search }, { preserveState: true });
+                }}
+              >
+                {({ values, setFieldValue, handleSubmit, errors, touched }) => (
+                  <Form className="flex flex-col md:flex-row w-full md:space-x-2 space-y-2 md:space-y-0">
+                    <div className="relative w-full md:w-auto">
+                      <Field
+                        name="search"
+                        type="text"
+                        placeholder="Search..."
+                        className="py-2 px-4 md:p-5  lg:p-2 border rounded-lg focus:outline-none focus:ring-1 focus:ring-black focus:border-black w-full"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFieldValue('search', '');
+                          router.get(route('shippingrate.index'));
+                        }}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                      >
+                        ✖
+                      </button>
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="text-white py-2 px-4 rounded-lg bg-black hover:bg-gray-600 w-full md:w-auto"
+                    >
+                      Search
+                    </button>
+
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
 
           <div className="overflow-x-auto">
             <div class="font-[sans-serif] overflow-x-auto">

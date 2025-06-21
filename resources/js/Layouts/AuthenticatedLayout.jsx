@@ -9,16 +9,18 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiLogOut } from "react-icons/bi";
 import ConfirmModal from '@/Components/ConfirmModal';
-import { MdFormatListBulleted, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
+import { MdFormatListBulleted, MdKeyboardBackspace, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbInvoice } from "react-icons/tb";
 import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
 import LinkDeviceQrcode from '@/Components/LinkDeviceQrcode';
-import { FaChevronDown, FaPlusCircle } from 'react-icons/fa';
-import { FaCircleArrowLeft, FaCircleArrowRight, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
-
+import { FaChevronDown, FaCog, FaEdit, FaExpeditedssl, FaPen, FaPlus, FaPlusCircle, FaRegEdit, FaShip, FaTractor, FaTruck, FaWarehouse } from 'react-icons/fa';
+import { FaCircleArrowLeft, FaCircleArrowRight, FaHandHoldingDollar, FaLeftLong, FaRightLeft } from 'react-icons/fa6';
+import Breadcrumb from '@/Components/Breadcrumb';
+import { motion } from "framer-motion";
+import BetaBadge from '@/Components/BetaBadge';
 
 export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
@@ -51,7 +53,8 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
     const [isMinimizeSidebar, setIsMinimizeSidebar] = useState(false);
 
     const [isLinkDeviceModalOpen, setIsLinkDeviceModalOpen] = useState(false);
-
+    const firstName = user.name?.split(" ")[0] || ""; // Safe way to get first name
+    const firstInitial = firstName.charAt(0).toUpperCase();
     return (
         <>
             <ToastContainer />
@@ -59,88 +62,143 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                 <nav className="fixed  top-0 z-50 w-full border border-b border-gray-100 bg-white no-print">
                     <div className="px-4 sm:px-6 lg:px-4">
                         <div className="flex h-16 justify-between">
-                            <div className="flex">
-                                <div className="flex shrink-0 items-center">
-                                    <Link href="/">
-                                        <img src={setting.site_logo || "/images/logo2.png"} className="block h-10 w-30 fill-current text-gray-800" />
-                                    </Link>
-                                    {/* hide on responsive mobile */}
+                            <div className="flex shrink-0 items-center space-x-3">
+                                <Link href="/">
+                                    <motion.img
+                                        src={setting.site_logo || "/images/logo2.png"}
+                                        className="block h-12 w-auto object-contain"
+                                        alt="Logo"
+                                        whileHover={{
+                                            scale: 1.02,
 
-                                </div>
-                                {/* <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink
-                                    href={route('dashboard')}
-                                    active={route().current('dashboard')}
-                                >
-                                    Dashboard
-                                </NavLink>
-                            </div> */}
+                                            transition: { duration: 0.3, ease: "easeOut" },
+                                        }}
+                                        initial={{ scale: 1 }}
+                                    />
+                                </Link>
                             </div>
-                            <div className="hidden sm:ms-6 sm:flex sm:items-center sm:justify-between">
-                                <div className="flex items-baseline justify-end relative ms-3">
-                                    {/* Create New Dropdown */}
-                                    <div className="flex items-center gap-2">
-                                        <Dropdown>
-                                            <Dropdown.Trigger>
-                                                <span className="inline-flex rounded-md">
-                                                    <button
-                                                        type="button"
-                                                        className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
-                                                    >
-                                                        Add new
-                                                        <FaChevronDown className="ms-2 h-3 w-3" />
-                                                    </button>
-                                                </span>
-                                            </Dropdown.Trigger>
-                                            <Dropdown.Content>
 
-                                                <Dropdown.Link href={route('customer.create')}>
+
+                            <div className="flex justify-end items-center">
+                                <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                                    {/* Add New Dropdown */}
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <span className="inline-flex rounded-full shadow" title="Add New">
+                                                <button
+                                                    type="button"
+                                                    className="inline-flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out w-10 h-10 border border-gray-300"
+                                                >
+                                                    <FaPlus className="h-4 w-4" />
+                                                </button>
+                                            </span>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Content className="rounded-xl shadow-lg bg-white border border-gray-100 divide-y divide-gray-200 min-w-[150px]">
+                                            <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
+                                                Add new
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <Dropdown.Link href={route('customer.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Customer
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('order.create')}>
+                                                <Dropdown.Link href={route('order.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Invoice
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('product.create')}>
+                                                <Dropdown.Link href={route('product.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Inventory
                                                 </Dropdown.Link>
-                                                <Dropdown.Link href={route('supplier.create')}>
+                                                <Dropdown.Link href={route('supplier.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
                                                     Supplier
                                                 </Dropdown.Link>
-                                            </Dropdown.Content>
-                                        </Dropdown>
-                                    </div>
+                                                <Dropdown.Link href={route('brand.create')} className=" border-t border-gray-200 px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Brand
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('category.create')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Category
+                                                </Dropdown.Link>
+                                            </div>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+
+
+
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <span className="inline-flex rounded-full shadow" title="Settings">
+                                                <button
+                                                    type="button"
+                                                    className="inline-flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out w-10 h-10 border border-gray-300"
+                                                >
+                                                    <FaCog className="h-4 w-4" />
+                                                </button>
+                                            </span>
+                                        </Dropdown.Trigger>
+
+                                        <Dropdown.Content className="rounded-xl shadow-lg bg-white border border-gray-100 divide-y divide-gray-200 min-w-[150px]">
+                                            <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
+                                                Settings
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <Dropdown.Link href={route('role.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Roles
+                                                </Dropdown.Link>
+                                                {/* <Dropdown.Link href={route('category.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Categories
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('brand.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Brands
+                                                </Dropdown.Link> */}
+                                                <Dropdown.Link href={route('user.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    User Management
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('setting.edit')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Site Settings
+                                                </Dropdown.Link>
+                                                <Dropdown.Link href={route('shippingrate.index')} className="px-4 py-2 hover:bg-gray-100 text-sm">
+                                                    Shipping Charges
+                                                </Dropdown.Link>
+                                                <Dropdown.Link
+                                                    href={route('setting')}
+                                                    className="px-4 py-2 text-sm  hover:bg-gray-100"
+                                                >
+                                                    <span className='underline text-gray-800 font-semibold'>View more</span>
+                                                </Dropdown.Link>
+
+                                            </div>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+
+
 
                                     {/* User Dropdown */}
                                     <Dropdown>
                                         <Dropdown.Trigger>
-                                            <span className="inline-flex rounded-md">
+                                            <span className="inline-flex rounded-full shadow" title="Profile">
                                                 <button
                                                     type="button"
-                                                    className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
+                                                    className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center text-sm font-bold transition duration-150 ease-in-out hover:brightness-110 focus:outline-none"
                                                 >
-                                                    {user.name}
-                                                    <FaChevronDown className="ms-2 h-3 w-3" />
+                                                    {firstInitial}
                                                 </button>
                                             </span>
                                         </Dropdown.Trigger>
+
                                         <Dropdown.Content>
-                                            <Dropdown.Link href={route('profile.edit')}>
-                                                Profile
-                                            </Dropdown.Link>
-                                            <Dropdown.Link href={route('setting')}>
-                                                Setting
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route('logout')}
-                                                method="post"
-                                                as="button"
-                                            >
-                                                Log Out
-                                            </Dropdown.Link>
+                                            <div className="px-4 py-2 text-xs text-gray-400 uppercase tracking-wide font-semibold border-b border-gray-200">
+                                                User menu
+                                            </div>
+                                            <div className="flex flex-col">
+                                                <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                                <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                                            </div>
+
                                         </Dropdown.Content>
                                     </Dropdown>
                                 </div>
                             </div>
+
+
                             <div className="-me-2 flex items-center sm:hidden">
                                 <button
                                     onClick={() =>
@@ -320,15 +378,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         active={route().current('product.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <svg
-                                            className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200"
-                                            aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="currentColor"
-                                            viewBox="0 0 18 20"
-                                        >
-                                            <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
-                                        </svg>
+                                        <FaWarehouse className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-gray-900 transition-colors duration-200" />
                                         <span className="ml-3">Inventory</span>
                                     </NavLink>
                                 </li>
@@ -348,7 +398,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         active={route().current('supplier.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <TbInvoice className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <FaTruck className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                         <span className="ml-3">Suppliers</span>
                                     </NavLink>
                                 </li>
@@ -358,7 +408,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         active={route().current('expense.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <GiExpense className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <FaHandHoldingDollar className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                         <span className="ml-3">Expense</span>
                                     </NavLink>
                                 </li>
@@ -391,7 +441,7 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                         <MdOutlinePhoneAndroid className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
                                         <span className="ml-3 flex items-center gap-2">
                                             Link Mobile App
-                                            <span className="text-xs bg-yellow-200 text-yellow-800 px-2 py-0.5 rounded-full">Beta</span>
+                                            <BetaBadge text="Beta" className="text-xs" />
                                         </span>
                                     </NavLink>
                                 </li>
@@ -541,11 +591,24 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                         {header && (
                             <header className="bg-white shadow no-print sticky top-0">
                                 <div className="mx-auto px-4 py-5 pt-6 sm:px-6 lg:px-8">
-                                    {header}
+                                    <div className="flex items-center justify-between">
+                                        {/* Title */}
+                                        <div className="flex items-center">
+                                            {/* <MdKeyboardBackspace
+                                                size={20}
+                                                className="cursor-pointer text-gray-600 hover:text-gray-800"
+                                                onClick={() => window.history.back()}
+                                                title="Back"
+                                            /> */}
+                                            <h2 className="font-semibold text-xl text-gray-800 leading-tight"><Breadcrumb /></h2>
+                                        </div>
+                                        {header}
+                                    </div>
                                 </div>
                             </header>
                         )}
                         <main className="mx-auto overflow-auto px-3">
+                            
                             {children}
                         </main>
                     </div>

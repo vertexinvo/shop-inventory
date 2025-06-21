@@ -14,17 +14,8 @@ export default function SiteSetting(props) {
   return (
     <AuthenticatedLayout
       tax={auth.tax}
-      header={
-        <>
-          <MdKeyboardBackspace
-            size={20}
-            className="mr-2 cursor-pointer"
-            onClick={() => router.get(route('setting'))}
-            title="Back"
-          />
-          <h2 className="font-semibold text-xl text-gray-800 leading-tight">Site Setting</h2>
-        </>
-      }
+      header
+      
     >
       <Head title="Site Setting" />
 

@@ -116,17 +116,7 @@ export default function List(props) {
     <AuthenticatedLayout
       Product={auth.Product}
       header={
-        <div className="flex items-center justify-between">
-          {/* Title */}
-          <div className="flex items-center space-x-3">
-            <MdKeyboardBackspace
-              size={20}
-              className="cursor-pointer text-gray-600 hover:text-gray-800"
-              onClick={() => router.get(route('dashboard'))}
-              title="Back"
-            />
-            <h2 className="font-semibold text-xl text-gray-800 leading-tight">Products</h2>
-          </div>
+        <>
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center gap-3">
@@ -176,7 +166,7 @@ export default function List(props) {
               </Dropdown.Content>
             </Dropdown>
           </div>
-        </div>
+        </>
       }
     >
 
@@ -721,7 +711,7 @@ export default function List(props) {
                           <td colSpan="10" className="px-10 py-4 text-gray-600">
                             <div className="space-y-4">
                               <div>
-                                { product?.stock?.stock_logs.length > 0 ? (
+                                {product?.stock?.stock_logs.length > 0 ? (
                                   <div className="grid grid-cols-5 gap-2 text-sm ms-12 font-medium ">
                                     {/* Grid Header */}
                                     <div className="font-semibold text-gray-700 bg-slate-200 p-2 rounded-l-xl">Available</div>
