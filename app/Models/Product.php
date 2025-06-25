@@ -170,10 +170,17 @@ class Product extends Model  implements HasMedia
         return $this->belongsTo(Supplierinvoice::class, 'supplier_invoice_no', 'invoice_no');
     }
 
+
+   
+
+    // In your Product model
+
     public function getSupplierNameAttribute()
     {
         return $this->supplierInvoice ? $this->supplierInvoice->supplier->person_name . ' - ' . $this->supplierInvoice->supplier->code : '';
     }
+
+    // Relationship to get stock logs through stock
 
   
 }

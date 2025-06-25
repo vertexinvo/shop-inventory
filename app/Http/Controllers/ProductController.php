@@ -89,14 +89,14 @@ class ProductController extends Controller
             })
             ->where(function ($query) use ($supplierinvoiceno) {
                 if ($supplierinvoiceno) {
-                    $query->whereHas('supplierInvoice', function ($query) use ($supplierinvoiceno) {
+                    $query->whereHas('stock.stockLogs.supplierInvoice', function ($query) use ($supplierinvoiceno) {
                         $query->where('supplier_invoice_no', $supplierinvoiceno);
                     });
                 }
             })
             ->where(function ($query) use ($invoicecode) {
                 if ($invoicecode) {
-                    $query->whereHas('supplierInvoice.supplier', function ($query) use ($invoicecode) {
+                    $query->whereHas('stock.stockLogs.supplierInvoice.supplier', function ($query) use ($invoicecode) {
                         $query->where('code', $invoicecode);
                     });
                 }
