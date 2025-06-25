@@ -187,6 +187,7 @@ export default function InstantOrder(props) {
                                 onClick={save}
                                 className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
                                 type="button"
+                                 disabled={isSubmitting}
                               >
                                 Save
                               </button>
@@ -194,6 +195,7 @@ export default function InstantOrder(props) {
                                 onClick={saveAndClose}
                                 className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
                                 type="button"
+                                 disabled={isSubmitting}
                               >
                                 Save & Close
                               </button>

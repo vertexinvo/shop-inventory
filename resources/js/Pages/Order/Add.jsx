@@ -217,8 +217,6 @@ export default function Add(props) {
         })}
         onSubmit={(values, { setSubmitting, resetForm }) => {
 
-          console.log(values);
-
           order ?
             router.put(route('order.update', order.id), values, {
               preserveScroll: true,
@@ -238,6 +236,8 @@ export default function Add(props) {
       >
         {({ isSubmitting, values, errors, setFieldValue, handleSubmit }) => {
 
+          
+            
 
           useEffect(() => {
             const totalAmount = values.items.reduce(
@@ -248,6 +248,7 @@ export default function Add(props) {
             setFieldValue('total', totalAmount);
             setFieldValue('payable_amount', (totalAmount + parseFloat(values.extra_charges) + parseFloat(values.tax) + parseFloat(values.shipping_charges)) - (discount + parseFloat(values.exchange || 0)));
           }, [values.items, values.discount, setFieldValue, values.exchange, values.extra_charges, values.tax, values.shipping_charges]);
+
 
 
           const saveAndClose = () => {
@@ -311,6 +312,7 @@ export default function Add(props) {
                                 onClick={save}
                                 className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
                                 type="button"
+                                disabled={isSubmitting}
                               >
                                 Save
                               </button>
@@ -318,6 +320,7 @@ export default function Add(props) {
                                 onClick={saveAndClose}
                                 className="bg-black hover:bg-blue-dark text-white font-bold py-2 px-4 rounded-lg w-full sm:w-auto"
                                 type="button"
+                                 disabled={isSubmitting}
                               >
                                 Save & Close
                               </button>
