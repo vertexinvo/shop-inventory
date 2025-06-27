@@ -22,7 +22,9 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 export default function Dashboard(props) {
-  const { auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount } = props;
+  const { auth, todaysPendingOrderAmount, todayProfit, weekProfit, monthProfit, yearProfit, latestOrder, todaysOrder, totalOrder, totalProductInStock, totalProductOutofStock, outOfStockProductrecord, supplierBalanceRecord, trend, period, totalStockValue, totaliteminstock, totalOrderAmountPending, totalSupplierPendingAmount ,
+    selectedTimeRange: initialTimeRange = '1'
+  } = props;
 
   const [timeString, setTimeString] = useState('');
   const [greetingData, setGreetingData] = useState({ text: '', emoji: '' });
@@ -87,12 +89,40 @@ export default function Dashboard(props) {
 
   const rolename = auth.user.roles.map((role) => role.name);
   const [selectedMetric, setSelectedMetric] = useState('all');
-  const [selectedTimeRange, setSelectedTimeRange] = useState('7');
+
+  const [selectedTimeRange, setSelectedTimeRange] = useState(initialTimeRange);
   const formatProfit = (profit) => {
     if (profit < 0) {
       return <span className="text-red-500">Loss: {Math.abs(profit)}</span>;
     }
     return <span>{profit}</span>;
+  };
+
+   // Handle filter change
+  const handleTimeRangeChange = (e) => {
+    const newTimeRange = e.target.value;
+    setSelectedTimeRange(newTimeRange);
+    
+    // Make request to backend with new filter
+    router.get(route('dashboard'), 
+      { timeRange: newTimeRange }, 
+      { 
+        preserveState: true,
+        preserveScroll: true,
+        only: [
+          'totalOrder', 
+          'totalProductInStock', 
+          'totalProductOutofStock', 
+          'totalStockValue', 
+          'totalSupplierPendingAmount', 
+          'todayProfit',
+          'trend',
+          'latestOrder',
+          'outOfStockProductrecord',
+          'supplierBalanceRecord'
+        ]
+      }
+    );
   };
 
   return (
@@ -138,57 +168,59 @@ export default function Dashboard(props) {
       <div className="mx-4">
         <div className="p-4 bg-white shadow-sm rounded-2xl mt-4">
           {/* Header with Profit & Filter */}
-          <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between w-full gap-4 mb-6">
-            <h1 className="font-semibold text-xl text-gray-800">
-              Profit: {rolename.includes('superadmin') ? formatProfit(todayProfit) : 'No Access'}
-            </h1>
-            <select
-              value={selectedTimeRange}
-              onChange={(e) => setSelectedTimeRange(e.target.value)}
-              className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
-            >
-              <option value="7">Today</option>
-              <option value="7">Last 7 Days</option>
-              <option value="15">Last 15 Days</option>
-              <option value="30">Last 1 Month</option>
-              <option value="180">Last 6 Months</option>
-              <option value="365">Last 1 Year</option>
-            </select>
-          </div>
+<div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between w-full gap-4 mb-6">
+        <h1 className="font-semibold text-xl text-gray-800">
+          Profit: {auth.user.roles.some(role => role.name.includes('superadmin')) 
+            ? formatProfit(todayProfit) 
+            : 'No Access'}
+        </h1>
+        <select
+          value={selectedTimeRange}
+          onChange={handleTimeRangeChange}
+          className="px-4 py-2 w-full sm:w-56 rounded-lg text-sm border border-gray-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+        >
+          <option value="1">Today</option>
+          <option value="7">Last 7 Days</option>
+          <option value="15">Last 15 Days</option>
+          <option value="30">Last 1 Month</option>
+          <option value="180">Last 6 Months</option>
+          <option value="365">Last 1 Year</option>
+        </select>
+      </div>
 
-          {/* Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-            <Card
-              title="Orders"
-              value={auth.permissions.includes('viewAny Order') ? totalOrder : 'No Access'}
-              icon={<VscGraph size={32} />}
-              link={route('order.index')}
-            />
-            <Card
-              title="In Stock"
-              value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
-              icon={<FaBoxOpen size={32} />}
-              link={route('product.index', { status: 1 })}
-            />
-            <Card
-              title="Out Stock"
-              value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
-              icon={<HiMiniArchiveBoxXMark size={32} />}
-              link={route('product.index', { status: 0 })}
-            />
-            <Card
-              title="Stock Value"
-              value={auth.permissions.includes('viewAny Product') ? totalStockValue : 'No Access'}
-              icon={<GiMoneyStack size={32} />}
-              link={route('product.index')}
-            />
-            <Card
-              title="Pending Balance"
-              value={auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : 'No Access'}
-              icon={<FaTruckField size={32} />}
-              link={route('order.index')}
-            />
-          </div>
+      {/* Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+        <Card
+          title="Orders"
+          value={auth.permissions.includes('viewAny Order') ? totalOrder : 'No Access'}
+          icon={<VscGraph size={32} />}
+          link={route('order.index')}
+        />
+        <Card
+          title="In Stock"
+          value={auth.permissions.includes('viewAny Product') ? totalProductInStock : 'No Access'}
+          icon={<FaBoxOpen size={32} />}
+          link={route('product.index', { status: 1 })}
+        />
+        <Card
+          title="Out Stock"
+          value={auth.permissions.includes('viewAny Product') ? totalProductOutofStock : 'No Access'}
+          icon={<HiMiniArchiveBoxXMark size={32} />}
+          link={route('product.index', { status: 0 })}
+        />
+        <Card
+          title="Stock Value"
+          value={auth.permissions.includes('viewAny Product') ? totalStockValue : 'No Access'}
+          icon={<GiMoneyStack size={32} />}
+          link={route('product.index')}
+        />
+        <Card
+          title="Pending Balance"
+          value={auth.permissions.includes('viewAny Supplier') ? totalSupplierPendingAmount : 'No Access'}
+          icon={<FaTruckField size={32} />}
+          link={route('order.index')}
+        />
+      </div>
         </div>
 
 

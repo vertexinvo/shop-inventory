@@ -46,10 +46,21 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function (Request $request) {
     $date = $request->date ?? null;
-    $filterDate = $date ? Carbon::parse($date) : Carbon::today();
+      $timeRange = $request->timeRange ?? '1'; 
+       // Calculate date ranges based on timeRange
+    $endDate = $date ? Carbon::parse($date) : Carbon::today();
+    $startDate = match($timeRange) {
+        '1' => $endDate->copy(), // Today only
+        '7' => $endDate->copy()->subDays(6), // Last 7 days
+        '15' => $endDate->copy()->subDays(14), // Last 15 days
+        '30' => $endDate->copy()->subDays(29), // Last 30 days
+        '180' => $endDate->copy()->subDays(179), // Last 6 months
+        '365' => $endDate->copy()->subDays(364), // Last 1 year
+        default => $endDate->copy() // Default to today
+    };
 
 
-    $totalOrder = Order::whereNotIn('status', ['cancel'])->whereDate('order_date', $filterDate)->count();
+    $totalOrder = Order::whereNotIn('status', ['cancel'])->whereBetween('order_date', [$startDate->toDateString(), $endDate->toDateString()])->count();
     $totalProductInStock = Product::whereHas('stock', function ($query) {
         $query->where('quantity', '>', 0)->orWhere('status', true);
     })->count();
@@ -66,7 +77,7 @@ Route::get('/dashboard', function (Request $request) {
 
     $supplierBalanceRecord = Supplier::withPendingAmount()->paginate(6);
 
-    $latestOrder = Order::whereDate('order_date', $filterDate)->latest()->paginate(4);
+    $latestOrder = Order::latest()->paginate(4);
 
 
     $period = $request->period ?? 'day';
@@ -105,14 +116,22 @@ Route::get('/dashboard', function (Request $request) {
         return $supplier->total_amount_pending; // Use the accessor
     });
 
-    $todaysOrder = Order::where('status', '!=', 'cancel')->whereDate('order_date', $filterDate)->count();
+    $todaysOrder = Order::where('status', '!=', 'cancel')->whereBetween('order_date', [$startDate->toDateString(), $endDate->toDateString()])->count();
 
-    $todayProfit = OrderService::getTodayNetProfit($filterDate);
+    $todayProfit = match($timeRange) {
+        '1' => OrderService::getTodayNetProfit($endDate),
+        '7' => OrderService::getNetProfit($startDate, $endDate),
+        '15' => OrderService::getNetProfit($startDate, $endDate),
+        '30' => OrderService::getNetProfit($startDate, $endDate),
+        '180' => OrderService::getNetProfit($startDate, $endDate),
+        '365' => OrderService::getNetProfit($startDate, $endDate),
+        default => OrderService::getTodayNetProfit($endDate)
+    };
     $weekProfit = OrderService::getThisWeekNetProfit();
     $monthProfit = OrderService::getThisMonthNetProfit();
     $yearProfit = OrderService::getThisYearNetProfit();
 
-    $todaysPendingOrderAmount = Order::todaysPendingAmount($filterDate);
+    $todaysPendingOrderAmount = Order::todaysPendingAmount($startDate, $endDate);
 
     return Inertia::render('Dashboard', compact('date', 'todaysOrder', 'todaysPendingOrderAmount', 'todayProfit', 'weekProfit', 'monthProfit', 'yearProfit', 'totalSupplierPendingAmount', 'totalOrderAmountPending', 'totaliteminstock', 'totalStockValue', 'trend', 'period', 'totalOrder', 'totalProductInStock', 'totalProductOutofStock', 'outOfStockProductrecord', 'supplierBalanceRecord', 'latestOrder'));
 })->name('dashboard')->middleware(['auth']);

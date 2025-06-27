@@ -146,8 +146,12 @@ class Order extends Model
         return floatval($this->payable_amount) - floatval($this->paid_amount ?? 0);
     }
 
-    public static function todaysPendingAmount($filterDate = null)
+    public static function todaysPendingAmount($startDate = null, $endDate = null)
     {
-        return self::whereDate('order_date', $filterDate ?? now()->toDateString())->get()->sum->pending_amount;
+        if (!$startDate || !$endDate) {
+            $startDate = now()->startOfDay();
+            $endDate = now()->endOfDay();
+        }
+        return self::whereBetween('order_date', [$startDate->toDateString(), $endDate->toDateString()])->get()->sum->pending_amount;
     }
 }
