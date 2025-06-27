@@ -311,7 +311,7 @@ export default function Add(props) {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm">$</span>
+                            <span className="text-gray-500 sm:text-sm">Rs</span>
                           </div>
                           <Field
                             name="purchase_price"
@@ -323,7 +323,7 @@ export default function Add(props) {
                             placeholder="0.00"
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm">USD</span>
+                            <span className="text-gray-500 sm:text-sm">PKR</span>
                           </div>
                           <ErrorMessage name="purchase_price" component="div" className="mt-1 text-sm text-red-600" />
                         </div>
@@ -335,7 +335,7 @@ export default function Add(props) {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm">$</span>
+                            <span className="text-gray-500 sm:text-sm">Rs</span>
                           </div>
                           <Field
                             name="selling_price"
@@ -347,7 +347,7 @@ export default function Add(props) {
                             placeholder="0.00"
                           />
                           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                            <span className="text-gray-500 sm:text-sm">USD</span>
+                            <span className="text-gray-500 sm:text-sm">PKR</span>
                           </div>
                           <ErrorMessage name="selling_price" component="div" className="mt-1 text-sm text-red-600" />
                         </div>
