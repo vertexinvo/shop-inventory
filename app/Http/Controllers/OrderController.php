@@ -624,7 +624,7 @@ class OrderController extends Controller
 
         $searchitem = $request->searchitem ?? '';
 
-        $itemrec = Product::with('stock', 'categories', 'categories','brands')->where(function ($query) use ($searchitem) {
+        $itemrec = Product::with('stock', 'categories','brands')->where(function ($query) use ($searchitem) {
             $query->where('name', 'like', "%$searchitem%")
                   ->orWhere('identity_value', 'like', "%$searchitem%");
         })->get();

@@ -36,6 +36,7 @@ Route::middleware('check.app.login')->prefix('mobileapp')->group(function() {
         Route::get('today-orders', [MobileappController::class, 'todayOrders']);
         Route::get('view-order/{code}', [MobileappController::class, 'viewOrder']);
         Route::get('search/{search}', [MobileappController::class, 'ordersSearch']);
+        Route::post('change-status', [MobileappController::class, 'changeOrderStatus']);
     });
 
     Route::prefix('suppliers')->group(function() {

@@ -76,7 +76,7 @@ class MobileappController extends Controller
     }
 
     public function ordersSearch(Request $request, $search){
-        $orders = Order::where(function ($query) use ($search) {
+        $orders = Order::with('items')->where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                     ->orWhere('code', 'like', "%$search%")
                     ->orWhere('phone', 'like', "%$search%")
@@ -88,14 +88,31 @@ class MobileappController extends Controller
     }
 
      public function ordersList(Request $request){
-        $orders = Order::orderBy('order_date', 'desc')->get();
+        $orders = Order::with('items')->orderBy('order_date', 'desc')->get();
         return response()->json($orders, 200);
      }
 
      public function todayOrders(Request $request){
-        $orders = Order::whereDate('order_date', now())->get();
+        $orders = Order::with('items')->whereDate('order_date', now())->get();
         return response()->json($orders, 200);
      }
+
+
+     //changeOrderStatus
+    public function changeOrderStatus(Request $request){
+        $request->validate([
+            'code' => 'required',
+            'status' => 'required|string',
+        ]);
+        $code = $request->code;
+        $order = Order::where('code', $code)->first();
+        if ($order === null) {
+            $order = Order::where('id', $code)->firstOrFail();
+        }  
+        $order->status = $request->status;
+        $order->save();
+        return response()->json(['message' => 'Order status updated successfully'], 200);
+    }
 
      public function viewOrder(Request $request, $code){
         $order = Order::where('code', $code)->first();
