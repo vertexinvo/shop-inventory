@@ -42,6 +42,11 @@ export default function Add(props) {
                                             supplier_invoice_no: stocklogs.supplier_invoice_no || '',
                                             remarks: stocklogs.remarks || '',
                                             purchase_price:  stocklogs.purchase_price || '',
+                                             is_borrow: stocklogs?.is_borrow ? '1' : '0', 
+                                            shop_name: stocklogs?.shop_name || '', 
+                                            shop_address: stocklogs?.shop_address || '', 
+                                            shop_phone: stocklogs?.shop_phone || '', 
+                                            shop_email: stocklogs?.shop_email || '',
                                         }}
                                         validationSchema={Yup.object({
                                             quantity: Yup.number().min(1).required('Quantity is required'),
@@ -58,6 +63,11 @@ export default function Add(props) {
                                                                             then: scheme => scheme.required(),
                                                                             otherwise: scheme => scheme.optional()
                                                                 }),
+                                               is_borrow: Yup.string().required('Borrow status is required'),
+                                                            shop_name: Yup.string(),
+                                                            shop_address: Yup.string(),
+                                                            shop_phone: Yup.string().matches(/^[0-9]*$/, 'Must be only digits'),
+                                                            shop_email: Yup.string().email('Invalid email address'),
                                         })}
                                         onSubmit={(values, { setSubmitting, resetForm }) => {
                                             router.post(route('stocklog.store'), values, { onSuccess: () => resetForm() });
@@ -131,8 +141,111 @@ export default function Add(props) {
                                                             <ErrorMessage name="remarks" component="div" className="text-red-500 text-xs mt-1" />
                                                         </div>
                                                     </div>
+                                                        {values.type === 'addition'  && (
+                                                      <div className="mb-4">
+                                                                       
+                                                                        <div className="mt-6">
+                                                                          <label className="block text-sm font-medium text-gray-700 mb-3">
+                                                                            Is this a borrowed product? <span className="text-red-500">*</span>
+                                                                          </label>
+                                                                          <div className="flex items-center space-x-6">
+                                                                            <label className="inline-flex items-center">
+                                                                              <Field
+                                                                                type="radio"
+                                                                                name="is_borrow"
+                                                                                value="1"
+                                                                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                                                                              />
+                                                                              <span className="ml-2 text-sm text-gray-700">Yes</span>
+                                                                            </label>
+                                                                            <label className="inline-flex items-center">
+                                                                              <Field
+                                                                                type="radio"
+                                                                                name="is_borrow"
+                                                                                value="0"
+                                                                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                                                                              />
+                                                                              <span className="ml-2 text-sm text-gray-700">No</span>
+                                                                            </label>
+                                                                          </div>
+                                                                          <ErrorMessage name="is_borrow" component="div" className="mt-1 text-sm text-red-600" />
+                                                                        </div>
+                                                    
+                                                                        {values.is_borrow === "1" && (
+                                                                          <>
+                                                                            <div className="mt-6">
+                                                                              <p className="text-sm text-red-600 font-medium">Please provide at least one contact method for the shop</p>
+                                                                            </div>
+                                                    
+                                                                            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                                                              <div>
+                                                                                <label htmlFor="shop_name" className="block text-sm font-medium text-gray-700">
+                                                                                  Shop Name
+                                                                                </label>
+                                                                                <div className="mt-1">
+                                                                                  <Field
+                                                                                    name="shop_name"
+                                                                                    id="shop_name"
+                                                                                    type="text"
+                                                                                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 px-3"
+                                                                                    placeholder="e.g. Gadget World"
+                                                                                  />
+                                                                                </div>
+                                                                              </div>
+                                                    
+                                                                              <div>
+                                                                                <label htmlFor="shop_phone" className="block text-sm font-medium text-gray-700">
+                                                                                  Shop Phone
+                                                                                </label>
+                                                                                <div className="mt-1">
+                                                                                  <Field
+                                                                                    name="shop_phone"
+                                                                                    id="shop_phone"
+                                                                                    type="tel"
+                                                                                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 px-3"
+                                                                                    placeholder="e.g. 0123456789"
+                                                                                  />
+                                                                                  <ErrorMessage name="shop_phone" component="div" className="mt-1 text-sm text-red-600" />
+                                                                                </div>
+                                                                              </div>
+                                                    
+                                                                              <div>
+                                                                                <label htmlFor="shop_email" className="block text-sm font-medium text-gray-700">
+                                                                                  Shop Email
+                                                                                </label>
+                                                                                <div className="mt-1">
+                                                                                  <Field
+                                                                                    name="shop_email"
+                                                                                    id="shop_email"
+                                                                                    type="email"
+                                                                                    className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 px-3"
+                                                                                    placeholder="e.g. contact@gadgetworld.com"
+                                                                                  />
+                                                                                  <ErrorMessage name="shop_email" component="div" className="mt-1 text-sm text-red-600" />
+                                                                                </div>
+                                                                              </div>
+                                                                            </div>
+                                                    
+                                                                            <div className="mt-6">
+                                                                              <label htmlFor="shop_address" className="block text-sm font-medium text-gray-700">
+                                                                                Shop Address
+                                                                              </label>
+                                                                              <div className="mt-1">
+                                                                                <Field
+                                                                                  as="textarea"
+                                                                                  name="shop_address"
+                                                                                  id="shop_address"
+                                                                                  rows={3}
+                                                                                  className="block w-full rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm py-2.5 px-3"
+                                                                                  placeholder="Full shop address"
+                                                                                />
+                                                                              </div>
+                                                                            </div>
+                                                                          </>
+                                                                        )}
+                                                                      </div>
 
-
+                                                    )}
                                                     <div className="mb-4">
                                                         <label className="block text-grey-darker text-sm font-bold mb-2">Is Supplier</label>
                                                         <div className="flex items-center">

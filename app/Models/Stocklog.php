@@ -12,6 +12,7 @@ class Stocklog extends Model
 {
     use HasFactory;
 
+ 
     protected $fillable = [
         'stock_id',
         'quantity',
@@ -23,6 +24,11 @@ class Stocklog extends Model
         'datetime',
         'purchase_price',
         'product_id',
+        'is_borrow',
+        'shop_name',
+        'shop_address',
+        'shop_phone',
+        'shop_email'
     ];
 
      protected $appends = ['supplier_name'];

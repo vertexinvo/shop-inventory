@@ -166,6 +166,9 @@ export default function List(props) {
                       Purchase Price
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
+                      Is Borrowed
+                    </th>
+                    <th class="p-4 text-left text-sm font-semibold ">
                       Supplier Invoice
                     </th>
                     <th class="p-4 text-left text-sm font-semibold ">
@@ -234,6 +237,17 @@ export default function List(props) {
                       </td>
                       <td class="p-4 text-sm text-black">
                         {product?.purchase_price || 'N/A'}
+                      </td>
+                       <td class="p-4 text-sm text-black">
+                         {product.is_borrow == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}
+                        {product.is_borrow == '1' && (<p class="text-xs text-gray-500 mt-0.5">
+                          <ul class="list-disc pl-5">
+                            {product.shop_name && <li>Shop Name: {product.shop_name}</li>}
+                            {product.shop_address && <li>Shop Address: {product.shop_address}</li>}
+                            {product.shop_phone && <li>Shop Phone: {product.shop_phone}</li>}
+                            {product.shop_email && <li>Shop Email: {product.shop_email}</li>}
+                          </ul>
+                        </p>)}
                       </td>
                       <td class="p-4 text-sm text-black">
                         {product.is_supplier == '0' && <p class="text-xs text-gray-500 mt-0.5">No</p>}

@@ -571,6 +571,7 @@ export default function Edit(props) {
                   </div>
 
                   {/* Borrow Information Section */}
+                     {values.identity_type === 'imei' && (
                   <div className="border-b border-gray-200 pb-6">
                     <h3 className="text-lg font-medium text-gray-900 flex items-center gap-2">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
@@ -680,6 +681,7 @@ export default function Edit(props) {
                       </>
                     )}
                   </div>
+                  )}
 
                   {/* Supplier Information Section */}
                   {values.identity_type === 'imei' && (

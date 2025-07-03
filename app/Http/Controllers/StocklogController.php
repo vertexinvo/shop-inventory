@@ -65,6 +65,11 @@ class StocklogController extends Controller
             'product_id' => 'required|exists:products,id',
             'datetime' => 'required',
             'purchase_price' => 'nullable|numeric|min:0',
+            'is_borrow' => 'required',
+            'shop_name' => 'nullable|string|max:255',
+            'shop_address' => 'nullable|string|max:255',
+            'shop_phone' => 'nullable|max:255',
+            'shop_email' => 'nullable|email|max:255',
            ]);
     
            if ($validator->fails()) {

@@ -27,6 +27,11 @@ class ProductObserver
             'supplier_invoice_no' => $request->supplier_invoice_no,
             'purchase_price' => $request->purchase_price,
             'datetime' => date('Y-m-d H:i:s'),
+            'is_borrow' => $request->is_borrow ?? false,
+            'shop_name' => $request->shop_name ?? null,
+            'shop_address' => $request->shop_address ?? null,
+            'shop_phone' => $request->shop_phone ?? null,
+            'shop_email' => $request->shop_email ?? null,
         ];
 
 
@@ -38,7 +43,25 @@ class ProductObserver
      */
     public function updated(Product $product): void
     {
-        //
+         $request = request();
+
+        $stocklogrec = [
+            'product_id' => $product->id,
+            'quantity' => (int) $request->quantity,
+            'type' => 'addition',
+            'is_supplier' => $request->is_supplier,
+            'supplier_invoice_no' => $request->supplier_invoice_no,
+            'purchase_price' => $request->purchase_price,
+            'datetime' => date('Y-m-d H:i:s'),
+            'is_borrow' => $request->is_borrow ?? false,
+            'shop_name' => $request->shop_name ?? null,
+            'shop_address' => $request->shop_address ?? null,
+            'shop_phone' => $request->shop_phone ?? null,
+            'shop_email' => $request->shop_email ?? null,
+        ];
+
+        // Update stock log
+        StockService::updatedStockLog($stocklogrec);
     }
 
     /**
