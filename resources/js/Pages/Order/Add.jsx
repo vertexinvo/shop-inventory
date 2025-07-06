@@ -91,7 +91,7 @@ export default function Add(props) {
         total: order?.total || 0,
         payable_amount: order?.payable_amount || 0,
         paid_amount: order?.paid_amount || 0,
-        method: order?.method || '',
+        method: order?.method || 'cash',
         cheque_no: order?.cheque_no || '',
         cheque_date: order?.cheque_date || '',
         status: order?.status || 'completed',
