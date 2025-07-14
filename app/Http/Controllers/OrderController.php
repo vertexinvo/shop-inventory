@@ -28,17 +28,26 @@ class OrderController extends Controller
         $search = $request->search ?? '';
         $status = $request->status ?? ''; 
         $searchuserid = $request->searchuserid ?? '';
+        $productid = $request->productid ?? '';
         
         $startdate = $request->startdate ?? '';
         $enddate = $request->enddate ??'';
 
-        $orders = Order::where(function ($query) use ($search) {
+        $orders = Order::with('items')->where(function ($query) use ($search) {
             $query->where('name', 'like', "%$search%")
                     ->orWhere('code', 'like', "%$search%")
                     ->orWhere('phone', 'like', "%$search%")
                     ->orWhere('email', 'like', "%$search%")
                   ->orWhere('id', 'like', "%$search%")
                   ->orWhere('bill_no', 'like', "%$search%");
+
+        })
+        ->where(function ($query) use ($productid) {
+            if ($productid !== '') {
+                $query->whereHas('items', function ($q) use ($productid) {
+                    $q->where('product_id', $productid);
+                });
+            }
         })
         ->where(function ($query) use ($startdate, $enddate) {
             if ($startdate && $enddate) {
@@ -83,9 +92,11 @@ class OrderController extends Controller
         $todayProfit = OrderService::getTodayNetProfit();
 
         $todaysPendingOrderAmount = Order::todaysPendingAmount();
-    
 
-    return Inertia::render('Order/List', compact('orders','todaysPendingOrderAmount','todayProfit','todaysOrder','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
+        //get products only id , name , model
+        $products = Product::select('id', 'name', 'model')->get();
+
+    return Inertia::render('Order/List', compact('products','orders','todaysPendingOrderAmount','todayProfit','todaysOrder','pendingCount','completedCount','total','status','searchuserid','search','totalPaidAmount','totalPendingAmount','monthlyTotalPaidAmount','monthlyTotalPendingAmount','yearlyTotalPaidAmount','yearlyTotalPendingAmount'));
     }
 
 

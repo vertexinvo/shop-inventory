@@ -33,7 +33,7 @@ import DropdownComponent from '@/Components/DropdownComponent';
 
 
 export default function List(props) {
-  const { auth, todaysPendingOrderAmount, todayProfit, orders, todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount ,} = props
+  const {products, auth, todaysPendingOrderAmount, todayProfit, orders, todaysOrder, pendingCount, completedCount, total, status, searchuserid, search, totalPaidAmount, totalPendingAmount, monthlyTotalPaidAmount, monthlyTotalPendingAmount, yearlyTotalPaidAmount, yearlyTotalPendingAmount ,} = props
   console.log(totalPendingAmount);
   const [isStatusModalOpen, setIsStatusModalOpen] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(null);
@@ -108,7 +108,8 @@ export default function List(props) {
       enddate: endDate,
       search: params.get('search') || '',
       searchuserid: params.get('searchuserid') || '',
-      status: params.get('status') || ''
+      status: params.get('status') || '',
+      productid: params.get('productid') || ''
     }, { preserveState: true });
     setDaterangeModel(false);
   };
@@ -301,7 +302,31 @@ export default function List(props) {
         {/* Filters View */}
         {activeTab === 'filters' && (
           <div className="mt-4 p-4 bg-white border border-gray-200 rounded-2xl shadow">
-            Filters
+            <div className="text-lg font-semibold mb-4">Filters</div>
+            <div className="flex flex-col md:flex-row gap-4">
+              <div className="w-full md:w-1/2">
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-medium mb-2">Select Product</label>
+                  <select value={params.get('productid')} onChange={(e) => router.get(route('order.index'),  {
+                    productid: e.target.value,
+                    search: params.get('search'),
+                    searchuserid: params.get('searchuserid'),
+                    status: params.get('status'),
+                    startdate: params.get('startdate'),
+                    enddate: params.get('enddate'),
+                  },
+                  {
+                    preserveState: true,
+                    preserveScroll: true,
+                  })} className="w-full p-2 border border-gray-300 rounded-md">
+                    <option value="">All</option>
+                    {products.map((product) => (
+                    <option key={product.id} value={product.id}>{product.name} {product.model ? `(${product.model})` : ''}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              </div>
           </div>
         )}
       </div>
@@ -326,6 +351,7 @@ export default function List(props) {
                     status: params.get('status'),
                     startdate: params.get('startdate'),
                     enddate: params.get('enddate'),
+                    productid: params.get('productid'),
                   },
                   {
                     preserveState: true,
@@ -500,6 +526,7 @@ export default function List(props) {
                                 enddate: params.get('enddate'),
                                 search: params.get('search'),
                                 searchuserid: params.get('searchuserid'),
+                                productid: params.get('productid'),
                               },
                               { preserveState: true }
                             )
@@ -705,7 +732,7 @@ export default function List(props) {
                   <ul class="inline-flex items-center">
 
                     <li>
-                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
+                      <button onClick={() => orders.links[0].url ? router.get(orders.links[0].url, { status: status || '', searchuserid: searchuserid || '', search: search || '', startdate: params.get('startdate') || '', enddate: params.get('enddate') || '' , productid: params.get('productid') || '' }) : null} class="px-3 py-1 rounded-md rounded-l-lg focus:outline-none focus:shadow-outline-purple" aria-label="Previous">
                         <svg aria-hidden="true" class="w-4 h-4 fill-current" viewBox="0 0 20 20">
                           <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -759,7 +786,7 @@ export default function List(props) {
                               ) : (
                                 // Inactive link button
                                 <button
-                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}`)}
+                                  onClick={() => link.url && window.location.assign(link.url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || '' }` + `&productid=${params.get('productid') || '' }`)}
                                   className="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
                                 >
                                   {link.label}
@@ -772,7 +799,7 @@ export default function List(props) {
 
 
                     <li>
-                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
+                      <button onClick={() => orders.links[orders.links.length - 1].url && window.location.assign(orders.links[orders.links.length - 1].url + `&status=${status || ''}` + `&search=${search || ''}` + `&searchuserid=${searchuserid || ''}` + `&startdate=${params.get('startdate') || ''}` + `&enddate=${params.get('enddate') || ''}` + `&productid=${params.get('productid') || ''}`)} class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple" aria-label="Next">
                         <svg class="w-4 h-4 fill-current" aria-hidden="true" viewBox="0 0 20 20">
                           <path d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" fill-rule="evenodd"></path>
                         </svg>
@@ -909,6 +936,7 @@ export default function List(props) {
                       status: params.get('status') || '',
                       search: params.get('search') || '',
                       searchuserid: searchuserid || '',
+                      productid: params.get('productid') || '',
 
                     }));
                   }}
