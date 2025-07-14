@@ -125,7 +125,7 @@ export default function Add(props) {
         validationSchema={Yup.object({
           user_id: Yup.string().required('Customer is required'),
           status: Yup.string().oneOf(['pending', 'completed', 'cancel'], 'Invalid status').required('Status is required'),
-          bill_no: Yup.string(),
+          bill_no: Yup.string().required('Bill number is required').max(255, 'Bill number cannot exceed 255 characters'),
           name: Yup.string().required('Name is required'),
           email: Yup.string().email('Invalid email address'),
           phone: Yup.string()
@@ -335,7 +335,7 @@ export default function Add(props) {
                           </div>
 
                           <div className="mb-4">
-                            <label className="block text-grey-darker text-sm  mb-2" >Bill No</label>
+                            <label className="block text-grey-darker text-sm  mb-2" >Bill Number*</label>
                             <Field name="bill_no" className="appearance-none border rounded w-full py-2 px-3   focus:ring-black focus:border-black text-grey-darker" type="text" placeholder="Enter Bill No" />
                             <ErrorMessage name="bill_no" component="div" className="text-red-500 text-xs mt-1" />
                           </div>

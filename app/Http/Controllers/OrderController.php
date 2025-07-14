@@ -285,7 +285,7 @@ class OrderController extends Controller
    
         $validator = Validator::make($request->all(), [
             'user_id' => 'nullable|exists:users,id',
-            'bill_no' => 'nullable|string|max:255',
+            'bill_no' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
@@ -303,6 +303,13 @@ class OrderController extends Controller
             'note' => 'nullable|string|max:1000',
             'status' => 'required|string|in:pending,completed,cancel',
         ]);
+
+        //check bill_no is unique
+        if (Order::where('bill_no', $request->bill_no)->exists()) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('bill_no', 'Bill number already exists.');
+            });
+        }
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
@@ -464,7 +471,7 @@ class OrderController extends Controller
       
         $validator = Validator::make($request->all(), [
             'user_id' => 'nullable|exists:users,id',
-            'bill_no' => 'nullable|string|max:255',
+            'bill_no' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
@@ -480,6 +487,13 @@ class OrderController extends Controller
             'note' => 'nullable|string|max:1000',
             'status' => 'required|string|in:pending,completed,cancel',
         ]);
+
+        //check bill_no is unique
+        if (Order::where('bill_no', $request->bill_no)->exists()) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('bill_no', 'Bill number already exists.');
+            });
+        }
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
@@ -668,7 +682,7 @@ class OrderController extends Controller
     {
         $this->authorize('update', $order);
         $validator = Validator::make($request->all(), [
-            'bill_no' => 'nullable|string|max:255',
+            'bill_no' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'email' => 'nullable|email|max:255',
             'phone' => 'nullable|regex:/^\+?[0-9\s\-]{8,15}$/',
@@ -684,6 +698,13 @@ class OrderController extends Controller
             'note' => 'nullable|string|max:1000',
             'status' => 'required|string|in:pending,completed,cancel',
         ]);
+
+        //check bill_no is unique
+        if (Order::where('bill_no', $request->bill_no)->where('id', '!=', $order->id)->exists()) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add('bill_no', 'Bill number already exists.');
+            });
+        }
 
         if ($validator->fails()) {
             session()->flash('error', $validator->errors()->first());
