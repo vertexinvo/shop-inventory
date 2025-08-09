@@ -12,7 +12,7 @@ export default function Sales({ auth }) {
     if (reportType === 'sales') {
       router.visit(route('ledger.sales'));
     } else if (reportType === 'supplier') {
-      router.visit(route('supplier.index'));
+      router.visit(route('ledger.supplier'));
     }
   };
 
