@@ -90,6 +90,15 @@ export default function Setting(props) {
             <p className="text-sm text-gray-500 mt-1">Track recent user/system activities.</p>
           </div>
         </a>
+         {/* Banks */}
+        <a href={route('bank.index')} className="block group">
+          <div className="bg-white border border-gray-200 hover:border-black hover:shadow-lg transition rounded-xl p-5">
+            <h2 className="text-lg font-semibold text-gray-800 group-hover:text-black">Banks</h2>
+            <p className="text-sm text-gray-500 mt-1">Manage bank accounts.</p>
+          </div>
+        </a>
+       
+
       </div>
 
 

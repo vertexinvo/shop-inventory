@@ -11,7 +11,7 @@ import { BiLogOut } from "react-icons/bi";
 import ConfirmModal from '@/Components/ConfirmModal';
 import { MdFormatListBulleted, MdKeyboardBackspace, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
 import { HiMiniShoppingCart } from "react-icons/hi2";
-import { TbInvoice } from "react-icons/tb";
+import { TbInvoice, TbReport } from "react-icons/tb";
 import { GoGraph } from "react-icons/go";
 import { GiExpense } from 'react-icons/gi';
 import { IoMdMenu } from 'react-icons/io';
@@ -414,12 +414,12 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
                                 </li>
                                 <li>
                                     <NavLink
-                                        href={route('ledger.sales')}
-                                        active={route().current('ledger.sales')}
+                                        href={route('ledger.index')}
+                                        active={route().current('ledger.index')}
                                         className="flex items-center p-2 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-900 transition-colors duration-200"
                                     >
-                                        <MdFormatListBulleted className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
-                                        <span className="ml-3">Sales Ledger</span>
+                                        <TbReport  className="flex-shrink-0 w-5 h-5 text-gray-500 group-hover:text-blue-900 transition-colors duration-200" />
+                                        <span className="ml-3">Reports</span>
                                     </NavLink>
                                 </li>
                                 <li>

@@ -8,9 +8,14 @@ use Inertia\Inertia;
 use App\Models\Order;
 use App\Models\Supplier;
 use App\Models\Supplierinvoice;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class LedgerController extends Controller
 {
+    public function index(Request $request)
+    {
+        return Inertia::render('Ledger/Index');
+    }
     public function sales(Request $request)
     {
         $search = $request->search ?? '';
@@ -24,6 +29,55 @@ class LedgerController extends Controller
 
         return Inertia::render('Ledger/Sales', compact('sales'));
     }
+
+    public function supplier(Request $request)
+    {
+            $this->authorize('viewAny', Supplier::class);
+           
+            $search = $request->search ?? '';
+            $status = $request->status ?? '';
+            $per_page = $request->input('per_page', 10);
+            // total_amount_pending > 0
+            $suppliersQuery = Supplier::where('person_name', 'like', "%$search%")
+            ->orWhere('code', 'like', "%$search%")
+            ->orWhere('contact', 'like', "%$search%")
+            ->latest();
+        
+            // Retrieve suppliers and make the appended attribute visible
+            $suppliers = $suppliersQuery->get()->makeVisible('total_amount_pending');
+            
+            // Filter the suppliers based on the status
+            if ($status !== '') {
+                $suppliers = $suppliers->filter(function ($supplier) use ($status) {
+                    if ($status === 'pending') {
+                        return $supplier->total_amount_pending > 0;
+                    }
+                    if ($status === 'paid') {
+                        return $supplier->total_amount_pending <= 0;
+                    }
+                    return true;
+                })->values(); // Reset collection indices with ->values()
+            }
+
+
+            
+
+        // Manually paginate the filtered collection
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+    
+        $offset = ($currentPage - 1) * $per_page;
+        $suppliers = new LengthAwarePaginator(
+            $suppliers->slice($offset, $per_page),
+            $suppliers->count(),
+            $per_page,
+            $currentPage,
+            ['path' => LengthAwarePaginator::resolveCurrentPath()]
+        );
+    
+            $allsuppliers = Supplier::all();
+
+            return Inertia::render('Ledger/Supplier', compact('suppliers','status','search'));
+        }
 
 
     public function customerSalesLedger(Request $request, $code)
