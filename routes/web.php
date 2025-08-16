@@ -208,3 +208,4 @@ require __DIR__ . '/dashboard/stocklog.php';
 require __DIR__ . '/dashboard/expence.php';
 require __DIR__ . '/dashboard/ledger.php';
 require __DIR__ . '/dashboard/bank.php';
+require __DIR__ . '/dashboard/notification.php';

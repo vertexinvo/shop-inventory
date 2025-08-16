@@ -71,6 +71,7 @@ class HandleInertiaRequests extends Middleware
             'setting' => $this->setting,
             'breadcrumbs' => $this->breadcrumbService->generateBreadcrumbs(),
             'name' => Config::get('app.name'),
+            'notification_count' => $request->user() ? $request->user()->unreadNotifications->count() : 0,
         ];
     }
 }

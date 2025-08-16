@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react';
 import { CiSettings } from 'react-icons/ci';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { BiLogOut } from "react-icons/bi";
+import { BiBell, BiLogOut } from "react-icons/bi";
 import ConfirmModal from '@/Components/ConfirmModal';
-import { MdFormatListBulleted, MdKeyboardBackspace, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
+import { MdFormatListBulleted, MdKeyboardBackspace, MdNoTransfer, MdOutlinePhoneAndroid, MdOutlineQrCodeScanner } from "react-icons/md";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import { TbInvoice, TbReport } from "react-icons/tb";
 import { GoGraph } from "react-icons/go";
@@ -30,6 +30,8 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
     const user = usePage().props.auth.user;
 
     const setting = usePage().props.setting;
+
+    const notification_count = usePage().props.notification_count || 0;
 
 
 
@@ -81,8 +83,28 @@ export default function AuthenticatedLayout({ header, headerTitle, children }) {
 
                             <div className="flex justify-end items-center">
                                 <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                                    
+                                   <span className="inline-flex rounded-full shadow" title="Notifications">
+                                        <button 
+                                            onClick={() => router.get(route('notification.index'))}
+                                            type="button"
+                                            className="relative inline-flex items-center justify-center rounded-full bg-white text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out w-10 h-10 border border-gray-300"
+                                        >
+                                            <BiBell className="h-5 w-5" />
+                                            <span className="sr-only">Notifications</span>
+                                            {notification_count > 0 && (
+                                                <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2">
+                                                    {notification_count > 99 ? '99+' : notification_count}
+                                                </div>
+                                            )}
+                                        </button>
+                                    </span>
+                                      
                                     {/* Add New Dropdown */}
                                     <Dropdown>
+                                      
+
+
                                         <Dropdown.Trigger>
                                             <span className="inline-flex rounded-full shadow" title="Add New">
                                                 <button

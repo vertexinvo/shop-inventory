@@ -390,7 +390,7 @@ class OrderController extends Controller
         // //update product stock quantity
         foreach ($request->items as $item) {
             $product = Product::find($item["data"]['id']);
-            $product->stock()->update([
+            $product->stock->update([
                 'quantity' => $product->stock->quantity - $item['quantity'],
             ]);
         }

@@ -16,7 +16,9 @@ use Illuminate\Support\ServiceProvider;
 use App\Models\Order;
 use App\Observers\OrderObserver;
 use App\Models\Item;
+use App\Models\Stock;
 use App\Observers\ItemObserver;
+use App\Observers\StockObserver;
 use App\Services\OrderService;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +65,7 @@ class AppServiceProvider extends ServiceProvider
         Stocklog::observe(StocklogObserver::class);
         Product::observe(ProductObserver::class);
         Order::observe(OrderObserver::class);
-        
+        Stock::observe(StockObserver::class);
     }
 
 
